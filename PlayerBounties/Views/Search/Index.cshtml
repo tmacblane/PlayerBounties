@@ -1,0 +1,53 @@
+﻿@model IEnumerable<PlayerBounties.Models.Character>
+
+<table>
+    <tr>
+        <th>
+            Name
+        </th>
+		<th>
+			Shard
+		</th>
+		<th>
+			Faction
+		</th>
+		<th>
+			Race
+		</th>
+		<th>
+			Class
+		</th>
+		<th></th>
+		<th></th>
+    </tr>
+
+@foreach(var character in Model)
+{
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => character.Name)
+        </td>
+		<td>
+            @Html.DisplayFor(modelItem => character.Shard.Name)
+        </td>
+		<td>
+            @Html.DisplayFor(modelItem => character.Faction.Name)
+        </td>
+		<td>
+            @Html.DisplayFor(modelItem => character.Race.Name)
+        </td>
+		<td>
+            @Html.DisplayFor(modelItem => character.PlayerClass.Name)
+        </td>
+		<td>
+			@Html.ActionLink("Place a bounty", "Create", "Bounty", new { character.Id }, null)
+		</td>
+		<td>
+			@Html.ActionLink("Details", "Details", "Character", new { character.Id }, null)
+		</td>
+	</tr>
+}
+
+</table>
+
+something about don't see the character you're looking for...click here to add a character to place a bounty on

@@ -1,0 +1,99 @@
+﻿@model PlayerBounties.Models.Bounty
+
+@{
+    ViewBag.Title = "Edit";
+}
+
+<h2>Edit</h2>
+
+<script src="@Url.Content("~/Scripts/jquery.validate.min.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
+
+@using (Html.BeginForm()) {
+    @Html.ValidationSummary(true)
+    <fieldset>
+        <legend>Bounty</legend>
+
+        @Html.HiddenFor(model => model.Id)
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Amount)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Amount)
+            @Html.ValidationMessageFor(model => model.Amount)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Reason)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Reason)
+            @Html.ValidationMessageFor(model => model.Reason)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Message)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Message)
+            @Html.ValidationMessageFor(model => model.Message)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.PlacedById)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.PlacedById)
+            @Html.ValidationMessageFor(model => model.PlacedById)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.PlacedOnId)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.PlacedOnId)
+            @Html.ValidationMessageFor(model => model.PlacedOnId)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.DatePlaced)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.DatePlaced)
+            @Html.ValidationMessageFor(model => model.DatePlaced)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.IsPlacementPending)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.IsPlacementPending)
+            @Html.ValidationMessageFor(model => model.IsPlacementPending)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.DateCompleted)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.DateCompleted)
+            @Html.ValidationMessageFor(model => model.DateCompleted)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.IsCompletionPending)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.IsCompletionPending)
+            @Html.ValidationMessageFor(model => model.IsCompletionPending)
+        </div>
+
+        <p>
+            <input type="submit" value="Save" />
+        </p>
+    </fieldset>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
