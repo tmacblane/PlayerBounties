@@ -19,7 +19,7 @@ namespace PlayerBounties.Controllers
 		private PlayerBountyContext db = new PlayerBountyContext();
 
 		#endregion
-
+		
         //
         // GET: /Dashboard/
         public ActionResult Index()
@@ -31,87 +31,6 @@ namespace PlayerBounties.Controllers
         {
             var characters = character.GetAllCharactersForAnAccount(account.GetLoggedInUserId());
             return PartialView("_Characters", characters.ToList());
-        }
-
-        //
-        // GET: /Character/Details/5
-
-        public ViewResult Details(Guid id)
-        {
-			Character character = db.Characters.Find(id);
-			ViewBag.ShardId = character.ShardId;
-            return View("_Details", character);
-        }
-
-        //
-        // GET: /Character/Create
-
-        public ActionResult Create()
-        {
-            ViewBag.ShardId = new SelectList(db.Shards, "Id", "Name");
-            ViewBag.FactionId = new SelectList(db.Factions, "Id", "Name");
-            ViewBag.RaceId = new SelectList(db.Races, "Id", "Name");
-            ViewBag.PlayerClassId = new SelectList(db.PlayerClasses, "Id", "Name");
-            return View("_Create", character);
-        }
-
-        //
-        // POST: /Character/Create
-
-        [HttpPost]
-        public ActionResult Create(Character character)
-        {
-            if (ModelState.IsValid)
-            {
-                character.Id = Guid.NewGuid();
-                character.UserId = account.GetLoggedInUserId();
-                db.Characters.Add(character);
-                db.SaveChanges();
-
-                return RedirectToAction("Dashboard", "Home", new
-                {
-                    accountId = character.UserId
-                });
-            }
-
-            ViewBag.ShardId = new SelectList(db.Shards, "Id", "Name", character.ShardId);
-            ViewBag.FactionId = new SelectList(db.Factions, "Id", "Name", character.FactionId);
-            ViewBag.RaceId = new SelectList(db.Races, "Id", "Name", character.RaceId);
-            ViewBag.PlayerClassId = new SelectList(db.PlayerClasses, "Id", "Name", character.PlayerClassId);
-            return View("_Create", character);
-        }
-
-        //
-        // GET: /Character/Edit/5
-
-        public ActionResult Edit(Guid id)
-        {
-            Character character = db.Characters.Find(id);
-            ViewBag.ShardId = new SelectList(db.Shards, "Id", "Name", character.ShardId);
-            ViewBag.FactionId = new SelectList(db.Factions, "Id", "Name", character.FactionId);
-            ViewBag.RaceId = new SelectList(db.Races, "Id", "Name", character.RaceId);
-            ViewBag.PlayerClassId = new SelectList(db.PlayerClasses, "Id", "Name", character.PlayerClassId);
-            return View("_Edit", character);
-        }
-
-        //
-        // POST: /Character/Edit/5
-
-        [HttpPost]
-        public ActionResult Edit(Character character)
-        {
-            if (ModelState.IsValid)
-            {
-                character.UserId = account.GetLoggedInUserId();
-                db.Entry(character).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("MyAccount", "Account");
-            }
-            ViewBag.ShardId = new SelectList(db.Shards, "Id", "Name", character.ShardId);
-            ViewBag.FactionId = new SelectList(db.Factions, "Id", "Name", character.FactionId);
-            ViewBag.RaceId = new SelectList(db.Races, "Id", "Name", character.RaceId);
-            ViewBag.PlayerClassId = new SelectList(db.PlayerClasses, "Id", "Name", character.PlayerClassId);
-            return View("_Edit", character);
         }
     }
 }

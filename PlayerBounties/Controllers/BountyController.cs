@@ -13,9 +13,17 @@ namespace PlayerBounties.Controllers
     {
         private PlayerBountyContext db = new PlayerBountyContext();
 
+		public ActionResult Search(Character character)
+		{
+			ViewBag.ShardId = new SelectList(db.Shards, "Id", "Name");
+			ViewBag.FactionId = new SelectList(db.Factions, "Id", "Name");
+			ViewBag.RaceId = new SelectList(db.Races, "Id", "Name");
+			ViewBag.PlayerClassId = new SelectList(db.PlayerClasses, "Id", "Name");
+			return View();
+		}
+
         //
         // GET: /Bounty/
-
         public ViewResult Index()
         {
             return View(db.Bounties.ToList());
@@ -54,7 +62,7 @@ namespace PlayerBounties.Controllers
 
 				Character character = new Character();
 							
-				// search for character by name, shard, allegience
+				// search for character by name, shard, allegiance
 				// if character does not exist
 				// create character
 				// return placedOnId as newly created characterId

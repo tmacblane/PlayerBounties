@@ -1,0 +1,41 @@
+﻿@using(Html.BeginForm("Search", "Bounty", FormMethod.Post, new
+{
+	id = "bountySearchForm"
+}))    
+{
+    <div id="search">
+		<div class="editor-label">
+			@Html.Label("Character Name")
+        </div>
+        <div class="editor-field">
+            @Html.TextBox("characterNameTxt")
+        </div>
+		
+		<div class="editor-label">
+            @Html.Label("Shard")
+        </div>
+        <div class="editor-field">
+            @Html.DropDownList("ShardId", String.Empty)
+        </div>
+
+        <div class="editor-label">
+            @Html.Label("Faction")
+        </div>
+        <div class="editor-field">
+            @Html.DropDownList("FactionId", String.Empty)
+        </div>
+		
+        <div class="editor-label">
+            @Html.Label("Player Class")
+        </div>
+        <div class="editor-field">
+            @Html.DropDownList("PlayerClassId", String.Empty)
+        </div>
+
+		<div id="buttons">
+			<input id="cancelBtn" type="button" value="Cancel" />
+
+            <input id="placeBountyBtn" type="submit" value="Place Bounty" />
+        </div>        
+    </div>
+}
