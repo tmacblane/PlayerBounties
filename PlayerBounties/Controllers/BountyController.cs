@@ -10,10 +10,15 @@ using PlayerBounties.Models;
 namespace PlayerBounties.Controllers
 { 
     public class BountyController : Controller
-    {
-        private PlayerBountyContext db = new PlayerBountyContext();
+	{
+		#region Fields
 
-        //
+		private Account account = new Account();
+		private PlayerBountyContext db = new PlayerBountyContext();
+
+		#endregion
+
+		//
         // GET: /Bounty/
         public ViewResult Index()
         {
@@ -49,6 +54,7 @@ namespace PlayerBounties.Controllers
 			Guid shardId = Guid.Parse(formCollection["ShardId"]);
 			Guid factionId = Guid.Parse(formCollection["FactionId"]);
 			Guid playerClassId = Guid.Parse(formCollection["PlayerClassId"]);
+			var accountId = account.GetLoggedInUserId();
 
             if (ModelState.IsValid)
             {
@@ -71,9 +77,8 @@ namespace PlayerBounties.Controllers
 					characterId = character.GetCharacter(characterName, shardId, factionId).Single().Id;
 				}
 
-				// return placedOnId as newly created characterId
 
-				// bounty.PlacedById = logged in users default characterId
+				bounty.PlacedById = character.GetDefaultCharacterForAnAccount(accountId).Single().Id;
 				bounty.PlacedOnId = characterId;				
 				bounty.DatePlaced = DateTime.Now;
 				bounty.DateCompleted = null;
@@ -81,8 +86,11 @@ namespace PlayerBounties.Controllers
 
                 db.Bounties.Add(bounty);
                 db.SaveChanges();
-
-                return RedirectToAction("Index");  
+								
+				return RedirectToAction("Dashboard", "Home", new
+				{
+					accountId = accountId
+				}); 
             }
 
             return View(bounty);

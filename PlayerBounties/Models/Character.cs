@@ -130,6 +130,19 @@ namespace PlayerBounties.Models
 			return db.Characters.Where(c => c.Name == name).Where(c => c.Shard.Id == shard).Where(c => c.Faction.Id == faction);
 		}
 
+		public IQueryable<Character> GetDefaultCharacterForAnAccount(Guid accountId)
+		{
+			return this.GetAllCharactersForAnAccount(accountId).Where(c => c.IsPrimary == true);
+		}
+
+		public void SetDefaultCharacterToFalse(Guid characterId)
+		{
+			var character = db.Characters.Find(characterId);
+			character.IsPrimary = false;
+			db.Entry(character).State = EntityState.Modified;
+			db.SaveChanges();
+		}
+
 		#endregion
 	}
 }

@@ -53,11 +53,24 @@ namespace PlayerBounties.Controllers
         // POST: /Character/Create
         [HttpPost]
         public ActionResult Create(Character character)
-        {
+        {			
+			var accountId = account.GetLoggedInUserId();
+
             if (ModelState.IsValid)
             {
                 character.Id = Guid.NewGuid();
-				character.UserId = account.GetLoggedInUserId();
+				character.UserId = accountId;
+
+				if(character.IsPrimary.Equals(true))
+				{
+					if(character.GetDefaultCharacterForAnAccount(accountId).Count() != 0)
+					{
+						var defaultCharacterId = character.GetDefaultCharacterForAnAccount(accountId).Single().Id;
+
+						character.SetDefaultCharacterToFalse(defaultCharacterId);
+					}
+				}
+
                 db.Characters.Add(character);
                 db.SaveChanges();
 
@@ -123,27 +136,6 @@ namespace PlayerBounties.Controllers
             ViewBag.RaceId = new SelectList(db.Races, "Id", "Name", character.RaceId);
             ViewBag.PlayerClassId = new SelectList(db.PlayerClasses, "Id", "Name", character.PlayerClassId);
             return View(character);
-        }
-
-        //
-        // GET: /Character/Delete/5
- 
-        public ActionResult Delete(Guid id)
-        {
-            Character character = db.Characters.Find(id);
-            return View(character);
-        }
-
-        //
-        // POST: /Character/Delete/5
-
-        [HttpPost, ActionName("Delete")]
-        public ActionResult DeleteConfirmed(Guid id)
-        {            
-            Character character = db.Characters.Find(id);
-            db.Characters.Remove(character);
-            db.SaveChanges();
-            return RedirectToAction("Index");
         }
 
         protected override void Dispose(bool disposing)
