@@ -42,12 +42,29 @@ namespace PlayerBounties.Controllers
 
         public ActionResult Create()
         {
-            ViewBag.ShardId = new SelectList(db.Shards, "Id", "Name");
-            ViewBag.FactionId = new SelectList(db.Factions, "Id", "Name");
-            ViewBag.RaceId = new SelectList(db.Races, "Id", "Name");
-            ViewBag.PlayerClassId = new SelectList(db.PlayerClasses, "Id", "Name");
-            return View();
-        } 
+			var sortedShardList = (from shard in db.Shards
+								   orderby shard.Name ascending
+								   select shard);
+
+			var sortedFactionList = (from faction in db.Factions
+								   orderby faction.Name ascending
+								   select faction);
+
+			var sortedRaceList = (from race in db.Races
+								   orderby race.Name ascending
+								   select race);
+
+			var sortedPlayerClassList = (from playerClass in db.PlayerClasses
+								   orderby playerClass.Name ascending
+								   select playerClass);
+
+			ViewBag.ShardId = new SelectList(sortedShardList, "Id", "Name");
+			ViewBag.FactionId = new SelectList(sortedFactionList, "Id", "Name");
+			ViewBag.RaceId = new SelectList(sortedRaceList, "Id", "Name");
+			ViewBag.PlayerClassId = new SelectList(sortedPlayerClassList, "Id", "Name");
+            
+			return View();
+        }
 
         //
         // POST: /Character/Create
@@ -83,7 +100,7 @@ namespace PlayerBounties.Controllers
             ViewBag.ShardId = new SelectList(db.Shards, "Id", "Name", character.ShardId);
             ViewBag.FactionId = new SelectList(db.Factions, "Id", "Name", character.FactionId);
             ViewBag.RaceId = new SelectList(db.Races, "Id", "Name", character.RaceId);
-            ViewBag.PlayerClassId = new SelectList(db.PlayerClasses, "Id", "Name", character.PlayerClassId);
+			ViewBag.PlayerClassId = new SelectList(db.PlayerClasses, "Id", "Name", character.PlayerClassId);
             return View(character);
         }
 

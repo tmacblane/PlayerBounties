@@ -37,10 +37,22 @@ namespace PlayerBounties.Controllers
         // GET: /Bounty/PlaceBounty
 		public ActionResult PlaceBounty(Character character)
 		{
-			ViewBag.ShardId = new SelectList(db.Shards, "Id", "Name");
-			ViewBag.FactionId = new SelectList(db.Factions, "Id", "Name");
-			ViewBag.RaceId = new SelectList(db.Races, "Id", "Name");
-			ViewBag.PlayerClassId = new SelectList(db.PlayerClasses, "Id", "Name");
+			var sortedShardList = (from shard in db.Shards
+								   orderby shard.Name ascending
+								   select shard);
+
+			var sortedFactionList = (from faction in db.Factions
+									 orderby faction.Name ascending
+									 select faction);
+
+			var sortedPlayerClassList = (from playerClass in db.PlayerClasses
+										 orderby playerClass.Name ascending
+										 select playerClass);
+
+			ViewBag.ShardId = new SelectList(sortedShardList, "Id", "Name");
+			ViewBag.FactionId = new SelectList(sortedFactionList, "Id", "Name");
+			ViewBag.PlayerClassId = new SelectList(sortedPlayerClassList, "Id", "Name");
+
 			return View();
 		}
 

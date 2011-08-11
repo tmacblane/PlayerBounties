@@ -1,0 +1,60 @@
+﻿@model PlayerBounties.Models.Bounty
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<fieldset>
+    <legend>Bounty</legend>
+
+    <div class="display-label">Amount</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Amount)
+    </div>
+
+    <div class="display-label">Reason</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Reason)
+    </div>
+
+    <div class="display-label">Message</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Message)
+    </div>
+
+    <div class="display-label">PlacedById</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.PlacedById)
+    </div>
+
+    <div class="display-label">PlacedOnId</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.PlacedOnId)
+    </div>
+
+    <div class="display-label">DatePlaced</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.DatePlaced)
+    </div>
+
+    <div class="display-label">IsPlacementPending</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.IsPlacementPending)
+    </div>
+
+    <div class="display-label">DateCompleted</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.DateCompleted)
+    </div>
+
+    <div class="display-label">IsCompletionPending</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.IsCompletionPending)
+    </div>
+</fieldset>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id=Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

@@ -1,0 +1,55 @@
+﻿@model PlayerBounties.Models.Character
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<fieldset>
+    <legend>Character</legend>
+
+    <div class="display-label">Name</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Name)
+    </div>
+
+    <div class="display-label">Shard</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Shard.Name)
+    </div>
+
+    <div class="display-label">Faction</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Faction.Name)
+    </div>
+
+    <div class="display-label">Race</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Race.Name)
+    </div>
+
+    <div class="display-label">PlayerClass</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.PlayerClass.Name)
+    </div>
+
+    <div class="display-label">Motto</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Motto)
+    </div>
+
+    <div class="display-label">Bio</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Bio)
+    </div>
+
+    <div class="display-label">IsPrimary</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.IsPrimary)
+    </div>
+</fieldset>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id=Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

@@ -20,5 +20,18 @@ namespace PlayerBounties.Models
 			get;
 			set;
 		}
+
+		public Guid FactionId
+		{
+			get;
+			set;
+		}
+
+		[ForeignKey("FactionId")]
+		public Faction Faction
+		{
+			get;
+			set;
+		}
 	}
 }

@@ -157,6 +157,13 @@
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Web.config" />
+    <None Include="_bin_deployableAssemblies\Microsoft.Web.Infrastructure.dll" />
+    <None Include="_bin_deployableAssemblies\System.Web.WebPages.Razor.dll" />
+    <None Include="_bin_deployableAssemblies\System.Web.WebPages.dll" />
+    <None Include="_bin_deployableAssemblies\System.Web.WebPages.Deployment.dll" />
+    <None Include="_bin_deployableAssemblies\System.Web.Razor.dll" />
+    <None Include="_bin_deployableAssemblies\System.Web.Helpers.dll" />
+    <None Include="_bin_deployableAssemblies\System.Web.Mvc.dll" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Race\Index.cshtml" />
@@ -175,9 +182,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Character\Edit.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Character\Delete.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Race\Details.cshtml" />
