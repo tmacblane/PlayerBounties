@@ -52,8 +52,7 @@ namespace PlayerBounties.Models
 			set;
 		}
 
-		[Required]
-		public Guid RaceId
+		public Guid? RaceId
 		{
 			get;
 			set;
@@ -126,9 +125,9 @@ namespace PlayerBounties.Models
 			return db.Characters.Where(c => c.Id == characterId).Include(c => c.Shard).Include(c => c.Faction).Include(c => c.Race).Include(c => c.PlayerClass);
 		}
 
-		public IQueryable<Character> GetCharacter(string name, string shard, string faction)
+		public IQueryable<Character> GetCharacter(string name, Guid shard, Guid faction)
 		{
-			return db.Characters.Where(c => c.Name == name).Where(c => c.Shard.Name == shard).Where(c => c.Faction.Name == faction);
+			return db.Characters.Where(c => c.Name == name).Where(c => c.Shard.Id == shard).Where(c => c.Faction.Id == faction);
 		}
 
 		#endregion

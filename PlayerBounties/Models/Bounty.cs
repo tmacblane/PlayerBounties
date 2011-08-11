@@ -47,7 +47,7 @@ namespace PlayerBounties.Models
 			set;
 		}
 
-		public DateTime DatePlaced
+		public DateTime? DatePlaced
 		{
 			get;
 			set;
@@ -59,7 +59,7 @@ namespace PlayerBounties.Models
 			set;
 		}
 
-		public DateTime DateCompleted
+		public DateTime? DateCompleted
 		{
 			get;
 			set;

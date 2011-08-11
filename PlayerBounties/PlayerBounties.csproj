@@ -276,7 +276,7 @@
     <Content Include="Views\Search\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Bounty\Search.cshtml" />
+    <Content Include="Views\Bounty\PlaceBounty.cshtml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />

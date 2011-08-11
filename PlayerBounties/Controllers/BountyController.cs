@@ -13,15 +13,6 @@ namespace PlayerBounties.Controllers
     {
         private PlayerBountyContext db = new PlayerBountyContext();
 
-		public ActionResult Search(Character character)
-		{
-			ViewBag.ShardId = new SelectList(db.Shards, "Id", "Name");
-			ViewBag.FactionId = new SelectList(db.Factions, "Id", "Name");
-			ViewBag.RaceId = new SelectList(db.Races, "Id", "Name");
-			ViewBag.PlayerClassId = new SelectList(db.PlayerClasses, "Id", "Name");
-			return View();
-		}
-
         //
         // GET: /Bounty/
         public ViewResult Index()
@@ -31,7 +22,6 @@ namespace PlayerBounties.Controllers
 
         //
         // GET: /Bounty/Details/5
-
         public ViewResult Details(Guid id)
         {
             Bounty bounty = db.Bounties.Find(id);
@@ -39,40 +29,56 @@ namespace PlayerBounties.Controllers
         }
 
         //
-        // GET: /Bounty/Create
-
-        public ActionResult Create(Character character)
-        {
-			Bounty bounty = new Bounty();
-			bounty.PlacedOnId = character.Id;
-			return View(bounty);
-        } 
+        // GET: /Bounty/PlaceBounty
+		public ActionResult PlaceBounty(Character character)
+		{
+			ViewBag.ShardId = new SelectList(db.Shards, "Id", "Name");
+			ViewBag.FactionId = new SelectList(db.Factions, "Id", "Name");
+			ViewBag.RaceId = new SelectList(db.Races, "Id", "Name");
+			ViewBag.PlayerClassId = new SelectList(db.PlayerClasses, "Id", "Name");
+			return View();
+		}
 
         //
-        // POST: /Bounty/Create
-
+		// POST: /Bounty/PlaceBounty
         [HttpPost]
-		public ActionResult Create(Bounty bounty)
+		public ActionResult PlaceBounty(Bounty bounty, FormCollection formCollection)
         {
-			// string characterName = formCollection["characterShardName"];
+			string characterName = formCollection["characterNameTxt"];
+			Guid characterId = Guid.Empty;
+			Guid shardId = Guid.Parse(formCollection["ShardId"]);
+			Guid factionId = Guid.Parse(formCollection["FactionId"]);
+			Guid playerClassId = Guid.Parse(formCollection["PlayerClassId"]);
 
             if (ModelState.IsValid)
             {
                 bounty.Id = Guid.NewGuid();
 
 				Character character = new Character();
-							
-				// search for character by name, shard, allegiance
-				// if character does not exist
-				// create character
+
+				if(character.GetCharacter(characterName, shardId, factionId).Count().Equals(0))
+				{
+					character.Name = characterName;
+					character.ShardId = shardId;
+					character.FactionId = factionId;
+					character.PlayerClassId = playerClassId;
+
+					CharacterController characterController = new CharacterController();
+					characterId = characterController.CreateBountyCharacter(character);
+				}
+				else
+				{
+					characterId = character.GetCharacter(characterName, shardId, factionId).Single().Id;
+				}
+
 				// return placedOnId as newly created characterId
 
-				// bounty.PlacedById
-				// bounty.PlacedOnId
-				
+				// bounty.PlacedById = logged in users default characterId
+				bounty.PlacedOnId = characterId;				
 				bounty.DatePlaced = DateTime.Now;
-				bounty.DateCompleted = DateTime.MinValue;
+				bounty.DateCompleted = null;
 				bounty.IsPlacementPending = true;
+
                 db.Bounties.Add(bounty);
                 db.SaveChanges();
 

@@ -51,7 +51,6 @@ namespace PlayerBounties.Controllers
 
         //
         // POST: /Character/Create
-
         [HttpPost]
         public ActionResult Create(Character character)
         {
@@ -74,10 +73,28 @@ namespace PlayerBounties.Controllers
             ViewBag.PlayerClassId = new SelectList(db.PlayerClasses, "Id", "Name", character.PlayerClassId);
             return View(character);
         }
+
+		[HttpPost]
+		public Guid CreateBountyCharacter(Character character)
+		{
+			if(ModelState.IsValid)
+			{
+				character.Id = Guid.NewGuid();
+				character.UserId = Guid.Empty;
+				db.Characters.Add(character);
+				db.SaveChanges();
+			}
+
+			ViewBag.ShardId = new SelectList(db.Shards, "Id", "Name", character.ShardId);
+			ViewBag.FactionId = new SelectList(db.Factions, "Id", "Name", character.FactionId);
+			ViewBag.RaceId = new SelectList(db.Races, "Id", "Name", character.RaceId);
+			ViewBag.PlayerClassId = new SelectList(db.PlayerClasses, "Id", "Name", character.PlayerClassId);
+
+			return character.Id;
+		}
         
         //
-        // GET: /Character/Edit/5
- 
+        // GET: /Character/Edit/5 
         public ActionResult Edit(Guid id)
         {
             Character character = db.Characters.Find(id);
