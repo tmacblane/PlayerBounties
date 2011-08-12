@@ -5,11 +5,12 @@ using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+
 using PlayerBounties.Models;
 
 namespace PlayerBounties.Controllers
-{ 
-    public class CharacterController : Controller
+{
+	public class CharacterController : Controller
 	{
 		#region Fields
 
@@ -19,63 +20,58 @@ namespace PlayerBounties.Controllers
 
 		#endregion
 
-		//
-        // GET: /Character/
+		#region Type specific methods
 
-        public ViewResult Index()
-        {
-			var characters = character.GetAllCharactersForAnAccount(account.GetLoggedInUserId());
+		// GET: /Character/
+		public ViewResult Index()
+		{
+			var characters = this.character.GetAllCharactersForAnAccount(this.account.GetLoggedInUserId());
 			return View(characters.ToList());
-        }
+		}
 
-        //
-        // GET: /Character/Details/5
+		// GET: /Character/Details/5
+		public ViewResult Details(Guid id)
+		{
+			Character character = this.db.Characters.Find(id);
+			return View(character);
+		}
 
-        public ViewResult Details(Guid id)
-        {
-            Character character = db.Characters.Find(id);
-            return View(character);
-        }
-
-        //
-        // GET: /Character/Create
-
-        public ActionResult Create()
-        {
-			var sortedShardList = (from shard in db.Shards
+		// GET: /Character/Create
+		public ActionResult Create()
+		{
+			var sortedShardList = from shard in this.db.Shards
 								   orderby shard.Name ascending
-								   select shard);
+								   select shard;
 
-			var sortedFactionList = (from faction in db.Factions
-								   orderby faction.Name ascending
-								   select faction);
+			var sortedFactionList = from faction in this.db.Factions
+									 orderby faction.Name ascending
+									 select faction;
 
-			var sortedRaceList = (from race in db.Races
-								   orderby race.Name ascending
-								   select race);
+			var sortedRaceList = from race in this.db.Races
+								  orderby race.Name ascending
+								  select race;
 
-			var sortedPlayerClassList = (from playerClass in db.PlayerClasses
-								   orderby playerClass.Name ascending
-								   select playerClass);
+			var sortedPlayerClassList = from playerClass in this.db.PlayerClasses
+										 orderby playerClass.Name ascending
+										 select playerClass;
 
 			ViewBag.ShardId = new SelectList(sortedShardList, "Id", "Name");
 			ViewBag.FactionId = new SelectList(sortedFactionList, "Id", "Name");
 			ViewBag.RaceId = new SelectList(sortedRaceList, "Id", "Name");
 			ViewBag.PlayerClassId = new SelectList(sortedPlayerClassList, "Id", "Name");
-            
+
 			return View();
-        }
+		}
 
-        //
-        // POST: /Character/Create
-        [HttpPost]
-        public ActionResult Create(Character character)
-        {			
-			var accountId = account.GetLoggedInUserId();
+		// POST: /Character/Create
+		[HttpPost]
+		public ActionResult Create(Character character)
+		{
+			var accountId = this.account.GetLoggedInUserId();
 
-            if (ModelState.IsValid)
-            {
-                character.Id = Guid.NewGuid();
+			if(ModelState.IsValid)
+			{
+				character.Id = Guid.NewGuid();
 				character.UserId = accountId;
 
 				if(character.IsPrimary.Equals(true))
@@ -88,21 +84,18 @@ namespace PlayerBounties.Controllers
 					}
 				}
 
-                db.Characters.Add(character);
-                db.SaveChanges();
+				this.db.Characters.Add(character);
+				this.db.SaveChanges();
 
-				return RedirectToAction("Dashboard", "Home", new
-				{
-					accountId = character.UserId
-				});
-            }
+				return RedirectToAction("Dashboard", "Home");
+			}
 
-            ViewBag.ShardId = new SelectList(db.Shards, "Id", "Name", character.ShardId);
-            ViewBag.FactionId = new SelectList(db.Factions, "Id", "Name", character.FactionId);
-            ViewBag.RaceId = new SelectList(db.Races, "Id", "Name", character.RaceId);
-			ViewBag.PlayerClassId = new SelectList(db.PlayerClasses, "Id", "Name", character.PlayerClassId);
-            return View(character);
-        }
+			ViewBag.ShardId = new SelectList(this.db.Shards, "Id", "Name", character.ShardId);
+			ViewBag.FactionId = new SelectList(this.db.Factions, "Id", "Name", character.FactionId);
+			ViewBag.RaceId = new SelectList(this.db.Races, "Id", "Name", character.RaceId);
+			ViewBag.PlayerClassId = new SelectList(this.db.PlayerClasses, "Id", "Name", character.PlayerClassId);
+			return View(character);
+		}
 
 		[HttpPost]
 		public Guid CreateBountyCharacter(Character character)
@@ -111,54 +104,60 @@ namespace PlayerBounties.Controllers
 			{
 				character.Id = Guid.NewGuid();
 				character.UserId = Guid.Empty;
-				db.Characters.Add(character);
-				db.SaveChanges();
+				this.db.Characters.Add(character);
+				this.db.SaveChanges();
 			}
 
-			ViewBag.ShardId = new SelectList(db.Shards, "Id", "Name", character.ShardId);
-			ViewBag.FactionId = new SelectList(db.Factions, "Id", "Name", character.FactionId);
-			ViewBag.RaceId = new SelectList(db.Races, "Id", "Name", character.RaceId);
-			ViewBag.PlayerClassId = new SelectList(db.PlayerClasses, "Id", "Name", character.PlayerClassId);
+			ViewBag.ShardId = new SelectList(this.db.Shards, "Id", "Name", character.ShardId);
+			ViewBag.FactionId = new SelectList(this.db.Factions, "Id", "Name", character.FactionId);
+			ViewBag.RaceId = new SelectList(this.db.Races, "Id", "Name", character.RaceId);
+			ViewBag.PlayerClassId = new SelectList(this.db.PlayerClasses, "Id", "Name", character.PlayerClassId);
 
 			return character.Id;
 		}
-        
-        //
-        // GET: /Character/Edit/5 
-        public ActionResult Edit(Guid id)
-        {
-            Character character = db.Characters.Find(id);
-            ViewBag.ShardId = new SelectList(db.Shards, "Id", "Name", character.ShardId);
-            ViewBag.FactionId = new SelectList(db.Factions, "Id", "Name", character.FactionId);
-            ViewBag.RaceId = new SelectList(db.Races, "Id", "Name", character.RaceId);
-            ViewBag.PlayerClassId = new SelectList(db.PlayerClasses, "Id", "Name", character.PlayerClassId);
-            return View(character);
-        }
 
-        //
-        // POST: /Character/Edit/5
+		// GET: /Character/Edit/5 
+		public ActionResult Edit(Guid id)
+		{
+			Character character = this.db.Characters.Find(id);
+			ViewBag.ShardId = new SelectList(this.db.Shards, "Id", "Name", character.ShardId);
+			ViewBag.FactionId = new SelectList(this.db.Factions, "Id", "Name", character.FactionId);
+			ViewBag.RaceId = new SelectList(this.db.Races, "Id", "Name", character.RaceId);
+			ViewBag.PlayerClassId = new SelectList(this.db.PlayerClasses, "Id", "Name", character.PlayerClassId);
 
-        [HttpPost]
-        public ActionResult Edit(Character character)
-        {
-            if (ModelState.IsValid)
-            {
-				character.UserId = account.GetLoggedInUserId();
-                db.Entry(character).State = EntityState.Modified;
-				db.SaveChanges();
-				return RedirectToAction("MyAccount", "Account"); 
-            }
-            ViewBag.ShardId = new SelectList(db.Shards, "Id", "Name", character.ShardId);
-            ViewBag.FactionId = new SelectList(db.Factions, "Id", "Name", character.FactionId);
-            ViewBag.RaceId = new SelectList(db.Races, "Id", "Name", character.RaceId);
-            ViewBag.PlayerClassId = new SelectList(db.PlayerClasses, "Id", "Name", character.PlayerClassId);
-            return View(character);
-        }
+			return View(character);
+		}
 
-        protected override void Dispose(bool disposing)
-        {
-            db.Dispose();
-            base.Dispose(disposing);
-        }
-    }
+		// POST: /Character/Edit/5
+		[HttpPost]
+		public ActionResult Edit(Character character)
+		{
+			if(ModelState.IsValid)
+			{
+				character.UserId = this.account.GetLoggedInUserId();
+				this.db.Entry(character).State = EntityState.Modified;
+				this.db.SaveChanges();
+				return RedirectToAction("MyAccount", "Account");
+			}
+
+			ViewBag.ShardId = new SelectList(this.db.Shards, "Id", "Name", character.ShardId);
+			ViewBag.FactionId = new SelectList(this.db.Factions, "Id", "Name", character.FactionId);
+			ViewBag.RaceId = new SelectList(this.db.Races, "Id", "Name", character.RaceId);
+			ViewBag.PlayerClassId = new SelectList(this.db.PlayerClasses, "Id", "Name", character.PlayerClassId);
+
+			return View(character);
+		}
+
+		#endregion
+
+		#region Base class overrides
+
+		protected override void Dispose(bool disposing)
+		{
+			this.db.Dispose();
+			base.Dispose(disposing);
+		}
+
+		#endregion
+	}
 }

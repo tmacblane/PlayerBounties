@@ -5,105 +5,161 @@ using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+
 using PlayerBounties.Models;
 
 namespace PlayerBounties.Controllers
-{ 
-    public class ShardController : Controller
-    {
-        private PlayerBountyContext db = new PlayerBountyContext();
+{
+	[Authorize]
+	public class ShardController : Controller
+	{
+		#region Fields
 
-        //
-        // GET: /Shard/
+		private Account account = new Account();
+		private PlayerBountyContext db = new PlayerBountyContext();
 
-        public ViewResult Index()
-        {
-            return View(db.Shards.ToList());
-        }
+		#endregion
 
-        //
-        // GET: /Shard/Details/5
+		#region Type specific methods
 
-        public ViewResult Details(Guid id)
-        {
-            Shard shard = db.Shards.Find(id);
-            return View(shard);
-        }
+		// GET: /Shard/
+		public ActionResult Index()
+		{
+			if(this.account.IsUserAdmin(this.account.GetLoggedInUserId()))
+			{
+				return View(this.db.Shards.ToList());
+			}
+			else
+			{
+				return RedirectToAction("Dashboard", "Home");
+			}
+		}
 
-        //
-        // GET: /Shard/Create
+		// GET: /Shard/Details/5
+		public ActionResult Details(Guid id)
+		{
+			if(this.account.IsUserAdmin(this.account.GetLoggedInUserId()))
+			{
+				Shard shard = this.db.Shards.Find(id);
+				return View(shard);
+			}
+			else
+			{
+				return RedirectToAction("Dashboard", "Home");
+			}
+		}
 
-        public ActionResult Create()
-        {
-            return View();
-        } 
+		// GET: /Shard/Create
+		public ActionResult Create()
+		{
+			if(this.account.IsUserAdmin(this.account.GetLoggedInUserId()))
+			{
+				return View();
+			}
+			else
+			{
+				return RedirectToAction("Dashboard", "Home");
+			}
+		}
 
-        //
-        // POST: /Shard/Create
+		// POST: /Shard/Create
+		[HttpPost]
+		public ActionResult Create(Shard shard)
+		{
+			if(ModelState.IsValid)
+			{
+				shard.Id = Guid.NewGuid();
+				this.db.Shards.Add(shard);
+				this.db.SaveChanges();
+				return RedirectToAction("Index");
+			}
 
-        [HttpPost]
-        public ActionResult Create(Shard shard)
-        {
-            if (ModelState.IsValid)
-            {
-                shard.Id = Guid.NewGuid();
-                db.Shards.Add(shard);
-                db.SaveChanges();
-                return RedirectToAction("Index");  
-            }
+			if(this.account.IsUserAdmin(this.account.GetLoggedInUserId()))
+			{
+				return View(shard);
+			}
+			else
+			{
+				return RedirectToAction("Dashboard", "Home");
+			}
+		}
 
-            return View(shard);
-        }
-        
-        //
-        // GET: /Shard/Edit/5
- 
-        public ActionResult Edit(Guid id)
-        {
-            Shard shard = db.Shards.Find(id);
-            return View(shard);
-        }
+		// GET: /Shard/Edit/5
+		public ActionResult Edit(Guid id)
+		{
+			if(this.account.IsUserAdmin(this.account.GetLoggedInUserId()))
+			{
+				Shard shard = this.db.Shards.Find(id);
+				return View(shard);
+			}
+			else
+			{
+				return RedirectToAction("Dashboard", "Home");
+			}
+		}
 
-        //
-        // POST: /Shard/Edit/5
+		// POST: /Shard/Edit/5
+		[HttpPost]
+		public ActionResult Edit(Shard shard)
+		{
+			if(ModelState.IsValid)
+			{
+				this.db.Entry(shard).State = EntityState.Modified;
+				this.db.SaveChanges();
+				return RedirectToAction("Index");
+			}
 
-        [HttpPost]
-        public ActionResult Edit(Shard shard)
-        {
-            if (ModelState.IsValid)
-            {
-                db.Entry(shard).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-            return View(shard);
-        }
+			if(this.account.IsUserAdmin(this.account.GetLoggedInUserId()))
+			{
+				return View(shard);
+			}
+			else
+			{
+				return RedirectToAction("Dashboard", "Home");
+			}
+		}
 
-        //
-        // GET: /Shard/Delete/5
- 
-        public ActionResult Delete(Guid id)
-        {
-            Shard shard = db.Shards.Find(id);
-            return View(shard);
-        }
+		// GET: /Shard/Delete/5
+		public ActionResult Delete(Guid id)
+		{
+			if(this.account.IsUserAdmin(this.account.GetLoggedInUserId()))
+			{
+				Shard shard = this.db.Shards.Find(id);
+				return View(shard);
+			}
+			else
+			{
+				return RedirectToAction("Dashboard", "Home");
+			}
+		}
 
-        //
-        // POST: /Shard/Delete/5
+		// POST: /Shard/Delete/5
+		[HttpPost, ActionName("Delete")]
+		public ActionResult DeleteConfirmed(Guid id)
+		{
+			if(this.account.IsUserAdmin(this.account.GetLoggedInUserId()))
+			{
+				Shard shard = this.db.Shards.Find(id);
+				this.db.Shards.Remove(shard);
+				this.db.SaveChanges();
+				return RedirectToAction("Index");
+			}
+			else
+			{
+				return RedirectToAction("Dashboard", "Home");
+			}
+		}
 
-        [HttpPost, ActionName("Delete")]
-        public ActionResult DeleteConfirmed(Guid id)
-        {            
-            Shard shard = db.Shards.Find(id);
-            db.Shards.Remove(shard);
-            db.SaveChanges();
-            return RedirectToAction("Index");
-        }
+		#endregion
 
-        protected override void Dispose(bool disposing)
-        {
-            db.Dispose();
-            base.Dispose(disposing);
-        }
-    }
+		#region Base class overrides
+
+		protected override void Dispose(bool disposing)
+		{
+			this.db.Dispose();
+			base.Dispose(disposing);
+		}
+
+		#endregion
+	}
 }

@@ -12,21 +12,11 @@ namespace PlayerBounties.Controllers
 {
     public class HeaderController : Controller
     {
-        #region Fields
+		public ActionResult _Header()
+		{			
+			Account account = new Account();
 
-        private Account account = new Account();
-
-        #endregion
-
-        [Authorize]
-        public ActionResult Dashboard()
-        {
-            var accountId = account.GetLoggedInUserId();
-
-            return RedirectToAction("Dashboard", "Home", new
-            {
-                accountId = accountId
-            });
-        }
+			return View(account);
+		}
     }
 }

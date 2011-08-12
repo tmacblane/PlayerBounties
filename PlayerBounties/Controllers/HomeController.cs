@@ -5,6 +5,7 @@ using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+
 using PlayerBounties.Models;
 
 namespace PlayerBounties.Controllers
@@ -29,10 +30,20 @@ namespace PlayerBounties.Controllers
 			return View();
 		}
 
-		[Authorize]
-		public ActionResult Dashboard(Guid accountId)
+		public ActionResult Rules()
 		{
-			return View(accountId);
+			return View();
+		}
+
+		public ActionResult Statistics()
+		{
+			return View();
+		}
+
+		[Authorize]
+		public ActionResult Dashboard()
+		{
+			return View();
 		}
 	}
 }

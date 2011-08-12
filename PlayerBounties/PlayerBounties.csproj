@@ -67,6 +67,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\BountyController.cs" />
     <Compile Include="Controllers\CharacterController.cs" />
     <Compile Include="Controllers\DashboardController.cs" />
@@ -157,6 +158,8 @@
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Web.config" />
+    <Content Include="Views\Admin\Index.cshtml" />
+    <Content Include="Views\Header\_Header.cshtml" />
     <None Include="_bin_deployableAssemblies\Microsoft.Web.Infrastructure.dll" />
     <None Include="_bin_deployableAssemblies\System.Web.WebPages.Razor.dll" />
     <None Include="_bin_deployableAssemblies\System.Web.WebPages.dll" />
@@ -245,9 +248,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Account\Login.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Shared\_Header.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Account\MyAccount.cshtml" />

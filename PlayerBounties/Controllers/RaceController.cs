@@ -5,105 +5,161 @@ using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+
 using PlayerBounties.Models;
 
 namespace PlayerBounties.Controllers
-{ 
-    public class RaceController : Controller
-    {
-        private PlayerBountyContext db = new PlayerBountyContext();
+{
+	[Authorize]
+	public class RaceController : Controller
+	{
+		#region Fields
 
-        //
-        // GET: /Race/
+		private Account account = new Account();
+		private PlayerBountyContext db = new PlayerBountyContext();
 
-        public ViewResult Index()
-        {
-            return View(db.Races.ToList());
-        }
+		#endregion
 
-        //
-        // GET: /Race/Details/5
+		#region Type specific methods
 
-        public ViewResult Details(Guid id)
-        {
-            Race race = db.Races.Find(id);
-            return View(race);
-        }
+		// GET: /Race/
+		public ActionResult Index()
+		{
+			if(this.account.IsUserAdmin(this.account.GetLoggedInUserId()))
+			{
+				return View(this.db.Races.ToList());
+			}
+			else
+			{
+				return RedirectToAction("Dashboard", "Home");
+			}
+		}
 
-        //
-        // GET: /Race/Create
+		// GET: /Race/Details/5
+		public ActionResult Details(Guid id)
+		{
+			if(this.account.IsUserAdmin(this.account.GetLoggedInUserId()))
+			{
+				Race race = this.db.Races.Find(id);
+				return View(race);
+			}
+			else
+			{
+				return RedirectToAction("Dashboard", "Home");
+			}
+		}
 
-        public ActionResult Create()
-        {
-            return View();
-        } 
+		// GET: /Race/Create
+		public ActionResult Create()
+		{
+			if(this.account.IsUserAdmin(this.account.GetLoggedInUserId()))
+			{
+				return View();
+			}
+			else
+			{
+				return RedirectToAction("Dashboard", "Home");
+			}
+		}
 
-        //
-        // POST: /Race/Create
+		// POST: /Race/Create
+		[HttpPost]
+		public ActionResult Create(Race race)
+		{
+			if(ModelState.IsValid)
+			{
+				race.Id = Guid.NewGuid();
+				this.db.Races.Add(race);
+				this.db.SaveChanges();
+				return RedirectToAction("Index");
+			}
 
-        [HttpPost]
-        public ActionResult Create(Race race)
-        {
-            if (ModelState.IsValid)
-            {
-                race.Id = Guid.NewGuid();
-                db.Races.Add(race);
-                db.SaveChanges();
-                return RedirectToAction("Index");  
-            }
+			if(this.account.IsUserAdmin(this.account.GetLoggedInUserId()))
+			{
+				return View(race);
+			}
+			else
+			{
+				return RedirectToAction("Dashboard", "Home");
+			}
+		}
 
-            return View(race);
-        }
-        
-        //
-        // GET: /Race/Edit/5
- 
-        public ActionResult Edit(Guid id)
-        {
-            Race race = db.Races.Find(id);
-            return View(race);
-        }
+		// GET: /Race/Edit/5
+		public ActionResult Edit(Guid id)
+		{
+			if(this.account.IsUserAdmin(this.account.GetLoggedInUserId()))
+			{
+				Race race = this.db.Races.Find(id);
+				return View(race);
+			}
+			else
+			{
+				return RedirectToAction("Dashboard", "Home");
+			}
+		}
 
-        //
-        // POST: /Race/Edit/5
+		// POST: /Race/Edit/5
+		[HttpPost]
+		public ActionResult Edit(Race race)
+		{
+			if(ModelState.IsValid)
+			{
+				this.db.Entry(race).State = EntityState.Modified;
+				this.db.SaveChanges();
+				return RedirectToAction("Index");
+			}
 
-        [HttpPost]
-        public ActionResult Edit(Race race)
-        {
-            if (ModelState.IsValid)
-            {
-                db.Entry(race).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-            return View(race);
-        }
+			if(this.account.IsUserAdmin(this.account.GetLoggedInUserId()))
+			{
+				return View(race);
+			}
+			else
+			{
+				return RedirectToAction("Dashboard", "Home");
+			}
+		}
 
-        //
-        // GET: /Race/Delete/5
- 
-        public ActionResult Delete(Guid id)
-        {
-            Race race = db.Races.Find(id);
-            return View(race);
-        }
+		// GET: /Race/Delete/5
+		public ActionResult Delete(Guid id)
+		{
+			if(this.account.IsUserAdmin(this.account.GetLoggedInUserId()))
+			{
+				Race race = this.db.Races.Find(id);
+				return View(race);
+			}
+			else
+			{
+				return RedirectToAction("Dashboard", "Home");
+			}
+		}
 
-        //
-        // POST: /Race/Delete/5
+		// POST: /Race/Delete/5
+		[HttpPost, ActionName("Delete")]
+		public ActionResult DeleteConfirmed(Guid id)
+		{
+			if(this.account.IsUserAdmin(this.account.GetLoggedInUserId()))
+			{
+				Race race = this.db.Races.Find(id);
+				this.db.Races.Remove(race);
+				this.db.SaveChanges();
+				return RedirectToAction("Index");
+			}
+			else
+			{
+				return RedirectToAction("Dashboard", "Home");
+			}
+		}
 
-        [HttpPost, ActionName("Delete")]
-        public ActionResult DeleteConfirmed(Guid id)
-        {            
-            Race race = db.Races.Find(id);
-            db.Races.Remove(race);
-            db.SaveChanges();
-            return RedirectToAction("Index");
-        }
+		#endregion
 
-        protected override void Dispose(bool disposing)
-        {
-            db.Dispose();
-            base.Dispose(disposing);
-        }
-    }
+		#region Base class overrides
+
+		protected override void Dispose(bool disposing)
+		{
+			this.db.Dispose();
+			base.Dispose(disposing);
+		}
+
+		#endregion
+	}
 }

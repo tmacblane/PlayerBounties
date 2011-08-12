@@ -5,6 +5,7 @@ using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+
 using PlayerBounties.Models;
 
 namespace PlayerBounties.Controllers
@@ -98,11 +99,8 @@ namespace PlayerBounties.Controllers
 
                 db.Bounties.Add(bounty);
                 db.SaveChanges();
-								
-				return RedirectToAction("Dashboard", "Home", new
-				{
-					accountId = accountId
-				}); 
+
+				return RedirectToAction("Dashboard", "Home");
             }
 
             return View(bounty);

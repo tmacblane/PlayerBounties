@@ -42,12 +42,7 @@ namespace PlayerBounties.Controllers
 					}
 					else
 					{
-						var accountId = account.GetUserId(loginModel.Email);
-
-						return RedirectToAction("Dashboard", "Home", new
-						{
-							accountId = accountId
-						});
+						return RedirectToAction("Dashboard", "Home");
 					}
 				}
 				else
@@ -89,10 +84,7 @@ namespace PlayerBounties.Controllers
 
 						var accountId = account.GetUserId(signUpModel.Email);
 
-						return RedirectToAction("Dashboard", "Home", new
-						{
-							accountId = accountId
-						});
+						return RedirectToAction("Dashboard", "Home");
 					}
 					else
 					{

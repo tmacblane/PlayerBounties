@@ -8,102 +8,157 @@ using System.Web.Mvc;
 using PlayerBounties.Models;
 
 namespace PlayerBounties.Controllers
-{ 
-    public class PlayerClassController : Controller
-    {
-        private PlayerBountyContext db = new PlayerBountyContext();
+{
+	[Authorize]
+	public class PlayerClassController : Controller
+	{
+		#region Fields
 
-        //
-        // GET: /PlayerClass/
+		private Account account = new Account();
+		private PlayerBountyContext db = new PlayerBountyContext();
 
-        public ViewResult Index()
-        {
-            return View(db.PlayerClasses.ToList());
-        }
+		#endregion
 
-        //
-        // GET: /PlayerClass/Details/5
+		#region Type specific methods
 
-        public ViewResult Details(Guid id)
-        {
-            PlayerClass playerclass = db.PlayerClasses.Find(id);
-            return View(playerclass);
-        }
+		// GET: /PlayerClass/
+		public ActionResult Index()
+		{
+			if(this.account.IsUserAdmin(this.account.GetLoggedInUserId()))
+			{
+				return View(this.db.PlayerClasses.ToList());
+			}
+			else
+			{
+				return RedirectToAction("Dashboard", "Home");
+			}			
+		}
 
-        //
-        // GET: /PlayerClass/Create
+		// GET: /PlayerClass/Details/5
+		public ActionResult Details(Guid id)
+		{
+			if(this.account.IsUserAdmin(this.account.GetLoggedInUserId()))
+			{
+				PlayerClass playerclass = this.db.PlayerClasses.Find(id);
+				return View(playerclass);
+			}
+			else
+			{
+				return RedirectToAction("Dashboard", "Home");
+			}	
+		}
 
-        public ActionResult Create()
-        {
-            return View();
-        } 
+		// GET: /PlayerClass/Create
+		public ActionResult Create()
+		{
+			if(this.account.IsUserAdmin(this.account.GetLoggedInUserId()))
+			{
+				return View();
+			}
+			else
+			{
+				return RedirectToAction("Dashboard", "Home");
+			}	
+		}
 
-        //
-        // POST: /PlayerClass/Create
+		// POST: /PlayerClass/Create
+		[HttpPost]
+		public ActionResult Create(PlayerClass playerclass)
+		{
+			if(ModelState.IsValid)
+			{
+				playerclass.Id = Guid.NewGuid();
+				this.db.PlayerClasses.Add(playerclass);
+				this.db.SaveChanges();
+				return RedirectToAction("Index");
+			}
 
-        [HttpPost]
-        public ActionResult Create(PlayerClass playerclass)
-        {
-            if (ModelState.IsValid)
-            {
-                playerclass.Id = Guid.NewGuid();
-                db.PlayerClasses.Add(playerclass);
-                db.SaveChanges();
-                return RedirectToAction("Index");  
-            }
+			if(this.account.IsUserAdmin(this.account.GetLoggedInUserId()))
+			{
+				return View(playerclass);
+			}
+			else
+			{
+				return RedirectToAction("Dashboard", "Home");
+			}	
+		}
 
-            return View(playerclass);
-        }
-        
-        //
-        // GET: /PlayerClass/Edit/5
- 
-        public ActionResult Edit(Guid id)
-        {
-            PlayerClass playerclass = db.PlayerClasses.Find(id);
-            return View(playerclass);
-        }
+		// GET: /PlayerClass/Edit/5
+		public ActionResult Edit(Guid id)
+		{
+			if(this.account.IsUserAdmin(this.account.GetLoggedInUserId()))
+			{
+				PlayerClass playerclass = this.db.PlayerClasses.Find(id);
+				return View(playerclass);
+			}
+			else
+			{
+				return RedirectToAction("Dashboard", "Home");
+			}	
+		}
 
-        //
-        // POST: /PlayerClass/Edit/5
+		// POST: /PlayerClass/Edit/5
+		[HttpPost]
+		public ActionResult Edit(PlayerClass playerclass)
+		{
+			if(ModelState.IsValid)
+			{
+				this.db.Entry(playerclass).State = EntityState.Modified;
+				this.db.SaveChanges();
+				return RedirectToAction("Index");
+			}
 
-        [HttpPost]
-        public ActionResult Edit(PlayerClass playerclass)
-        {
-            if (ModelState.IsValid)
-            {
-                db.Entry(playerclass).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-            return View(playerclass);
-        }
+			if(this.account.IsUserAdmin(this.account.GetLoggedInUserId()))
+			{
+				return View(playerclass);
+			}
+			else
+			{
+				return RedirectToAction("Dashboard", "Home");
+			}	
+		}
 
-        //
-        // GET: /PlayerClass/Delete/5
- 
-        public ActionResult Delete(Guid id)
-        {
-            PlayerClass playerclass = db.PlayerClasses.Find(id);
-            return View(playerclass);
-        }
+		// GET: /PlayerClass/Delete/5
+		public ActionResult Delete(Guid id)
+		{
+			if(this.account.IsUserAdmin(this.account.GetLoggedInUserId()))
+			{
+				PlayerClass playerclass = this.db.PlayerClasses.Find(id);
+				return View(playerclass);
+			}
+			else
+			{
+				return RedirectToAction("Dashboard", "Home");
+			}	
+		}
 
-        //
-        // POST: /PlayerClass/Delete/5
+		// POST: /PlayerClass/Delete/5
+		[HttpPost, ActionName("Delete")]
+		public ActionResult DeleteConfirmed(Guid id)
+		{
+			if(this.account.IsUserAdmin(this.account.GetLoggedInUserId()))
+			{
+				PlayerClass playerclass = this.db.PlayerClasses.Find(id);
+				this.db.PlayerClasses.Remove(playerclass);
+				this.db.SaveChanges();
+				return RedirectToAction("Index");
+			}
+			else
+			{
+				return RedirectToAction("Dashboard", "Home");
+			}	
+		}
 
-        [HttpPost, ActionName("Delete")]
-        public ActionResult DeleteConfirmed(Guid id)
-        {            
-            PlayerClass playerclass = db.PlayerClasses.Find(id);
-            db.PlayerClasses.Remove(playerclass);
-            db.SaveChanges();
-            return RedirectToAction("Index");
-        }
+		#endregion
 
-        protected override void Dispose(bool disposing)
-        {
-            db.Dispose();
-            base.Dispose(disposing);
-        }
-    }
+		#region Base class overrides
+
+		protected override void Dispose(bool disposing)
+		{
+			this.db.Dispose();
+			base.Dispose(disposing);
+		}
+
+		#endregion
+	}
 }

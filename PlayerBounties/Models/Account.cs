@@ -134,6 +134,18 @@ namespace PlayerBounties.Models
 			return this.db.Accounts.Where(row => row.EmailAddress == System.Web.HttpContext.Current.User.Identity.Name).Single().Id;
 		}
 
+		public bool IsUserAdmin(Guid userId)
+		{
+			bool isAdmin = false;
+
+			if(this.db.Accounts.Find(userId).IsAdmin.Equals(true))
+			{
+				isAdmin = true;
+			}
+
+			return isAdmin;
+		}
+
 		#endregion
 	}	
 
@@ -151,7 +163,7 @@ namespace PlayerBounties.Models
 		}
 
 		[Required]
-		[StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 8)]
+		[StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
 		[DataType(DataType.Password)]
 		[Display(Name = "New password")]
 		public string NewPassword
@@ -217,7 +229,7 @@ namespace PlayerBounties.Models
 		}
 
 		[Required]
-		[StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 8)]
+		[StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
 		[DataType(DataType.Password)]
 		[Display(Name = "Password")]
 		public string Password
