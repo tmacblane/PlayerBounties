@@ -6,50 +6,95 @@
 
 <h2>Details</h2>
 
-<fieldset>
-    <legend>Character</legend>
+<table id="characterDetailsTable">
+	<tr>
+		<td>
+			<div class="display-label">Name</div>
+		</td>
+		<td>
+			<div class="display-field">
+				@Html.DisplayFor(model => model.Name)
+			</div>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<div class="display-label">Shard</div>
+		</td>
+		<td>
+			<div class="display-field">
+				@Html.DisplayFor(model => model.Shard.Name)
+			</div>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<div class="display-label">Faction</div>
+		</td>
+		<td>
+			<div class="display-field">
+				@Html.DisplayFor(model => model.Faction.Name)
+			</div>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<div class="display-label">Race</div>
+		</td>
+		<td>
+			<div class="display-field">
+				@Html.DisplayFor(model => model.Race.Name)
+			</div>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<div class="display-label">PlayerClass</div>
+		</td>
+		<td>
+			<div class="display-field">
+				@Html.DisplayFor(model => model.PlayerClass.Name)
+			</div>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<div class="display-label">Motto</div>
+		</td>
+		<td>
+			<div class="display-field">
+				@Html.DisplayFor(model => model.Motto)
+			</div>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<div class="display-label">Bio</div>
+		</td>
+		<td>
+			<div class="display-field">
+				@Html.DisplayFor(model => model.Bio)
+			</div>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<div class="display-label">IsPrimary</div>
+		</td>
+		<td>
+			<div class="display-field">
+				@Html.DisplayFor(model => model.IsPrimary)
+			</div>
+		</td>
+	</tr>
 
-    <div class="display-label">Name</div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.Name)
-    </div>
+</table>
 
-    <div class="display-label">Shard</div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.Shard.Name)
-    </div>
-
-    <div class="display-label">Faction</div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.Faction.Name)
-    </div>
-
-    <div class="display-label">Race</div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.Race.Name)
-    </div>
-
-    <div class="display-label">PlayerClass</div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.PlayerClass.Name)
-    </div>
-
-    <div class="display-label">Motto</div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.Motto)
-    </div>
-
-    <div class="display-label">Bio</div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.Bio)
-    </div>
-
-    <div class="display-label">IsPrimary</div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.IsPrimary)
-    </div>
-</fieldset>
 <p>
     @Html.ActionLink("Edit", "Edit", new { id=Model.Id }) |
     @Html.ActionLink("Back to List", "Index")
+	@if(Request.IsAuthenticated)
+	 {		
+		@Html.ActionLink("Place a Bounty", "PlaceBounty", "Bounty", new { id = Model.Id }, null)
+	 }
 </p>

@@ -9,8 +9,8 @@ using System.Web.Mvc;
 using PlayerBounties.Models;
 
 namespace PlayerBounties.Controllers
-{ 
-    public class BountyController : Controller
+{
+	public class BountyController : Controller
 	{
 		#region Fields
 
@@ -19,36 +19,35 @@ namespace PlayerBounties.Controllers
 
 		#endregion
 
-		//
-        // GET: /Bounty/
-        public ViewResult Index()
-        {
-            return View(db.Bounties.ToList());
-        }
+		#region Type specific methods
 
-        //
-        // GET: /Bounty/Details/5
-        public ViewResult Details(Guid id)
-        {
-            Bounty bounty = db.Bounties.Find(id);
-            return View(bounty);
-        }
+		// GET: /Bounty/
+		public ViewResult Index()
+		{
+			return View(this.db.Bounties.ToList());
+		}
 
-        //
-        // GET: /Bounty/PlaceBounty
+		// GET: /Bounty/Details/5
+		public ViewResult Details(Guid id)
+		{
+			Bounty bounty = this.db.Bounties.Find(id);
+			return View(bounty);
+		}
+
+		// GET: /Bounty/PlaceBounty
 		public ActionResult PlaceBounty(Character character)
 		{
-			var sortedShardList = (from shard in db.Shards
+			var sortedShardList = from shard in this.db.Shards
 								   orderby shard.Name ascending
-								   select shard);
+								   select shard;
 
-			var sortedFactionList = (from faction in db.Factions
+			var sortedFactionList = from faction in this.db.Factions
 									 orderby faction.Name ascending
-									 select faction);
+									 select faction;
 
-			var sortedPlayerClassList = (from playerClass in db.PlayerClasses
+			var sortedPlayerClassList = from playerClass in this.db.PlayerClasses
 										 orderby playerClass.Name ascending
-										 select playerClass);
+										 select playerClass;
 
 			ViewBag.ShardId = new SelectList(sortedShardList, "Id", "Name");
 			ViewBag.FactionId = new SelectList(sortedFactionList, "Id", "Name");
@@ -57,23 +56,21 @@ namespace PlayerBounties.Controllers
 			return View();
 		}
 
-        //
 		// POST: /Bounty/PlaceBounty
-        [HttpPost]
+		[HttpPost]
 		public ActionResult PlaceBounty(Bounty bounty, FormCollection formCollection)
-        {
+		{
+			Character character = new Character();
 			string characterName = formCollection["characterNameTxt"];
 			Guid characterId = Guid.Empty;
 			Guid shardId = Guid.Parse(formCollection["ShardId"]);
 			Guid factionId = Guid.Parse(formCollection["FactionId"]);
 			Guid playerClassId = Guid.Parse(formCollection["PlayerClassId"]);
-			var accountId = account.GetLoggedInUserId();
+			var accountId = this.account.GetLoggedInUserId();
 
-            if (ModelState.IsValid)
-            {
-                bounty.Id = Guid.NewGuid();
-
-				Character character = new Character();
+			if(ModelState.IsValid)
+			{
+				bounty.Id = Guid.NewGuid();
 
 				if(character.GetCharacter(characterName, shardId, factionId).Count().Equals(0))
 				{
@@ -90,71 +87,88 @@ namespace PlayerBounties.Controllers
 					characterId = character.GetCharacter(characterName, shardId, factionId).Single().Id;
 				}
 
+				character = this.db.Characters.Find(characterId);
 
-				bounty.PlacedById = character.GetDefaultCharacterForAnAccount(accountId).Single().Id;
-				bounty.PlacedOnId = characterId;				
-				bounty.DatePlaced = DateTime.Now;
-				bounty.DateCompleted = null;
-				bounty.IsPlacementPending = true;
+				if(character.IsBountyTarget == false)
+				{
+					// Set bounty details
+					bounty.PlacedById = character.GetDefaultCharacterForAnAccount(accountId).Single().Id;
+					bounty.PlacedOnId = characterId;
+					bounty.DatePlaced = DateTime.Now;
+					bounty.DateCompleted = null;
+					bounty.IsPlacementPending = true;
 
-                db.Bounties.Add(bounty);
-                db.SaveChanges();
+					// Create bounty record
+					this.db.Bounties.Add(bounty);
+					this.db.SaveChanges();
 
-				return RedirectToAction("Dashboard", "Home");
-            }
+					// Set character is bounty target to true and update the record
+					character.IsBountyTarget = true;
+					this.db.Entry(character).State = EntityState.Modified;
+					this.db.SaveChanges();
 
-            return View(bounty);
-        }
-        
-        //
-        // GET: /Bounty/Edit/5
- 
-        public ActionResult Edit(Guid id)
-        {
-            Bounty bounty = db.Bounties.Find(id);
-            return View(bounty);
-        }
+					return RedirectToAction("Dashboard", "Home");
+				}
+				else
+				{
+					// alert that there is a bounty on this target
+					return RedirectToAction("PlaceBounty", "Bounty", new { character });
+				}
+			}
+			else
+			{
+				return RedirectToAction("PlaceBounty", "Bounty", new { character });
+			}
+		}
 
-        //
-        // POST: /Bounty/Edit/5
+		// GET: /Bounty/Edit/5 
+		public ActionResult Edit(Guid id)
+		{
+			Bounty bounty = this.db.Bounties.Find(id);
+			return View(bounty);
+		}
 
-        [HttpPost]
-        public ActionResult Edit(Bounty bounty)
-        {
-            if (ModelState.IsValid)
-            {
-                db.Entry(bounty).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-            return View(bounty);
-        }
+		// POST: /Bounty/Edit/5
+		[HttpPost]
+		public ActionResult Edit(Bounty bounty)
+		{
+			if(ModelState.IsValid)
+			{
+				this.db.Entry(bounty).State = EntityState.Modified;
+				this.db.SaveChanges();
+				return RedirectToAction("Index");
+			}
 
-        //
-        // GET: /Bounty/Delete/5
- 
-        public ActionResult Delete(Guid id)
-        {
-            Bounty bounty = db.Bounties.Find(id);
-            return View(bounty);
-        }
+			return View(bounty);
+		}
 
-        //
-        // POST: /Bounty/Delete/5
+		// GET: /Bounty/Delete/5
+		public ActionResult Delete(Guid id)
+		{
+			Bounty bounty = this.db.Bounties.Find(id);
+			return View(bounty);
+		}
 
-        [HttpPost, ActionName("Delete")]
-        public ActionResult DeleteConfirmed(Guid id)
-        {            
-            Bounty bounty = db.Bounties.Find(id);
-            db.Bounties.Remove(bounty);
-            db.SaveChanges();
-            return RedirectToAction("Index");
-        }
+		// POST: /Bounty/Delete/5
+		[HttpPost, ActionName("Delete")]
+		public ActionResult DeleteConfirmed(Guid id)
+		{
+			Bounty bounty = this.db.Bounties.Find(id);
+			this.db.Bounties.Remove(bounty);
+			this.db.SaveChanges();
+			return RedirectToAction("Index");
+		}
 
-        protected override void Dispose(bool disposing)
-        {
-            db.Dispose();
-            base.Dispose(disposing);
-        }
-    }
+		#endregion
+
+		#region Base class overrides
+
+		protected override void Dispose(bool disposing)
+		{
+			this.db.Dispose();
+			base.Dispose(disposing);
+		}
+
+		#endregion
+	}
 }

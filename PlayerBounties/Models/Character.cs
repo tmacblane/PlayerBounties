@@ -83,6 +83,12 @@ namespace PlayerBounties.Models
 			set;
 		}
 
+		public bool IsBountyTarget
+		{
+			get;
+			set;
+		}
+
 		[ForeignKey("ShardId")]
 		public Shard Shard
 		{

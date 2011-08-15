@@ -8,6 +8,8 @@ namespace PlayerBounties.Models
 {
 	public class Bounty
 	{
+		#region Type specific properties
+
 		[Key]
 		public Guid Id
 		{
@@ -33,14 +35,14 @@ namespace PlayerBounties.Models
 			set;
 		}
 
-        [Required]
+		[Required]
 		public Guid PlacedById
 		{
 			get;
 			set;
 		}
 
-        [Required]
+		[Required]
 		public Guid PlacedOnId
 		{
 			get;
@@ -71,29 +73,34 @@ namespace PlayerBounties.Models
 			set;
 		}
 
-		public string characterName(Guid characterId)
+		#endregion
+
+		#region Type specific methods
+
+		public string CharacterName(Guid characterId)
 		{
 			Character character = new Character();
 			return character.GetCharacterById(characterId).Single().Name;
-
 		}
 
-		public string characterShard(Guid characterId)
+		public string CharacterShard(Guid characterId)
 		{
 			Character character = new Character();
 			return character.GetCharacterById(characterId).Single().Shard.Name;
 		}
 
-		public string characterAllegience(Guid characterId)
+		public string CharacterAllegience(Guid characterId)
 		{
 			Character character = new Character();
 			return character.GetCharacterById(characterId).Single().Faction.Name;
 		}
 
-		public string characterClass(Guid characterId)
+		public string CharacterClass(Guid characterId)
 		{
 			Character character = new Character();
 			return character.GetCharacterById(characterId).Single().PlayerClass.Name;
 		}
+
+		#endregion
 	}
 }

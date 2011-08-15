@@ -1,0 +1,54 @@
+﻿@model PlayerBounties.Models.Account
+
+<!-- Logo -->
+@Html.ActionLink("  ", "Index", "Home", new
+{
+	style = "background: url('Images/mandalorianLogo.png') no-repeat center right;display:block; height:100px; width:100px;margin-top:-2px;text-decoration:none;"
+})
+
+<!--Top Links-->
+<ul>	
+	@if(Request.IsAuthenticated)
+	 {
+		 if(Model.IsUserAdmin(Model.GetLoggedInUserId()))
+		 {
+			<li><text>[ @Html.ActionLink("Admin", "Index", "Admin") ]</text></li>
+		 }
+	 }
+	 <li>@if(Request.IsAuthenticated)
+	 {
+		<text>[ @Html.ActionLink("My Account", "MyAccount", "Account") ]</text>
+	 }
+	 else
+	 {
+		<text>[ @Html.ActionLink("Sign Up", "SignUp", "Account") ]</text>
+	 }
+	</li>
+	<li>@if(Request.IsAuthenticated)
+	 {
+		 <text>Welcome <strong>@User.Identity.Name</strong>!
+		[ @Html.ActionLink("Log Off", "LogOff", "Account") ]</text>
+	 }
+	 else
+	 {
+		 <text>[ @Html.ActionLink("Login", "Login", "Account") ]</text>
+	 }
+	</li>
+</ul>
+				
+<!-- Tabs -->
+<div id="tabStripContainer">
+	<div id="tabsWrapper">
+        @if(Request.IsAuthenticated)
+		{
+		    @Html.ActionLink("Home", "Dashboard", "Home")
+		}
+		else
+		{
+		    @Html.ActionLink("Home", "Index", "Home")
+		}
+		@Html.ActionLink("About", "About", "Home")
+		@Html.ActionLink("Rules", "Index", "Home")
+		@Html.ActionLink("Statistics", "Index", "Home")
+	</div>
+</div>
