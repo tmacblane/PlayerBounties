@@ -18,27 +18,28 @@
 			if(Model.IsUserAdmin(Model.GetLoggedInUserId()))
 			{
 					<li>@Html.ActionLink("Admin", "Index", "Admin")</li>
+					<li>&nbsp;|&nbsp;</li>
 			}
 		}
 		<li>@if(Request.IsAuthenticated)
-			{
+	  {
 				<text>@Html.ActionLink("My Account", "MyAccount", "Account")</text>
-			}
-			else
-			{
+	  }
+	  else
+	  {
 				<text>@Html.ActionLink("Sign Up", "SignUp", "Account")</text>
-			}
+	  }
 		</li>
 		<li>&nbsp;|&nbsp;</li>
 		<li>@if(Request.IsAuthenticated)
-			{
+	  {
 				<text>Welcome <strong>@User.Identity.Name</strong>
 				@Html.ActionLink("Log Off", "LogOff", "Account")</text>
-			}
-			else
-			{
+	  }
+	  else
+	  {
 				<text>@Html.ActionLink("Login", "Login", "Account")</text>
-			}
+	  }
 		</li>
 	</ul>
 				
@@ -46,13 +47,13 @@
 	<div id="tabStripContainer">
 		<div id="tabsWrapper">
 			@if(Request.IsAuthenticated)
-			{
+   {
 				@Html.ActionLink("Home", "Dashboard", "Home")
-			}
-			else
-			{
+   }
+   else
+   {
 				@Html.ActionLink("Home", "Index", "Home")
-			}
+   }
 
 			@Html.ActionLink("About", "About", "Home")
 			@Html.ActionLink("Rules", "Index", "Home")

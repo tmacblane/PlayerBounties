@@ -96,8 +96,11 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_Data\PlayerBounty.sdf" />
+    <Content Include="Content\empireCustom.css" />
     <Content Include="Content\Images\mandalorianLogo.png" />
+    <Content Include="Content\Images\skyfieldBackground.jpg" />
     <Content Include="Content\mainSite.css" />
+    <Content Include="Content\republicCustom.css" />
     <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
     <Content Include="Content\themes\base\images\ui-bg_flat_75_ffffff_40x100.png" />
     <Content Include="Content\themes\base\images\ui-bg_glass_55_fbf9ee_1x400.png" />
@@ -306,7 +309,7 @@
         <WebProjectProperties>
           <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>48587</DevelopmentServerPort>
+          <DevelopmentServerPort>10150</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl>
           </IISUrl>

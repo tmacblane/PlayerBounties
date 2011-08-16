@@ -15,6 +15,7 @@ namespace PlayerBounties.Models
 			set;
 		}
 
+		[Display(Name = "Race")]
 		public string Name
 		{
 			get;

@@ -1,100 +1,96 @@
 ﻿@model PlayerBounties.Models.Character
 
 @{
-    ViewBag.Title = "Details";
+    ViewBag.Title = "Character Details - " + Model.Name;
 }
 
-<h2>Details</h2>
+<table id="characterDetailsTable" cellspacing="0" cellpadding="5" border="0">
+	<tr>
+		<td class="inputLabelCell">
+			@Html.LabelFor(model => model.Name)
+		</td>
+		<td align="left">
+			<span>@Html.DisplayFor(model => model.Name)</span>
+		</td>
+	</tr>
+	<tr>
+		<td class="inputLabelCell">
+			@Html.LabelFor(model => model.Shard.Name)
+		</td>
+		<td align="left">
+			<span>@Model.CharacterShard(Model.Id)</span>
+		</td>
+	</tr>
+	<tr>
+		<td class="inputLabelCell">
+			@Html.LabelFor(model => model.Faction.Name)
+		</td>
+		<td align="left">
+			<span>@Model.CharacterAllegience(Model.Id)</span>
+		</td>
+	</tr>
+	<tr>
+		<td class="inputLabelCell">
+			@Html.LabelFor(model => model.Race.Name)
+		</td>
+		<td align="left">
+			<span>@Model.CharacterRace(Model.Id)</span>
+		</td>
+	</tr>
+	<tr>
+		<td class="inputLabelCell">
+			@Html.LabelFor(model => model.PlayerClass.Name)
+		</td>
+		<td align="left">
+			<span>@Model.CharacterClass(Model.Id)</span>
+		</td>
+	</tr>
+	<tr>
+		<td class="inputLabelCell">
+			@Html.LabelFor(model => model.Motto)
+		</td>
+		<td align="left">
+			<span>@Html.DisplayFor(model => model.Motto)</span>
+		</td>
+	</tr>
+	<tr>
+		<td class="inputLabelCell">
+			@Html.LabelFor(model => model.Bio)
+		</td>
+		<td align="left">
+			<span>@Html.DisplayFor(model => model.Bio)</span>
+		</td>
+	</tr>
+	
+	@if(Request.IsAuthenticated)
+	{
 
-<table id="characterDetailsTable">
-	<tr>
-		<td>
-			<div class="display-label">Name</div>
-		</td>
-		<td>
-			<div class="display-field">
-				@Html.DisplayFor(model => model.Name)
-			</div>
-		</td>
-	</tr>
-	<tr>
-		<td>
-			<div class="display-label">Shard</div>
-		</td>
-		<td>
-			<div class="display-field">
-				@Html.DisplayFor(model => model.Shard.Name)
-			</div>
-		</td>
-	</tr>
-	<tr>
-		<td>
-			<div class="display-label">Faction</div>
-		</td>
-		<td>
-			<div class="display-field">
-				@Html.DisplayFor(model => model.Faction.Name)
-			</div>
-		</td>
-	</tr>
-	<tr>
-		<td>
-			<div class="display-label">Race</div>
-		</td>
-		<td>
-			<div class="display-field">
-				@Html.DisplayFor(model => model.Race.Name)
-			</div>
-		</td>
-	</tr>
-	<tr>
-		<td>
-			<div class="display-label">PlayerClass</div>
-		</td>
-		<td>
-			<div class="display-field">
-				@Html.DisplayFor(model => model.PlayerClass.Name)
-			</div>
-		</td>
-	</tr>
-	<tr>
-		<td>
-			<div class="display-label">Motto</div>
-		</td>
-		<td>
-			<div class="display-field">
-				@Html.DisplayFor(model => model.Motto)
-			</div>
-		</td>
-	</tr>
-	<tr>
-		<td>
-			<div class="display-label">Bio</div>
-		</td>
-		<td>
-			<div class="display-field">
-				@Html.DisplayFor(model => model.Bio)
-			</div>
-		</td>
-	</tr>
-	<tr>
-		<td>
-			<div class="display-label">IsPrimary</div>
-		</td>
-		<td>
-			<div class="display-field">
-				@Html.DisplayFor(model => model.IsPrimary)
-			</div>
-		</td>
-	</tr>
-
+		if(Model.IsCharacterOwner(Model.GetLoggedInUserId(), Model.Id))
+		{
+			<tr>
+				<td class="inputLabelCell">
+					@Html.LabelFor(model => model.IsPrimary)
+				</td>
+				<td align="left">
+					<span>@Html.DisplayFor(model => model.IsPrimary)</span>
+				</td>
+			</tr>
+		}
+	}
 </table>
 
-<p>
-    @Html.ActionLink("Edit", "Edit", new { id=Model.Id }) |
-    @Html.ActionLink("Back to List", "Index")
-	@if(Request.IsAuthenticated)
-	 {		
-		@Html.ActionLink("Place a Bounty", "PlaceBounty", "Bounty", new { id = Model.Id }, null)
-	 }
-</p>
+@if(Request.IsAuthenticated)
+{
+	@Html.ActionLink("Place a Bounty", "PlaceBounty", "Bounty", new
+{
+	id = Model.Id
+}, null)
+
+	if(Model.IsCharacterOwner(Model.GetLoggedInUserId(), Model.Id))
+	{
+			@Html.ActionLink("Edit", "Edit", new
+{
+	id = Model.Id
+})
+	}
+}

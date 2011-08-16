@@ -23,6 +23,7 @@ namespace PlayerBounties.Controllers
 		#region Type specific methods
 
 		// GET: /Character/
+		[Authorize]
 		public ViewResult Index()
 		{
 			var characters = this.character.GetAllCharactersForAnAccount(this.account.GetLoggedInUserId());
@@ -33,10 +34,12 @@ namespace PlayerBounties.Controllers
 		public ViewResult Details(Guid id)
 		{
 			Character character = this.db.Characters.Find(id);
+
 			return View(character);
 		}
 
 		// GET: /Character/Create
+		[Authorize]
 		public ActionResult Create()
 		{
 			var sortedShardList = from shard in this.db.Shards
@@ -64,6 +67,7 @@ namespace PlayerBounties.Controllers
 		}
 
 		// POST: /Character/Create
+		[Authorize]
 		[HttpPost]
 		public ActionResult Create(Character character)
 		{
@@ -117,35 +121,51 @@ namespace PlayerBounties.Controllers
 		}
 
 		// GET: /Character/Edit/5 
+		[Authorize]
 		public ActionResult Edit(Guid id)
 		{
-			Character character = this.db.Characters.Find(id);
-			ViewBag.ShardId = new SelectList(this.db.Shards, "Id", "Name", character.ShardId);
-			ViewBag.FactionId = new SelectList(this.db.Factions, "Id", "Name", character.FactionId);
-			ViewBag.RaceId = new SelectList(this.db.Races, "Id", "Name", character.RaceId);
-			ViewBag.PlayerClassId = new SelectList(this.db.PlayerClasses, "Id", "Name", character.PlayerClassId);
+			if(this.character.IsCharacterOwner(this.account.GetLoggedInUserId(), id))
+			{
+				Character character = this.db.Characters.Find(id);
+				ViewBag.ShardId = new SelectList(this.db.Shards, "Id", "Name", character.ShardId);
+				ViewBag.FactionId = new SelectList(this.db.Factions, "Id", "Name", character.FactionId);
+				ViewBag.RaceId = new SelectList(this.db.Races, "Id", "Name", character.RaceId);
+				ViewBag.PlayerClassId = new SelectList(this.db.PlayerClasses, "Id", "Name", character.PlayerClassId);
 
-			return View(character);
+				return View(character);
+			}
+			else
+			{
+				return RedirectToAction("Dashboard", "Home");
+			}
 		}
 
 		// POST: /Character/Edit/5
+		[Authorize]
 		[HttpPost]
 		public ActionResult Edit(Character character)
 		{
-			if(ModelState.IsValid)
+			if(this.character.IsCharacterOwner(this.account.GetLoggedInUserId(), character.Id))
 			{
-				character.UserId = this.account.GetLoggedInUserId();
-				this.db.Entry(character).State = EntityState.Modified;
-				this.db.SaveChanges();
-				return RedirectToAction("MyAccount", "Account");
+				if(ModelState.IsValid)
+				{
+					character.UserId = this.account.GetLoggedInUserId();
+					this.db.Entry(character).State = EntityState.Modified;
+					this.db.SaveChanges();
+					return RedirectToAction("MyAccount", "Account");
+				}
+
+				ViewBag.ShardId = new SelectList(this.db.Shards, "Id", "Name", character.ShardId);
+				ViewBag.FactionId = new SelectList(this.db.Factions, "Id", "Name", character.FactionId);
+				ViewBag.RaceId = new SelectList(this.db.Races, "Id", "Name", character.RaceId);
+				ViewBag.PlayerClassId = new SelectList(this.db.PlayerClasses, "Id", "Name", character.PlayerClassId);
+
+				return View(character);
 			}
-
-			ViewBag.ShardId = new SelectList(this.db.Shards, "Id", "Name", character.ShardId);
-			ViewBag.FactionId = new SelectList(this.db.Factions, "Id", "Name", character.FactionId);
-			ViewBag.RaceId = new SelectList(this.db.Races, "Id", "Name", character.RaceId);
-			ViewBag.PlayerClassId = new SelectList(this.db.PlayerClasses, "Id", "Name", character.PlayerClassId);
-
-			return View(character);
+			else
+			{
+				return RedirectToAction("Dashboard", "Home");
+			}
 		}
 
 		#endregion

@@ -209,7 +209,7 @@ input[type="submit"] input[value], input[type="button"] input[value]
     z-index: 10;
 }
 
-#loginBox, #signUpBox
+#loginBox
 {
 	margin-top: 50px;
 	margin-left: 275px;	
@@ -235,11 +235,4 @@ input[type="submit"] input[value], input[type="button"] input[value]
     padding: 6px 0 4px;
     position: relative;
     width: 100%;
-}
-
-table
-{
-	border: medium none;
-    margin: 0;
-    padding: 0;
 }

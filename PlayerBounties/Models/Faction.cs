@@ -16,6 +16,7 @@ namespace PlayerBounties.Models
 		}
 
 		[Required]
+		[Display(Name = "Faction")]
 		public string Name
 		{
 			get;

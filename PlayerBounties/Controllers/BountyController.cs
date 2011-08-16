@@ -35,6 +35,7 @@ namespace PlayerBounties.Controllers
 		}
 
 		// GET: /Bounty/PlaceBounty
+		[Authorize]
 		public ActionResult PlaceBounty(Character character)
 		{
 			var sortedShardList = from shard in this.db.Shards
@@ -57,6 +58,7 @@ namespace PlayerBounties.Controllers
 		}
 
 		// POST: /Bounty/PlaceBounty
+		[Authorize]
 		[HttpPost]
 		public ActionResult PlaceBounty(Bounty bounty, FormCollection formCollection)
 		{

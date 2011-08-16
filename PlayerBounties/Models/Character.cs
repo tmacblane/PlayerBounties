@@ -149,6 +149,56 @@ namespace PlayerBounties.Models
 			db.SaveChanges();
 		}
 
+		public Guid GetLoggedInUserId()
+		{
+			return this.db.Accounts.Where(row => row.EmailAddress == System.Web.HttpContext.Current.User.Identity.Name).Single().Id;
+		}
+
+		public bool IsCharacterOwner(Guid userId, Guid characterId)
+		{
+			bool isCharacterOwner = false;
+
+			var character = db.Characters.Find(characterId);
+
+			if(userId == character.UserId)
+			{
+				isCharacterOwner = true;
+			}
+
+			return isCharacterOwner;
+
+		}
+
+		public string CharacterName(Guid characterId)
+		{
+			Character character = new Character();
+			return character.GetCharacterById(characterId).Single().Name;
+		}
+
+		public string CharacterShard(Guid characterId)
+		{
+			Character character = new Character();
+			return character.GetCharacterById(characterId).Single().Shard.Name;
+		}
+
+		public string CharacterAllegience(Guid characterId)
+		{
+			Character character = new Character();
+			return character.GetCharacterById(characterId).Single().Faction.Name;
+		}
+
+		public string CharacterClass(Guid characterId)
+		{
+			Character character = new Character();
+			return character.GetCharacterById(characterId).Single().PlayerClass.Name;
+		}
+
+		public string CharacterRace(Guid characterId)
+		{
+			Character character = new Character();
+			return character.GetCharacterById(characterId).Single().Race.Name;
+		}
+
 		#endregion
 	}
 }

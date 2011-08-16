@@ -15,6 +15,7 @@ namespace PlayerBounties.Models
 			set;
 		}
 
+		[Display(Name = "Class")]
 		public string Name
 		{
 			get;

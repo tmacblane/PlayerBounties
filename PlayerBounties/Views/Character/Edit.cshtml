@@ -1,31 +1,23 @@
 ﻿@model PlayerBounties.Models.Character
 
 @{
-    ViewBag.Title = "Edit";
+    ViewBag.Title = "Edit Character - " + Model.Name;
 }
-
-<h2>Edit</h2>
-
-<script src="@Url.Content("~/Scripts/jquery.validate.min.js")" type="text/javascript"></script>
-<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
 
 @using (Html.BeginForm()) {
     @Html.ValidationSummary(true)
-    <fieldset>
-        <legend>Character</legend>
 
         @Html.HiddenFor(model => model.Id)
 
-        <div class="editor-label">
+        <div class="rowBlank">
             @Html.LabelFor(model => model.Name)
-        </div>
-        <div class="editor-field">
+		<br />
             @Html.EditorFor(model => model.Name)
             @Html.ValidationMessageFor(model => model.Name)
         </div>
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.ShardId, "Shard")
+            @Html.LabelFor(model => model.Shard.Name)
         </div>
         <div class="editor-field">
             @Html.DropDownList("ShardId", String.Empty)
@@ -33,7 +25,7 @@
         </div>
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.FactionId, "Faction")
+            @Html.LabelFor(model => model.Faction.Name)
         </div>
         <div class="editor-field">
             @Html.DropDownList("FactionId", String.Empty)
@@ -41,7 +33,7 @@
         </div>
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.RaceId, "Race")
+            @Html.LabelFor(model => model.Race.Name)
         </div>
         <div class="editor-field">
             @Html.DropDownList("RaceId", String.Empty)
@@ -49,7 +41,7 @@
         </div>
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.PlayerClassId, "PlayerClass")
+            @Html.LabelFor(model => model.PlayerClass.Name)
         </div>
         <div class="editor-field">
             @Html.DropDownList("PlayerClassId", String.Empty)
@@ -83,7 +75,6 @@
         <p>
             <input type="submit" value="Save" />
         </p>
-    </fieldset>
 }
 
 <div>

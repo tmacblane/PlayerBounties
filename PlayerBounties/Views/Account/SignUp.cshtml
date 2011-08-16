@@ -1,49 +1,37 @@
 ﻿@model PlayerBounties.Models.SignUpModel
 
 @{
-    ViewBag.Title = "SignUp";
+    ViewBag.Title = "Sign Up";
 }
-
-<h2>SignUp</h2>
-
-<script src="@Url.Content("~/Scripts/jquery.validate.min.js")" type="text/javascript"></script>
-<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
 
 @using (Html.BeginForm()) {
     @Html.ValidationSummary(true)
-    <fieldset>
-        <legend>SignUpModel</legend>
 
-        <div class="editor-label">
+	<div id="signUpBox">
+		<div class="rowBlank">
             @Html.LabelFor(model => model.Email)
-        </div>
-        <div class="editor-field">
+		<br />
             @Html.EditorFor(model => model.Email)
             @Html.ValidationMessageFor(model => model.Email)
         </div>
-
-        <div class="editor-label">
+		
+		<div class="rowBlank">
             @Html.LabelFor(model => model.Password)
-        </div>
-        <div class="editor-field">
+		<br />
             @Html.EditorFor(model => model.Password)
             @Html.ValidationMessageFor(model => model.Password)
         </div>
-
-        <div class="editor-label">
+		
+		<div class="rowBlank">
             @Html.LabelFor(model => model.ConfirmPassword)
-        </div>
-        <div class="editor-field">
+		<br />
             @Html.EditorFor(model => model.ConfirmPassword)
             @Html.ValidationMessageFor(model => model.ConfirmPassword)
         </div>
-
-        <p>
-            <input type="submit" value="Create" />
-        </p>
-    </fieldset>
+		
+		<div class="rowBlank">
+			<input type="submit" value="Sign Up" />			
+			<input type="button" value="Cancel" onclick="window.location='Login'"/>
+		</div>
+	 </div>
 }
-
-<div>
-    @Html.ActionLink("Cancel", "Index", "Home")
-</div>
