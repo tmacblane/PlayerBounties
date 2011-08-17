@@ -1,0 +1,82 @@
+﻿@model PlayerBounties.Models.Character
+
+@{
+    ViewBag.Title = "Edit Character - " + Model.Name;
+}
+
+@using (Html.BeginForm()) {
+    @Html.ValidationSummary(true)
+
+        @Html.HiddenFor(model => model.Id)
+
+        <div class="rowBlank">
+            @Html.LabelFor(model => model.Name)
+		<br />
+            @Html.EditorFor(model => model.Name)
+            @Html.ValidationMessageFor(model => model.Name)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Shard.Name)
+        </div>
+        <div class="editor-field">
+            @Html.DropDownList("ShardId", String.Empty)
+            @Html.ValidationMessageFor(model => model.ShardId)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Faction.Name)
+        </div>
+        <div class="editor-field">
+            @Html.DropDownList("FactionId", String.Empty)
+            @Html.ValidationMessageFor(model => model.FactionId)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Race.Name)
+        </div>
+        <div class="editor-field">
+            @Html.DropDownList("RaceId", String.Empty)
+            @Html.ValidationMessageFor(model => model.RaceId)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.PlayerClass.Name)
+        </div>
+        <div class="editor-field">
+            @Html.DropDownList("PlayerClassId", String.Empty)
+            @Html.ValidationMessageFor(model => model.PlayerClassId)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Motto)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Motto)
+            @Html.ValidationMessageFor(model => model.Motto)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Bio)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Bio)
+            @Html.ValidationMessageFor(model => model.Bio)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.IsPrimary)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.IsPrimary)
+            @Html.ValidationMessageFor(model => model.IsPrimary)
+        </div>
+
+        <p>
+            <input type="submit" value="Save" />
+        </p>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>

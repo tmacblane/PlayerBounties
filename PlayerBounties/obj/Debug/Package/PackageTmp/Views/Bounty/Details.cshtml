@@ -1,0 +1,71 @@
+﻿@model PlayerBounties.Models.Bounty
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<fieldset>
+    <legend>Bounty</legend>
+
+    <div class="display-label">Amount</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Amount) credits
+    </div>
+
+    <div class="display-label">Reason</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Reason)
+    </div>
+
+    <div class="display-label">Message</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Message)
+    </div>
+
+    <div class="display-label">Placed By</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.PlacedById)
+    </div>
+
+    <div class="display-label">Placed On</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.PlacedOnId)
+    </div>
+
+    <div class="display-label">Date Placed</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.DatePlaced)
+    </div>
+
+    <div class="display-label">IsPlacementPending</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.IsPlacementPending)
+    </div>
+
+    <div class="display-label">Date Completed</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.DateCompleted)
+    </div>
+
+    <div class="display-label">IsCompletionPending</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.IsCompletionPending)
+    </div>	
+</fieldset>
+
+<!-- If user is logged in, show div  -->
+	@if(Request.IsAuthenticated)
+	 {
+		<p>Upload picture to complete bounty</p>
+		@Html.Partial("../FileUpload/Index")
+	 }
+
+<p>
+    @Html.ActionLink("Edit", "Edit", new
+{
+	id = Model.Id
+}) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

@@ -1,0 +1,25 @@
+﻿@model IEnumerable<PlayerBounties.Models.Character>
+           
+<table>
+    <tr>
+        @foreach (var item in Model) {
+            <td>
+                @Html.ActionLink("  ", "Details", "Character", new { id = item.Id }, new
+                {
+                    style = "background: url('Images/classImageAvatar.png') no-repeat center right;display:block; height:100px; width:100px;margin-top:-2px;text-decoration:none;"
+                })
+            </td>
+        }
+    </tr>
+    <tr>
+        @foreach (var item in Model) {
+            <td>
+                @Html.ActionLink(item.Name, "Details", "Character", new { id = item.Id }, null)
+            </td>
+        }
+    </tr>
+</table>
+
+<p>
+    @Html.ActionLink("Create New", "Create", "Character")
+</p>

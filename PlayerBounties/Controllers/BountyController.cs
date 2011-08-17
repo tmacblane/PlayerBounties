@@ -34,6 +34,30 @@ namespace PlayerBounties.Controllers
 			return View(bounty);
 		}
 
+		// GET: /Bounty/Create/5
+		[Authorize]
+		public ActionResult Create(Guid id)
+		{
+			Bounty bounty = new Bounty();
+			Character character = this.db.Characters.Find(id);
+
+			bounty.PlacedOnId = character.Id;
+			ViewBag.ShardId = new SelectList(this.db.Shards, "Id", "Name", character.ShardId);
+			ViewBag.FactionId = new SelectList(this.db.Factions, "Id", "Name", character.FactionId);
+			ViewBag.RaceId = new SelectList(this.db.Races, "Id", "Name", character.RaceId);
+			ViewBag.PlayerClassId = new SelectList(this.db.PlayerClasses, "Id", "Name", character.PlayerClassId);
+
+			return View(bounty);
+		}
+
+		// POST: /Character/Create
+		[Authorize]
+		[HttpPost]
+		public ActionResult Create(Character character)
+		{
+			return View();
+		}
+
 		// GET: /Bounty/PlaceBounty
 		[Authorize]
 		public ActionResult PlaceBounty(Character character)

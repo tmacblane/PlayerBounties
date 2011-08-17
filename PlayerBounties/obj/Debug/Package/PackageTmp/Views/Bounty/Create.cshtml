@@ -1,0 +1,68 @@
+﻿@model PlayerBounties.Models.Bounty
+
+<script src="@Url.Content("~/Scripts/jquery.validate.min.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
+
+@using (Html.BeginForm()) {
+    @Html.ValidationSummary(true)
+    <fieldset>
+        <legend>Place a Bounty</legend>
+
+		<div class="editor-label">
+			Character
+		</div>
+        <div class="label">
+			<label>@Model.CharacterName(Model.PlacedOnId)</label>
+        </div>
+
+		<div class="editor-label">
+			Shard
+		</div>
+        <div class="label">
+			<label id="characterShardName">@Model.CharacterShard(Model.PlacedOnId)</label>
+        </div>
+
+		<div class="editor-label">
+			Allegiance
+		</div>
+        <div class="label">
+			<label>@Model.CharacterAllegience(Model.PlacedOnId)</label>
+        </div>
+
+		<div class="editor-label">
+			Class
+		</div>
+        <div class="label">
+			<label>@Model.CharacterClass(Model.PlacedOnId)</label>
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Amount)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Amount)
+            @Html.ValidationMessageFor(model => model.Amount)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Reason)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Reason)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Message)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Message)
+        </div>
+        <p>
+            <input type="submit" value="Create" />
+        </p>
+    </fieldset>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>

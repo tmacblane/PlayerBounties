@@ -1,0 +1,73 @@
+﻿@model PlayerBounties.Models.Character
+
+<table id="characterAddEditTable" cellspacing="0" cellpadding="5" border="0">
+	<tr>
+		<td class="inputLabelCell">
+			@Html.LabelFor(model => model.Name)
+		</td>
+		<td align="left">
+			@Html.EditorFor(model => model.Name)
+			@Html.ValidationMessageFor(model => model.Name)
+		</td>
+	</tr>
+	<tr>
+		<td class="inputLabelCell">
+			@Html.LabelFor(model => model.Shard)
+		</td>
+		<td align="left">
+			@Html.DropDownList("ShardId", String.Empty)
+			@Html.ValidationMessageFor(model => model.ShardId)
+		</td>
+	</tr>
+	<tr>
+		<td class="inputLabelCell">
+			@Html.LabelFor(model => model.Faction)
+		</td>
+		<td align="left">
+			@Html.DropDownList("FactionId", String.Empty)
+			@Html.ValidationMessageFor(model => model.FactionId)
+		</td>
+	</tr>
+	<tr>
+		<td class="inputLabelCell">
+			@Html.LabelFor(model => model.Race)
+		</td>
+		<td align="left">
+			@Html.DropDownList("RaceId", String.Empty)
+			@Html.ValidationMessageFor(model => model.RaceId)
+		</td>
+	</tr>
+	<tr>
+		<td class="inputLabelCell">
+			@Html.LabelFor(model => model.PlayerClass)
+		</td>
+		<td align="left">
+			@Html.DropDownList("PlayerClassId", String.Empty)
+			@Html.ValidationMessageFor(model => model.PlayerClassId)
+		</td>
+	</tr>
+	<tr>
+		<td class="inputLabelCell">
+			@Html.LabelFor(model => model.Motto)
+		</td>
+		<td align="left">
+			@Html.EditorFor(model => model.Motto)
+		</td>
+	</tr>
+	<tr>
+		<td class="inputLabelCell">
+			@Html.LabelFor(model => model.Bio)
+		</td>
+		<td align="left">
+			@Html.EditorFor(model => model.Bio)
+		</td>
+	</tr>
+	<tr>
+		<td class="inputLabelCell">
+			@Html.LabelFor(model => model.IsPrimary)
+		</td>
+		<td align="left">
+			@Html.EditorFor(model => model.IsPrimary)
+		</td>
+	</tr>
+</table>

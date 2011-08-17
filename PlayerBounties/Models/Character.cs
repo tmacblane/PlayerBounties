@@ -111,6 +111,7 @@ namespace PlayerBounties.Models
 		}
 
 		[ForeignKey("PlayerClassId")]
+		[Display(Name = "Class")]
 		public PlayerClass PlayerClass
 		{
 			get;

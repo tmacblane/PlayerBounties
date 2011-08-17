@@ -20,17 +20,24 @@
 </script>
 
 @{
-    ViewBag.Title = " | Dashboard";
+    ViewBag.Title = "Dashboard";
 }
 
 @Html.ActionLink("Place a Bounty", "PlaceBounty", "Bounty")
 
 <div id="dialog" title="Open Popup" style="overflow: hidden;">
 	@Html.Partial("_Search")
+
 </div>
 
-<p>image slider of characters</p>
-@Html.Action("Characters", "Dashboard")
+<div id="characterManagement">
+
+	@Html.Action("Characters", "Dashboard")
+
+</div>
+
+
+
 
 <h3>Account Statistics</h3>
 

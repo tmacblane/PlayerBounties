@@ -1,0 +1,8 @@
+C:\Temp\PlayerBounties\PlayerBounties\bin\PlayerBounties.dll
+C:\Temp\PlayerBounties\PlayerBounties\bin\PlayerBounties.pdb
+C:\Temp\PlayerBounties\PlayerBounties\bin\EntityFramework.dll
+C:\Temp\PlayerBounties\PlayerBounties\bin\WebActivator.dll
+C:\Temp\PlayerBounties\PlayerBounties\bin\EntityFramework.xml
+C:\Temp\PlayerBounties\PlayerBounties\obj\Debug\ResolveAssemblyReference.cache
+C:\Temp\PlayerBounties\PlayerBounties\obj\Debug\PlayerBounties.dll
+C:\Temp\PlayerBounties\PlayerBounties\obj\Debug\PlayerBounties.pdb

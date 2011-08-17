@@ -1,0 +1,37 @@
+﻿<script type="text/javascript">
+    $(function () {
+        $('#dialog').dialog({
+            autoOpen: false,
+            width: 400,
+            resizable: false,
+            title: 'hi there',
+            modal: true,
+            buttons: {
+                "Close": function () {
+                    $(this).dialog("close");
+                }
+            }
+        });
+
+        $('#search').click(function () {
+            $('#dialog').dialog('open');
+        });
+    });
+</script>
+
+@{
+    ViewBag.Title = " | Dashboard";
+}
+
+@Html.ActionLink("Place a Bounty", "PlaceBounty", "Bounty")
+
+<div id="dialog" title="Open Popup" style="overflow: hidden;">
+	@Html.Partial("_Search")
+</div>
+
+<p>image slider of characters</p>
+@Html.Action("Characters", "Dashboard")
+
+<h3>Account Statistics</h3>
+
+<h3>Kill Images</h3>

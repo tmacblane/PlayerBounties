@@ -97,6 +97,7 @@
   <ItemGroup>
     <Content Include="App_Data\PlayerBounty.sdf" />
     <Content Include="Content\empireCustom.css" />
+    <Content Include="Content\Images\bountyhunter01.jpg" />
     <Content Include="Content\Images\mandalorianLogo.png" />
     <Content Include="Content\Images\skyfieldBackground.jpg" />
     <Content Include="Content\mainSite.css" />
@@ -167,6 +168,7 @@
     <Content Include="Views\Admin\Index.cshtml" />
     <Content Include="Views\Header\_Header.cshtml" />
     <Content Include="Views\FileUpload\Index.cshtml" />
+    <Content Include="Views\Character\_CharacterAddEdit.cshtml" />
     <None Include="_bin_deployableAssemblies\Microsoft.Web.Infrastructure.dll" />
     <None Include="_bin_deployableAssemblies\System.Web.WebPages.Razor.dll" />
     <None Include="_bin_deployableAssemblies\System.Web.WebPages.dll" />
