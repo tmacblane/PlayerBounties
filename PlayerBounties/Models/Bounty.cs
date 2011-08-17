@@ -1,13 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Data;
+using System.Data.Entity;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 
 namespace PlayerBounties.Models
 {
 	public class Bounty
 	{
+		#region Fields
+
+		private PlayerBountyContext db = new PlayerBountyContext();
+
+		#endregion
+
 		#region Type specific properties
 
 		[Key]
@@ -99,6 +108,13 @@ namespace PlayerBounties.Models
 		{
 			Character character = new Character();
 			return character.GetCharacterById(characterId).Single().PlayerClass.Name;
+		}
+
+		public void SetPendingPlacementToFalse(Bounty bounty)
+		{
+			bounty.IsPlacementPending = false;
+			this.db.Entry(bounty).State = EntityState.Modified;
+			this.db.SaveChanges();
 		}
 
 		#endregion

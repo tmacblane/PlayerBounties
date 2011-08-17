@@ -4,7 +4,7 @@
     ViewBag.Title = "Character Details - " + Model.Name;
 }
 
-<div>
+<div style="height: 200px; margin-bottom: 10px;">
 	<div id="leftColumn">
 		<table>
 			<tr style="height: 20px;">
@@ -56,14 +56,19 @@
 					<span>@Model.CharacterAllegience(Model.Id)</span>
 				</td>
 			</tr>
-			<tr>
-				<td class="inputLabelCell">
-					@Html.LabelFor(model => model.Race.Name)
-				</td>
-				<td align="left">
-					<span>@Model.CharacterRace(Model.Id)</span>
-				</td>
-			</tr>
+
+			@if(Model.Race != null)
+			{
+				<tr>
+					<td class="inputLabelCell">
+						@Html.LabelFor(model => model.Race.Name)
+					</td>
+					<td align="left">
+						<span>@Model.CharacterRace(Model.Id)</span>
+					</td>
+				</tr>
+			}
+			
 			<tr>
 				<td class="inputLabelCell">
 					@Html.LabelFor(model => model.PlayerClass.Name)
@@ -118,13 +123,14 @@
 
 	<div id="rightColumn">
 		Great Hunt Champ image
-	</div>
+	</div>	
 </div>
-<div class="divSize95">
+
+<div id="imageSlider" class="divSize95">
 	<p>Kill Image Slider</p>
 </div>
 
-<div class="divSize95">
+<div id="talesFromTheHunt" class="divSize95">
 	<p>Link to Tales from hunt</p>
 </div>
 

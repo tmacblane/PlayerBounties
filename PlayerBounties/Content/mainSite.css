@@ -263,7 +263,7 @@ table
 {
 	left: 185px;
 	width: 630px;
-    position: relative;
+	position: relative;
 }
 
 #rightColumn
@@ -271,6 +271,7 @@ table
 	margin-right: 10px;
 	width: 175px;
 	float: right;
+	position: relative;
 }
 
 .divSize95

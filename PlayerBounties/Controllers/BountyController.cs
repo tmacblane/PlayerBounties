@@ -212,6 +212,22 @@ namespace PlayerBounties.Controllers
 			return RedirectToAction("Index");
 		}
 
+		public ActionResult PendingPlacement()
+		{
+			IQueryable<Bounty> bounty = this.db.Bounties.Where(b => b.IsPlacementPending == true);
+
+			return View(bounty);
+		}
+
+		public ActionResult ApproveBountyPlacement(Guid id)
+		{
+			Bounty bounty = db.Bounties.Find(id);
+
+			bounty.SetPendingPlacementToFalse(bounty);
+
+			return RedirectToAction("PendingPlacement");
+		}
+
 		#endregion
 
 		#region Base class overrides

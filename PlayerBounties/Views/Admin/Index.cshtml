@@ -1,5 +1,5 @@
 ﻿@{
-    ViewBag.Title = " | Admin Tools";
+    ViewBag.Title = "Admin Tools";
 }
 
 <ul>
@@ -9,6 +9,6 @@
 	<li>@Html.ActionLink("Manage Shards", "Index", "Shard")</li>
 </ul>
 
-<p>Pending Bounty Placements Link</p>
+@Html.ActionLink("Pending Placement", "PendingPlacement", "Bounty")
 
 <p>Pending Bounty Completions Link</p>
