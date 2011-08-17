@@ -4,7 +4,8 @@
     ViewBag.Title = "Place Bounty - " + Model.CharacterName(Model.PlacedOnId);
 }
 
-@using (Html.BeginForm()) {
+@using (Html.BeginForm()) 
+{
     @Html.ValidationSummary(true)
 
 	<table id="createBountyTable" cellspacing="0" cellpadding="5" border="0">

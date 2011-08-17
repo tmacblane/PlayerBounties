@@ -36,12 +36,13 @@ namespace PlayerBounties.Controllers
 
 		// GET: /Bounty/Create/5
 		[Authorize]
-		public ActionResult Create(Guid id)
+		public ActionResult Create(Character character)
 		{
 			Bounty bounty = new Bounty();
-			Character character = this.db.Characters.Find(id);
+			character = this.db.Characters.Find(character.Id);
 
 			bounty.PlacedOnId = character.Id;
+
 			ViewBag.ShardId = new SelectList(this.db.Shards, "Id", "Name", character.ShardId);
 			ViewBag.FactionId = new SelectList(this.db.Factions, "Id", "Name", character.FactionId);
 			ViewBag.RaceId = new SelectList(this.db.Races, "Id", "Name", character.RaceId);
@@ -53,14 +54,40 @@ namespace PlayerBounties.Controllers
 		// POST: /Character/Create
 		[Authorize]
 		[HttpPost]
-		public ActionResult Create(Character character)
+		public ActionResult Create(Guid id, FormCollection formCollection)
 		{
-			return View();
+			Bounty bounty = new Bounty();
+			Character character = this.db.Characters.Find(id);
+
+			var accountId = this.account.GetLoggedInUserId();
+
+			if(ModelState.IsValid)
+			{
+				bounty.Id = Guid.NewGuid();
+
+				// Set bounty details
+				bounty.Amount = int.Parse(formCollection["Amount"]);
+				bounty.Reason = formCollection["Reason"];
+				bounty.Message = formCollection["Message"];
+				bounty.PlacedById = character.GetDefaultCharacterForAnAccount(accountId).Single().Id;
+				bounty.PlacedOnId = character.Id;
+				bounty.DatePlaced = DateTime.Now;
+				bounty.DateCompleted = null;
+				bounty.IsPlacementPending = true;
+
+				this.db.Bounties.Add(bounty);
+				this.db.SaveChanges();
+
+				return RedirectToAction("Dashboard", "Home");
+			}
+
+
+			return View(bounty);
 		}
 
 		// GET: /Bounty/PlaceBounty
 		[Authorize]
-		public ActionResult PlaceBounty(Character character)
+		public ActionResult PlaceBounty()
 		{
 			var sortedShardList = from shard in this.db.Shards
 								   orderby shard.Name ascending
