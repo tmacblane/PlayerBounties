@@ -117,6 +117,13 @@ namespace PlayerBounties.Models
 			this.db.SaveChanges();
 		}
 
+		public void SetPendingCompletionToFalse(Bounty bounty)
+		{
+			bounty.IsCompletionPending = false;
+			this.db.Entry(bounty).State = EntityState.Modified;
+			this.db.SaveChanges();
+		}
+
 		#endregion
 	}
 }

@@ -228,6 +228,15 @@ namespace PlayerBounties.Controllers
 			return RedirectToAction("PendingPlacement");
 		}
 
+		public ActionResult ApproveBountyCompletion(Guid id)
+		{
+			Bounty bounty = db.Bounties.Find(id);
+
+			bounty.SetPendingCompletionToFalse(bounty);
+
+			return RedirectToAction("PendingPlacement");
+		}
+
 		#endregion
 
 		#region Base class overrides
