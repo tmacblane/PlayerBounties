@@ -170,6 +170,7 @@
     <Content Include="Views\FileUpload\Index.cshtml" />
     <Content Include="Views\Character\_CharacterAddEdit.cshtml" />
     <Content Include="Views\Bounty\PendingPlacement.cshtml" />
+    <Content Include="Views\Bounty\PendingCompletion.cshtml" />
     <None Include="_bin_deployableAssemblies\Microsoft.Web.Infrastructure.dll" />
     <None Include="_bin_deployableAssemblies\System.Web.WebPages.Razor.dll" />
     <None Include="_bin_deployableAssemblies\System.Web.WebPages.dll" />

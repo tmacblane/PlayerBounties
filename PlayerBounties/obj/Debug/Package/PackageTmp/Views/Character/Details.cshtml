@@ -4,93 +4,140 @@
     ViewBag.Title = "Character Details - " + Model.Name;
 }
 
-<table id="characterDetailsTable" cellspacing="0" cellpadding="5" border="0">
-	<tr>
-		<td class="inputLabelCell">
-			@Html.LabelFor(model => model.Name)
-		</td>
-		<td align="left">
-			<span>@Html.DisplayFor(model => model.Name)</span>
-		</td>
-	</tr>
-	<tr>
-		<td class="inputLabelCell">
-			@Html.LabelFor(model => model.Shard.Name)
-		</td>
-		<td align="left">
-			<span>@Model.CharacterShard(Model.Id)</span>
-		</td>
-	</tr>
-	<tr>
-		<td class="inputLabelCell">
-			@Html.LabelFor(model => model.Faction.Name)
-		</td>
-		<td align="left">
-			<span>@Model.CharacterAllegience(Model.Id)</span>
-		</td>
-	</tr>
-	<tr>
-		<td class="inputLabelCell">
-			@Html.LabelFor(model => model.Race.Name)
-		</td>
-		<td align="left">
-			<span>@Model.CharacterRace(Model.Id)</span>
-		</td>
-	</tr>
-	<tr>
-		<td class="inputLabelCell">
-			@Html.LabelFor(model => model.PlayerClass.Name)
-		</td>
-		<td align="left">
-			<span>@Model.CharacterClass(Model.Id)</span>
-		</td>
-	</tr>
-	<tr>
-		<td class="inputLabelCell">
-			@Html.LabelFor(model => model.Motto)
-		</td>
-		<td align="left">
-			<span>@Html.DisplayFor(model => model.Motto)</span>
-		</td>
-	</tr>
-	<tr>
-		<td class="inputLabelCell">
-			@Html.LabelFor(model => model.Bio)
-		</td>
-		<td align="left">
-			<span>@Html.DisplayFor(model => model.Bio)</span>
-		</td>
-	</tr>
-	
-	@if(Request.IsAuthenticated)
-	{
-
-		if(Model.IsCharacterOwner(Model.GetLoggedInUserId(), Model.Id))
-		{
-			<tr>
-				<td class="inputLabelCell">
-					@Html.LabelFor(model => model.IsPrimary)
-				</td>
-				<td align="left">
-					<span>@Html.DisplayFor(model => model.IsPrimary)</span>
+<div style="height: 200px; margin-bottom: 10px;">
+	<div id="leftColumn">
+		<table>
+			<tr style="height: 20px;">
+				<td>Achievements image
 				</td>
 			</tr>
-		}
-	}
-</table>
+			<tr>
+				<td>
+					<img src="../../Content/Images/bountyhunter01.jpg" alt="Home" id="characterAvatar"/>
+				</td>
+			</tr>
+
+			@if(Request.IsAuthenticated)
+			{
+				<tr>
+					<td align="center">
+						@Html.ActionLink("Place a Bounty", "Create", "Bounty", new { id = Model.Id }, null)
+					</td>
+				</tr>
+			}
+		
+		</table>	
+	</div>
+
+	<div id="middleColumn">
+		<table id="characterDetailsTable" cellspacing="0" cellpadding="5" border="0">
+			<tr style="height: 20px;"></tr>
+			<tr>
+				<td class="inputLabelCell">
+					@Html.LabelFor(model => model.Name)
+				</td>
+				<td align="left">
+					<span>@Html.DisplayFor(model => model.Name)</span>
+				</td>
+			</tr>
+			<tr>
+				<td class="inputLabelCell">
+					@Html.LabelFor(model => model.Shard.Name)
+				</td>
+				<td align="left">
+					<span>@Model.CharacterShard(Model.Id)</span>
+				</td>
+			</tr>
+			<tr>
+				<td class="inputLabelCell">
+					@Html.LabelFor(model => model.Faction.Name)
+				</td>
+				<td align="left">
+					<span>@Model.CharacterAllegience(Model.Id)</span>
+				</td>
+			</tr>
+
+			@if(Model.Race != null)
+			{
+				<tr>
+					<td class="inputLabelCell">
+						@Html.LabelFor(model => model.Race.Name)
+					</td>
+					<td align="left">
+						<span>@Model.CharacterRace(Model.Id)</span>
+					</td>
+				</tr>
+			}
+			
+			<tr>
+				<td class="inputLabelCell">
+					@Html.LabelFor(model => model.PlayerClass.Name)
+				</td>
+				<td align="left">
+					<span>@Model.CharacterClass(Model.Id)</span>
+				</td>
+			</tr>
+		
+			@if(Model.Motto != null)
+			{
+				<tr>
+					<td class="inputLabelCell">
+						@Html.LabelFor(model => model.Motto)
+					</td>
+					<td align="left">
+						<span style="font-style: italic;">@Html.DisplayFor(model => model.Motto)</span>
+					</td>
+				</tr>
+			}
+
+			@if(Request.IsAuthenticated)
+			{
+
+				if(Model.IsCharacterOwner(Model.GetLoggedInUserId(), Model.Id))
+				{
+					<tr>
+						<td class="inputLabelCell">
+							@Html.LabelFor(model => model.IsPrimary)
+						</td>
+						<td align="left">
+							<span>@Html.DisplayFor(model => model.IsPrimary)</span>
+						</td>
+					</tr>
+				}
+			}
+		
+			@if(Model.Bio != null)
+			{
+				<tr>
+					<td class="inputLabelCell">
+						@Html.LabelFor(model => model.Bio)
+					</td>
+					<td align="left">
+						<span>@Html.DisplayFor(model => model.Bio)</span>
+					</td>
+				</tr>
+			}
+		
+		</table>
+	</div>
+
+	<div id="rightColumn">
+		Great Hunt Champ image
+	</div>	
+</div>
+
+<div id="imageSlider" class="divSize95">
+	<p>Kill Image Slider</p>
+</div>
+
+<div id="talesFromTheHunt" class="divSize95">
+	<p>Link to Tales from hunt</p>
+</div>
 
 @if(Request.IsAuthenticated)
 {
-	@Html.ActionLink("Place a Bounty", "PlaceBounty", "Bounty", new
-{
-	id = Model.Id
-}, null)
-
 	if(Model.IsCharacterOwner(Model.GetLoggedInUserId(), Model.Id))
 	{
-			@Html.ActionLink("Edit", "Edit", new
-{
-	id = Model.Id
-})
+			@Html.ActionLink("Edit", "Edit", new { id = Model.Id })
 	}
 }

@@ -1,65 +1,69 @@
 ﻿@model PlayerBounties.Models.Bounty
 
-@using(Html.BeginForm("PlaceBounty", "Bounty", FormMethod.Post, new
+@using(Html.BeginForm("PlaceBounty", "Bounty", FormMethod.Post, new { id = "bountySearchForm" }))
 {
-	id = "bountySearchForm"
-}))    
-{
-    <div id="search">
-		<div class="editor-label">
-			@Html.Label("Character Name")
-        </div>
-        <div class="editor-field">
-            @Html.TextBox("characterNameTxt")
-        </div>
-		
-		<div class="editor-label">
-            @Html.Label("Shard")
-        </div>
-        <div class="editor-field">
-            @Html.DropDownList("ShardId", String.Empty)
-        </div>
-
-        <div class="editor-label">
-            @Html.Label("Faction")
-        </div>
-        <div class="editor-field">
-            @Html.DropDownList("FactionId", String.Empty)
-        </div>
-		
-        <div class="editor-label">
-            @Html.Label("Player Class")
-        </div>
-        <div class="editor-field">
-            @Html.DropDownList("PlayerClassId", String.Empty)
-        </div>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.Amount)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.Amount)
-            @Html.ValidationMessageFor(model => model.Amount)
-        </div>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.Reason)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.Reason)
-        </div>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.Message)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.Message)
-        </div>
-
-		<div id="buttons">
-			<input id="cancelBtn" type="button" value="Cancel" />
-
-            <input id="placeBountyBtn" type="submit" value="Place Bounty" />
-        </div>        
-    </div>
+	<table id="searchTable" cellspacing="0" cellpadding="5" border="0">
+		<tr>
+			<td class="inputLabelCell">
+				@Html.Label("Character Name")
+			</td>
+			<td align="left">
+				@Html.TextBox("characterNameTxt")
+			</td>
+		</tr>
+		<tr>
+			<td class="inputLabelCell">
+				@Html.Label("Shard")
+			</td>
+			<td align="left">
+				@Html.DropDownList("ShardId", String.Empty)
+			</td>
+		</tr>
+		<tr>
+			<td class="inputLabelCell">
+				@Html.Label("Faction")
+			</td>
+			<td align="left">
+				@Html.DropDownList("FactionId", String.Empty)
+			</td>
+		</tr>
+		<tr>
+			<td class="inputLabelCell">
+				@Html.Label("Player Class")
+			</td>
+			<td align="left">
+				@Html.DropDownList("PlayerClassId", String.Empty)
+			</td>
+		</tr>
+		<tr>
+			<td class="inputLabelCell">
+				@Html.LabelFor(model => model.Amount)
+			</td>
+			<td align="left">
+				@Html.EditorFor(model => model.Amount)
+				@Html.ValidationMessageFor(model => model.Amount)
+			</td>
+		</tr>
+		<tr>
+			<td class="inputLabelCell">
+				@Html.LabelFor(model => model.Reason)
+			</td>
+			<td align="left">
+				@Html.EditorFor(model => model.Reason)
+			</td>
+		</tr>
+		<tr>
+			<td class="inputLabelCell">
+				@Html.LabelFor(model => model.Message)
+			</td>
+			<td align="left">
+				@Html.EditorFor(model => model.Message)
+			</td>
+		</tr>
+	</table>
+	
+	<div class="rowBlank">
+		<input id="placeBountyBtn" type="submit" value="Place Bounty" />
+		<input type="button" value="Cancel" onclick="window.location='../../Home/Dashboard/'"/>
+	</div>
 }

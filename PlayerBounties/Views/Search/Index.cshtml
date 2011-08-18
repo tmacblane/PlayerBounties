@@ -23,32 +23,43 @@
 		<th></th>
     </tr>
 
-@foreach(var character in Model)
-{
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => character.Name)
-        </td>
-		<td>
-            @Html.DisplayFor(modelItem => character.Shard.Name)
-        </td>
-		<td>
-            @Html.DisplayFor(modelItem => character.Faction.Name)
-        </td>
-		<td>
-            @Html.DisplayFor(modelItem => character.Race.Name)
-        </td>
-		<td>
-            @Html.DisplayFor(modelItem => character.PlayerClass.Name)
-        </td>
-		<td>
-			@Html.ActionLink("Place a bounty", "Create", "Bounty", new { character.Id }, null)
-		</td>
-		<td>
-			@Html.ActionLink("Details", "Details", "Character", new { character.Id }, null)
-		</td>
-	</tr>
-}
+	@foreach(var character in Model)
+	{
+		<tr>
+			<td>
+				@Html.DisplayFor(modelItem => character.Name)
+			</td>
+			<td>
+				@Html.DisplayFor(modelItem => character.Shard.Name)
+			</td>
+			<td>
+				@Html.DisplayFor(modelItem => character.Faction.Name)
+			</td>
+			<td>
+				@Html.DisplayFor(modelItem => character.Race.Name)
+			</td>
+			<td>
+				@Html.DisplayFor(modelItem => character.PlayerClass.Name)
+			</td>
+			<td>
+				@Html.ActionLink("Character Details", "Details", "Character", new { character.Id }, null)
+			</td>
+
+			@if(character.IsActiveBountyOnCharacter(character.Id) == false)
+			{
+				<td align="center">
+					@Html.ActionLink("Place a Bounty", "Create", "Bounty", new { id = character.Id }, null)
+				</td>
+			}
+			else
+			{
+				<td align="center">
+					@Html.ActionLink("Active Bounty", "Details", "Bounty", new { id = character.GetActiveBountyId(character.Id) }, null)
+				</td>
+			}
+
+		</tr>
+	}
 
 </table>
 

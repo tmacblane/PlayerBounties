@@ -127,6 +127,14 @@ a:active {
 	 padding-top: 5px; 
 }
 
+#characterAvatar
+{
+	 background: no-repeat center right; 
+	 height:150px; 
+	 width:150px; 
+	 text-decoration:none;
+}
+
 #footer
 {
 	font-size: 10px;
@@ -242,4 +250,31 @@ table
 	border: medium none;
     margin: 0;
     padding: 0;
+}
+
+#leftColumn
+{
+	margin-left: 10px;
+	width: 175px;
+	position: absolute;
+}
+
+#middleColumn
+{
+	left: 185px;
+	width: 630px;
+	position: relative;
+}
+
+#rightColumn
+{
+	margin-right: 10px;
+	width: 175px;
+	float: right;
+	position: relative;
+}
+
+.divSize95
+{
+	width: 100%;
 }

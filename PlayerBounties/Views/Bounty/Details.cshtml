@@ -4,66 +4,100 @@
     ViewBag.Title = "Bounty Details - " + Model.CharacterName(Model.PlacedOnId);
 }
 
-<fieldset>
-    <legend>Bounty</legend>
+<div>
+	<table id="bountyDetailsTable" cellspacing="0" cellpadding="5" border="0">
+		<tr style="height: 20px;"></tr>
+		<tr>
+			<td class="inputLabelCell">
+				Name:
+			</td>
+			<td align="left">
+				<span>@Model.CharacterName(Model.PlacedOnId)</span>
+			</td>
+		</tr>
+		<tr>
+			<td class="inputLabelCell">
+				@Html.LabelFor(model => model.Amount):
+			</td>
+			<td align="left">
+				<span>@Html.DisplayFor(model => model.Amount) credits</span>
+			</td>
+		</tr>
+		<tr>
+			<td class="inputLabelCell">
+				@Html.LabelFor(model => model.Reason):
+			</td>
+			<td align="left">
+				<span>@Html.DisplayFor(model => model.Reason)</span>
+			</td>
+		</tr>
+		<tr>
+			<td class="inputLabelCell">
+				@Html.LabelFor(model => model.Message):
+			</td>
+			<td align="left">
+				<span>@Html.DisplayFor(model => model.Message)</span>
+			</td>
+		</tr>
+		<tr>
+			<td class="inputLabelCell">
+				@Html.LabelFor(model => model.PlacedById):
+			</td>
+			<td align="left">
+				<span>@Model.CharacterName(Model.PlacedById)</span>
+			</td>
+		</tr>
+			
+		<tr>
+			<td class="inputLabelCell">
+				@Html.LabelFor(model => model.DatePlaced):
+			</td>
+			<td align="left">
+				<span>@Html.DisplayFor(model => model.DatePlaced)</span>
+			</td>
+		</tr>
+	
+		@if(Model.DateCompleted != null)
+		{
+			<tr>
+				<td class="inputLabelCell">
+					@Html.LabelFor(model => model.DateCompleted):
+				</td>
+				<td align="left">
+					<span>@Html.DisplayFor(model => model.DateCompleted)</span>
+				</td>
+			</tr>
+		}	
 
-    <div class="display-label">Amount</div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.Amount) credits
-    </div>
-
-    <div class="display-label">Reason</div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.Reason)
-    </div>
-
-    <div class="display-label">Message</div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.Message)
-    </div>
-
-    <div class="display-label">Placed By</div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.PlacedById)
-    </div>
-
-    <div class="display-label">Placed On</div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.PlacedOnId)
-    </div>
-
-    <div class="display-label">Date Placed</div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.DatePlaced)
-    </div>
-
-    <div class="display-label">IsPlacementPending</div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.IsPlacementPending)
-    </div>
-
-    <div class="display-label">Date Completed</div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.DateCompleted)
-    </div>
-
-    <div class="display-label">IsCompletionPending</div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.IsCompletionPending)
-    </div>	
-</fieldset>
+		<tr>
+			<td class="inputLabelCell">
+				Status:
+			</td>
+			<td align="left">
+				<span>@Model.GetStatus(Model.Id)</span>
+			</td>
+		</tr>
+	</table>
+</div>
 
 <!-- If user is logged in, show div  -->
-	@if(Request.IsAuthenticated)
-	 {
+@if(Request.IsAuthenticated)
+{
+	if(Model.GetStatus(Model.Id) == "Active")
+	{
 		<p>Upload picture to complete bounty</p>
 		@Html.Partial("../FileUpload/Index")
-	 }
+	}
+}
 
-<p>
-    @Html.ActionLink("Edit", "Edit", new
+<!-- and status is not Placed or Completed -->
+@if(Request.IsAuthenticated)
 {
-	id = Model.Id
-}) |
-    @Html.ActionLink("Back to List", "Index")
-</p>
+	if(Model.IsBountyOwner(Model.GetLoggedInUserId(), Model.Id)) 
+	{
+		if(Model.GetStatus(Model.Id) == "Placement Pending")
+		{
+			@Html.ActionLink("Edit", "Edit", new { id = Model.Id })
+		}			
+	}
+}

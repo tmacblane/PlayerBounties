@@ -147,9 +147,11 @@ namespace PlayerBounties.Controllers
 					// Set bounty details
 					bounty.PlacedById = character.GetDefaultCharacterForAnAccount(accountId).Single().Id;
 					bounty.PlacedOnId = characterId;
+					bounty.KilledById = null;
 					bounty.DatePlaced = DateTime.Now;
 					bounty.DateCompleted = null;
 					bounty.IsPlacementPending = true;
+					bounty.IsCompletionPending = null;
 
 					// Create bounty record
 					this.db.Bounties.Add(bounty);
@@ -228,13 +230,20 @@ namespace PlayerBounties.Controllers
 			return RedirectToAction("PendingPlacement");
 		}
 
+		public ActionResult PendingCompletion()
+		{
+			IQueryable<Bounty> bounty = this.db.Bounties.Where(b => b.IsCompletionPending == true);
+
+			return View(bounty);
+		}
+
 		public ActionResult ApproveBountyCompletion(Guid id)
 		{
 			Bounty bounty = db.Bounties.Find(id);
 
 			bounty.SetPendingCompletionToFalse(bounty);
 
-			return RedirectToAction("PendingPlacement");
+			return RedirectToAction("PendingCompletion");
 		}
 
 		#endregion

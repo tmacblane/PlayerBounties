@@ -16,13 +16,15 @@ namespace PlayerBounties.Controllers
 		#region Type specific methods
 
 		// GET: /FileUpload/
+		[Authorize]
 		public ActionResult Index()
 		{
 			return View();
 		}
 
+		[Authorize]
 		[HttpPost]
-		public ActionResult Index(HttpPostedFile file)
+		public ActionResult Index(Bounty bounty, HttpPostedFile file)
 		{
 			// Verify that a file has been selected
 			if(file != null && file.ContentLength > 0)
@@ -31,13 +33,14 @@ namespace PlayerBounties.Controllers
 				var fileName = Path.GetFileName(file.FileName);
 
 				//store the file inside images folder
-				var path = Path.Combine(Server.MapPath("~/App_Data/images"), fileName);
+				var path = Path.Combine(Server.MapPath("../App_Data/images"), fileName);
 				file.SaveAs(path);
 
 				// set is bounty pending to true
+				bounty.SetPendingCompletionToFalse(bounty);
 			}
 
-			return RedirectToAction("Index");
+			return RedirectToAction("Dashboard", "Home");
 		}
 
 		#endregion

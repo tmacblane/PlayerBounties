@@ -1,14 +1,16 @@
-﻿@using(Html.BeginForm("Index", "Search", FormMethod.Post, new
-{
-	id = "searchForm"
-}))    
+﻿@using(Html.BeginForm("Index", "Search", FormMethod.Post, new { id = "searchForm" }))    
 {
     <div id="search">
-		<div id="searchtxt">
-            @Html.TextBox("txtSearch")
-        </div>
-        <div id="searchbtn">
-            <input id="Search" type="submit" value="Search" />
-        </div>        
+		<table cellspacing="0" cellpadding="5" border="0">
+			<tr>
+				<td>Search</td>
+				<td id="searchTxt">
+					@Html.TextBox("txtSearch")
+				</td>
+				<td id="searchbtn">
+					<input id="Search" type="submit" value="Search" />
+				</td>
+			</tr>
+		</table>
     </div>
 }

@@ -167,7 +167,6 @@ namespace PlayerBounties.Models
 			}
 
 			return isCharacterOwner;
-
 		}
 
 		public string CharacterName(Guid characterId)
@@ -198,6 +197,41 @@ namespace PlayerBounties.Models
 		{
 			Character character = new Character();
 			return character.GetCharacterById(characterId).Single().Race.Name;
+		}
+
+		public int GetBountiesKilledCount(Guid characterId)
+		{
+			Bounty bounty = new Bounty();
+			
+			return bounty.GetBountiesCompletedCount(characterId);
+		}
+
+		public int GetBountiesPlacedCount(Guid characterId)
+		{
+			Bounty bounty = new Bounty();
+
+			return bounty.GetBountiesPlacedCount(characterId);
+		}
+
+		public int GetBountiesPlacedOnCount(Guid characterId)
+		{
+			Bounty bounty = new Bounty();
+
+			return bounty.GetBountiesPlacedOnCount(characterId);
+		}
+
+		public bool IsActiveBountyOnCharacter(Guid characterId)
+		{
+			Bounty bounty = new Bounty();
+
+			return bounty.IsActiveBountyOnCharacter(characterId);
+		}
+
+		public Guid GetActiveBountyId(Guid characterId)
+		{
+			Bounty bounty = new Bounty();
+
+			return bounty.GetActiveBountyId(characterId);
 		}
 
 		#endregion

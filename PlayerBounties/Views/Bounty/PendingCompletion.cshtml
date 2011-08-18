@@ -1,0 +1,63 @@
+﻿@model IEnumerable<PlayerBounties.Models.Bounty>
+
+<table cellspacing="0" cellpadding="5" border="0">
+	<tr>
+        <th>
+            Placed By
+        </th>
+		<th>
+			Placed On
+		</th>
+		<th>
+			Killed By
+		</th>
+		<th>
+			Shard
+		</th>
+		<th>
+			Amount
+		</th>
+		<th>
+			Date Placed
+		</th>
+		<th>
+			Date Completed
+		</th>
+		<th></th>
+		<th></th>
+    </tr>
+
+	@foreach(var bounty in Model)
+{
+    <tr>
+        <td>
+			@bounty.CharacterName(bounty.PlacedById)
+        </td>
+		<td>
+			@bounty.CharacterName(bounty.PlacedOnId)
+        </td>
+		<td>
+			@bounty.CharacterName(bounty.KilledById.Value)
+        </td>
+		<td>
+			@bounty.CharacterShard(bounty.PlacedOnId)
+        </td>
+		<td>
+            @Html.DisplayFor(modelItem => bounty.Amount)
+        </td>
+		<td>
+            @Html.DisplayFor(modelItem => bounty.DatePlaced)
+        </td>
+		<td>
+            @Html.DisplayFor(modelItem => bounty.DateCompleted)
+        </td>
+		<td>
+			@Html.ActionLink("Approve", "ApproveBountyCompletion", "Bounty", new { bounty.Id }, null)
+		</td>
+		<td>
+			
+		</td>
+	</tr>
+}
+
+</table>

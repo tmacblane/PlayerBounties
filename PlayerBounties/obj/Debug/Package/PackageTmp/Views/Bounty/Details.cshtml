@@ -1,10 +1,8 @@
 ﻿@model PlayerBounties.Models.Bounty
 
 @{
-    ViewBag.Title = "Details";
+    ViewBag.Title = "Bounty Details - " + Model.CharacterName(Model.PlacedOnId);
 }
-
-<h2>Details</h2>
 
 <fieldset>
     <legend>Bounty</legend>
