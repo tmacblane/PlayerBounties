@@ -103,10 +103,7 @@
 	{
 		if(Model.GetStatus(Model.Id) == "Placement Pending")
 		{
-			@Html.ActionLink("Edit", "Edit", new
-{
-	id = Model.Id
-})
+			@Html.ActionLink("Edit", "Edit", new { id = Model.Id })
 		}			
 	}
 }

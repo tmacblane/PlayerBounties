@@ -74,20 +74,26 @@ a:active {
     color: #034af3;
 }
 
+img 
+{
+	border-style: none;
+}
+
 #header
 {
+	background: #FFFFFF;
 	background: -moz-linear-gradient(center top , #FFFFFF, #FFFFFF) repeat scroll 0 0 transparent;
 	height: 100px;
 	position: relative;
     margin-bottom: 0px;
     color: #000000;
     padding: 0;
-    z-index: 100;
-	
+    z-index: 100;	
 }
 
 #subHeader
 {
+	clear: both;
 	background-color: #333333;
     box-shadow: 0 2px 0 #BBBBBB;
     height: 40px;
@@ -137,6 +143,7 @@ a:active {
 
 #footer
 {
+	clear: both;
 	font-size: 10px;
 	clear: both;
     left: 50%;
@@ -162,6 +169,7 @@ input[type="password"]
 	width: 98%;	
 	height: 25px;
 	color: #000000;
+	background: #EEEEEE;
 	background: -moz-linear-gradient(center top , #EEEEEE, #FFFFFF) repeat scroll 0 0 transparent;
     border: 1px solid #BBBBBB;
     border-radius: 4px 4px 4px 4px;
@@ -176,6 +184,7 @@ input[type="password"]
 input[type="submit"], input[type="button"]
 {
 	float: right;
+	background: #444444;
 	background: -moz-linear-gradient(center top, #444444, #222222) repeat scroll 0 0 transparent;
 	border: 0;
 	border-radius: 4px 4px 4px 4px;
@@ -254,27 +263,32 @@ table
 
 #leftColumn
 {
-	margin-left: 10px;
 	width: 175px;
-	position: absolute;
-}
-
-#middleColumn
-{
-	left: 185px;
-	width: 630px;
-	position: relative;
+	float: left;
 }
 
 #rightColumn
 {
-	margin-right: 10px;
-	width: 175px;
 	float: right;
-	position: relative;
+	width: 175px;
 }
+
+#middleColumn
+{
+	padding: 0 185px;
+	width: 630px;
+}
+
 
 .divSize95
 {
+	clear: both;
 	width: 100%;
+	margin-left: 10px;
+	margin-right: 10px;
+}
+
+.inputLabelCell
+{
+	font-weight: bold;
 }

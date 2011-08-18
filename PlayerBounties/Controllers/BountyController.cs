@@ -253,7 +253,7 @@ namespace PlayerBounties.Controllers
 			return RedirectToAction("PendingCompletion");
 		}
 
-		public ActionResult SubmitBountyForCompletion(Guid id, FormCollection formCollection)
+		public ActionResult SubmitBountyForCompletion(Guid id)
 		{
 			Character character = new Character();
 			
