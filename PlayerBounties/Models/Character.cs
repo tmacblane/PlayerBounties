@@ -65,6 +65,12 @@ namespace PlayerBounties.Models
 			set;
 		}
 
+		public Guid? AvatarId
+		{
+			get;
+			set;
+		}
+
 		public string Motto
 		{
 			get;
@@ -113,6 +119,14 @@ namespace PlayerBounties.Models
 		[ForeignKey("PlayerClassId")]
 		[Display(Name = "Class")]
 		public PlayerClass PlayerClass
+		{
+			get;
+			set;
+		}
+
+		[ForeignKey("AvatarId")]
+		[Display(Name = "Avatar")]
+		public Avatar Avatar
 		{
 			get;
 			set;

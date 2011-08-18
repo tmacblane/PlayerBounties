@@ -181,7 +181,7 @@ namespace PlayerBounties.Models
 
 			if(db.Bounties.Where(b => b.PlacedOnId == characterId).Count() != 0)
 			{
-				if(db.Bounties.Where(b => b.PlacedOnId == characterId).Where(b => b.IsCompletionPending == false).Count() == 0)
+				if(db.Bounties.Where(b => b.PlacedOnId == characterId).Where(b => b.KilledById.Value == null).Count() != 0)
 				{
 					isActiveBounty = true;
 				}
