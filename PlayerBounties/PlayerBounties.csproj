@@ -72,7 +72,6 @@
     <Compile Include="Controllers\CharacterController.cs" />
     <Compile Include="Controllers\DashboardController.cs" />
     <Compile Include="Controllers\FactionController.cs" />
-    <Compile Include="Controllers\FileUploadController.cs" />
     <Compile Include="Controllers\HeaderController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\PlayerClassController.cs" />
@@ -168,7 +167,6 @@
     <Content Include="Views\Web.config" />
     <Content Include="Views\Admin\Index.cshtml" />
     <Content Include="Views\Header\_Header.cshtml" />
-    <Content Include="Views\FileUpload\Index.cshtml" />
     <Content Include="Views\Character\_CharacterAddEdit.cshtml" />
     <Content Include="Views\Bounty\PendingPlacement.cshtml" />
     <Content Include="Views\Bounty\PendingCompletion.cshtml" />

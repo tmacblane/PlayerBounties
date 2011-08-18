@@ -172,7 +172,7 @@ namespace PlayerBounties.Models
 
 		public int GetBountiesPlacedOnCount(Guid characterId)
 		{
-			return db.Bounties.Where(b => b.PlacedOnId == characterId).Where(b => b.IsPlacementPending != true).Count();
+			return db.Bounties.Where(b => b.PlacedOnId == characterId).Where(b => b.IsPlacementPending == false).Count();
 		}
 
 		public bool IsActiveBountyOnCharacter(Guid characterId)

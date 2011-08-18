@@ -86,18 +86,27 @@
 	if(Model.GetStatus(Model.Id) == "Active")
 	{
 		<p>Upload picture to complete bounty</p>
-		@Html.Partial("../FileUpload/Index")
+		
+	
+		@Html.DropDownList("CharacterList", String.Empty)
+	
+		<p>Provide list box of available characters who killed the target with default character being auto selected</p>
+	
+		@Html.ActionLink("Complete Bounty", "SubmitBountyForCompletion", "Bounty", new { id = Model.Id }, null)
 	}
 }
 
 <!-- and status is not Placed or Completed -->
 @if(Request.IsAuthenticated)
 {
-	if(Model.IsBountyOwner(Model.GetLoggedInUserId(), Model.Id)) 
+	if(Model.IsBountyOwner(Model.GetLoggedInUserId(), Model.Id))
 	{
 		if(Model.GetStatus(Model.Id) == "Placement Pending")
 		{
-			@Html.ActionLink("Edit", "Edit", new { id = Model.Id })
+			@Html.ActionLink("Edit", "Edit", new
+{
+	id = Model.Id
+})
 		}			
 	}
 }

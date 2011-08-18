@@ -15,6 +15,7 @@ namespace PlayerBounties.Controllers
 		#region Fields
 
 		private Account account = new Account();
+		private Character character = new Character();
 		private PlayerBountyContext db = new PlayerBountyContext();
 
 		#endregion
@@ -31,6 +32,12 @@ namespace PlayerBounties.Controllers
 		public ViewResult Details(Guid id)
 		{
 			Bounty bounty = this.db.Bounties.Find(id);
+
+			var characters = this.character.GetAllCharactersForAnAccount(this.account.GetLoggedInUserId());
+			var defaultCharacter = this.character.GetDefaultCharacterForAnAccount(this.account.GetLoggedInUserId());
+
+			ViewBag.CharacterList = new SelectList(characters, "Id", "Name", defaultCharacter.Single().Id);
+
 			return View(bounty);
 		}
 
@@ -244,6 +251,20 @@ namespace PlayerBounties.Controllers
 			bounty.SetPendingCompletionToFalse(bounty);
 
 			return RedirectToAction("PendingCompletion");
+		}
+
+		public ActionResult SubmitBountyForCompletion(Guid id, FormCollection formCollection)
+		{
+			Character character = new Character();
+			
+			Bounty bounty = db.Bounties.Find(id);
+
+			bounty.KilledById = character.GetDefaultCharacterForAnAccount(character.GetLoggedInUserId()).Single().Id;
+			bounty.IsCompletionPending = true;
+			bounty.DateCompleted = DateTime.Now;
+			this.db.Entry(bounty).State = EntityState.Modified;
+			this.db.SaveChanges();
+			return RedirectToAction("Index");
 		}
 
 		#endregion
