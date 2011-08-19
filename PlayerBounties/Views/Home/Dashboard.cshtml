@@ -1,4 +1,6 @@
-﻿@{
+﻿@model IEnumerable<PlayerBounties.Models.Character>
+
+@{
     ViewBag.Title = "Dashboard";
 }
 
@@ -10,8 +12,10 @@
 
 </div>
 
-@Html.ActionLink("Place a Bounty", "PlaceBounty", "Bounty")
-
+@if(Model != null)
+{
+	@Html.ActionLink("Place a Bounty", "PlaceBounty", "Bounty")
+}
 
 <h3>Account Statistics</h3>
 

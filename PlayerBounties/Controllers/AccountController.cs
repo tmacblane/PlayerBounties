@@ -84,7 +84,7 @@ namespace PlayerBounties.Controllers
 
 						var accountId = account.GetUserId(signUpModel.Email);
 
-						return RedirectToAction("Dashboard", "Home");
+						return RedirectToAction("Create", "Character");
 					}
 					else
 					{

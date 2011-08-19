@@ -166,7 +166,14 @@ namespace PlayerBounties.Models
 
 		public Guid GetLoggedInUserId()
 		{
-			return this.db.Accounts.Where(row => row.EmailAddress == System.Web.HttpContext.Current.User.Identity.Name).Single().Id;
+			try
+			{
+				return this.db.Accounts.Where(row => row.EmailAddress == System.Web.HttpContext.Current.User.Identity.Name).Single().Id;
+			}
+			catch(Exception)
+			{
+				return Guid.Empty;
+			}
 		}
 
 		public bool IsCharacterOwner(Guid userId, Guid characterId)
