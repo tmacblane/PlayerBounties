@@ -171,6 +171,7 @@
     <Content Include="Views\Bounty\PendingPlacement.cshtml" />
     <Content Include="Views\Bounty\PendingCompletion.cshtml" />
     <Content Include="Views\Character\CharacterExists.cshtml" />
+    <Content Include="Views\Account\_Login.cshtml" />
     <None Include="_bin_deployableAssemblies\Microsoft.Web.Infrastructure.dll" />
     <None Include="_bin_deployableAssemblies\System.Web.WebPages.Razor.dll" />
     <None Include="_bin_deployableAssemblies\System.Web.WebPages.dll" />

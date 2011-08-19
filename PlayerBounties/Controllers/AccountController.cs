@@ -26,6 +26,11 @@ namespace PlayerBounties.Controllers
 			return View();
 		}
 
+		public ActionResult _Login()
+		{
+			return View();
+		}
+
 		// POST: /Account/Login
 		[HttpPost]
 		public ActionResult Login(LoginModel loginModel, string returnUrl)

@@ -1,4 +1,25 @@
-﻿
-<h2>Search Box</h2>
+﻿<h2>Statistics</h2>
 
-<h2>Latest Statistics</h2>
+<h2>Other Things</h2>
+
+<div id="loginDialog" class="dialogBackground">@Html.Partial("../Account/_Login")</div>
+
+<script type="text/javascript">
+	$(function()
+	{
+		$('#loginDialog').dialog({
+			autoOpen: false,
+			width: window.screen.width,
+			height: window.screen.height,
+			resizable: false,
+			modal: true,
+			closeOnEscape: true,
+			open: function() { $(".ui-dialog-titlebar-close").hide(); $(".ui-dialog-titlebar").hide(); }
+		});
+
+		$('#openLoginForm').click(function()
+		{
+			$('#loginDialog').dialog('open');
+		});
+	});
+</script>

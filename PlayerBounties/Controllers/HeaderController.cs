@@ -19,7 +19,7 @@ namespace PlayerBounties.Controllers
 			Account account = new Account();
 
 			return View(account);
-		}
+		}		
 
 		#endregion
 	}
