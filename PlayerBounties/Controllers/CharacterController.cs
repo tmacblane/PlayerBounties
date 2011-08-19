@@ -87,6 +87,10 @@ namespace PlayerBounties.Controllers
 						character.SetDefaultCharacterToFalse(defaultCharacterId);
 					}
 				}
+				else if(character.GetDefaultCharacterForAnAccount(accountId).Count() == 0)
+				{
+					character.IsPrimary = true;
+				}
 
 				this.db.Characters.Add(character);
 				this.db.SaveChanges();
@@ -148,11 +152,17 @@ namespace PlayerBounties.Controllers
 			if(this.character.IsCharacterOwner(this.account.GetLoggedInUserId(), character.Id))
 			{
 				if(ModelState.IsValid)
-				{
+				{				
 					character.UserId = this.account.GetLoggedInUserId();
 					this.db.Entry(character).State = EntityState.Modified;
+
+					if(character.GetDefaultCharacterForAnAccount(this.account.GetLoggedInUserId()).Count() == 0)
+					{
+						character.IsPrimary = true;
+					}
+
 					this.db.SaveChanges();
-					return RedirectToAction("MyAccount", "Account");
+					return RedirectToAction("Dashboard", "Home");
 				}
 
 				ViewBag.ShardId = new SelectList(this.db.Shards, "Id", "Name", character.ShardId);
