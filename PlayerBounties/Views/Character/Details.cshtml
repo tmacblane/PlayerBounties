@@ -19,19 +19,24 @@
 
 			@if(Request.IsAuthenticated)
 			{
-				if(Model.IsActiveBountyOnCharacter(Model.Id) == false)
+				if(Model.GetDefaultCharacterForAnAccount(Model.GetLoggedInUserId()).Count() != 0)
 				{
-					<tr>
-						<td align="center">
-							@Html.ActionLink("Place a Bounty", "Create", "Bounty", new { id = Model.Id }, null)
-						</td>
-					</tr>
-				}
-				else
-				{
-					<tr>
-						<td align="center">@Html.ActionLink("Active Bounty", "Details", "Bounty", new { id = Model.GetActiveBountyId(Model.Id) }, null) </td>
-					</tr>
+					if(Model.IsActiveBountyOnCharacter(Model.Id) == false)
+					{
+						<tr>
+							<td align="center">
+								@Html.ActionLink("Place a Bounty", "Create", "Bounty", new { id = Model.Id }, null)
+							</td>
+						</tr>
+						}
+						else
+						{
+						<tr>
+							<td align="center">
+								@Html.ActionLink("Active Bounty", "Details", "Bounty", new { id = Model.GetActiveBountyId(Model.Id) }, null)
+							</td>
+						</tr>
+					}
 				}
 			}
 		

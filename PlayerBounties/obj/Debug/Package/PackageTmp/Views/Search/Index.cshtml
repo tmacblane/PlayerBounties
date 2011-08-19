@@ -45,17 +45,23 @@
 				@Html.ActionLink("Character Details", "Details", "Character", new { character.Id }, null)
 			</td>
 
-			@if(character.IsActiveBountyOnCharacter(character.Id) == false)
+			@if(character.GetLoggedInUserId() != Guid.Empty)
 			{
-				<td align="center">
-					@Html.ActionLink("Place a Bounty", "Create", "Bounty", new { id = character.Id }, null)
-				</td>
-			}
-			else
-			{
-				<td align="center">
-					@Html.ActionLink("Active Bounty", "Details", "Bounty", new { id = character.GetActiveBountyId(character.Id) }, null)
-				</td>
+				if(character.GetAllCharactersForAnAccount(character.GetLoggedInUserId()).Count() != 0)
+				{
+					if(character.IsActiveBountyOnCharacter(character.Id) == false)
+					{
+						<td align="center">
+							@Html.ActionLink("Place a Bounty", "Create", "Bounty", new { id = character.Id }, null)
+						</td>
+					}
+					else
+					{
+						<td align="center">
+							@Html.ActionLink("Active Bounty", "Details", "Bounty", new { id = character.GetActiveBountyId(character.Id) }, null)
+						</td>
+					}
+				}
 			}
 
 		</tr>
