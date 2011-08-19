@@ -10,13 +10,17 @@ using PlayerBounties.Models;
 
 namespace PlayerBounties.Controllers
 {
-    public class HeaderController : Controller
-    {
+	public class HeaderController : Controller
+	{
+		#region Type specific methods
+
 		public ActionResult _Header()
-		{			
+		{
 			Account account = new Account();
 
 			return View(account);
 		}
-    }
+
+		#endregion
+	}
 }

@@ -10,7 +10,7 @@ using PlayerBounties.Models;
 
 namespace PlayerBounties.Controllers
 {
-    public class AdminController : Controller
+	public class AdminController : Controller
 	{
 		#region Fields
 
@@ -19,12 +19,13 @@ namespace PlayerBounties.Controllers
 
 		#endregion
 
-        //
-        // GET: /Admin/
+		#region Type specific methods
+
+		// GET: /Admin/
 		[Authorize]
-        public ActionResult Index()
-        {
-			if(account.IsUserAdmin(account.GetLoggedInUserId()))
+		public ActionResult Index()
+		{
+			if(this.account.IsUserAdmin(this.account.GetLoggedInUserId()))
 			{
 				return View();
 			}
@@ -32,6 +33,8 @@ namespace PlayerBounties.Controllers
 			{
 				return RedirectToAction("Dashboard", "Home");
 			}
-        }
-    }
+		}
+
+		#endregion
+	}
 }

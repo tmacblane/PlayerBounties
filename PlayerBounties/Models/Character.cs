@@ -138,17 +138,17 @@ namespace PlayerBounties.Models
 
 		public IQueryable<Character> GetAllCharactersForAnAccount(Guid accountId)
 		{
-			return db.Characters.Where(c => c.UserId == accountId).Include(c => c.Shard).Include(c => c.Faction).Include(c => c.Race).Include(c => c.PlayerClass);
+			return this.db.Characters.Where(c => c.UserId == accountId).Include(c => c.Shard).Include(c => c.Faction).Include(c => c.Race).Include(c => c.PlayerClass);
 		}
 
 		public IQueryable<Character> GetCharacterById(Guid characterId)
 		{
-			return db.Characters.Where(c => c.Id == characterId).Include(c => c.Shard).Include(c => c.Faction).Include(c => c.Race).Include(c => c.PlayerClass);
+			return this.db.Characters.Where(c => c.Id == characterId).Include(c => c.Shard).Include(c => c.Faction).Include(c => c.Race).Include(c => c.PlayerClass);
 		}
 
 		public IQueryable<Character> GetCharacter(string name, Guid shard, Guid faction)
 		{
-			return db.Characters.Where(c => c.Name == name).Where(c => c.Shard.Id == shard).Where(c => c.Faction.Id == faction);
+			return this.db.Characters.Where(c => c.Name == name).Where(c => c.Shard.Id == shard).Where(c => c.Faction.Id == faction);
 		}
 
 		public IQueryable<Character> GetDefaultCharacterForAnAccount(Guid accountId)
@@ -158,10 +158,10 @@ namespace PlayerBounties.Models
 
 		public void SetDefaultCharacterToFalse(Guid characterId)
 		{
-			var character = db.Characters.Find(characterId);
+			var character = this.db.Characters.Find(characterId);
 			character.IsPrimary = false;
-			db.Entry(character).State = EntityState.Modified;
-			db.SaveChanges();
+			this.db.Entry(character).State = EntityState.Modified;
+			this.db.SaveChanges();
 		}
 
 		public Guid GetLoggedInUserId()
@@ -180,11 +180,17 @@ namespace PlayerBounties.Models
 		{
 			bool isCharacterOwner = false;
 
-			var character = db.Characters.Find(characterId);
+			var character = this.db.Characters.Find(characterId);
 
-			if(userId == character.UserId)
+			try
 			{
-				isCharacterOwner = true;
+				if(userId == character.UserId)
+				{
+					isCharacterOwner = true;
+				}
+			}
+			catch(Exception)
+			{
 			}
 
 			return isCharacterOwner;

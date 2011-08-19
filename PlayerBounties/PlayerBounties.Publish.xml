@@ -41,7 +41,7 @@
     <file relUrl="Content/themes/base/images/ui-icons_888888_256x240.png" publishTime="08/04/2011 13:30:44" />
     <file relUrl="Views/Shard/Index.cshtml" publishTime="08/04/2011 14:19:02" />
     <file relUrl="Views/Shared/_Footer.cshtml" publishTime="08/05/2011 13:45:26" />
-    <file relUrl="App_Data/PlayerBounty.sdf" publishTime="08/19/2011 10:02:46" />
+    <file relUrl="App_Data/PlayerBounty.sdf" publishTime="08/19/2011 10:10:00" />
     <file relUrl="Scripts/jquery-1.5.1.js" publishTime="08/04/2011 13:30:42" />
     <file relUrl="Content/themes/base/jquery.ui.core.css" publishTime="08/04/2011 13:30:44" />
     <file relUrl="Views/Account/Login.cshtml" publishTime="08/16/2011 13:04:43" />
@@ -95,7 +95,7 @@
     <file relUrl="Content/Images/mandalorianLogo.png" publishTime="08/15/2011 15:02:42" />
     <file relUrl="Views/Header/_Header.cshtml" publishTime="08/16/2011 17:58:53" />
     <file relUrl="Views/Shard/Delete.cshtml" publishTime="08/04/2011 14:19:06" />
-    <file relUrl="Views/Character/Details.cshtml" publishTime="08/18/2011 17:46:26" />
+    <file relUrl="Views/Character/Details.cshtml" publishTime="08/19/2011 10:08:37" />
     <file relUrl="bin/WebActivator.dll" publishTime="08/04/2011 15:01:24" />
     <file relUrl="Views/_ViewStart.cshtml" publishTime="08/04/2011 13:30:40" />
     <file relUrl="Views/Account/MyAccount.cshtml" publishTime="08/05/2011 15:19:10" />

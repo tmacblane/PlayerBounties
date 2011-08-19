@@ -28,7 +28,7 @@ ul.headerLinks
 {
 	cursor: pointer;
     float: right;
-    font-size: 11px;
+    font-size: 12px;
     height: 26px;
     position: absolute;
     right: 10px;
@@ -226,10 +226,14 @@ input[type="submit"] input[value], input[type="button"] input[value]
     z-index: 10;
 }
 
-#loginBox, #signUpBox
+.centeredForm
 {
 	margin-top: 50px;
 	margin-left: 275px;	
+}
+
+#loginForm, #signUpForm
+{
 	border-style: solid;
     border-width: 1px;
 	padding: 20px;

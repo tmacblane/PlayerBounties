@@ -82,7 +82,7 @@ namespace PlayerBounties.Controllers
 						this.account.AddUserToDatabase(signUpModel);
 						FormsAuthentication.SetAuthCookie(signUpModel.Email, false);
 
-						var accountId = account.GetUserId(signUpModel.Email);
+						var accountId = this.account.GetUserId(signUpModel.Email);
 
 						return RedirectToAction("Create", "Character");
 					}

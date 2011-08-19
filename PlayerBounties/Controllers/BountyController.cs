@@ -88,7 +88,6 @@ namespace PlayerBounties.Controllers
 				return RedirectToAction("Dashboard", "Home");
 			}
 
-
 			return View(bounty);
 		}
 
@@ -230,7 +229,7 @@ namespace PlayerBounties.Controllers
 
 		public ActionResult ApproveBountyPlacement(Guid id)
 		{
-			Bounty bounty = db.Bounties.Find(id);
+			Bounty bounty = this.db.Bounties.Find(id);
 
 			bounty.SetPendingPlacementToFalse(bounty);
 
@@ -246,7 +245,7 @@ namespace PlayerBounties.Controllers
 
 		public ActionResult ApproveBountyCompletion(Guid id)
 		{
-			Bounty bounty = db.Bounties.Find(id);
+			Bounty bounty = this.db.Bounties.Find(id);
 
 			bounty.SetPendingCompletionToFalse(bounty);
 
@@ -257,7 +256,7 @@ namespace PlayerBounties.Controllers
 		{
 			Character character = new Character();
 			
-			Bounty bounty = db.Bounties.Find(id);
+			Bounty bounty = this.db.Bounties.Find(id);
 
 			bounty.KilledById = character.GetDefaultCharacterForAnAccount(character.GetLoggedInUserId()).Single().Id;
 			bounty.IsCompletionPending = true;

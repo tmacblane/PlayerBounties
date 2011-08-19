@@ -8,6 +8,8 @@ namespace PlayerBounties.Models
 {
 	public class PlayerClass
 	{
+		#region Type specific properties
+
 		[Key]
 		public Guid Id
 		{
@@ -34,5 +36,7 @@ namespace PlayerBounties.Models
 			get;
 			set;
 		}
+
+		#endregion
 	}
 }

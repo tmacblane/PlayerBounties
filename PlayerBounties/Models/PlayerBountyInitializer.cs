@@ -1,13 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Web;
-using System.Data.Entity;
 
 namespace PlayerBounties.Models
 {
 	public class PlayerBountyInitializer : DropCreateDatabaseIfModelChanges<PlayerBountyContext>
 	{
+		#region Base class overrides
+
 		protected override void Seed(PlayerBountyContext context)
 		{
 			var factions = new List<Faction>
@@ -33,36 +35,38 @@ namespace PlayerBounties.Models
 
 			var races = new List<Race>
 			{
-				new Race { Name = "Twi'Lek"},
-				new Race { Name = "Chiss"},
-				new Race { Name = "Rattaki"},
-				new Race { Name = "Human"},
-				new Race { Name = "Zabrak"},
-				new Race { Name = "Miraluka"},
-				new Race { Name = "Mirialan"},
-				new Race { Name = "Sith Pureblood"}
+				new Race { Name = "Twi'Lek" },
+				new Race { Name = "Chiss" },
+				new Race { Name = "Rattaki" },
+				new Race { Name = "Human" },
+				new Race { Name = "Zabrak" },
+				new Race { Name = "Miraluka" },
+				new Race { Name = "Mirialan" },
+				new Race { Name = "Sith Pureblood" }
 			};
 
 			var shards = new List<Shard>
 			{
-				new Shard { Name = "Alderaan"},
-				new Shard { Name = "Coruscant"},
-				new Shard { Name = "Belsavis"},
-				new Shard { Name = "Ilum"},
-				new Shard { Name = "Ord Mantell"},
-				new Shard { Name = "Hoth"},
-				new Shard { Name = "Balmorra"},
-				new Shard { Name = "Tython"},
-				new Shard { Name = "Nar Shaddaa"},
-				new Shard { Name = "Hutta"},
-				new Shard { Name = "Dromund Kaas"},
-				new Shard { Name = "Taris"},
-				new Shard { Name = "Voss"},
-				new Shard { Name = "Corellia"},
-				new Shard { Name = "Korriban"},
-				new Shard { Name = "Quesh"},
-				new Shard { Name = "Tatooine"}
+				new Shard { Name = "Alderaan" },
+				new Shard { Name = "Coruscant" },
+				new Shard { Name = "Belsavis" },
+				new Shard { Name = "Ilum" },
+				new Shard { Name = "Ord Mantell" },
+				new Shard { Name = "Hoth" },
+				new Shard { Name = "Balmorra" },
+				new Shard { Name = "Tython" },
+				new Shard { Name = "Nar Shaddaa" },
+				new Shard { Name = "Hutta" },
+				new Shard { Name = "Dromund Kaas" },
+				new Shard { Name = "Taris" },
+				new Shard { Name = "Voss" },
+				new Shard { Name = "Corellia" },
+				new Shard { Name = "Korriban" },
+				new Shard { Name = "Quesh" },
+				new Shard { Name = "Tatooine" }
 			};
 		}
+
+		#endregion
 	}
 }

@@ -75,25 +75,46 @@ namespace PlayerBounties.Controllers
 
 			if(ModelState.IsValid)
 			{
-				character.Id = Guid.NewGuid();
-				character.UserId = accountId;
-
-				if(character.IsPrimary.Equals(true))
+				if(character.GetCharacter(character.Name, character.ShardId, character.FactionId) != null)
 				{
-					if(character.GetDefaultCharacterForAnAccount(accountId).Count() != 0)
-					{
-						var defaultCharacterId = character.GetDefaultCharacterForAnAccount(accountId).Single().Id;
+					Character existingCharacter = character.GetCharacter(character.Name, character.ShardId, character.FactionId).Single();
 
-						character.SetDefaultCharacterToFalse(defaultCharacterId);
+					if(existingCharacter.UserId == Guid.Empty)
+					{
+						existingCharacter.Bio = character.Bio;
+						existingCharacter.Motto = character.Motto;
+						existingCharacter.PlayerClassId = character.PlayerClassId;
+						existingCharacter.RaceId = character.RaceId;
+
+						this.Edit(existingCharacter);
+					}
+					else
+					{
+						return RedirectToAction("CharacterExists");
 					}
 				}
-				else if(character.GetDefaultCharacterForAnAccount(accountId).Count() == 0)
+				else
 				{
-					character.IsPrimary = true;
-				}
+					character.Id = Guid.NewGuid();
+					character.UserId = accountId;
 
-				this.db.Characters.Add(character);
-				this.db.SaveChanges();
+					if(character.IsPrimary.Equals(true))
+					{
+						if(character.GetDefaultCharacterForAnAccount(accountId).Count() != 0)
+						{
+							var defaultCharacterId = character.GetDefaultCharacterForAnAccount(accountId).Single().Id;
+
+							character.SetDefaultCharacterToFalse(defaultCharacterId);
+						}
+					}
+					else if(character.GetDefaultCharacterForAnAccount(accountId).Count() == 0)
+					{
+						character.IsPrimary = true;
+					}
+
+					this.db.Characters.Add(character);
+					this.db.SaveChanges();
+				}
 
 				return RedirectToAction("Dashboard", "Home");
 			}
@@ -103,6 +124,11 @@ namespace PlayerBounties.Controllers
 			ViewBag.RaceId = new SelectList(this.db.Races, "Id", "Name", character.RaceId);
 			ViewBag.PlayerClassId = new SelectList(this.db.PlayerClasses, "Id", "Name", character.PlayerClassId);
 			return View(character);
+		}
+
+		public ViewResult CharacterExists()
+		{
+			return View();
 		}
 
 		[HttpPost]
@@ -149,14 +175,20 @@ namespace PlayerBounties.Controllers
 		[HttpPost]
 		public ActionResult Edit(Character character)
 		{
-			if(this.character.IsCharacterOwner(this.account.GetLoggedInUserId(), character.Id))
+			var accountId = this.account.GetLoggedInUserId();
+
+			this.db.Entry(character).State = EntityState.Modified;			
+
+			if(this.character.IsCharacterOwner(accountId, character.Id) || this.character.UserId == Guid.Empty)
 			{
 				if(ModelState.IsValid)
-				{				
-					character.UserId = this.account.GetLoggedInUserId();
-					this.db.Entry(character).State = EntityState.Modified;
+				{
+					if(character.UserId == Guid.Empty)
+					{
+						character.UserId = accountId;
+					}
 
-					if(character.GetDefaultCharacterForAnAccount(this.account.GetLoggedInUserId()).Count() == 0)
+					if(character.GetDefaultCharacterForAnAccount(accountId).Count() == 0)
 					{
 						character.IsPrimary = true;
 					}

@@ -6,6 +6,8 @@ namespace PlayerBounties.Models
 {
 	public class PlayerBountyContext : DbContext
 	{
+		#region Type specific properties
+
 		public DbSet<Account> Accounts
 		{
 			get;
@@ -46,6 +48,8 @@ namespace PlayerBounties.Models
 		{
 			get;
 			set;
-		}		
+		}
+
+		#endregion
 	}
 }

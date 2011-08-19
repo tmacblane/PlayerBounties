@@ -8,6 +8,8 @@ namespace PlayerBounties.Models
 {
 	public class Shard
 	{
+		#region Type specific properties
+
 		[Key]
 		public Guid Id
 		{
@@ -21,5 +23,7 @@ namespace PlayerBounties.Models
 			get;
 			set;
 		}
+
+		#endregion
 	}
 }

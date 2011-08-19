@@ -8,6 +8,8 @@ namespace PlayerBounties.Models
 {
 	public class Race
 	{
+		#region Type specific properties
+
 		[Key]
 		public Guid Id
 		{
@@ -27,5 +29,7 @@ namespace PlayerBounties.Models
 			get;
 			set;
 		}
+
+		#endregion
 	}
 }

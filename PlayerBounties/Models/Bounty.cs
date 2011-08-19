@@ -147,7 +147,7 @@ namespace PlayerBounties.Models
 		{
 			bool isBountyOwner = false;
 
-			var bounty = db.Bounties.Find(bountyId);
+			var bounty = this.db.Bounties.Find(bountyId);
 
 			Character character = new Character();
 			Guid characterUserId = character.GetCharacterById(bounty.PlacedById).Single().UserId;
@@ -162,26 +162,26 @@ namespace PlayerBounties.Models
 
 		public int GetBountiesCompletedCount(Guid characterId)
 		{
-			return db.Bounties.Where(b => b.KilledById == characterId).Count();
+			return this.db.Bounties.Where(b => b.KilledById == characterId).Count();
 		}
 
 		public int GetBountiesPlacedCount(Guid characterId)
 		{
-			return db.Bounties.Where(b => b.PlacedById == characterId).Count();
+			return this.db.Bounties.Where(b => b.PlacedById == characterId).Count();
 		}
 
 		public int GetBountiesPlacedOnCount(Guid characterId)
 		{
-			return db.Bounties.Where(b => b.PlacedOnId == characterId).Where(b => b.IsPlacementPending == false).Count();
+			return this.db.Bounties.Where(b => b.PlacedOnId == characterId).Where(b => b.IsPlacementPending == false).Count();
 		}
 
 		public bool IsActiveBountyOnCharacter(Guid characterId)
 		{
 			bool isActiveBounty = false;
 
-			if(db.Bounties.Where(b => b.PlacedOnId == characterId).Count() != 0)
+			if(this.db.Bounties.Where(b => b.PlacedOnId == characterId).Count() != 0)
 			{
-				if(db.Bounties.Where(b => b.PlacedOnId == characterId).Where(b => b.KilledById.Value == null).Count() != 0)
+				if(this.db.Bounties.Where(b => b.PlacedOnId == characterId).Where(b => b.KilledById.Value == null).Count() != 0)
 				{
 					isActiveBounty = true;
 				}
@@ -192,7 +192,7 @@ namespace PlayerBounties.Models
 
 		public string GetStatus(Guid bountyId)
 		{
-			Bounty bounty = db.Bounties.Find(bountyId);
+			Bounty bounty = this.db.Bounties.Find(bountyId);
 
 			string bountyStatus = string.Empty;
 			
@@ -218,7 +218,7 @@ namespace PlayerBounties.Models
 
 		public Guid GetActiveBountyId(Guid characterId)
 		{
-			return db.Bounties.Where(b => b.PlacedOnId.Equals(characterId)).Where(b => b.IsCompletionPending.Equals(null)).Single().Id;
+			return this.db.Bounties.Where(b => b.PlacedOnId.Equals(characterId)).Where(b => b.IsCompletionPending.Equals(null)).Single().Id;
 		}
 
 		#endregion

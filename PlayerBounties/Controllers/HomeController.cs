@@ -18,6 +18,8 @@ namespace PlayerBounties.Controllers
 
 		#endregion
 
+		#region Type specific methods
+
 		public ActionResult Index()
 		{
 			ViewBag.Message = "Coming Soon!";
@@ -45,5 +47,7 @@ namespace PlayerBounties.Controllers
 		{
 			return View();
 		}
+
+		#endregion
 	}
 }
