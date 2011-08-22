@@ -21,7 +21,7 @@
 		<td align="left">
 			@if(Model.GetAccountBountiesCompleted(Model.GetLoggedInUserId()).Count() != 0)
 			{
-				@Html.ActionLink(Model.GetAccountBountiesCompleted(Model.GetLoggedInUserId()).Count().ToString(), "Index", "Bounty")
+				@Html.ActionLink(Model.GetAccountBountiesCompleted(Model.GetLoggedInUserId()).Count().ToString(), "_TargetsKilled", "Bounty")
 			}
 			else
 			{
@@ -36,7 +36,7 @@
 		<td align="left">
 			@if(Model.GetAccountBountiesPlaced(Model.GetLoggedInUserId()).Count() != 0)
 			{
-				@Html.ActionLink(Model.GetAccountBountiesPlaced(Model.GetLoggedInUserId()).Count().ToString(), "Index", "Bounty")
+				@Html.ActionLink(Model.GetAccountBountiesPlaced(Model.GetLoggedInUserId()).Count().ToString(), "_BountiesPlaced", "Bounty", Guid.Empty, null)
 			}
 			else
 			{
@@ -51,7 +51,7 @@
 		<td align="left">
 			@if(Model.GetAccountBountiesPlacedOn(Model.GetLoggedInUserId()).Count() != 0)
 			{
-				@Html.ActionLink(Model.GetAccountBountiesPlacedOn(Model.GetLoggedInUserId()).Count().ToString(), "Index", "Bounty")
+				@Html.ActionLink(Model.GetAccountBountiesPlacedOn(Model.GetLoggedInUserId()).Count().ToString(), "_BountiesPlacedAgainst", "Bounty", Guid.Empty, null)
 			}
 			else
 			{

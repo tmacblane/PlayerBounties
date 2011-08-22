@@ -49,9 +49,9 @@ namespace PlayerBounties.Controllers
 		public ActionResult Details(Guid id, FormCollection formCollection)
 		{
 			Bounty bounty = this.db.Bounties.Find(id);
-			
+
 			Character character = new Character();
-			
+
 			var accountId = this.account.GetLoggedInUserId();
 
 			// Checks if a player has a selected a character to place the bounty by
@@ -147,16 +147,16 @@ namespace PlayerBounties.Controllers
 		public ActionResult PlaceBounty()
 		{
 			var sortedShardList = from shard in this.db.Shards
-								   orderby shard.Name ascending
-								   select shard;
+								  orderby shard.Name ascending
+								  select shard;
 
 			var sortedFactionList = from faction in this.db.Factions
-									 orderby faction.Name ascending
-									 select faction;
+									orderby faction.Name ascending
+									select faction;
 
 			var sortedPlayerClassList = from playerClass in this.db.PlayerClasses
-										 orderby playerClass.Name ascending
-										 select playerClass;
+										orderby playerClass.Name ascending
+										select playerClass;
 
 			ViewBag.ShardId = new SelectList(sortedShardList, "Id", "Name");
 			ViewBag.FactionId = new SelectList(sortedFactionList, "Id", "Name");
@@ -224,12 +224,18 @@ namespace PlayerBounties.Controllers
 				else
 				{
 					// alert that there is a bounty on this target
-					return RedirectToAction("PlaceBounty", "Bounty", new { character });
+					return RedirectToAction("PlaceBounty", "Bounty", new
+					{
+						character
+					});
 				}
 			}
 			else
 			{
-				return RedirectToAction("PlaceBounty", "Bounty", new { character });
+				return RedirectToAction("PlaceBounty", "Bounty", new
+				{
+					character
+				});
 			}
 		}
 
@@ -301,6 +307,48 @@ namespace PlayerBounties.Controllers
 			bounty.SetPendingCompletionToFalse(bounty);
 
 			return RedirectToAction("PendingCompletion");
+		}
+
+		public ActionResult _TargetsKilled(Guid? characterId = null)
+		{
+			Bounty bounty = new Bounty();
+
+			if(characterId == null)
+			{
+				return View(bounty.GetAccountBountiesCompleted(bounty.GetLoggedInUserId()));
+			}
+			else
+			{
+				return View(bounty.GetBountiesCompleted(characterId.Value));
+			}
+		}
+
+		public ActionResult _BountiesPlaced(Guid? characterId = null)
+		{
+			Bounty bounty = new Bounty();
+
+			if(characterId == null)
+			{
+				return View(bounty.GetAccountBountiesPlaced(bounty.GetLoggedInUserId()));
+			}
+			else
+			{
+				return View(bounty.GetBountiesPlaced(characterId.Value));
+			}
+		}
+
+		public ActionResult _BountiesPlacedAgainst(Guid? characterId = null)
+		{
+			Bounty bounty = new Bounty();
+
+			if(characterId == null)
+			{
+				return View(bounty.GetAccountBountiesPlacedOn(bounty.GetLoggedInUserId()));
+			}
+			else
+			{
+				return View(bounty.GetBountiesPlacedOn(characterId.Value));
+			}
 		}
 
 		#endregion

@@ -59,7 +59,7 @@
 				<td align="left">
 					@if(Model.GetBountiesKilledCount(Model.Id) != 0)
 					{
-						@Html.ActionLink(Model.GetBountiesKilledCount(Model.Id).ToString(), "Index", "Bounty")
+						@Html.ActionLink(Model.GetBountiesKilledCount(Model.Id).ToString(), "_TargetsKilled", "Bounty", new { characterId = Model.Id }, null)
 					}
 					else
 					{
@@ -74,7 +74,7 @@
 				<td align="left">
 					@if(Model.GetBountiesPlacedCount(Model.Id) != 0)
 					{
-						@Html.ActionLink(Model.GetBountiesPlacedCount(Model.Id).ToString(), "Index", "Bounty")
+						@Html.ActionLink(Model.GetBountiesPlacedCount(Model.Id).ToString(), "_BountiesPlaced", "Bounty", new { characterId = Model.Id }, null)
 					}
 					else
 					{
@@ -89,7 +89,7 @@
 				<td align="left">
 					@if(Model.GetBountiesPlacedOnCount(Model.Id) != 0)
 					{
-						@Html.ActionLink(Model.GetBountiesPlacedOnCount(Model.Id ).ToString(), "Index", "Bounty")
+						@Html.ActionLink(Model.GetBountiesPlacedOnCount(Model.Id).ToString(), "_BountiesPlacedAgainst", "Bounty", new { characterId = Model.Id }, null)
 					}
 					else
 					{
