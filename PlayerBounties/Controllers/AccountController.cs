@@ -6,6 +6,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
 using System.Web.Security;
+
 using PlayerBounties.Models;
 
 namespace PlayerBounties.Controllers
@@ -20,18 +21,13 @@ namespace PlayerBounties.Controllers
 
 		#region Type specific methods
 
-		// GET: /Account/Login
+		// GET: /Account/_Login
 		public ActionResult Login()
 		{
 			return View();
 		}
 
-		public ActionResult _Login()
-		{
-			return View();
-		}
-
-		// POST: /Account/Login
+		// POST: /Account/_Login
 		[HttpPost]
 		public ActionResult Login(LoginModel loginModel, string returnUrl)
 		{

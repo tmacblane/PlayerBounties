@@ -212,7 +212,7 @@ namespace PlayerBounties.Models
 			set;
 		}
 
-		#endregion
+		#endregion		
 	}
 
 	public class SignUpModel

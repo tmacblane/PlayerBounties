@@ -181,16 +181,16 @@ namespace PlayerBounties.Models
             return largestBounty;
         }
 
-        public IEnumerable<Bounty> GetTopHuntersList()
-        {
-            IEnumerable<Bounty> completedBounties = this.GetCompletedBounties();
+		//public IEnumerable<Bounty> GetTopHuntersList()
+		//{
+		//    IEnumerable<Bounty> completedBounties = this.GetCompletedBounties();
 
-            foreach(Bounty bounty in completedBounties)
-            {
-                // get a count of distinct killed by id's
-                // http://stackoverflow.com/questions/454601/how-to-count-duplicates-in-list-with-linq
-            }
-        }
+		//    foreach(Bounty bounty in completedBounties)
+		//    {
+		//        // get a count of distinct killed by id's
+		//        // http://stackoverflow.com/questions/454601/how-to-count-duplicates-in-list-with-linq
+		//    }
+		//}
 
 		public int GetBountiesCompletedCount(Guid characterId)
 		{
