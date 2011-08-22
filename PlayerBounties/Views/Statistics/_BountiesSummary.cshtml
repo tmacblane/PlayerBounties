@@ -1,0 +1,20 @@
+﻿@model PlayerBounties.Models.Bounty
+
+<table cellspacing="0" cellpadding="5" border="0">
+    <tr>
+        <th></th>
+        <th></th>
+    </tr>
+    <tr>
+        <td class="inputLabelCell">Total Bounties Completed</td>
+        <td align="left">@Model.GetCompletedBounties().Count()</td>
+    </tr>
+    <tr>
+        <td class="inputLabelCell">Total Active Bounties</td>
+        <td align="left">@Model.GetActiveBounties().Count()</td>
+    </tr>
+    <tr>
+        <td class="inputLabelCell">Largest Bounty Placed</td>
+        <td align="left">@Model.GetLargestBountyPlaced().FirstOrDefault().Amount</td>
+    </tr>
+</table>

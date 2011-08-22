@@ -78,6 +78,7 @@
     <Compile Include="Controllers\RaceController.cs" />
     <Compile Include="Controllers\SearchController.cs" />
     <Compile Include="Controllers\ShardController.cs" />
+    <Compile Include="Controllers\StatisticsController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -172,6 +173,9 @@
     <Content Include="Views\Bounty\PendingCompletion.cshtml" />
     <Content Include="Views\Character\CharacterExists.cshtml" />
     <Content Include="Views\Account\_Login.cshtml" />
+    <Content Include="Views\Statistics\_BountiesSummary.cshtml" />
+    <Content Include="Views\Statistics\Index.cshtml" />
+    <Content Include="Views\Statistics\_TopHunters.cshtml" />
     <None Include="_bin_deployableAssemblies\Microsoft.Web.Infrastructure.dll" />
     <None Include="_bin_deployableAssemblies\System.Web.WebPages.Razor.dll" />
     <None Include="_bin_deployableAssemblies\System.Web.WebPages.dll" />

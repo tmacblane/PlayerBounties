@@ -160,6 +160,38 @@ namespace PlayerBounties.Models
 			return isBountyOwner;
 		}
 
+        public IEnumerable<Bounty> GetCompletedBounties()
+        {
+            return this.db.Bounties.Where(b => b.KilledById != null);
+        }
+
+        public IEnumerable<Bounty> GetActiveBounties()
+        {
+            return this.db.Bounties.Where(b => b.KilledById == Guid.Empty);
+        }
+
+        public IEnumerable<Bounty> GetLargestBountyPlaced()
+        {
+            IEnumerable<Bounty> completedBounties = this.GetCompletedBounties();
+
+            IEnumerable<Bounty> largestBounty = from bounty in completedBounties
+                                                orderby bounty.Amount descending
+                                                select bounty;
+
+            return largestBounty;
+        }
+
+        public IEnumerable<Bounty> GetTopHuntersList()
+        {
+            IEnumerable<Bounty> completedBounties = this.GetCompletedBounties();
+
+            foreach(Bounty bounty in completedBounties)
+            {
+                // get a count of distinct killed by id's
+                // http://stackoverflow.com/questions/454601/how-to-count-duplicates-in-list-with-linq
+            }
+        }
+
 		public int GetBountiesCompletedCount(Guid characterId)
 		{
 			return this.db.Bounties.Where(b => b.KilledById == characterId).Count();

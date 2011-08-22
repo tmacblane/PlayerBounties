@@ -6,3 +6,11 @@ C:\Temp\PlayerBounties\PlayerBounties\bin\EntityFramework.xml
 C:\Temp\PlayerBounties\PlayerBounties\obj\Debug\ResolveAssemblyReference.cache
 C:\Temp\PlayerBounties\PlayerBounties\obj\Debug\PlayerBounties.dll
 C:\Temp\PlayerBounties\PlayerBounties\obj\Debug\PlayerBounties.pdb
+C:\Users\TMacBlane\Documents\DevelopmentProjects\PlayerBounties\PlayerBounties\bin\PlayerBounties.dll
+C:\Users\TMacBlane\Documents\DevelopmentProjects\PlayerBounties\PlayerBounties\bin\PlayerBounties.pdb
+C:\Users\TMacBlane\Documents\DevelopmentProjects\PlayerBounties\PlayerBounties\bin\EntityFramework.dll
+C:\Users\TMacBlane\Documents\DevelopmentProjects\PlayerBounties\PlayerBounties\bin\WebActivator.dll
+C:\Users\TMacBlane\Documents\DevelopmentProjects\PlayerBounties\PlayerBounties\bin\EntityFramework.xml
+C:\Users\TMacBlane\Documents\DevelopmentProjects\PlayerBounties\PlayerBounties\obj\Debug\ResolveAssemblyReference.cache
+C:\Users\TMacBlane\Documents\DevelopmentProjects\PlayerBounties\PlayerBounties\obj\Debug\PlayerBounties.dll
+C:\Users\TMacBlane\Documents\DevelopmentProjects\PlayerBounties\PlayerBounties\obj\Debug\PlayerBounties.pdb
