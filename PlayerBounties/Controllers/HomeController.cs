@@ -14,6 +14,7 @@ namespace PlayerBounties.Controllers
 	{
 		#region Fields
 
+		private Character character = new Character();
 		private PlayerBountyContext db = new PlayerBountyContext();
 
 		#endregion
@@ -45,7 +46,7 @@ namespace PlayerBounties.Controllers
 		[Authorize]
 		public ActionResult Dashboard()
 		{
-			return View();
+			return View(character);
 		}
 
 		#endregion

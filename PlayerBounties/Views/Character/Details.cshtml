@@ -72,7 +72,7 @@
 					Bounties Placed:
 				</td>
 				<td align="left">
-					@if(Model.GetBountiesKilledCount(Model.Id) != 0)
+					@if(Model.GetBountiesPlacedCount(Model.Id) != 0)
 					{
 						@Html.ActionLink(Model.GetBountiesPlacedCount(Model.Id).ToString(), "Index", "Bounty")
 					}

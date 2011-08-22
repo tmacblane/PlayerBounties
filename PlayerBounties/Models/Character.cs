@@ -232,6 +232,27 @@ namespace PlayerBounties.Models
 			
 			return bounty.GetBountiesCompletedCount(characterId);
 		}
+		
+		public List<Bounty> GetAccountBountiesCompleted(Guid accountId)
+		{
+			Bounty bounty = new Bounty();
+
+			return bounty.GetAccountBountiesCompleted(accountId);
+		}
+
+		public List<Bounty> GetAccountBountiesPlaced(Guid accountId)
+		{
+			Bounty bounty = new Bounty();
+
+			return bounty.GetAccountBountiesPlaced(accountId);
+		}
+
+		public List<Bounty> GetAccountBountiesPlacedOn(Guid accountId)
+		{
+			Bounty bounty = new Bounty();
+
+			return bounty.GetAccountBountiesPlacedOn(accountId);
+		}
 
 		public int GetBountiesPlacedCount(Guid characterId)
 		{

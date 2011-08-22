@@ -29,16 +29,50 @@ namespace PlayerBounties.Controllers
 		}
 
 		// GET: /Bounty/Details/5
-		public ViewResult Details(Guid id)
+		public ActionResult Details(Guid id)
 		{
 			Bounty bounty = this.db.Bounties.Find(id);
 
-			var characters = this.character.GetAllCharactersForAnAccount(this.account.GetLoggedInUserId());
-			var defaultCharacter = this.character.GetDefaultCharacterForAnAccount(this.account.GetLoggedInUserId());
+			if(Request.IsAuthenticated)
+			{
+				var characters = this.character.GetAllCharactersForAnAccount(this.account.GetLoggedInUserId());
+				var defaultCharacter = this.character.GetDefaultCharacterForAnAccount(this.account.GetLoggedInUserId());
 
-			ViewBag.CharacterList = new SelectList(characters, "Id", "Name", defaultCharacter.Single().Id);
+				ViewBag.CharacterList = new SelectList(characters, "Id", "Name", defaultCharacter.Single().Id);
+			}
 
 			return View(bounty);
+		}
+
+		[Authorize]
+		[HttpPost]
+		public ActionResult Details(Guid id, FormCollection formCollection)
+		{
+			Bounty bounty = this.db.Bounties.Find(id);
+			
+			Character character = new Character();
+			
+			var accountId = this.account.GetLoggedInUserId();
+
+			// Checks if a player has a selected a character to place the bounty by
+			// if no character is selected, the default character is assigned
+			// otherwise, the selected player is used
+			if(formCollection["CharacterList"] == String.Empty)
+			{
+				bounty.KilledById = character.GetDefaultCharacterForAnAccount(accountId).Single().Id;
+			}
+			else
+			{
+				bounty.KilledById = Guid.Parse(formCollection["CharacterList"]);
+			}
+
+			bounty.IsCompletionPending = true;
+			bounty.DateCompleted = DateTime.Now;
+
+			this.db.Entry(bounty).State = EntityState.Modified;
+			this.db.SaveChanges();
+
+			return RedirectToAction("Dashboard", "Home", null);
 		}
 
 		// GET: /Bounty/Create/5
@@ -48,12 +82,16 @@ namespace PlayerBounties.Controllers
 			Bounty bounty = new Bounty();
 			character = this.db.Characters.Find(character.Id);
 
+			var characters = this.character.GetAllCharactersForAnAccount(this.account.GetLoggedInUserId());
+			var defaultCharacter = this.character.GetDefaultCharacterForAnAccount(this.account.GetLoggedInUserId());
+
 			bounty.PlacedOnId = character.Id;
 
 			ViewBag.ShardId = new SelectList(this.db.Shards, "Id", "Name", character.ShardId);
 			ViewBag.FactionId = new SelectList(this.db.Factions, "Id", "Name", character.FactionId);
 			ViewBag.RaceId = new SelectList(this.db.Races, "Id", "Name", character.RaceId);
 			ViewBag.PlayerClassId = new SelectList(this.db.PlayerClasses, "Id", "Name", character.PlayerClassId);
+			ViewBag.CharacterList = new SelectList(characters, "Id", "Name", defaultCharacter.Single().Id);
 
 			return View(bounty);
 		}
@@ -76,7 +114,20 @@ namespace PlayerBounties.Controllers
 				bounty.Amount = int.Parse(formCollection["Amount"]);
 				bounty.Reason = formCollection["Reason"];
 				bounty.Message = formCollection["Message"];
-				bounty.PlacedById = character.GetDefaultCharacterForAnAccount(accountId).Single().Id;
+
+				// Checks if a player has a selected a character to place the bounty by
+				// if no character is selected, the default character is assigned
+				// otherwise, the selected player is used
+				if(formCollection["CharacterList"] == string.Empty)
+				{
+					bounty.PlacedById = character.GetDefaultCharacterForAnAccount(accountId).Single().Id;
+				}
+				else
+				{
+
+					bounty.PlacedById = Guid.Parse(formCollection["CharacterList"]);
+				}
+
 				bounty.PlacedOnId = character.Id;
 				bounty.DatePlaced = DateTime.Now;
 				bounty.DateCompleted = null;
@@ -250,20 +301,6 @@ namespace PlayerBounties.Controllers
 			bounty.SetPendingCompletionToFalse(bounty);
 
 			return RedirectToAction("PendingCompletion");
-		}
-
-		public ActionResult SubmitBountyForCompletion(Guid id)
-		{
-			Character character = new Character();
-			
-			Bounty bounty = this.db.Bounties.Find(id);
-
-			bounty.KilledById = character.GetDefaultCharacterForAnAccount(character.GetLoggedInUserId()).Single().Id;
-			bounty.IsCompletionPending = true;
-			bounty.DateCompleted = DateTime.Now;
-			this.db.Entry(bounty).State = EntityState.Modified;
-			this.db.SaveChanges();
-			return RedirectToAction("Index");
 		}
 
 		#endregion

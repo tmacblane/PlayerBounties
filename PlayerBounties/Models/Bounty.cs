@@ -192,14 +192,101 @@ namespace PlayerBounties.Models
 		//    }
 		//}
 
+		public List<Bounty> GetAccountBountiesCompleted(Guid accountId)
+		{
+			Character character = new Character();
+
+			List<Bounty> accountBounties = new List<Bounty>();
+
+			IEnumerable<Character> accountCharacters = character.GetAllCharactersForAnAccount(accountId);
+
+			foreach(Character accountCharacter in accountCharacters)
+			{
+				IQueryable<Bounty> completedBounties = this.GetBountiesCompleted(accountCharacter.Id);
+
+				if(completedBounties.Count() != 0)
+				{
+					foreach(Bounty completedBounty in completedBounties)
+					{
+						accountBounties.Add(completedBounty);
+					}
+				}
+			}
+
+			return accountBounties;
+		}
+
+		public List<Bounty> GetAccountBountiesPlaced(Guid accountId)
+		{
+			Character character = new Character();
+
+			List<Bounty> accountBounties = new List<Bounty>();
+
+			IEnumerable<Character> accountCharacters = character.GetAllCharactersForAnAccount(accountId);
+
+			foreach(Character accountCharacter in accountCharacters)
+			{
+				IQueryable<Bounty> completedBounties = this.GetBountiesPlaced(accountCharacter.Id);
+
+				if(completedBounties.Count() != 0)
+				{
+					foreach(Bounty completedBounty in completedBounties)
+					{
+						accountBounties.Add(completedBounty);
+					}
+				}
+			}
+
+			return accountBounties;
+		}
+
+		public List<Bounty> GetAccountBountiesPlacedOn(Guid accountId)
+		{
+			Character character = new Character();
+
+			List<Bounty> accountBounties = new List<Bounty>();
+
+			IEnumerable<Character> accountCharacters = character.GetAllCharactersForAnAccount(accountId);
+
+			foreach(Character accountCharacter in accountCharacters)
+			{
+				IQueryable<Bounty> completedBounties = this.GetBountiesPlacedOn(accountCharacter.Id);
+
+				if(completedBounties.Count() != 0)
+				{
+					foreach(Bounty completedBounty in completedBounties)
+					{
+						accountBounties.Add(completedBounty);
+					}
+				}
+			}
+
+			return accountBounties;
+		}
+
+		public IQueryable<Bounty> GetBountiesCompleted(Guid characterId)
+		{
+			return this.db.Bounties.Where(b => b.KilledById == characterId);
+		}
+
 		public int GetBountiesCompletedCount(Guid characterId)
 		{
 			return this.db.Bounties.Where(b => b.KilledById == characterId).Count();
 		}
 
+		public IQueryable<Bounty> GetBountiesPlaced(Guid characterId)
+		{
+			return this.db.Bounties.Where(b => b.PlacedById == characterId);
+		}
+
 		public int GetBountiesPlacedCount(Guid characterId)
 		{
 			return this.db.Bounties.Where(b => b.PlacedById == characterId).Count();
+		}
+
+		public IQueryable<Bounty> GetBountiesPlacedOn(Guid characterId)
+		{
+			return this.db.Bounties.Where(b => b.PlacedOnId == characterId).Where(b => b.IsPlacementPending == false);
 		}
 
 		public int GetBountiesPlacedOnCount(Guid characterId)
