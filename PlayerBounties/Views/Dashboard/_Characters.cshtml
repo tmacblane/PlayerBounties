@@ -3,20 +3,26 @@
 <table>
     <tr>
         @foreach (var item in Model) {
-            <td>
+            <th colspan="2" >
                 @Html.ActionLink("  ", "Details", "Character", new { id = item.Id }, new
                 {
                     style = "background: url('Images/classImageAvatar.png') no-repeat center right;display:block; height:100px; width:100px;margin-top:-2px;text-decoration:none;"
                 })
-            </td>
+            </th>
         }
     </tr>
     <tr>
         @foreach (var item in Model) {
-            <td>
-                @Html.ActionLink(item.Name, "Details", "Character", new { id = item.Id }, null)
-            </td>
-        }
+            <td style="width: 15px;">
+				<a href="@Url.Action("Edit", "Character", new { id = item.Id })"><img src="../../Content/Images/editIcon.gif" alt="Edit" id="editImage"/></a>
+			</td>
+			<td style="width: 175px;">
+                @Html.ActionLink(item.Name, "Details", "Character", new
+		   {
+			   id = item.Id
+		   }, null)
+            </td>			
+		}
     </tr>
 </table>
 

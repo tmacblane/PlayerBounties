@@ -15,13 +15,13 @@
 	@foreach(var item in Model)
 	{
 		<tr>
-			<td>@item.CharacterName(item.PlacedOnId)</td>
+			<td>@Html.ActionLink(@item.CharacterName(item.PlacedOnId).ToString(), "Details", "Character", new { id = item.PlacedOnId }, null)</td>
 			<td>@item.CharacterShard(item.PlacedOnId)</td>
 			<td>@item.CharacterClass(item.PlacedOnId)</td>
 			<td>@item.DatePlaced</td>
-			<td>@item.CharacterName(item.PlacedById)</td>
+			<td>@Html.ActionLink(@item.CharacterName(item.PlacedById).ToString(), "Details", "Character", new { id = item.PlacedById }, null)</td>
 			<td>@item.DateCompleted</td>
-			<td>@item.CharacterName(item.KilledById.Value)</td>
+			<td>@Html.ActionLink(@item.CharacterName(item.KilledById.Value).ToString(), "Details", "Character", new { id = item.KilledById.Value }, null)</td>
 			<td>@Html.ActionLink("Details", "Details", "Bounty", new { id = item.Id }, null)</td>
 		</tr>
 	}

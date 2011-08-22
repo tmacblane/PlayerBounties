@@ -28,52 +28,7 @@ namespace PlayerBounties.Controllers
 			return View(this.db.Bounties.ToList());
 		}
 
-		// GET: /Bounty/Details/5
-		public ActionResult Details(Guid id)
-		{
-			Bounty bounty = this.db.Bounties.Find(id);
-
-			if(Request.IsAuthenticated)
-			{
-				var characters = this.character.GetAllCharactersForAnAccount(this.account.GetLoggedInUserId());
-				var defaultCharacter = this.character.GetDefaultCharacterForAnAccount(this.account.GetLoggedInUserId());
-
-				ViewBag.CharacterList = new SelectList(characters, "Id", "Name", defaultCharacter.Single().Id);
-			}
-
-			return View(bounty);
-		}
-
-		[Authorize]
-		[HttpPost]
-		public ActionResult Details(Guid id, FormCollection formCollection)
-		{
-			Bounty bounty = this.db.Bounties.Find(id);
-
-			Character character = new Character();
-
-			var accountId = this.account.GetLoggedInUserId();
-
-			// Checks if a player has a selected a character to place the bounty by
-			// if no character is selected, the default character is assigned
-			// otherwise, the selected player is used
-			if(formCollection["CharacterList"] == String.Empty)
-			{
-				bounty.KilledById = character.GetDefaultCharacterForAnAccount(accountId).Single().Id;
-			}
-			else
-			{
-				bounty.KilledById = Guid.Parse(formCollection["CharacterList"]);
-			}
-
-			bounty.IsCompletionPending = true;
-			bounty.DateCompleted = DateTime.Now;
-
-			this.db.Entry(bounty).State = EntityState.Modified;
-			this.db.SaveChanges();
-
-			return RedirectToAction("Dashboard", "Home", null);
-		}
+		#region CRUD
 
 		// GET: /Bounty/Create/5
 		[Authorize]
@@ -142,6 +97,93 @@ namespace PlayerBounties.Controllers
 			return View(bounty);
 		}
 
+		// GET: /Bounty/Details/5
+		public ActionResult Details(Guid id)
+		{
+			Bounty bounty = this.db.Bounties.Find(id);
+
+			if(Request.IsAuthenticated)
+			{
+				var characters = this.character.GetAllCharactersForAnAccount(this.account.GetLoggedInUserId());
+				var defaultCharacter = this.character.GetDefaultCharacterForAnAccount(this.account.GetLoggedInUserId());
+
+				ViewBag.CharacterList = new SelectList(characters, "Id", "Name", defaultCharacter.Single().Id);
+			}
+
+			return View(bounty);
+		}
+
+		[Authorize]
+		[HttpPost]
+		public ActionResult Details(Guid id, FormCollection formCollection)
+		{
+			Bounty bounty = this.db.Bounties.Find(id);
+
+			Character character = new Character();
+
+			var accountId = this.account.GetLoggedInUserId();
+
+			// Checks if a player has a selected a character to place the bounty by
+			// if no character is selected, the default character is assigned
+			// otherwise, the selected player is used
+			if(formCollection["CharacterList"] == String.Empty)
+			{
+				bounty.KilledById = character.GetDefaultCharacterForAnAccount(accountId).Single().Id;
+			}
+			else
+			{
+				bounty.KilledById = Guid.Parse(formCollection["CharacterList"]);
+			}
+
+			bounty.IsCompletionPending = true;
+			bounty.DateCompleted = DateTime.Now;
+
+			this.db.Entry(bounty).State = EntityState.Modified;
+			this.db.SaveChanges();
+
+			return RedirectToAction("Dashboard", "Home", null);
+		}
+
+		// GET: /Bounty/Edit/5 
+		public ActionResult Edit(Guid id)
+		{
+			Bounty bounty = this.db.Bounties.Find(id);
+			return View(bounty);
+		}
+
+		// POST: /Bounty/Edit/5
+		[HttpPost]
+		public ActionResult Edit(Bounty bounty)
+		{
+			if(ModelState.IsValid)
+			{
+				this.db.Entry(bounty).State = EntityState.Modified;
+				this.db.SaveChanges();
+				return RedirectToAction("Index");
+			}
+
+			return View(bounty);
+		}
+
+		// GET: /Bounty/Delete/5
+		public ActionResult Delete(Guid id)
+		{
+			Bounty bounty = this.db.Bounties.Find(id);
+			return View(bounty);
+		}
+
+		// POST: /Bounty/Delete/5
+		[HttpPost, ActionName("Delete")]
+		public ActionResult DeleteConfirmed(Guid id)
+		{
+			Bounty bounty = this.db.Bounties.Find(id);
+			this.db.Bounties.Remove(bounty);
+			this.db.SaveChanges();
+			return RedirectToAction("Index");
+		}
+
+		#endregion
+		
 		// GET: /Bounty/PlaceBounty
 		[Authorize]
 		public ActionResult PlaceBounty()
@@ -239,44 +281,6 @@ namespace PlayerBounties.Controllers
 			}
 		}
 
-		// GET: /Bounty/Edit/5 
-		public ActionResult Edit(Guid id)
-		{
-			Bounty bounty = this.db.Bounties.Find(id);
-			return View(bounty);
-		}
-
-		// POST: /Bounty/Edit/5
-		[HttpPost]
-		public ActionResult Edit(Bounty bounty)
-		{
-			if(ModelState.IsValid)
-			{
-				this.db.Entry(bounty).State = EntityState.Modified;
-				this.db.SaveChanges();
-				return RedirectToAction("Index");
-			}
-
-			return View(bounty);
-		}
-
-		// GET: /Bounty/Delete/5
-		public ActionResult Delete(Guid id)
-		{
-			Bounty bounty = this.db.Bounties.Find(id);
-			return View(bounty);
-		}
-
-		// POST: /Bounty/Delete/5
-		[HttpPost, ActionName("Delete")]
-		public ActionResult DeleteConfirmed(Guid id)
-		{
-			Bounty bounty = this.db.Bounties.Find(id);
-			this.db.Bounties.Remove(bounty);
-			this.db.SaveChanges();
-			return RedirectToAction("Index");
-		}
-
 		public ActionResult PendingPlacement()
 		{
 			IQueryable<Bounty> bounty = this.db.Bounties.Where(b => b.IsPlacementPending == true);
@@ -308,6 +312,8 @@ namespace PlayerBounties.Controllers
 
 			return RedirectToAction("PendingCompletion");
 		}
+
+		#region Bounty Statistics
 
 		public ActionResult _TargetsKilled(Guid? characterId = null)
 		{
@@ -350,6 +356,8 @@ namespace PlayerBounties.Controllers
 				return View(bounty.GetBountiesPlacedOn(characterId.Value));
 			}
 		}
+
+		#endregion
 
 		#endregion
 
