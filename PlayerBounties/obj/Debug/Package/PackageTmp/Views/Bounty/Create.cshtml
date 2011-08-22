@@ -11,7 +11,7 @@
 	<table id="createBountyTable" cellspacing="0" cellpadding="5" border="0">
 		<tr>
 			<td class="inputLabelCell">
-				Character
+				Character:
 			</td>
 			<td align="left">
 				@Model.CharacterName(Model.PlacedOnId)
@@ -19,7 +19,7 @@
 		</tr>
 		<tr>
 			<td class="inputLabelCell">
-				Shard
+				Shard:
 			</td>
 			<td align="left">
 				@Model.CharacterShard(Model.PlacedOnId)
@@ -27,7 +27,7 @@
 		</tr>
 		<tr>
 			<td class="inputLabelCell">
-				Allegiance
+				Allegiance:
 			</td>
 			<td align="left">
 				@Model.CharacterAllegience(Model.PlacedOnId)
@@ -35,7 +35,7 @@
 		</tr>
 		<tr>
 			<td class="inputLabelCell">
-				Class
+				Class:
 			</td>
 			<td align="left">
 				@Model.CharacterClass(Model.PlacedOnId)
@@ -43,7 +43,7 @@
 		</tr>
 		<tr>
 			<td class="inputLabelCell">
-				@Html.LabelFor(model => model.Amount)
+				@Html.LabelFor(model => model.Amount):
 			</td>
 			<td align="left">
 				@Html.EditorFor(model => model.Amount)
@@ -52,7 +52,7 @@
 		</tr>
 		<tr>
 			<td class="inputLabelCell">
-				@Html.LabelFor(model => model.Reason)
+				@Html.LabelFor(model => model.Reason):
 			</td>
 			<td align="left">
 				@Html.EditorFor(model => model.Reason)
@@ -60,10 +60,18 @@
 		</tr>
 		<tr>
 			<td class="inputLabelCell">
-				@Html.LabelFor(model => model.Message)
+				@Html.LabelFor(model => model.Message):
 			</td>
 			<td align="left">
 				@Html.EditorFor(model => model.Message)
+			</td>
+		</tr>
+		<tr>
+			<td class="inputLabelCell">
+				Placed By:
+			</td>
+			<td align="left">
+				@Html.DropDownList("CharacterList", String.Empty)
 			</td>
 		</tr>
 	</table>

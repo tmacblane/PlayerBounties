@@ -306,3 +306,26 @@ table
 {
 	font-weight: bold;
 }
+
+.searchResult
+{
+	position: relative;
+}
+
+.republic
+{
+	background-image: url("../../Content/Images/search_logos.png");
+	background-repeat: no-repeat;
+	background-position: 0 0;
+	background-color: rgba(11, 16, 27, 0.5);
+	height: 48px;
+}
+
+.empire
+{
+	background-image: url("../../Content/Images/search_logos.png");
+	background-repeat: no-repeat;
+	background-position: -743px 0;
+	background-color: rgba(11, 16, 27, 0.5);
+	height: 48px;
+}

@@ -1,6 +1,9 @@
 ﻿body
 {
+	height: 100%;
+	width: 100%;
 	background-image: url("../../Content/Images/skyfieldBackground.jpg");
+    z-index: 500;
 }
 
 .page {
@@ -28,7 +31,7 @@ ul.headerLinks
 {
 	cursor: pointer;
     float: right;
-    font-size: 11px;
+    font-size: 12px;
     height: 26px;
     position: absolute;
     right: 10px;
@@ -53,6 +56,11 @@ li
     margin: 0;
     padding: 0;
     position: relative;
+}
+
+a {
+    color: #034af3;
+    text-decoration: none;
 }
 
 a:link {
@@ -223,13 +231,18 @@ input[type="submit"] input[value], input[type="button"] input[value]
     position: relative;
     top: 0;
     width: 1000px;
-    z-index: 10;
+    z-index: 50;
 }
 
-#loginBox, #signUpBox
+.centeredForm
 {
 	margin-top: 50px;
-	margin-left: 275px;	
+	margin-left: 275px;
+}
+
+#loginForm, #signUpForm
+{
+	background-color: #FFFFFF;
 	border-style: solid;
     border-width: 1px;
 	padding: 20px;
@@ -241,6 +254,7 @@ input[type="submit"] input[value], input[type="button"] input[value]
     float: left;
     margin-bottom: 15px;
     position: relative;
+    z-index: 0;
 }
 
 .rowBlank

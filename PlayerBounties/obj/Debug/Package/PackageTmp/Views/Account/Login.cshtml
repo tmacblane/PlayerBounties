@@ -7,8 +7,8 @@
 @Html.ValidationSummary(true, "Login was unsuccessful. Please correct the errors and try again.")
 
 @using(Html.BeginForm())
-{
-	<div id="loginBox">
+{ 
+	<div id="loginForm" class="centeredForm">
 		<div class="rowBlank">
 			@Html.LabelFor(m => m.Email)
 		<br />
@@ -23,6 +23,10 @@
 			@Html.ValidationMessageFor(m => m.Password)
 		</div>
 		<div class="rowBlank">
+			@Html.LabelFor(m => m.RememberMe)
+			@Html.CheckBoxFor(m => m.RememberMe)
+		</div>
+		<div class="rowBlank">
 			<input type="submit" value="Login" />
 		</div>
 
@@ -33,5 +37,5 @@
 				<li>Want to join the hunt?  @Html.ActionLink("Sign Up", "SignUp", "Account")</li>
 			</ul>
 		</div>
-    </div>
+	</div>
 }

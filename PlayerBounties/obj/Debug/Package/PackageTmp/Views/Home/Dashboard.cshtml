@@ -1,7 +1,7 @@
-﻿@model IEnumerable<PlayerBounties.Models.Character>
+﻿@model PlayerBounties.Models.Character
 
 @{
-    ViewBag.Title = "Dashboard";
+    ViewBag.Title = "Account Dashboard";
 }
 
 @Html.Partial("_Search")
@@ -12,11 +12,58 @@
 
 </div>
 
-@if(Model != null)
-{
-	@Html.ActionLink("Place a Bounty", "PlaceBounty", "Bounty")
-}
-
 <h3>Account Statistics</h3>
+<table cellspacing="0" cellpadding="2" border="0">
+	<tr>
+		<td class="inputLabelCell">
+			Targets Killed:
+		</td>
+		<td align="left">
+			@if(Model.GetAccountBountiesCompleted(Model.GetLoggedInUserId()).Count() != 0)
+			{
+				@Html.ActionLink(Model.GetAccountBountiesCompleted(Model.GetLoggedInUserId()).Count().ToString(), "_TargetsKilled", "Bounty")
+			}
+			else
+			{
+				<text>0</text>
+			}
+		</td>
+	</tr>
+	<tr>
+		<td class="inputLabelCell">
+			Bounties Placed:
+		</td>
+		<td align="left">
+			@if(Model.GetAccountBountiesPlaced(Model.GetLoggedInUserId()).Count() != 0)
+			{
+				@Html.ActionLink(Model.GetAccountBountiesPlaced(Model.GetLoggedInUserId()).Count().ToString(), "_BountiesPlaced", "Bounty", Guid.Empty, null)
+			}
+			else
+			{
+				<text>0</text>
+			}
+		</td>
+	</tr>
+	<tr>
+		<td class="inputLabelCell">
+			Bounties Against:
+		</td>
+		<td align="left">
+			@if(Model.GetAccountBountiesPlacedOn(Model.GetLoggedInUserId()).Count() != 0)
+			{
+				@Html.ActionLink(Model.GetAccountBountiesPlacedOn(Model.GetLoggedInUserId()).Count().ToString(), "_BountiesPlacedAgainst", "Bounty", Guid.Empty, null)
+			}
+			else
+			{
+				<text>0</text>
+			}
+		</td>
+	</tr>
+</table>
+
+<ul>
+	<li>Bounties Signed up for</li>
+	<li>Active Contracts</li>
+</ul>
 
 <h3>Kill Images</h3>

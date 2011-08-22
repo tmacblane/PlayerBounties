@@ -50,7 +50,7 @@
 				</td>
 			</tr>
 			<tr style="height: 150px;">
-				<th colspan=2>Great hunt champ image</th>
+				<th colspan="2">Great hunt champ image</th>
 			</tr>
 			<tr>
 				<td class="inputLabelCell">
@@ -59,7 +59,7 @@
 				<td align="left">
 					@if(Model.GetBountiesKilledCount(Model.Id) != 0)
 					{
-						@Html.ActionLink(Model.GetBountiesKilledCount(Model.Id).ToString(), "Index", "Bounty")
+						@Html.ActionLink(Model.GetBountiesKilledCount(Model.Id).ToString(), "_TargetsKilled", "Bounty", new { characterId = Model.Id }, null)
 					}
 					else
 					{
@@ -72,9 +72,9 @@
 					Bounties Placed:
 				</td>
 				<td align="left">
-					@if(Model.GetBountiesKilledCount(Model.Id) != 0)
+					@if(Model.GetBountiesPlacedCount(Model.Id) != 0)
 					{
-						@Html.ActionLink(Model.GetBountiesPlacedCount(Model.Id).ToString(), "Index", "Bounty")
+						@Html.ActionLink(Model.GetBountiesPlacedCount(Model.Id).ToString(), "_BountiesPlaced", "Bounty", new { characterId = Model.Id }, null)
 					}
 					else
 					{
@@ -89,7 +89,7 @@
 				<td align="left">
 					@if(Model.GetBountiesPlacedOnCount(Model.Id) != 0)
 					{
-						@Html.ActionLink(Model.GetBountiesPlacedOnCount(Model.Id ).ToString(), "Index", "Bounty")
+						@Html.ActionLink(Model.GetBountiesPlacedOnCount(Model.Id).ToString(), "_BountiesPlacedAgainst", "Bounty", new { characterId = Model.Id }, null)
 					}
 					else
 					{
@@ -136,7 +136,7 @@
 			</tr>
 
 			@if(Model.Race != null)
-   {
+			{
 				<tr>
 					<td class="inputLabelCell">
 						@Html.LabelFor(model => model.Race.Name):
@@ -145,7 +145,7 @@
 						<span>@Model.CharacterRace(Model.Id)</span>
 					</td>
 				</tr>
-   }
+			}
 			
 			<tr>
 				<td class="inputLabelCell">
@@ -165,7 +165,7 @@
 			</tr>
 		
 			@if(Model.Motto != null)
-   {
+			{
 				<tr>
 					<td class="inputLabelCell">
 						@Html.LabelFor(model => model.Motto):
@@ -174,13 +174,13 @@
 						<span style="font-style: italic;">@Html.DisplayFor(model => model.Motto)</span>
 					</td>
 				</tr>
-   }
+			}
 
 			@if(Request.IsAuthenticated)
-   {
+			{
 
-	   if(Model.IsCharacterOwner(Model.GetLoggedInUserId(), Model.Id))
-	   {
+			   if(Model.IsCharacterOwner(Model.GetLoggedInUserId(), Model.Id))
+			   {
 					<tr>
 						<td class="inputLabelCell">
 							@Html.LabelFor(model => model.IsPrimary):
@@ -189,11 +189,11 @@
 							<span>@Html.DisplayFor(model => model.IsPrimary)</span>
 						</td>
 					</tr>
-	   }
-   }
+			   }
+			}
 		
 			@if(Model.Bio != null)
-   {
+			{
 				<tr>
 					<td class="inputLabelCell">
 						@Html.LabelFor(model => model.Bio):
@@ -202,7 +202,7 @@
 						<span>@Html.DisplayFor(model => model.Bio)</span>
 					</td>
 				</tr>
-		   }
+			}
 		
 		</table>
 	</div>
