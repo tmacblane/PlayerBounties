@@ -340,6 +340,20 @@ namespace PlayerBounties.Models
 			return this.db.Bounties.Where(b => b.PlacedOnId.Equals(characterId)).Where(b => b.IsCompletionPending.Equals(null)).Single().Id;
 		}
 
+		public string GetClassStyle(string className)
+		{
+			Character character = new Character();
+
+			return character.GetClassStyle(className);
+		}
+
+		public string GetFactionStyle(string factionName)
+		{
+			Character character = new Character();
+
+			return character.GetFactionStyle(factionName);
+		}
+
 		#endregion
 	}
 }

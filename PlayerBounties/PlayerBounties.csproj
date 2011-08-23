@@ -191,6 +191,7 @@
     <Content Include="Views\Bounty\_BountiesPlaced.cshtml" />
     <Content Include="Views\Bounty\_BountiesPlacedAgainst.cshtml" />
     <Content Include="Views\Shared\_CharacterSlider.cshtml" />
+    <Content Include="Views\Bounty\_BountiesTable.cshtml" />
     <None Include="_bin_deployableAssemblies\Microsoft.Web.Infrastructure.dll" />
     <None Include="_bin_deployableAssemblies\System.Web.WebPages.Razor.dll" />
     <None Include="_bin_deployableAssemblies\System.Web.WebPages.dll" />

@@ -321,11 +321,11 @@ namespace PlayerBounties.Controllers
 
 			if(characterId == null)
 			{
-				return View(bounty.GetAccountBountiesCompleted(bounty.GetLoggedInUserId()));
+				return View("_BountiesTable", bounty.GetAccountBountiesCompleted(bounty.GetLoggedInUserId()));
 			}
 			else
 			{
-				return View(bounty.GetBountiesCompleted(characterId.Value));
+				return View("_BountiesTable", bounty.GetBountiesCompleted(characterId.Value));
 			}
 		}
 
@@ -335,11 +335,11 @@ namespace PlayerBounties.Controllers
 
 			if(characterId == null)
 			{
-				return View(bounty.GetAccountBountiesPlaced(bounty.GetLoggedInUserId()));
+				return View("_BountiesTable", bounty.GetAccountBountiesPlaced(bounty.GetLoggedInUserId()));
 			}
 			else
 			{
-				return View(bounty.GetBountiesPlaced(characterId.Value));
+				return View("_BountiesTable", bounty.GetBountiesPlaced(characterId.Value));
 			}
 		}
 
@@ -349,11 +349,11 @@ namespace PlayerBounties.Controllers
 
 			if(characterId == null)
 			{
-				return View(bounty.GetAccountBountiesPlacedOn(bounty.GetLoggedInUserId()));
+				return View("_BountiesTable", bounty.GetAccountBountiesPlacedOn(bounty.GetLoggedInUserId()));
 			}
 			else
 			{
-				return View(bounty.GetBountiesPlacedOn(characterId.Value));
+				return View("_BountiesTable", bounty.GetBountiesPlacedOn(characterId.Value));
 			}
 		}
 
