@@ -331,7 +331,6 @@ namespace PlayerBounties.Models
 
 		public string GetFactionStyle(string factionName)
 		{
-
 			switch(factionName)
 			{
 				case "Galactic Republic":

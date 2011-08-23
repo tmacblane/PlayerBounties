@@ -187,9 +187,6 @@
     <Content Include="Views\Statistics\_BountiesSummary.cshtml" />
     <Content Include="Views\Statistics\Index.cshtml" />
     <Content Include="Views\Statistics\_TopHunters.cshtml" />
-    <Content Include="Views\Bounty\_TargetsKilled.cshtml" />
-    <Content Include="Views\Bounty\_BountiesPlaced.cshtml" />
-    <Content Include="Views\Bounty\_BountiesPlacedAgainst.cshtml" />
     <Content Include="Views\Shared\_CharacterSlider.cshtml" />
     <Content Include="Views\Bounty\_BountiesTable.cshtml" />
     <None Include="_bin_deployableAssemblies\Microsoft.Web.Infrastructure.dll" />

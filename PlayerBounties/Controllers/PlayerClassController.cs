@@ -149,6 +149,11 @@ namespace PlayerBounties.Controllers
 			}	
 		}
 
+		public IEnumerable<PlayerClass> PlayerClasses(Guid factionId)
+		{
+			return db.PlayerClasses.Where(id => id.FactionId == factionId);
+		}
+
 		#endregion
 
 		#region Base class overrides
