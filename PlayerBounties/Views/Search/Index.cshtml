@@ -24,90 +24,50 @@
 
 	@foreach(var character in Model)
 	{
-		if(character.Faction.Name == "Galactic Republic")
-		{
-			<tr class="republic">
-				<td>
-					@Html.ActionLink(character.Name, "Details", "Character", new { character.Id }, null)
-				</td>
-				<td>
-					@Html.DisplayFor(modelItem => character.Race.Name)
-				</td>
-				<td>
-					@Html.DisplayFor(modelItem => character.PlayerClass.Name)
-				</td>
-				<td>
+		<tr class="@character.GetFactionStyle(character.Faction.Name)">
+			<td class="@character.GetClassStyle(character.PlayerClass.Name)">
+				@Html.ActionLink(character.Name, "Details", "Character", new { character.Id }, null)
+			</td>
+			<td>
+				@Html.DisplayFor(modelItem => character.Race.Name)
+			</td>
+			<td>
+				@Html.DisplayFor(modelItem => character.PlayerClass.Name)
+			</td>
+			<td>
 					
-				</td>
-				<td>
-					@Html.DisplayFor(modelItem => character.Shard.Name)
-				</td>
-				<td>
-				</td>
+			</td>
+			<td>
+				@Html.DisplayFor(modelItem => character.Shard.Name)
+			</td>
+			<td>
+			</td>
 
-				@if(character.GetLoggedInUserId() != Guid.Empty)
+			@if(character.GetLoggedInUserId() != Guid.Empty)
+			{
+				if(character.GetAllCharactersForAnAccount(character.GetLoggedInUserId()).Count() != 0)
 				{
-					if(character.GetAllCharactersForAnAccount(character.GetLoggedInUserId()).Count() != 0)
+					if(character.IsActiveBountyOnCharacter(character.Id) == false)
 					{
-						if(character.IsActiveBountyOnCharacter(character.Id) == false)
-						{
-							<td align="center">
-								@Html.ActionLink("Place a Bounty", "Create", "Bounty", new { id = character.Id }, null)
-							</td>
-						}
-						else
-						{
-							<td align="center">
-								@Html.ActionLink("Active Bounty", "Details", "Bounty", new { id = character.GetActiveBountyId(character.Id) }, null)
-							</td>
-						}
+						<td align="center">
+							@Html.ActionLink("Place a Bounty", "Create", "Bounty", new { id = character.Id }, null)
+						</td>
+					}
+					else
+					{
+						<td align="center">
+							@Html.ActionLink("Active Bounty", "Details", "Bounty", new { id = character.GetActiveBountyId(character.Id) }, null)
+						</td>
 					}
 				}
-			</tr>
-		}
-		else
-		{
-			<tr class="empire">
-				<td>
-					@Html.ActionLink(character.Name, "Details", "Character", new { character.Id }, null)
-				</td>
-				<td>
-					@Html.DisplayFor(modelItem => character.Race.Name)
-				</td>
-				<td>
-					@Html.DisplayFor(modelItem => character.PlayerClass.Name)
-				</td>
-				<td>
-					@Html.DisplayFor(modelItem => character.Faction.Name)
-				</td>
-				<td>
-					@Html.DisplayFor(modelItem => character.Shard.Name)
-				</td>
-				<td>
-				</td>
-
-				@if(character.GetLoggedInUserId() != Guid.Empty)
-				{
-					if(character.GetAllCharactersForAnAccount(character.GetLoggedInUserId()).Count() != 0)
-					{
-						if(character.IsActiveBountyOnCharacter(character.Id) == false)
-						{
-							<td align="center">
-								@Html.ActionLink("Place a Bounty", "Create", "Bounty", new { id = character.Id }, null)
-							</td>
-						}
-						else
-						{
-							<td align="center">
-								@Html.ActionLink("Active Bounty", "Details", "Bounty", new { id = character.GetActiveBountyId(character.Id) }, null)
-							</td>
-						}
-					}
-				}
-			</tr>
-		}
+			}
+		</tr>
 	}
 
 </table>
 
 something about don't see the character you're looking for...click here to add a character
+
+<div class="rowBlank">		
+	<input type="button" value="<< Back" onclick="window.history.back()"/>
+</div>	

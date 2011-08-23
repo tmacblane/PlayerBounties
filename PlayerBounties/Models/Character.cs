@@ -329,6 +329,20 @@ namespace PlayerBounties.Models
 			return string.Empty;
 		}
 
+		public string GetFactionStyle(string factionName)
+		{
+
+			switch(factionName)
+			{
+				case "Galactic Republic":
+					return "republic";
+
+				case "Sith Empire":
+					return "empire";
+			}
+			return string.Empty;
+		}
+
 		#endregion
 	}
 }
