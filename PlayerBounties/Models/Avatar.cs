@@ -20,7 +20,7 @@ namespace PlayerBounties.Models
 		#region Type specific properties
 
 		[Key]
-		public Guid Id
+		public Guid id
 		{
 			get;
 			set;
@@ -38,6 +38,21 @@ namespace PlayerBounties.Models
 		{
 			get;
 			set;
+		}
+
+		public Guid ClassId
+		{
+			get;
+			set;
+		}
+
+		#endregion
+
+		#region Type specific methods
+
+		public IQueryable<Avatar> GetAvatarBasedOnClass(Guid classId)
+		{
+			return this.db.Avatars.Where(a => a.ClassId == classId);
 		}
 
 		#endregion

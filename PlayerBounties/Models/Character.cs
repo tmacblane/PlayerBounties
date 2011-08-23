@@ -282,6 +282,53 @@ namespace PlayerBounties.Models
 			return bounty.GetActiveBountyId(characterId);
 		}
 
+		public Avatar GetClassAvatar(Guid avatarId)
+		{
+			return this.db.Avatars.Find(avatarId);
+		}
+
+		public string GetClassAvatarPath(Guid avatarId)
+		{
+			Avatar avatar = this.GetClassAvatar(avatarId);
+
+			string FilePath = avatar.FilePath;
+			string FileName = avatar.FileName;
+
+			return FilePath + FileName;
+		}
+
+		public string GetClassStyle(string className)
+		{
+			switch(className)
+			{
+				case "Smuggler":
+					return "smugglerTxt";
+
+				case "Republic Trooper":
+					return "trooperTxt";
+
+				case "Jedi Knight":
+					return "jediKnightTxt";
+
+				case "Jedi Consular":
+					return "jediConsularTxt";
+
+				case "Bounty Hunter":
+					return "bountyHunterTxt";
+
+				case "Imperial Agent":
+					return "imperialAgentTxt";
+
+				case "Sith Warrior":
+					return "sithWarriorTxt";
+
+				case "Sith Inquisitor":
+					return "sithInquisitorTxt";
+			}
+
+			return string.Empty;
+		}
+
 		#endregion
 	}
 }

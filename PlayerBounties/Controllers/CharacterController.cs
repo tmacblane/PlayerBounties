@@ -75,7 +75,7 @@ namespace PlayerBounties.Controllers
 
 			if(ModelState.IsValid)
 			{
-				if(character.GetCharacter(character.Name, character.ShardId, character.FactionId) != null)
+				if(character.GetCharacter(character.Name, character.ShardId, character.FactionId).Count() != 0)
 				{
 					Character existingCharacter = character.GetCharacter(character.Name, character.ShardId, character.FactionId).Single();
 
@@ -112,6 +112,10 @@ namespace PlayerBounties.Controllers
 						character.IsPrimary = true;
 					}
 
+					// set character avatar based on class
+					Avatar avatar = new Avatar();
+					character.AvatarId = avatar.GetAvatarBasedOnClass(character.PlayerClassId).Single().id;
+
 					this.db.Characters.Add(character);
 					this.db.SaveChanges();
 				}
@@ -138,6 +142,11 @@ namespace PlayerBounties.Controllers
 			{
 				character.Id = Guid.NewGuid();
 				character.UserId = Guid.Empty;
+
+				// set character avatar based on class
+				Avatar avatar = new Avatar();
+				character.AvatarId = avatar.GetAvatarBasedOnClass(character.PlayerClassId).Single().id;
+
 				this.db.Characters.Add(character);
 				this.db.SaveChanges();
 			}
@@ -192,6 +201,10 @@ namespace PlayerBounties.Controllers
 					{
 						character.IsPrimary = true;
 					}
+
+					// set character avatar based on class
+					Avatar avatar = new Avatar();
+					character.AvatarId = avatar.GetAvatarBasedOnClass(character.PlayerClassId).Single().id;
 
 					this.db.SaveChanges();
 					return RedirectToAction("Dashboard", "Home");

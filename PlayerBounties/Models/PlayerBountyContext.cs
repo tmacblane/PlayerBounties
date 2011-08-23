@@ -14,6 +14,12 @@ namespace PlayerBounties.Models
 			set;
 		}
 
+		public DbSet<Avatar> Avatars
+		{
+			get;
+			set;
+		}
+
 		public DbSet<Bounty> Bounties
 		{
 			get;
