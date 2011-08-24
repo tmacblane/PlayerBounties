@@ -17,6 +17,14 @@
 		</tr>
 		<tr>
 			<td class="inputLabelCell">
+				Shard:
+			</td>
+			<td align="left">
+				<span>@Model.CharacterShard(Model.PlacedOnId)</span>
+			</td>
+		</tr>
+		<tr>
+			<td class="inputLabelCell">
 				@Html.LabelFor(model => model.Amount):
 			</td>
 			<td align="left">
@@ -89,7 +97,8 @@
 		{
 			<p>Upload picture to complete bounty</p>
 	
-			@Html.DropDownList("CharacterList", String.Empty)
+			@Html.DropDownList("CharacterList", String.Empty)<br />
+			<p>Don't see the character you killed with...click here to create them</p>
 		}
 
 		if(Model.IsBountyOwner(Model.GetLoggedInUserId(), Model.Id))

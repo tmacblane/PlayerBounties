@@ -39,9 +39,7 @@ namespace PlayerBounties.Controllers
 
 			var characters = this.character.GetAllCharactersForAnAccount(this.account.GetLoggedInUserId());
 			var defaultCharacter = this.character.GetDefaultCharacterForAnAccount(this.account.GetLoggedInUserId());
-
-			bounty.PlacedOnId = character.Id;
-
+			
 			ViewBag.ShardId = new SelectList(this.db.Shards, "Id", "Name", character.ShardId);
 			ViewBag.FactionId = new SelectList(this.db.Factions, "Id", "Name", character.FactionId);
 			ViewBag.RaceId = new SelectList(this.db.Races, "Id", "Name", character.RaceId);
@@ -104,10 +102,17 @@ namespace PlayerBounties.Controllers
 
 			if(Request.IsAuthenticated)
 			{
-				var characters = this.character.GetAllCharactersForAnAccount(this.account.GetLoggedInUserId());
+				var characters = this.character.GetAllCharactersOnAShardForAnAccount(this.account.GetLoggedInUserId(), bounty.CharacterShard(bounty.PlacedOnId));
 				var defaultCharacter = this.character.GetDefaultCharacterForAnAccount(this.account.GetLoggedInUserId());
 
-				ViewBag.CharacterList = new SelectList(characters, "Id", "Name", defaultCharacter.Single().Id);
+				if(defaultCharacter.Single().Shard.Name == bounty.CharacterShard(bounty.PlacedOnId))
+				{
+					ViewBag.CharacterList = new SelectList(characters, "Id", "Name", defaultCharacter.Single().Id);
+				}
+				else
+				{
+					ViewBag.CharacterList = new SelectList(characters, "Id", "Name", characters.FirstOrDefault().Id);
+				}
 			}
 
 			return View(bounty);

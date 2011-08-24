@@ -156,6 +156,11 @@ namespace PlayerBounties.Models
 			return this.GetAllCharactersForAnAccount(accountId).Where(c => c.IsPrimary == true);
 		}
 
+		public IQueryable<Character> GetAllCharactersOnAShardForAnAccount(Guid accountId, string shard)
+		{
+			return this.db.Characters.Where(c => c.UserId == accountId).Where(c => c.Shard.Name == shard).Include(c => c.Shard).Include(c => c.Faction).Include(c => c.Race).Include(c => c.PlayerClass);
+		}
+
 		public void SetDefaultCharacterToFalse(Guid characterId)
 		{
 			var character = this.db.Characters.Find(characterId);
