@@ -73,7 +73,7 @@
 			@Html.LabelFor(model => model.PlayerClass)
 		</td>
 		<td align="left">
-			@Html.DropDownListFor(model => model.PlayerClass, new SelectList(Enumerable.Empty<SelectListItem>(), "Id", "Name"), "", new { id = "PlayerClassId" })
+			@Html.DropDownList("PlayerClassId", String.Empty)
 			@Html.ValidationMessageFor(model => model.PlayerClassId)
 		</td>
 	</tr>

@@ -1,4 +1,35 @@
 ﻿@model PlayerBounties.Models.Bounty
+		   
+<script type="text/javascript">
+	$(document).ready(function()
+	{
+		$("#FactionId").change(function()
+		{
+		   	var idPlayerClass = $(this).val();
+
+		   	$.getJSON("/Bounty/LoadPlayerClassesByFaction", { factionId: idPlayerClass },
+
+	function(factionData)
+	{
+
+		var select = $("#PlayerClassId");
+		select.empty();
+		select.append($('<option/>', {
+			value: 0,
+			text: ""
+		}));
+
+		$.each(factionData, function(index, itemData)
+		{
+			select.append($('<option/>', {
+				value: itemData.Value,
+				text: itemData.Text
+			}));
+		});
+	});
+		});
+	});
+</script>
 
 @using(Html.BeginForm("PlaceBounty", "Bounty", FormMethod.Post, new { id = "bountySearchForm" }))
 {
@@ -13,18 +44,18 @@
 		</tr>
 		<tr>
 			<td class="inputLabelCell">
-				@Html.Label("Shard")
-			</td>
-			<td align="left">
-				@Html.DropDownList("ShardId", String.Empty)
-			</td>
-		</tr>
-		<tr>
-			<td class="inputLabelCell">
 				@Html.Label("Faction")
 			</td>
 			<td align="left">
 				@Html.DropDownList("FactionId", String.Empty)
+			</td>
+		</tr>
+		<tr>
+			<td class="inputLabelCell">
+				@Html.Label("Shard")
+			</td>
+			<td align="left">
+				@Html.DropDownList("ShardId", String.Empty)
 			</td>
 		</tr>
 		<tr>
