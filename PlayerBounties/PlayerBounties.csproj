@@ -87,6 +87,7 @@
     <Compile Include="Models\Bounty.cs" />
     <Compile Include="Models\Character.cs" />
     <Compile Include="Models\Faction.cs" />
+    <Compile Include="Models\FileUpload.cs" />
     <Compile Include="Models\PlayerBountyContext.cs" />
     <Compile Include="Models\PlayerBountyInitializer.cs" />
     <Compile Include="Models\PlayerClass.cs" />

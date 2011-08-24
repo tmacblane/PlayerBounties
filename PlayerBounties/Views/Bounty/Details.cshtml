@@ -1,7 +1,7 @@
 ﻿@model PlayerBounties.Models.Bounty
 
 @{
-    ViewBag.Title = "Bounty Details - " + Model.CharacterName(Model.PlacedOnId);
+	ViewBag.Title = "Bounty Details - " + Model.CharacterName(Model.PlacedOnId);
 }
 
 <div>
@@ -12,7 +12,10 @@
 				Name:
 			</td>
 			<td align="left">
-				<span>@Model.CharacterName(Model.PlacedOnId)</span>
+				@Html.ActionLink(@Model.CharacterName(Model.PlacedOnId).ToString(), "Details", "Character", new
+{
+	id = Model.PlacedOnId
+}, null)
 			</td>
 		</tr>
 		<tr>
@@ -52,7 +55,10 @@
 				@Html.LabelFor(model => model.PlacedById):
 			</td>
 			<td align="left">
-				<span>@Model.CharacterName(Model.PlacedById)</span>
+				@Html.ActionLink(@Model.CharacterName(Model.PlacedById).ToString(), "Details", "Character", new
+{
+	id = Model.PlacedById
+}, null)
 			</td>
 		</tr>
 			
@@ -66,7 +72,7 @@
 		</tr>
 	
 		@if(Model.DateCompleted != null)
-		{
+  {
 			<tr>
 				<td class="inputLabelCell">
 					@Html.LabelFor(model => model.DateCompleted):
@@ -75,7 +81,7 @@
 					<span>@Html.DisplayFor(model => model.DateCompleted)</span>
 				</td>
 			</tr>
-		}	
+  }	
 
 		<tr>
 			<td class="inputLabelCell">
@@ -88,14 +94,15 @@
 	</table>
 </div>
 
-@using(Html.BeginForm(FormMethod.Post))
+@using(Html.BeginForm("Details", "Bounty", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
 	<!-- If user is logged in, show div  -->
 	if(Request.IsAuthenticated)
 	{
 		if(Model.GetStatus(Model.Id) == "Active")
-		{
-			<p>Upload picture to complete bounty</p>
+		{	
+			<label for="file">FileName:</label>
+			<input type="file" name="file" id="file" />			
 	
 			@Html.DropDownList("CharacterList", String.Empty)<br />
 			<p>Don't see the character you killed with...click here to create them</p>

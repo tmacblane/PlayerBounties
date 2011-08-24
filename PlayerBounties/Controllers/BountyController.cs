@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -111,7 +112,7 @@ namespace PlayerBounties.Controllers
 				}
 				else
 				{
-					ViewBag.CharacterList = new SelectList(characters, "Id", "Name", characters.FirstOrDefault().Id);
+					ViewBag.CharacterList = new SelectList(characters, "Id", "Name");
 				}
 			}
 
@@ -145,6 +146,8 @@ namespace PlayerBounties.Controllers
 
 			this.db.Entry(bounty).State = EntityState.Modified;
 			this.db.SaveChanges();
+
+			this.UploadFiles();
 
 			return RedirectToAction("Dashboard", "Home", null);
 		}
@@ -410,6 +413,35 @@ namespace PlayerBounties.Controllers
 			});
 
 			return Json(characterData, JsonRequestBehavior.AllowGet);
+		}
+
+		public ActionResult UploadFiles()
+		{
+			var r = new List<FileUpload>();
+
+			foreach(string file in Request.Files)
+			{
+				HttpPostedFileBase hpf = Request.Files[file] as HttpPostedFileBase;
+
+				if(hpf.ContentLength == 0)
+				{
+					continue;
+				}
+
+				string savedFileName = Path.Combine(
+					AppDomain.CurrentDomain.BaseDirectory,
+					Path.GetFileName(hpf.FileName));
+
+				hpf.SaveAs(savedFileName);
+
+				r.Add(new FileUpload()
+				{
+					Name = savedFileName,
+					Length = hpf.ContentLength
+				});
+			}
+
+			return View("UploadedFiles", r);
 		}
 
 		#endregion
