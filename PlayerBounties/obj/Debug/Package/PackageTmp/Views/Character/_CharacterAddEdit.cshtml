@@ -5,11 +5,32 @@
 	{
 		$("#FactionId").change(function()
 		{
+			var idPlayerClass = $(this).val();
+
+			$.getJSON("/Character/LoadPlayerClassesByFaction", { factionId: idPlayerClass },
 			
+			function(factionData)
+			{
+
+				var select = $("#PlayerClassId");
+				select.empty();
+				select.append($('<option/>', {
+					value: 0,
+					text: ""
+				}));
+
+				$.each(factionData, function(index, itemData)
+				{
+					select.append($('<option/>', {
+						value: itemData.Value,
+						text: itemData.Text
+					}));
+				});
+			});
 		});
 	});
 </script>
-
+		   
 <table id="characterAddEditTable" cellspacing="0" cellpadding="5" border="0">
 	<tr>
 		<td class="inputLabelCell">

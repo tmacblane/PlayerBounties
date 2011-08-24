@@ -120,13 +120,13 @@
 	<div class="rowBlank">
 		@if(Request.IsAuthenticated)
 		{
-			<input type="submit" value="Complete Bounty" />
-			<input type="button" value="Back" onclick="window.location='../../Home/Dashboard'" />
+			if(Model.GetStatus(Model.Id) == "Active")
+			{	
+				<input type="submit" value="Complete Bounty" />
+			}
 		}
-		else
-		{
-			<input type="button" value="Back" onclick="window.location='../../Home/Index'" />
-		}
+		
+		<input type="button" value="Back" onclick="window.history.back()" />
 		
 	</div>
 }

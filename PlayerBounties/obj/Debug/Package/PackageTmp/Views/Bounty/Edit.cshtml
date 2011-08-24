@@ -10,6 +10,15 @@
         <legend>Bounty</legend>
 
         @Html.HiddenFor(model => model.Id)
+		
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.PlacedOnId)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.PlacedOnId)
+            @Html.ValidationMessageFor(model => model.PlacedOnId)
+        </div>
 
         <div class="editor-label">
             @Html.LabelFor(model => model.Amount)
@@ -41,46 +50,6 @@
         <div class="editor-field">
             @Html.EditorFor(model => model.PlacedById)
             @Html.ValidationMessageFor(model => model.PlacedById)
-        </div>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.PlacedOnId)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.PlacedOnId)
-            @Html.ValidationMessageFor(model => model.PlacedOnId)
-        </div>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.DatePlaced)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.DatePlaced)
-            @Html.ValidationMessageFor(model => model.DatePlaced)
-        </div>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.IsPlacementPending)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.IsPlacementPending)
-            @Html.ValidationMessageFor(model => model.IsPlacementPending)
-        </div>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.DateCompleted)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.DateCompleted)
-            @Html.ValidationMessageFor(model => model.DateCompleted)
-        </div>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.IsCompletionPending)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.IsCompletionPending)
-            @Html.ValidationMessageFor(model => model.IsCompletionPending)
         </div>
 
         <p>
