@@ -306,3 +306,130 @@ table
 {
 	font-weight: bold;
 }
+
+.searchResult
+{
+	position: relative;
+}
+
+.republic
+{
+	background-image: url("../../Content/Images/search_logos.png");
+	background-repeat: no-repeat;
+	background-position: 0 0;
+	background-color: rgba(0, 0, 0, 1);
+	color: #FFFFFF;
+	font-weight: bold;
+	font-size: 12px;
+	height: 36px;
+}
+
+.empire
+{
+	background-image: url("../../Content/Images/search_logos.png");
+	background-repeat: no-repeat;
+	background-position: -743px 0;
+	background-color: rgba(0, 0, 0, 1);
+	color: #FFFFFF;
+	font-weight: bold;
+	font-size: 12px;
+	height: 36px;
+}
+
+/* CLASS COLORS AND ICONS
+----------------------------------------------------------*/
+
+.classIcon
+{
+	background-image: url("../../Content/Images/rosterClassIcons.png");
+	background-repeat: no-repeat;
+	height: 22px;
+	width: 22px;
+}
+
+.classTxt
+{
+	font-family: Verdana,arial,sans-serif;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.jediKnightTxt a
+{
+	color: #1DA8CF;
+}
+
+.jediKnightIcon
+{
+	background-position: right 0;
+}
+
+.trooperTxt a
+{
+	color: #FC500D;
+}
+
+.trooperIcon
+{
+	background-position: right -72px;
+}
+
+.jediConsularTxt a
+{
+	color: #F3DA31;
+}
+
+.jediConsularIcon
+{
+	background-position: right -36px;
+}
+
+.smugglerTxt a
+{
+	color: #0C735C;
+}
+
+.smugglerIcon
+{
+	background-position: right -108px;
+}
+
+.sithWarriorTxt a
+{
+	color: #970917;
+}
+
+.sithWarriorIcon
+{
+	background-position: right -144px;
+}
+
+.bountyHunterTxt a
+{
+	color: #384732;
+}
+
+.bountyHunterIcon
+{
+	background-position: right -216px;
+}
+
+.sithInquisitorTxt a
+{
+	color: #7A6C90;
+}
+
+.sithInquisitorIcon
+{
+	background-position: right -180px;
+}
+
+.imperialAgentTxt a
+{
+	color: #989697;
+}
+
+.imperialAgentIcon
+{
+	background-position: right -252px;
+}

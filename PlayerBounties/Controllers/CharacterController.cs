@@ -223,6 +223,25 @@ namespace PlayerBounties.Controllers
 			}
 		}
 
+		private IEnumerable<PlayerClass> GetPlayerClassesPerFaction(Guid factionId)
+		{
+			return db.PlayerClasses.Where(p => p.FactionId == factionId);
+		}
+
+		[AcceptVerbs(HttpVerbs.Get)]
+		public JsonResult LoadPlayerClassesByFaction(Guid factionId)
+		{
+			var playerClassList = this.GetPlayerClassesPerFaction(factionId);
+
+			var playerClassData = playerClassList.Select(p => new SelectListItem()
+			{
+				Value = p.Id.ToString(),
+				Text = p.Name
+			});
+
+			return Json(playerClassData, JsonRequestBehavior.AllowGet);
+		}
+
 		#endregion
 
 		#region Base class overrides

@@ -13,7 +13,7 @@
 			</tr>
 			<tr style="height: 150px;">
 				<td>
-					<img src="../../Content/Images/bountyhunter01.jpg" alt="Home" id="characterAvatar"/>
+					<img src="../../@Model.GetClassAvatarPath(Model.AvatarId.Value)" alt="Home" id="characterAvatar"/>					
 				</td>
 			</tr>
 
@@ -101,7 +101,7 @@
 	</div>	
 	
 	<div id="middleColumn">
-		<table id="characterDetailsTable" cellspacing="0" cellpadding="5" border="0">
+		<table id="characterDetailsTable" cellspacing="0" cellpadding="5" border="0" >
 			<tr style="height: 20px;"></tr>
 			<tr>
 				<td class="inputLabelCell">
@@ -216,3 +216,7 @@
 <div id="talesFromTheHunt" class="divSize95">
 	<p>Link to Tales from hunt</p>
 </div>
+
+<div class="rowBlank">		
+	<input type="button" value="<< Back" onclick="window.history.back()"/>
+</div>	

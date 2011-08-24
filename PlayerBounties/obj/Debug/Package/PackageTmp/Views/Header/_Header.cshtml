@@ -17,29 +17,32 @@
 		{
 			if(Model.IsUserAdmin(Model.GetLoggedInUserId()))
 			{
-					<li>@Html.ActionLink("Admin", "Index", "Admin")</li>
-					<li>&nbsp;|&nbsp;</li>
+				<li>@Html.ActionLink("Admin", "Index", "Admin")</li>
+				<li>&nbsp;|&nbsp;</li>
 			}
 		}
 		<li>@if(Request.IsAuthenticated)
-	  {
+			{
 				<text>@Html.ActionLink("My Account", "MyAccount", "Account")</text>
-	  }
-	  else
-	  {
+			}
+			else
+			{
 				<text>@Html.ActionLink("Sign Up", "SignUp", "Account")</text>
-	  }
-		</li>
+			}
+		</li>		
+		<li>&nbsp;|&nbsp;</li>
+		<li>@Html.ActionLink("Help", "Index", "Help")</li>
 		<li>&nbsp;|&nbsp;</li>
 		<li>@if(Request.IsAuthenticated)
-	  {
+			{
 				<text>Welcome <strong>@User.Identity.Name</strong>
+				<li>&nbsp;|&nbsp;</li>
 				@Html.ActionLink("Log Off", "LogOff", "Account")</text>
-	  }
-	  else
-	  {
+			}
+			else
+			{
 				@Html.ActionLink("Login", "Login", "Account")
-	  }
+			}
 		</li>
 	</ul>
 				
