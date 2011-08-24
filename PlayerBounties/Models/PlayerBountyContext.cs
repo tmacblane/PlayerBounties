@@ -32,13 +32,19 @@ namespace PlayerBounties.Models
 			set;
 		}
 
-		public DbSet<PlayerClass> PlayerClasses
+		public DbSet<KillShotImage> KillShotImages
 		{
 			get;
 			set;
 		}
 
 		public DbSet<Faction> Factions
+		{
+			get;
+			set;
+		}
+
+		public DbSet<PlayerClass> PlayerClasses
 		{
 			get;
 			set;

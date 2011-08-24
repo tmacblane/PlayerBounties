@@ -159,7 +159,7 @@ namespace PlayerBounties.Controllers
 			this.db.Entry(bounty).State = EntityState.Modified;
 			this.db.SaveChanges();
 
-			this.UploadFiles();
+			this.UploadFiles(bounty);
 
 			return RedirectToAction("Dashboard", "Home", null);
 		}
@@ -427,9 +427,11 @@ namespace PlayerBounties.Controllers
 			return Json(characterData, JsonRequestBehavior.AllowGet);
 		}
 
-		public ActionResult UploadFiles()
+		public ActionResult UploadFiles(Bounty bounty)
 		{
-			var r = new List<FileUpload>();
+			KillShotImage killShotImage = new KillShotImage();
+
+			var r = new List<KillShotImage>();
 
 			foreach(string file in Request.Files)
 			{
@@ -440,27 +442,28 @@ namespace PlayerBounties.Controllers
 					continue;
 				}
 
-				// set file name
 				string fileName = hpf.FileName;
-				// add file to DB
-				// get Guid
-				// set Guid to bounty edit
+				string filePath = @"Content\Images\";
 
+				killShotImage.Id = Guid.NewGuid();
+				killShotImage.FileName = fileName;
+				killShotImage.FilePath = filePath;
+
+				this.db.KillShotImages.Add(killShotImage);
+				this.db.SaveChanges();
+
+				bounty.KillShotImageId = killShotImage.Id;
+				this.db.Entry(bounty).State = EntityState.Modified;
+				this.db.SaveChanges();
 
 				string savedFileName = Path.Combine(
-					AppDomain.CurrentDomain.BaseDirectory + @"Content\Images\",
-					Path.GetFileName(hpf.FileName));
+					AppDomain.CurrentDomain.BaseDirectory + filePath,
+					Path.GetFileName(fileName));
 
 				hpf.SaveAs(savedFileName);
-
-				r.Add(new FileUpload()
-				{
-					Name = savedFileName,
-					Length = hpf.ContentLength
-				});
 			}
 
-			return View("UploadedFiles", r);
+			return View();
 		}
 
 		#endregion

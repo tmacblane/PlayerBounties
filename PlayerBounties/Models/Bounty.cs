@@ -96,6 +96,12 @@ namespace PlayerBounties.Models
 			set;
 		}
 
+		public Guid? KillShotImageId
+		{
+			get;
+			set;
+		}
+
 		#endregion
 
 		#region Type specific methods
