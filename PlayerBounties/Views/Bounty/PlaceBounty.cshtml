@@ -5,30 +5,55 @@
 	{
 		$("#FactionId").change(function()
 		{
-		   	var idPlayerClass = $(this).val();
+			var idPlayerClass = $(this).val();
 
-		   	$.getJSON("/Bounty/LoadPlayerClassesByFaction", { factionId: idPlayerClass },
+			$.getJSON("/Bounty/LoadPlayerClassesByFaction", { factionId: idPlayerClass },
 
-	function(factionData)
-	{
+			function(factionData)
+			{
+				var select = $("#PlayerClassId");
+				select.empty();
+				select.append($('<option/>', {
+					value: 0,
+					text: ""
+				}));
 
-		var select = $("#PlayerClassId");
-		select.empty();
-		select.append($('<option/>', {
-			value: 0,
-			text: ""
-		}));
+				$.each(factionData, function(index, itemData)
+				{
+					select.append($('<option/>', {
+						value: itemData.Value,
+						text: itemData.Text
+					}));
+				});
+			});
+		});
 
-		$.each(factionData, function(index, itemData)
+		$("#ShardId").change(function()
 		{
-			select.append($('<option/>', {
-				value: itemData.Value,
-				text: itemData.Text
-			}));
+			var idShard = $(this).val();
+
+			$.getJSON("/Bounty/LoadCharactersByShard", { shardId: idShard },
+
+			function(shardData)
+			{
+				var select = $("#CharacterList");
+				select.empty();
+				select.append($('<option/>', {
+					value: 0,
+					text: "Select a character"
+				}));
+
+				$.each(shardData, function(index, itemData)
+				{
+					select.append($('<option/>', {
+						value: itemData.Value,
+						text: itemData.Text
+					}));
+				});
+			});
 		});
 	});
-		});
-	});
+
 </script>
 
 @using(Html.BeginForm("PlaceBounty", "Bounty", FormMethod.Post, new { id = "bountySearchForm" }))
@@ -91,10 +116,22 @@
 				@Html.EditorFor(model => model.Message)
 			</td>
 		</tr>
+		<tr>
+			<td class="inputLabelCell">
+				Requested By:
+			</td>
+			<td align="left">
+				@Html.DropDownList("CharacterList", String.Empty) Don't see your character in the list...click here to create them
+			</td>
+		</tr>
 	</table>
 	
 	<div class="rowBlank">
+		@if(Request.IsAuthenticated)
+		{
 		<input id="placeBountyBtn" type="submit" value="Place Bounty" />
-		<input type="button" value="Cancel" onclick="window.location='../../Home/Dashboard/'"/>
+		}
+		
+		<input type="button" value="Cancel" onclick="window.history.back()"/>
 	</div>
 }

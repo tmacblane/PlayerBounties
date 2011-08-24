@@ -193,6 +193,11 @@ namespace PlayerBounties.Controllers
 		[Authorize]
 		public ActionResult PlaceBounty()
 		{
+			Character character = new Character();
+			var characters = this.character.GetAllCharactersForAnAccount(this.account.GetLoggedInUserId());
+
+			var defaultCharacter = this.character.GetDefaultCharacterForAnAccount(this.account.GetLoggedInUserId());
+
 			var sortedShardList = from shard in this.db.Shards
 								  orderby shard.Name ascending
 								  select shard;
@@ -208,6 +213,7 @@ namespace PlayerBounties.Controllers
 			ViewBag.ShardId = new SelectList(sortedShardList, "Id", "Name");
 			ViewBag.FactionId = new SelectList(sortedFactionList, "Id", "Name");
 			ViewBag.PlayerClassId = new SelectList(sortedPlayerClassList, "Id", "Name");
+			ViewBag.CharacterList = new SelectList(characters, "Id", "Name", defaultCharacter.Single().Id);
 
 			return View();
 		}
@@ -366,7 +372,7 @@ namespace PlayerBounties.Controllers
 
 		private IEnumerable<PlayerClass> GetPlayerClassesPerFaction(Guid factionId)
 		{
-			return db.PlayerClasses.Where(p => p.FactionId == factionId);
+			return this.db.PlayerClasses.Where(p => p.FactionId == factionId);
 		}
 
 		[AcceptVerbs(HttpVerbs.Get)]
@@ -377,10 +383,33 @@ namespace PlayerBounties.Controllers
 			var playerClassData = playerClassList.Select(p => new SelectListItem()
 			{
 				Value = p.Id.ToString(),
-				Text = p.Name
+				Text = p.Name,
 			});
 
 			return Json(playerClassData, JsonRequestBehavior.AllowGet);
+		}
+
+		private IEnumerable<Character> GetCharactersPerShard(Guid shardId)
+		{	
+			Character character = new Character();
+
+			Guid loggedInUserId = character.GetLoggedInUserId();
+
+			return this.db.Characters.Where(c=> c.UserId == loggedInUserId).Where(c => c.ShardId == shardId);
+		}
+
+		[AcceptVerbs(HttpVerbs.Get)]
+		public JsonResult LoadCharactersByShard(Guid shardId)
+		{
+			var characterList = this.GetCharactersPerShard(shardId);
+
+			var characterData = characterList.Select(p => new SelectListItem()
+			{
+				Value = p.Id.ToString(),
+				Text = p.Name
+			});
+
+			return Json(characterData, JsonRequestBehavior.AllowGet);
 		}
 
 		#endregion
