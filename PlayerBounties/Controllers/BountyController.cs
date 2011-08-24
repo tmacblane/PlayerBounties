@@ -36,16 +36,28 @@ namespace PlayerBounties.Controllers
 		public ActionResult Create(Character character)
 		{
 			Bounty bounty = new Bounty();
-			character = this.db.Characters.Find(character.Id);
+			var loggedInUserId = this.account.GetLoggedInUserId();
 
-			var characters = this.character.GetAllCharactersForAnAccount(this.account.GetLoggedInUserId());
-			var defaultCharacter = this.character.GetDefaultCharacterForAnAccount(this.account.GetLoggedInUserId());
+			character = this.db.Characters.Where(c => c.Id == character.Id).Include(c => c.Shard).Include(c => c.Faction).Include(c => c.Race).Include(c => c.PlayerClass).Single();
+
+			var characters = this.character.GetAllCharactersOnAShardForAnAccount(loggedInUserId, character.Shard.Name);
+			var defaultCharacter = this.character.GetDefaultCharacterForAnAccount(loggedInUserId);
+			
+			bounty.PlacedOnId = character.Id;
 			
 			ViewBag.ShardId = new SelectList(this.db.Shards, "Id", "Name", character.ShardId);
 			ViewBag.FactionId = new SelectList(this.db.Factions, "Id", "Name", character.FactionId);
 			ViewBag.RaceId = new SelectList(this.db.Races, "Id", "Name", character.RaceId);
 			ViewBag.PlayerClassId = new SelectList(this.db.PlayerClasses, "Id", "Name", character.PlayerClassId);
-			ViewBag.CharacterList = new SelectList(characters, "Id", "Name", defaultCharacter.Single().Id);
+
+			if(defaultCharacter.Single().Shard.Name == bounty.CharacterShard(bounty.PlacedOnId))
+			{
+				ViewBag.CharacterList = new SelectList(characters, "Id", "Name", defaultCharacter.Single().Id);
+			}
+			else
+			{
+				ViewBag.CharacterList = new SelectList(characters, "Id", "Name");
+			}
 
 			return View(bounty);
 		}
@@ -428,8 +440,15 @@ namespace PlayerBounties.Controllers
 					continue;
 				}
 
+				// set file name
+				string fileName = hpf.FileName;
+				// add file to DB
+				// get Guid
+				// set Guid to bounty edit
+
+
 				string savedFileName = Path.Combine(
-					AppDomain.CurrentDomain.BaseDirectory,
+					AppDomain.CurrentDomain.BaseDirectory + @"Content\Images\",
 					Path.GetFileName(hpf.FileName));
 
 				hpf.SaveAs(savedFileName);
