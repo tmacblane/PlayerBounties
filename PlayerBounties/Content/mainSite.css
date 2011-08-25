@@ -446,8 +446,9 @@ table
 	display: inline; 
 } /* IE6 float double margin bug */
 
-.scroll-pane 
-{ 
+
+.character-scroll-pane, .image-scroll-pane
+{
 	overflow: auto; 
 	width: 99%; 
 	float:left; 
@@ -455,13 +456,13 @@ table
 	background-color: #333333;
 }
 
-.scroll-content 
+.character-scroll-content, .image-scroll-content 
 { 
 	min-width: 99%; 
 	float: left; 
 }
 
-.scroll-content-item 
+.character-scroll-content-item, .image-scroll-content-item 
 { 
 	width: 125px; 
 	height: 125px; 
@@ -471,14 +472,14 @@ table
 	text-align: center;
 }
 
-.scroll-bar-wrap 
+.character-scroll-bar-wrap, .image-scroll-bar-wrap 
 { 
 	clear: left; 
 	padding: 0 4px 0 2px; 
 	margin: 0 -1px -1px -1px; 
 }
 
-.scroll-bar-wrap .ui-slider 
+.character-scroll-bar-wrap .ui-slider, .image-scroll-bar-wrap .ui-slider 
 { 
 	background: none; 
 	border:0; 
@@ -486,7 +487,7 @@ table
 	margin: 0 auto;  
 }
 
-.scroll-bar-wrap .ui-handle-helper-parent 
+.character-scroll-bar-wrap .ui-handle-helper-parent, .image-scroll-bar-wrap .ui-handle-helper-parent 
 { 
 	position: relative; 
 	width: 100%; 
@@ -494,13 +495,13 @@ table
 	margin: 0 auto; 
 }
 
-.scroll-bar-wrap .ui-slider-handle 
+.character-scroll-bar-wrap .ui-slider-handle, .image-scroll-bar-wrap .ui-slider-handle 
 { 
 	top: 2px; 
 	height: 12px;
 }
 
-.scroll-bar-wrap .ui-slider-handle .ui-icon 
+.character-scroll-bar-wrap .ui-slider-handle .ui-icon, .image-scroll-bar-wrap .ui-slider-handle .ui-icon 
 { 
 	margin: -8px auto 0; 
 	position: relative; 

@@ -3,22 +3,22 @@
 <script type="text/javascript">
 	$(function()
 	{
-		//scrollpane parts
-		var scrollPane = $(".scroll-pane"),
-		scrollContent = $(".scroll-content");
+		//characterScrollPane parts
+		var characterScrollPane = $(".character-scroll-pane"),
+		characterScrollContent = $(".character-scroll-content");
 
 		//build slider
-		var scrollbar = $(".scroll-bar").slider({
+		var scrollbar = $(".character-scroll-bar").slider({
 			slide: function(event, ui)
 			{
-				if(scrollContent.width() > scrollPane.width())
+				if(characterScrollContent.width() > characterScrollPane.width())
 				{
-					scrollContent.css("margin-left", Math.round(
-					ui.value / 100 * (scrollPane.width() - scrollContent.width())
+					characterScrollContent.css("margin-left", Math.round(
+					ui.value / 100 * (characterScrollPane.width() - characterScrollContent.width())
 				) + "px");
 				} else
 				{
-					scrollContent.css("margin-left", 0);
+					characterScrollContent.css("margin-left", 0);
 				}
 			}
 		});
@@ -40,14 +40,14 @@
 	.wrap("<div class='ui-handle-helper-parent'></div>").parent();
 
 		//change overflow to hidden now that slider handles the scrolling
-	scrollPane.css("overflow", "hidden");
+	characterScrollPane.css("overflow", "hidden");
 
 		//size scrollbar and handle proportionally to scroll distance
 		function sizeScrollbar()
 		{
-			var remainder = scrollContent.width() - scrollPane.width();
-			var proportion = remainder / scrollContent.width();
-			var handleSize = scrollPane.width() - (proportion * scrollPane.width());
+			var remainder = characterScrollContent.width() - characterScrollPane.width();
+			var proportion = remainder / characterScrollContent.width();
+			var handleSize = characterScrollPane.width() - (proportion * characterScrollPane.width());
 			scrollbar.find(".ui-slider-handle").css({
 				width: handleSize,
 				"margin-left": -handleSize / 2
@@ -58,9 +58,9 @@
 		//reset slider value based on scroll content position
 		function resetValue()
 		{
-			var remainder = scrollPane.width() - scrollContent.width();
-			var leftVal = scrollContent.css("margin-left") === "auto" ? 0 :
-			parseInt(scrollContent.css("margin-left"));
+			var remainder = characterScrollPane.width() - characterScrollContent.width();
+			var leftVal = characterScrollContent.css("margin-left") === "auto" ? 0 :
+			parseInt(characterScrollContent.css("margin-left"));
 			var percentage = Math.round(leftVal / remainder * 100);
 			scrollbar.slider("value", percentage);
 		}
@@ -68,11 +68,11 @@
 		//if the slider is 100% and window gets larger, reveal content
 		function reflowContent()
 		{
-			var showing = scrollContent.width() + parseInt(scrollContent.css("margin-left"), 10);
-			var gap = scrollPane.width() - showing;
+			var showing = characterScrollContent.width() + parseInt(characterScrollContent.css("margin-left"), 10);
+			var gap = characterScrollPane.width() - showing;
 			if(gap > 0)
 			{
-				scrollContent.css("margin-left", parseInt(scrollContent.css("margin-left"), 10) + gap);
+				characterScrollContent.css("margin-left", parseInt(characterScrollContent.css("margin-left"), 10) + gap);
 			}
 		}
 
@@ -89,11 +89,11 @@
 </script>
 
 <div class="slider">
-	<div class="scroll-pane ui-widget ui-widget-header ui-corner-all">
-		<div class="scroll-content" style="width: @Math.Abs(@Model.Count()*147)px;">
+	<div class="character-scroll-pane ui-widget ui-widget-header ui-corner-all">
+		<div class="character-scroll-content" style="width: @Math.Abs(@Model.Count()*147)px;">
 			@foreach(var item in Model)
 			{
-				<div class="scroll-content-item ui-widget-header @item.GetFactionStyle(item.Faction.Name)">
+				<div class="character-scroll-content-item ui-widget-header @item.GetFactionStyle(item.Faction.Name)">
 				   <table>
 						<tr>
 							<td>
@@ -115,8 +115,8 @@
 		
 		@if(Model.Count() > 6)
 		{
-			<div class="scroll-bar-wrap ui-widget-content ui-corner-bottom">
-				<div class="scroll-bar"></div>
+			<div class="character-scroll-bar-wrap ui-widget-content ui-corner-bottom">
+				<div class="character-scroll-bar"></div>
 			</div>
 		}
 		

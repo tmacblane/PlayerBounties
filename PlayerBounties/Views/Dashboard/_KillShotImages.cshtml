@@ -1,6 +1,113 @@
 ﻿@model IEnumerable<PlayerBounties.Models.KillShotImage>
 
-@foreach(var item in Model)
-{
-	<text>@item.FileName</text>
-}
+<script type="text/javascript">
+	$(function()
+	{
+		//imageScrollPane parts
+		var imageScrollPane = $(".image-scroll-pane"),
+		imageScrollContent = $(".image-scroll-content");
+
+		//build slider
+		var scrollbar = $(".image-scroll-bar").slider({
+			slide: function(event, ui)
+			{
+				if(imageScrollContent.width() > imageScrollPane.width())
+				{
+					imageScrollContent.css("margin-left", Math.round(
+					ui.value / 100 * (imageScrollPane.width() - imageScrollContent.width())
+				) + "px");
+				} else
+				{
+					imageScrollContent.css("margin-left", 0);
+				}
+			}
+		});
+
+		//append icon to handle
+		var handleHelper = scrollbar.find(".ui-slider-handle")
+
+	.mousedown(function()
+	{
+		scrollbar.width(handleHelper.width());
+	})
+
+	.mouseup(function()
+	{
+		scrollbar.width("100%");
+	})
+
+	.append("<span class='ui-icon ui-icon-grip-dotted-vertical'></span>")
+	.wrap("<div class='ui-handle-helper-parent'></div>").parent();
+
+		//change overflow to hidden now that slider handles the scrolling
+		imageScrollPane.css("overflow", "hidden");
+
+		//size scrollbar and handle proportionally to scroll distance
+		function sizeScrollbar()
+		{
+			var remainder = imageScrollContent.width() - imageScrollPane.width();
+			var proportion = remainder / imageScrollContent.width();
+			var handleSize = imageScrollPane.width() - (proportion * imageScrollPane.width());
+			scrollbar.find(".ui-slider-handle").css({
+				width: handleSize,
+				"margin-left": -handleSize / 2
+			});
+			handleHelper.width("").width(scrollbar.width() - handleSize);
+		}
+
+		//reset slider value based on scroll content position
+		function resetValue()
+		{
+			var remainder = imageScrollPane.width() - imageScrollContent.width();
+			var leftVal = imageScrollContent.css("margin-left") === "auto" ? 0 :
+			parseInt(imageScrollContent.css("margin-left"));
+			var percentage = Math.round(leftVal / remainder * 100);
+			scrollbar.slider("value", percentage);
+		}
+
+		//if the slider is 100% and window gets larger, reveal content
+		function reflowContent()
+		{
+			var showing = imageScrollContent.width() + parseInt(imageScrollContent.css("margin-left"), 10);
+			var gap = imageScrollPane.width() - showing;
+			if(gap > 0)
+			{
+				imageScrollContent.css("margin-left", parseInt(imageScrollContent.css("margin-left"), 10) + gap);
+			}
+		}
+
+		//change handle position on window resize
+		$(window).resize(function()
+		{
+			resetValue();
+			sizeScrollbar();
+			reflowContent();
+		});
+		//init scrollbar size
+		setTimeout(sizeScrollbar, 10); //safari wants a timeout
+	});
+</script>
+
+<div id="killShotImages" style="width: 980px; padding-left: 10px;">
+	<h3>Kill Images</h3>
+	<div class="slider">
+		<div class="image-scroll-pane ui-widget ui-widget-header ui-corner-all">
+			<div class="image-scroll-content" style="width: @Math.Abs(@Model.Count()*147)px;">
+				@foreach(var item in Model)
+				{
+					<div class="image-scroll-content-item ui-widget-header" >
+						<img src="../../Content/Images/@item.FileName" alt="Kill Image" id="killImage" style="height: 125px; width:125px;" />
+					</div>   
+				}			
+			</div>
+		
+			@if(Model.Count() > 6)
+			{
+				<div class="image-scroll-bar-wrap ui-widget-content ui-corner-bottom">
+					<div class="image-scroll-bar"></div>
+				</div>
+			}
+		
+		</div>
+	</div>
+</div>
