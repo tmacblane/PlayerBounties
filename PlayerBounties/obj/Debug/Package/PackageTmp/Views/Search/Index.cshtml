@@ -2,73 +2,85 @@
 
 @Html.Partial("_Search")
 
-<table class="searchResult" cellspacing="0" cellpadding="5" border="0">
-    <tr>
-        <th>
-            Name
-        </th>
-		<th>
-			Race
-		</th>
-		<th>
-			Class
-		</th>
-		<th>
+@if(Model.Count() != 0)
+{
+	<table class="searchResult" cellspacing="0" cellpadding="5" border="0">
+		<thead>
+			<tr>
+				<th>
+					Name
+				</th>
+				<th>
+					Race
+				</th>
+				<th>
+					Class
+				</th>
+				<th>
 			
-		</th>
-		<th>
-			Shard
-		</th>
-		<th></th>
-    </tr>
-
-	@foreach(var character in Model)
-	{
-		<tr class="@character.GetFactionStyle(character.Faction.Name)">
-			<td class="@character.GetClassStyle(character.PlayerClass.Name)">
-				@Html.ActionLink(character.Name, "Details", "Character", new { character.Id }, null)
-			</td>
-			<td>
-				@Html.DisplayFor(modelItem => character.Race.Name)
-			</td>
-			<td>
-				@Html.DisplayFor(modelItem => character.PlayerClass.Name)
-			</td>
-			<td>
-					
-			</td>
-			<td>
-				@Html.DisplayFor(modelItem => character.Shard.Name)
-			</td>
-			<td>
-			</td>
-
-			@if(character.GetLoggedInUserId() != Guid.Empty)
+				</th>
+				<th>
+					Shard
+				</th>
+				<th></th>
+			</tr>
+		</thead>
+		<tbody>
+			@foreach(var character in Model)
 			{
-				if(character.GetAllCharactersForAnAccount(character.GetLoggedInUserId()).Count() != 0)
-				{
-					if(character.IsActiveBountyOnCharacter(character.Id) == false)
+				<tr class="@character.GetFactionStyle(character.Faction.Name)">
+					<td class="@character.GetClassStyle(character.PlayerClass.Name)">
+						@Html.ActionLink(character.Name, "Details", "Character", new { character.Id }, null)
+					</td>
+					<td>
+						@Html.DisplayFor(modelItem => character.Race.Name)
+					</td>
+					<td>
+						@Html.DisplayFor(modelItem => character.PlayerClass.Name)
+					</td>
+					<td>
+					
+					</td>
+					<td>
+						@Html.DisplayFor(modelItem => character.Shard.Name)
+					</td>
+					<td>
+					</td>
+
+					@if(character.GetLoggedInUserId() != Guid.Empty)
 					{
-						<td align="center">
-							@Html.ActionLink("Place a Bounty", "Create", "Bounty", new { id = character.Id }, null)
-						</td>
+						if(character.GetAllCharactersForAnAccount(character.GetLoggedInUserId()).Count() != 0)
+						{
+							if(character.IsActiveBountyOnCharacter(character.Id) == false)
+							{
+								<td align="center">
+									@Html.ActionLink("Place a Bounty", "Create", "Bounty", new { id = character.Id }, null)
+								</td>
+							}
+							else
+							{
+								<td align="center">
+									@Html.ActionLink("Active Bounty", "Details", "Bounty", new { id = character.GetActiveBountyId(character.Id) }, null)
+								</td>
+							}
+						}
 					}
-					else
-					{
-						<td align="center">
-							@Html.ActionLink("Active Bounty", "Details", "Bounty", new { id = character.GetActiveBountyId(character.Id) }, null)
-						</td>
-					}
-				}
+				</tr>
 			}
-		</tr>
-	}
-
-</table>
-
-something about don't see the character you're looking for...click here to add a character
+		</tbody>
+	</table>
+}
+else
+{
+	<p>Your search yielded no results.  Please refine your search and try again.</p>
+}
 
 <div class="rowBlank">
-	<input type="button" value="Place a Bounty" onclick="location.href='Bounty/Placebounty'"/>
+	@if(Request.IsAuthenticated)
+	{
+		<p>Can't find your intended target?  Click to place a bounty!</p>
+		<input type="button" value="Place a Bounty" onclick="location.href='Bounty/Placebounty'" style="float: left;"/>
+	}
+	 
 	<input type="button" value="<< Back" onclick="window.history.back()"/>
 </div>	

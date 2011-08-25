@@ -1,20 +1,53 @@
 ﻿@model PlayerBounties.Models.Bounty
 
 <table cellspacing="0" cellpadding="5" border="0">
-    <tr>
-        <th></th>
-        <th></th>
-    </tr>
-    <tr>
-        <td class="inputLabelCell">Total Bounties Completed</td>
-        <td align="left">@Model.GetCompletedBounties().Count()</td>
-    </tr>
-    <tr>
-        <td class="inputLabelCell">Total Active Bounties</td>
-        <td align="left">@Model.GetActiveBounties().Count()</td>
-    </tr>
-    <tr>
-        <td class="inputLabelCell">Largest Bounty Placed</td>
-        <td align="left">@Model.GetLargestBountyPlaced().FirstOrDefault().Amount</td>
-    </tr>
+	<thead>
+	</thead>
+
+	<tbody>
+		@if(Model.GetCompletedBounties().Count() != 0)
+		{
+			<tr>
+				<td class="inputLabelCell">Total Bounties Completed</td>
+				<td align="left">@Model.GetCompletedBounties().Count()</td>
+			</tr>
+		}
+		else
+		{
+			<tr>
+				<td class="inputLabelCell">Total Bounties Completed</td>
+				<td align="left">0</td>
+			</tr>
+		}
+
+		@if(Model.GetActiveBounties().Count() != 0)
+		{		
+			<tr>
+				<td class="inputLabelCell">Total Active Bounties</td>
+				<td align="left">@Model.GetActiveBounties().Count()</td>
+			</tr>
+		}
+		else
+		{		
+			<tr>
+				<td class="inputLabelCell">Total Active Bounties</td>
+				<td align="left">0</td>
+			</tr>
+		}
+
+		@if(Model.GetLargestBountyPlaced().FirstOrDefault() != null)
+		{	
+			<tr>
+				<td class="inputLabelCell">Largest Bounty Placed</td>
+				<td align="left">@Model.GetLargestBountyPlaced().FirstOrDefault().Amount</td>
+			</tr>
+		}
+		else
+		{		
+			<tr>
+				<td class="inputLabelCell">Largest Bounty Placed</td>
+				<td align="left">0</td>
+			</tr>
+		}
+	</tbody>
 </table>

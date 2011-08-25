@@ -331,7 +331,7 @@ table
 	background-position: -743px 0;
 	background-color: rgba(0, 0, 0, 1);
 	color: #FFFFFF;
-	font-weight: bold;
+	font-weight: bolder;
 	font-size: 12px;
 	height: 36px;
 }
@@ -445,7 +445,6 @@ table
 { 
 	display: inline; 
 } /* IE6 float double margin bug */
-
 
 .character-scroll-pane, .image-scroll-pane
 {
