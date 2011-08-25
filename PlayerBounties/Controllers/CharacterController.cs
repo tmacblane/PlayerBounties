@@ -15,6 +15,8 @@ namespace PlayerBounties.Controllers
 		#region Fields
 
 		private Account account = new Account();
+		private Bounty bounty = new Bounty();
+		private KillShotImage killShotImage = new KillShotImage();
 		private Character character = new Character();
 		private PlayerBountyContext db = new PlayerBountyContext();
 
@@ -240,6 +242,25 @@ namespace PlayerBounties.Controllers
 			});
 
 			return Json(playerClassData, JsonRequestBehavior.AllowGet);
+		}
+
+		public ActionResult KillImages(Character character)
+		{
+			List<KillShotImage> killShotImages = new List<KillShotImage>();
+
+			List<Guid> killImageIds = character.GetAllKillShotImageIdsForACharacter(character.Id);
+
+			foreach(Guid killImageId in killImageIds)
+			{
+				killShotImages.Add(new KillShotImage
+				{
+					Id = this.db.KillShotImages.Find(killImageId).Id,
+					FileName = this.db.KillShotImages.Find(killImageId).FileName,
+					FilePath = this.db.KillShotImages.Find(killImageId).FilePath
+				});
+			}
+
+			return PartialView("_KillShotImages", killShotImages);
 		}
 
 		#endregion

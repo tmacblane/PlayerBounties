@@ -38,5 +38,16 @@ namespace PlayerBounties.Models
 		}
 
 		#endregion
+
+		#region Type specific methods
+
+		public Guid GetBountyId(Guid killShotImageId)
+		{
+			Bounty bounty = new Bounty();
+
+			return bounty.GetBountyIdFromKillShotImageId(killShotImageId);
+		}
+
+		#endregion
 	}
 }

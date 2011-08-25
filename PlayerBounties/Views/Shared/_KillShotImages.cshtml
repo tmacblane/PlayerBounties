@@ -96,7 +96,7 @@
 				@foreach(var item in Model)
 				{
 					<div class="image-scroll-content-item ui-widget-header" >
-						<img src="../../Content/Images/@item.FileName" alt="Kill Image" id="killImage" style="height: 125px; width:125px;" />
+						<a href="@Url.Action("Details", "Bounty", new { id = item.GetBountyId(item.Id) })"><img src="../../Content/Images/@item.FileName" alt="Kill Image" id="killImage" style="height: 125px; width:125px;" /></a>
 					</div>   
 				}			
 			</div>

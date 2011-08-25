@@ -393,6 +393,11 @@ namespace PlayerBounties.Models
 			return killShotImages;
 		}
 
+		public Guid GetBountyIdFromKillShotImageId(Guid killShotImageId)
+		{
+			return this.db.Bounties.Where(b => b.KillShotImageId == killShotImageId).First().Id;
+		}
+
 		#endregion
 	}
 }
