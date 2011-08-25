@@ -1,44 +1,53 @@
 ﻿@model IEnumerable<PlayerBounties.Models.Bounty>
+		   
+<script type="text/javascript">
+	$(function()
+	{
+		$("table").tablesorter({ sortList: [[1, 0]] });
+	});
+</script>
 
 <div style="margin-left: 10px;">
 	<table cellspacing="0" cellpadding="5" border="0">
-		<tr>
-			<th>Target</th>
-			<th>Shard</th>
-			<th>Class</th>
-			<th>Placed On</th>
-			<th>Client</th>
-			<th>Killed On</th>
-			<th>Killed By</th>
-			<th>Status</th>
-			<th>Details</th>
-		</tr>
-
-		@foreach(var item in Model)
-		{
-			<tr class="@item.GetFactionStyle(item.CharacterAllegience(item.PlacedOnId))" style="opactity: 0.75">
-				<td class="@item.GetClassStyle(item.CharacterClass(item.PlacedOnId))">@Html.ActionLink(@item.CharacterName(item.PlacedOnId).ToString(), "Details", "Character", new { id = item.PlacedOnId }, null)</td>
-				<td>@item.CharacterShard(item.PlacedOnId)</td>
-				<td>@item.CharacterClass(item.PlacedOnId)</td>
-				<td>@item.DatePlaced</td>
-				<td class="@item.GetClassStyle(item.CharacterClass(item.PlacedById))">@Html.ActionLink(@item.CharacterName(item.PlacedById).ToString(), "Details", "Character", new { id = item.PlacedById }, null)</td>
-
-				@if(item.KilledById != null)
-				{
-					<td>@item.DateCompleted</td>
-					<td class="@item.GetClassStyle(item.CharacterClass(item.KilledById.Value))">@Html.ActionLink(@item.CharacterName(item.KilledById.Value).ToString(), "Details", "Character", new { id = item.KilledById.Value }, null)</td>
-				}
-				else
-				{
-					<td></td>
-					<td></td>
-				}
-			
-				<td>@item.GetStatus(item.Id)</td>
-				<td>@Html.ActionLink("Details", "Details", "Bounty", new { id = item.Id }, null)</td>
+		<thead>
+			<tr>
+				<th>Target</th>
+				<th>Shard</th>
+				<th>Class</th>
+				<th>Placed On</th>
+				<th>Client</th>
+				<th>Killed On</th>
+				<th>Killed By</th>
+				<th>Status</th>
+				<th>Details</th>
 			</tr>
-		}
+		</thead>
+		<tbody>
+			@foreach(var item in Model)
+			{
+				<tr class="@item.GetFactionStyle(item.CharacterAllegience(item.PlacedOnId))">
+					<td class="@item.GetClassStyle(item.CharacterClass(item.PlacedOnId))">@Html.ActionLink(@item.CharacterName(item.PlacedOnId).ToString(), "Details", "Character", new { id = item.PlacedOnId }, null)</td>
+					<td>@item.CharacterShard(item.PlacedOnId)</td>
+					<td>@item.CharacterClass(item.PlacedOnId)</td>
+					<td>@item.DatePlaced</td>
+					<td class="@item.GetClassStyle(item.CharacterClass(item.PlacedById))">@Html.ActionLink(@item.CharacterName(item.PlacedById).ToString(), "Details", "Character", new { id = item.PlacedById }, null)</td>
 
+					@if(item.KilledById != null)
+					{
+						<td>@item.DateCompleted</td>
+						<td class="@item.GetClassStyle(item.CharacterClass(item.KilledById.Value))">@Html.ActionLink(@item.CharacterName(item.KilledById.Value).ToString(), "Details", "Character", new { id = item.KilledById.Value }, null)</td>
+					}
+					else
+					{
+						<td></td>
+						<td></td>
+					}
+			
+					<td>@item.GetStatus(item.Id)</td>
+					<td>@Html.ActionLink("Details", "Details", "Bounty", new { id = item.Id }, null)</td>
+				</tr>
+			}
+		</tbody>
 	</table>
 </div>
 
