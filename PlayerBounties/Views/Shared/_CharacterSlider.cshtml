@@ -3,7 +3,7 @@
 <style>
 	#slider-frame > div.slider { padding: 10px !important; }
 	.scroll-pane { overflow: auto; width: 99%; float:left; background: -moz-linear-gradient(center top , #333333, #666666) repeat scroll 0 0 transparent; background-color: #333333;}
-	.scroll-content { min-width: 980px; width: 3000px; float: left; }
+	.scroll-content { min-width: 99%; float: left; }
 	.scroll-content-item { width: 125px; height: 125px; float: left; margin: 10px; font-size: 12px; text-align: center;}
 	* html .scroll-content-item { display: inline; } /* IE6 float double margin bug */
 	.scroll-bar-wrap { clear: left; padding: 0 4px 0 2px; margin: 0 -1px -1px -1px; }
@@ -13,7 +13,7 @@
 	.scroll-bar-wrap .ui-slider-handle .ui-icon { margin: -8px auto 0; position: relative; top: 50%; }
 </style>
 
-<script>
+<script type="text/javascript">
 	$(function()
 	{
 		//scrollpane parts
@@ -38,19 +38,22 @@
 
 		//append icon to handle
 		var handleHelper = scrollbar.find(".ui-slider-handle")
+
 	.mousedown(function()
 	{
 		scrollbar.width(handleHelper.width());
 	})
+
 	.mouseup(function()
 	{
 		scrollbar.width("100%");
 	})
+
 	.append("<span class='ui-icon ui-icon-grip-dotted-vertical'></span>")
 	.wrap("<div class='ui-handle-helper-parent'></div>").parent();
 
 		//change overflow to hidden now that slider handles the scrolling
-		scrollPane.css("overflow", "hidden");
+	scrollPane.css("overflow", "hidden");
 
 		//size scrollbar and handle proportionally to scroll distance
 		function sizeScrollbar()
@@ -101,7 +104,7 @@
 <div class="slider">
 
 	<div class="scroll-pane ui-widget ui-widget-header ui-corner-all">
-		<div class="scroll-content">
+		<div class="scroll-content" style="width: @Math.Abs(@Model.Count()*147)px;">
 			@foreach(var item in Model)
 			{
 				<div class="scroll-content-item ui-widget-header @item.GetFactionStyle(item.Faction.Name)">
@@ -123,10 +126,13 @@
 				</div>   
 			}			
 		</div>
-
-		<div class="scroll-bar-wrap ui-widget-content ui-corner-bottom">
-			<div class="scroll-bar"></div>
-		</div>
+		
+		@if(Model.Count() > 6)
+		{
+			<div class="scroll-bar-wrap ui-widget-content ui-corner-bottom">
+				<div class="scroll-bar"></div>
+			</div>
+		}
 	</div>
 
 </div>
