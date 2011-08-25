@@ -90,7 +90,6 @@ namespace PlayerBounties.Controllers
 				}
 				else
 				{
-
 					bounty.PlacedById = Guid.Parse(formCollection["CharacterList"]);
 				}
 
@@ -292,18 +291,12 @@ namespace PlayerBounties.Controllers
 				else
 				{
 					// alert that there is a bounty on this target
-					return RedirectToAction("PlaceBounty", "Bounty", new
-					{
-						character
-					});
+					return RedirectToAction("PlaceBounty", "Bounty", new { character });
 				}
 			}
 			else
 			{
-				return RedirectToAction("PlaceBounty", "Bounty", new
-				{
-					character
-				});
+				return RedirectToAction("PlaceBounty", "Bounty", new { character });
 			}
 		}
 
@@ -385,11 +378,6 @@ namespace PlayerBounties.Controllers
 
 		#endregion
 
-		private IEnumerable<PlayerClass> GetPlayerClassesPerFaction(Guid factionId)
-		{
-			return this.db.PlayerClasses.Where(p => p.FactionId == factionId);
-		}
-
 		[AcceptVerbs(HttpVerbs.Get)]
 		public JsonResult LoadPlayerClassesByFaction(Guid factionId)
 		{
@@ -402,15 +390,6 @@ namespace PlayerBounties.Controllers
 			});
 
 			return Json(playerClassData, JsonRequestBehavior.AllowGet);
-		}
-
-		private IEnumerable<Character> GetCharactersPerShard(Guid shardId)
-		{	
-			Character character = new Character();
-
-			Guid loggedInUserId = character.GetLoggedInUserId();
-
-			return this.db.Characters.Where(c=> c.UserId == loggedInUserId).Where(c => c.ShardId == shardId);
 		}
 
 		[AcceptVerbs(HttpVerbs.Get)]
@@ -466,7 +445,7 @@ namespace PlayerBounties.Controllers
 			return View();
 		}
 
-		#endregion
+		#endregion		
 
 		#region Base class overrides
 
@@ -474,6 +453,24 @@ namespace PlayerBounties.Controllers
 		{
 			this.db.Dispose();
 			base.Dispose(disposing);
+		}
+
+		#endregion
+
+		#region Helper methods
+
+		private IEnumerable<PlayerClass> GetPlayerClassesPerFaction(Guid factionId)
+		{
+			return this.db.PlayerClasses.Where(p => p.FactionId == factionId);
+		}
+
+		private IEnumerable<Character> GetCharactersPerShard(Guid shardId)
+		{
+			Character character = new Character();
+
+			Guid loggedInUserId = character.GetLoggedInUserId();
+
+			return this.db.Characters.Where(c => c.UserId == loggedInUserId).Where(c => c.ShardId == shardId);
 		}
 
 		#endregion

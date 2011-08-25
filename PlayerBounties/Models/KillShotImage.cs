@@ -6,6 +6,7 @@ using System.Globalization;
 using System.Linq;
 using System.Web.Mvc;
 using System.Web.Security;
+
 namespace PlayerBounties.Models
 {
 	public class KillShotImage

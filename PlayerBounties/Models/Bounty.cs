@@ -14,7 +14,7 @@ namespace PlayerBounties.Models
 		#region Fields
 
 		private PlayerBountyContext db = new PlayerBountyContext();
-		
+
 		#endregion
 
 		#region Type specific properties
@@ -166,37 +166,37 @@ namespace PlayerBounties.Models
 			return isBountyOwner;
 		}
 
-        public IEnumerable<Bounty> GetCompletedBounties()
-        {
-            return this.db.Bounties.Where(b => b.KilledById != null);
-        }
+		public IEnumerable<Bounty> GetCompletedBounties()
+		{
+			return this.db.Bounties.Where(b => b.KilledById != null);
+		}
 
-        public IEnumerable<Bounty> GetActiveBounties()
-        {
-            return this.db.Bounties.Where(b => b.KilledById == Guid.Empty);
-        }
+		public IEnumerable<Bounty> GetActiveBounties()
+		{
+			return this.db.Bounties.Where(b => b.KilledById == Guid.Empty);
+		}
 
-        public IEnumerable<Bounty> GetLargestBountyPlaced()
-        {
-            IEnumerable<Bounty> completedBounties = this.GetCompletedBounties();
+		public IEnumerable<Bounty> GetLargestBountyPlaced()
+		{
+			IEnumerable<Bounty> completedBounties = this.GetCompletedBounties();
 
-            IEnumerable<Bounty> largestBounty = from bounty in completedBounties
-                                                orderby bounty.Amount descending
-                                                select bounty;
+			IEnumerable<Bounty> largestBounty = from bounty in completedBounties
+												orderby bounty.Amount descending
+												select bounty;
 
-            return largestBounty;
-        }
+			return largestBounty;
+		}
 
-		//public IEnumerable<Bounty> GetTopHuntersList()
-		//{
-		//    IEnumerable<Bounty> completedBounties = this.GetCompletedBounties();
-
-		//    foreach(Bounty bounty in completedBounties)
-		//    {
-		//        // get a count of distinct killed by id's
-		//        // http://stackoverflow.com/questions/454601/how-to-count-duplicates-in-list-with-linq
-		//    }
-		//}
+		// public IEnumerable<Bounty> GetTopHuntersList()
+		// {
+		//     IEnumerable<Bounty> completedBounties = this.GetCompletedBounties();
+		//
+		//     foreach(Bounty bounty in completedBounties)
+		//     {
+		//         // get a count of distinct killed by id's
+		//         // http://stackoverflow.com/questions/454601/how-to-count-duplicates-in-list-with-linq
+		//     }
+		// }
 
 		public List<Bounty> GetAccountBountiesCompleted(Guid accountId)
 		{
@@ -320,7 +320,7 @@ namespace PlayerBounties.Models
 			Bounty bounty = this.db.Bounties.Find(bountyId);
 
 			string bountyStatus = string.Empty;
-			
+
 			if(bounty.IsPlacementPending.Equals(true))
 			{
 				return bountyStatus = "Placement Pending";

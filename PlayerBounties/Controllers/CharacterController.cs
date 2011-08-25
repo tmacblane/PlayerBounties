@@ -223,12 +223,7 @@ namespace PlayerBounties.Controllers
 			{
 				return RedirectToAction("Dashboard", "Home");
 			}
-		}
-
-		private IEnumerable<PlayerClass> GetPlayerClassesPerFaction(Guid factionId)
-		{
-			return db.PlayerClasses.Where(p => p.FactionId == factionId);
-		}
+		}		
 
 		[AcceptVerbs(HttpVerbs.Get)]
 		public JsonResult LoadPlayerClassesByFaction(Guid factionId)
@@ -271,6 +266,15 @@ namespace PlayerBounties.Controllers
 		{
 			this.db.Dispose();
 			base.Dispose(disposing);
+		}
+
+		#endregion
+
+		#region Helper methods
+
+		private IEnumerable<PlayerClass> GetPlayerClassesPerFaction(Guid factionId)
+		{
+			return this.db.PlayerClasses.Where(p => p.FactionId == factionId);
 		}
 
 		#endregion

@@ -46,7 +46,7 @@ namespace PlayerBounties.Controllers
 		[Authorize]
 		public ActionResult Dashboard()
 		{
-			return View(character);
+			return View(this.character);
 		}
 
 		#endregion

@@ -55,10 +55,7 @@
 				@Html.LabelFor(model => model.PlacedById):
 			</td>
 			<td align="left">
-				@Html.ActionLink(@Model.CharacterName(Model.PlacedById).ToString(), "Details", "Character", new
-{
-	id = Model.PlacedById
-}, null)
+				@Html.ActionLink(@Model.CharacterName(Model.PlacedById).ToString(), "Details", "Character", new { id = Model.PlacedById }, null)
 			</td>
 		</tr>
 			
@@ -72,16 +69,25 @@
 		</tr>
 	
 		@if(Model.DateCompleted != null)
-  {
+		{
 			<tr>
 				<td class="inputLabelCell">
-					@Html.LabelFor(model => model.DateCompleted):
+					@Html.LabelFor(model => model.KilledById):
+				</td>
+				<td align="left">
+					@Html.ActionLink(@Model.CharacterName(Model.KilledById.Value).ToString(), "Details", "Character", new { id = Model.PlacedById }, null)
+				</td>
+			</tr>
+	  
+			<tr>
+				<td class="inputLabelCell">
+					Date Killed:
 				</td>
 				<td align="left">
 					<span>@Html.DisplayFor(model => model.DateCompleted)</span>
 				</td>
 			</tr>
-  }	
+		}	
 
 		<tr>
 			<td class="inputLabelCell">
@@ -94,7 +100,10 @@
 	</table>
 </div>
 
-@using(Html.BeginForm("Details", "Bounty", FormMethod.Post, new { enctype = "multipart/form-data" }))
+@using(Html.BeginForm("Details", "Bounty", FormMethod.Post, new
+{
+	enctype = "multipart/form-data"
+}))
 {
 	<!-- If user is logged in, show div  -->
 	if(Request.IsAuthenticated)
@@ -112,21 +121,24 @@
 		{
 			if(Model.GetStatus(Model.Id) == "Placement Pending")
 			{
-				@Html.ActionLink("Edit", "Edit", new { id = Model.Id })
+				@Html.ActionLink("Edit", "Edit", new
+{
+	id = Model.Id
+})
 			}
 		}
 	}
 	
 	<div class="rowBlank">
 		@if(Request.IsAuthenticated)
-		{
-			<input type="submit" value="Complete Bounty" />
-			<input type="button" value="Back" onclick="window.location='../../Home/Dashboard'" />
-		}
-		else
-		{
-			<input type="button" value="Back" onclick="window.location='../../Home/Index'" />
-		}
+  {
+	  if(Model.GetStatus(Model.Id) == "Active")
+	  {	
+				<input type="submit" value="Complete Bounty" />
+	  }
+  }
+		
+		<input type="button" value="Back" onclick="window.history.back()" />
 		
 	</div>
 }

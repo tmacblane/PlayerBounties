@@ -344,6 +344,7 @@ namespace PlayerBounties.Models
 				case "Sith Empire":
 					return "empire";
 			}
+
 			return string.Empty;
 		}
 
@@ -373,8 +374,6 @@ namespace PlayerBounties.Models
 
 			return killShotImages;
 		}
-		
-
 
 		#endregion
 	}

@@ -10,30 +10,34 @@ using PlayerBounties.Models;
 
 namespace PlayerBounties.Controllers
 {
-    public class StatisticsController : Controller
-    {
-        #region Fields
+	public class StatisticsController : Controller
+	{
+		#region Fields
 
-        private Account account = new Account();
-        private Bounty bounty = new Bounty();
-        private Character character = new Character();
-        private PlayerBountyContext db = new PlayerBountyContext();
+		private Account account = new Account();
+		private Bounty bounty = new Bounty();
+		private Character character = new Character();
+		private PlayerBountyContext db = new PlayerBountyContext();
 
-        #endregion		
+		#endregion
 
-        public ActionResult Index()
-        {
-            return View(bounty);
-        }
+		#region Type specific methods
 
-        public ActionResult BountiesSummary()
-        {
-            return View(bounty);
-        }
+		public ActionResult Index()
+		{
+			return View(this.bounty);
+		}
 
-        public ActionResult TopHunters()
-        {
-            return View(bounty);
-        }
-    }
+		public ActionResult BountiesSummary()
+		{
+			return View(this.bounty);
+		}
+
+		public ActionResult TopHunters()
+		{
+			return View(this.bounty);
+		}
+
+		#endregion
+	}
 }
