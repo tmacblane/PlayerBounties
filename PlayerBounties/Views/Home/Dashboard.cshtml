@@ -8,17 +8,19 @@
 	@Html.Action("Characters", "Dashboard")
 </div>
 
-<div id="centerContent" style="top: 200px;">
-	<div class="leftColumn">
-		Place Bounty Button
+<div class="rowBlank">
+	<div style="float: left;">
+		<input id="btnPlaceBounty" type="button" value="Place a Bounty" onclick="location='../../Search/Index'" />
 	</div>
 	
-	<div class="rightColumn">
-		<table cellspacing="0" cellpadding="2" border="0">
+	<div id="accountStatistics" style="float: right;">
+		<table cellspacing="0" cellpadding="2" border="0" >
 			<thead>
 				<tr>
-					<th>Account Statistics</th>
+					<th style="font-size: large;"><u>Account Statistics</u></th>
+					<th style="width: 20px;"></th>
 					<th></th>
+					<th style="width: 20px;"></th>
 				</tr>
 			</thead>
 			<tbody>
@@ -36,6 +38,8 @@
 							<text>0</text>
 						}
 					</td>
+					<td class="inputLabelCell">Bounties Signed Up For:</td>
+					<td align="right">0</td>
 				</tr>
 				<tr>
 					<td class="inputLabelCell">
@@ -51,10 +55,12 @@
 							<text>0</text>
 						}
 					</td>
+					<td class="inputLabelCell">Active Contracts:</td>
+					<td align="right">0</td>
 				</tr>
 				<tr>
 					<td class="inputLabelCell">
-						Bounties Against:
+						Bounties Against Me:
 					</td>
 					<td align="left">
 						@if(Model.GetAccountBountiesPlacedOn(Model.GetLoggedInUserId()).Count() != 0)
@@ -66,13 +72,11 @@
 							<text>0</text>
 						}
 					</td>
+					<td class="inputLabelCell">Pending Contracts:</td>
+					<td align="right">0</td>
 				</tr>
 			</tbody>
 		</table>
-		<ul>
-			<li>Bounties Signed up for</li>
-			<li>Active Contracts</li>
-		</ul>
 	</div>
 </div>
 
