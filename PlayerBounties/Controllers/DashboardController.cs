@@ -37,11 +37,23 @@ namespace PlayerBounties.Controllers
 			return PartialView("_Characters", characters.ToList());
 		}
 
-		public ActionResult KillImages()
+		public ActionResult KillShotImages(string imageType)
 		{
 			List<KillShotImage> killShotImages = new List<KillShotImage>();
+			List<Guid> killImageIds = new List<Guid>();
 
-			List<Guid> killImageIds = this.bounty.GetAllKillShotImageIdsForAnAccount(this.account.GetLoggedInUserId());
+			switch(imageType)
+			{
+				case "bountiesPlaced":
+					break;
+
+				case "targetsKilled":
+					killImageIds = this.bounty.GetAllKillShotImageIds(this.account.GetLoggedInUserId(), imageType);
+					break;
+
+				case "bountiesPlacedOn":
+					break;
+			}
 
 			foreach(Guid killImageId in killImageIds)
 			{
@@ -53,7 +65,7 @@ namespace PlayerBounties.Controllers
 				});
 			}
 
-			return PartialView("_KillShotImages", killShotImages);
+			return PartialView("_KillShotImageSlider", killShotImages);
 		}
 
 		#endregion

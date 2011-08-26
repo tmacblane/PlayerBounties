@@ -209,10 +209,6 @@
 
 </div>
 
-<div id="imageSlider" class="divSize95" style="margin-top: 100px;">
-	@Html.Action("KillImages", "Character")
-</div>
-
 <div id="talesFromTheHunt" class="divSize95">
 	<p>Link to Tales from hunt</p>
 </div>
@@ -220,3 +216,5 @@
 <div class="rowBlank">		
 	<input type="button" value="<< Back" onclick="window.history.back()"/>
 </div>	
+
+@Html.Partial("_KillShotImages", new PlayerBounties.Models.KillShotImage(), null)

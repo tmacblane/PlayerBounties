@@ -31,8 +31,11 @@
         </div>
 
 		<div id="subHeader">
-			<div class="sectionTitle">
+			<div class="sectionTitle" style="width: 500px; float: left;">
 				@ViewBag.Title
+			</div>
+			<div id="searchBar" style="float: right;">
+				@Html.Partial("_Search")
 			</div>
 		</div>		
 

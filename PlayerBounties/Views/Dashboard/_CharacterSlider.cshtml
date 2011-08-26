@@ -89,36 +89,62 @@
 </script>
 
 <div class="slider">
-	<div class="character-scroll-pane ui-widget ui-widget-header ui-corner-all">
-		<div class="character-scroll-content" style="width: @Math.Abs(@Model.Count()*147)px;">
-			@foreach(var item in Model)
-			{
-				<div class="character-scroll-content-item ui-widget-header @item.GetFactionStyle(item.Faction.Name)">
-				   <table>
+	<div class="character-scroll-pane ui-widget slider-widget-header ui-corner-all">
+		@if(Model.Count() == 0)
+		{
+			<div class="character-scroll-content" style="width: @Math.Abs(@Model.Count() * 147)px;">
+				<div class="character-scroll-content-item slider-widget-header">
+					<table>
 						<tr>
 							<td>
-								@Html.ActionLink("  ", "Details", "Character", new { id = item.Id }, new { style = "background: url('../../" + @item.GetClassAvatarPath(item.AvatarId.Value) + "') no-repeat center right;display:block; height:90px; width:90px;margin-top:-2px;text-decoration:none;" })
+								<input id="btnSliderCharacterCreate" type="button" value="Add a &#10; Character" onclick="location='../../Character/Create'" />
 							</td>
-							<td style="width: 15px; padding-left: 10px; opacity: 0.75;" valign="top">
-								<a href="@Url.Action("Edit", "Character", new { id = item.Id })"><img src="../../Content/Images/editIcon.gif" alt="Edit" id="editImage"/></a>
-							</td>
-						</tr>
-						<tr>							
-							<th colspan="2" class="@item.GetClassStyle(item.PlayerClass.Name)">
-								@Html.ActionLink(item.Name, "Details", "Character", new { id = item.Id }, null)
-							</th>
 						</tr>
 					</table>	
-				</div>   
-			}			
-		</div>
-		
-		@if(Model.Count() > 6)
-		{
-			<div class="character-scroll-bar-wrap ui-widget-content ui-corner-bottom">
-				<div class="character-scroll-bar"></div>
+				</div>
 			</div>
 		}
+		else
+		{
+			<div class="character-scroll-content" style="width: @Math.Abs(@Model.Count() * 147)px;">
+				<div class="character-scroll-content-item slider-widget-header">
+					<table>
+						<tr>
+							<td>
+								<input id="btnSliderCharacterCreate" type="button" value="Add a &#10; Character" onclick="location='../../Character/Create'" />
+							</td>
+						</tr>
+					</table>	
+				</div>
+
+				@foreach(var item in Model)
+				{
+					<div class="character-scroll-content-item slider-widget-header @item.GetFactionStyle(item.Faction.Name)">
+					   <table>
+							<tr>
+								<td>
+									@Html.ActionLink("  ", "Details", "Character", new { id = item.Id }, new { style = "background: url('../../" + @item.GetClassAvatarPath(item.AvatarId.Value) + "') no-repeat center right;display:block; height:90px; width:90px;margin-top:-2px;text-decoration:none;" })
+								</td>
+								<td style="width: 15px; padding-left: 10px; opacity: 0.75;" valign="top">
+									<a href="@Url.Action("Edit", "Character", new { id = item.Id })"><img src="../../Content/Images/editIcon.gif" alt="Edit" id="editImage"/></a>
+								</td>
+							</tr>
+							<tr>							
+								<th colspan="2" class="@item.GetClassStyle(item.PlayerClass.Name)">
+									@Html.ActionLink(item.Name, "Details", "Character", new { id = item.Id }, null)
+								</th>
+							</tr>
+						</table>	
+					</div>   
+				}
+			</div>
 		
+			if(Model.Count() > 5)
+			{
+				<div class="character-scroll-bar-wrap ui-widget-content ui-corner-bottom">
+					<div class="character-scroll-bar"></div>
+				</div>
+			}
+		}
 	</div>
 </div>

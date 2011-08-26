@@ -176,9 +176,10 @@
     <Content Include="Views\Statistics\Index.cshtml" />
     <Content Include="Views\Statistics\_TopHunters.cshtml" />
     <Content Include="Views\Bounty\_BountiesTable.cshtml" />
-    <Content Include="Views\Shared\_KillShotImages.cshtml" />
+    <Content Include="Views\Shared\_KillShotImageSlider.cshtml" />
     <Content Include="Views\Dashboard\_CharacterSlider.cshtml" />
     <Content Include="Views\Home\Rules.cshtml" />
+    <Content Include="Views\Dashboard\_KillShotImages.cshtml" />
     <None Include="_bin_deployableAssemblies\Microsoft.Web.Infrastructure.dll" />
     <None Include="_bin_deployableAssemblies\System.Web.WebPages.Razor.dll" />
     <None Include="_bin_deployableAssemblies\System.Web.WebPages.dll" />

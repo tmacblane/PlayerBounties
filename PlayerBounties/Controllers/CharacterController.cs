@@ -239,11 +239,11 @@ namespace PlayerBounties.Controllers
 			return Json(playerClassData, JsonRequestBehavior.AllowGet);
 		}
 
-		public ActionResult KillImages(Character character)
+		public ActionResult KillImages(Character character, string imageType)
 		{
 			List<KillShotImage> killShotImages = new List<KillShotImage>();
 
-			List<Guid> killImageIds = character.GetAllKillShotImageIdsForACharacter(character.Id);
+			List<Guid> killImageIds = character.GetAllKillShotImageIdsForACharacter(character.Id, imageType);
 
 			foreach(Guid killImageId in killImageIds)
 			{
