@@ -3,7 +3,7 @@
 	<table cellspacing="0" cellpadding="5" border="0">
 		<tr>
 			<td id="searchTxt" style="width: 250px;">
-				@Html.TextBox("txtSearch", "Search for characters")
+				@Html.TextBox("txtSearch", "Search for characters", new { onfocus = "this.value==this.defaultValue?this.value='':null" } )
 			</td>
 			<td id="searchbtn">
 				<input id="Search" type="submit" value="Search" />

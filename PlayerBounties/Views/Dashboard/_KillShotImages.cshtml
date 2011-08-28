@@ -18,13 +18,13 @@
 			<li><a href="#bountiesPlacedOnImages">Bounties Against</a></li>
 		</ul>
 		<div id="targetsKilledImages">
-			@Html.Action("KillShotImages", "Dashboard", "targetsKilled")
+			@Html.Action("KillShotImages", "Dashboard", new { imageType = "targetsKilled" })
 		</div>
 		<div id="bountiesPlacedImages">
-			@Html.Action("KillShotImages", "Dashboard", "bountiesPlaced")
+			@Html.Action("KillShotImages", "Dashboard", new { imageType = "bountiesPlaced" })
 		</div>
 		<div id="bountiesPlacedOnImages">
-			@Html.Action("KillShotImages", "Dashboard", "bountiesPlacedOn")
+			@Html.Action("KillShotImages", "Dashboard", new { imageType = "bountiesPlacedOn" })
 		</div>
 	</div>
 </div>

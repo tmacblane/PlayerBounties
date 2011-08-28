@@ -239,24 +239,38 @@ namespace PlayerBounties.Controllers
 			return Json(playerClassData, JsonRequestBehavior.AllowGet);
 		}
 
-		public ActionResult KillImages(Character character, string imageType)
-		{
-			List<KillShotImage> killShotImages = new List<KillShotImage>();
+        public ActionResult KillShotImages(Guid characterId, string imageType)
+        {
+            List<KillShotImage> killShotImages = new List<KillShotImage>();
+            List<Guid> killImageIds = new List<Guid>();
 
-			List<Guid> killImageIds = character.GetAllKillShotImageIdsForACharacter(character.Id, imageType);
+            switch (imageType)
+            {
+                case "bountiesPlaced":
+                    killImageIds = this.bounty.GetAllKillShotImageIdsByCharacter(characterId, imageType);
+                    break;
 
-			foreach(Guid killImageId in killImageIds)
-			{
-				killShotImages.Add(new KillShotImage
-				{
-					Id = this.db.KillShotImages.Find(killImageId).Id,
-					FileName = this.db.KillShotImages.Find(killImageId).FileName,
-					FilePath = this.db.KillShotImages.Find(killImageId).FilePath
-				});
-			}
+                case "targetsKilled":
+                    killImageIds = this.bounty.GetAllKillShotImageIdsByCharacter(characterId, imageType);
+                    break;
 
-			return PartialView("_KillShotImages", killShotImages);
-		}
+                case "bountiesPlacedOn":
+                    killImageIds = this.bounty.GetAllKillShotImageIdsByCharacter(characterId, imageType);
+                    break;
+            }
+
+            foreach (Guid killImageId in killImageIds)
+            {
+                killShotImages.Add(new KillShotImage
+                {
+                    Id = this.db.KillShotImages.Find(killImageId).Id,
+                    FileName = this.db.KillShotImages.Find(killImageId).FileName,
+                    FilePath = this.db.KillShotImages.Find(killImageId).FilePath
+                });
+            }
+
+            return PartialView("_KillShotImageSlider", killShotImages);
+        }
 
 		#endregion
 

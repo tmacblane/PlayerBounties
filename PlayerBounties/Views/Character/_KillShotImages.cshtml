@@ -1,0 +1,30 @@
+﻿@model PlayerBounties.Models.Character
+
+<script type="text/javascript">
+	$(function()
+	{
+		$("#tabs").tabs();
+		$(".tabs-bottom .ui-tabs-nav, .tabs-bottom .ui-tabs-nav > *")
+			.removeClass("ui-corner-all ui-corner-top")
+			.addClass("ui-corner-bottom");
+	});
+</script>
+
+<div id="killShotImageTable" style="width: 980px; padding-left: 10px; padding-bottom: 20px; position: absolute; bottom: 0;">
+	<div id="tabs" class="tabs-bottom">
+		<ul class="killslider-widget-header">
+			<li><a href="#targetsKilledImages">Targets Killed</a></li>
+			<li><a href="#bountiesPlacedImages">Bounties Placed</a></li>
+			<li><a href="#bountiesPlacedOnImages">Bounties Against</a></li>
+		</ul>
+		<div id="targetsKilledImages">
+			@Html.Action("KillShotImages", "Character", new { characterId = Model.Id, imageType = "targetsKilled" })
+		</div>
+		<div id="bountiesPlacedImages">
+			@Html.Action("KillShotImages", "Character", new { characterId = Model.Id, imageType = "bountiesPlaced" })
+		</div>
+		<div id="bountiesPlacedOnImages">
+			@Html.Action("KillShotImages", "Character", new { characterId = Model.Id, imageType = "bountiesPlacedOn" })
+		</div>
+	</div>
+</div>

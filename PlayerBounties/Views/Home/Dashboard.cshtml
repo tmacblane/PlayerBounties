@@ -10,7 +10,7 @@
 
 <div class="rowBlank">
 	<div style="float: left;">
-		<input id="btnPlaceBounty" type="button" value="Place a Bounty" onclick="location='../../Search/Index'" />
+		<input id="btnPlaceBounty" type="button" value="Place a Bounty" onclick="location='../../Bounty/PlaceBounty'" />
 	</div>
 	
 	<div id="accountStatistics" style="float: right;">
@@ -80,4 +80,4 @@
 	</div>
 </div>
 
-@Html.Partial("_KillShotImages", new PlayerBounties.Models.KillShotImage(), null)
+@Html.Partial("../Dashboard/_KillShotImages", new PlayerBounties.Models.KillShotImage(), null)
