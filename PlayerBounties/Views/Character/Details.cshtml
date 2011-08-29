@@ -4,7 +4,35 @@
     ViewBag.Title = "Character Details - " + Model.Name;
 }
 
-<div style="margin: 10px;">
+<script type="text/javascript">
+	$(function () {
+
+	    $("#targetsKilledModal").dialog({
+	        autoOpen: false,
+	        height: 300,
+	        width: 350,
+	        modal: true,
+	        closeOnEscape: true,
+	        draggable: false,
+            resizeable: false,
+	        buttons: {
+	            Cancel: function () {
+	                $(this).dialog("close");
+	            }
+	        }
+	    });
+
+	    $("#targetsKilledLink").click(function () {
+			$("#targetsKilledModal").dialog("open");
+		});
+	});
+</script>
+
+<div id="targetsKilledModal">
+    @Html.Partial("_Statistics")
+</div>
+
+<div id="characterInfoTop" style="margin: 10px;">
 	<div id="leftColumn">
 		<table>
 			<tr style="height: 20px;">
@@ -58,8 +86,8 @@
 				</td>
 				<td align="left">
 					@if(Model.GetBountiesKilledCount(Model.Id) != 0)
-					{
-						@Html.ActionLink(Model.GetBountiesKilledCount(Model.Id).ToString(), "_TargetsKilled", "Bounty", new { characterId = Model.Id }, null)
+                    {
+                        <a style="cursor: pointer;" id="targetsKilledLink">@Model.GetBountiesKilledCount(Model.Id).ToString()</a>
 					}
 					else
 					{

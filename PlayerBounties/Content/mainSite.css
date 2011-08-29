@@ -267,7 +267,7 @@ input[type="submit"] input[value], input[type="button"] input[value]
     z-index: 0;
 }
 
-#accountStatistics
+#accountStatistics, #playerStatistics
 {
 	float: right;
 	margin: 20px 10px;
@@ -279,6 +279,17 @@ input[type="submit"] input[value], input[type="button"] input[value]
     border: 1px solid #BBBBBB;
     border-radius: 4px 4px 4px 4px;
     box-shadow: 0 2px 4px #BBBBBB;
+}
+
+#leftColumn
+{
+    background-color: #FFFFFF;
+	border-style: solid;
+    border-width: 1px;
+    border: 1px solid #BBBBBB;
+    border-radius: 4px 4px 4px 4px;
+    box-shadow: 0 2px 4px #BBBBBB;
+    height: inherit;
 }
 
 .rowBlank
@@ -314,7 +325,7 @@ table
 #middleColumn
 {
 	padding: 0 185px;
-	width: 630px;
+	width: 620px;
 }
 
 
@@ -491,7 +502,7 @@ table
 	background-position: 0 0;
 	background-color: rgba(0, 0, 0, 1);
 	color: #FFFFFF;
-	font-weight: bold;
+	font-weight: bolder;
 	font-size: 12px;
 }
 

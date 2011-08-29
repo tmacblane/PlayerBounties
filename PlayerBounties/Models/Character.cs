@@ -83,7 +83,7 @@ namespace PlayerBounties.Models
 			set;
 		}
 
-		[Display(Name = "Primary")]
+		[Display(Name = "Default")]
 		public bool IsPrimary
 		{
 			get;
@@ -231,6 +231,13 @@ namespace PlayerBounties.Models
 			Character character = new Character();
 			return character.GetCharacterById(characterId).Single().Race.Name;
 		}
+
+        public List<Bounty> GetBountiesKilled(Guid characterId)
+        {
+            Bounty bounty = new Bounty();
+
+            return bounty.GetBountiesCompleted(characterId);
+        }
 
 		public int GetBountiesKilledCount(Guid characterId)
 		{

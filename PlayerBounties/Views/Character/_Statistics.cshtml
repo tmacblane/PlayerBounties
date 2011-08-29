@@ -1,0 +1,3 @@
+﻿@model PlayerBounties.Models.Character
+
+@Html.Action("BountyStatistics", "Bounty", new { id = Model.Id, statistic = "targetsKilled"})

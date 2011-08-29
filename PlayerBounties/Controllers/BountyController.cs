@@ -334,17 +334,57 @@ namespace PlayerBounties.Controllers
 
 		#region Bounty Statistics
 
+        public ActionResult BountyStatistics(string statistic, Guid? id = null)
+        {   
+            Bounty bounty = new Bounty();
+
+            switch (statistic)
+            {
+                case "targetsKilled":
+                    if (id == null)
+                    {
+                        return PartialView("_BountiesTable", bounty.GetAccountBountiesCompleted(bounty.GetLoggedInUserId()));
+                    }
+                    else
+                    {
+                        return PartialView("_BountiesTable", bounty.GetBountiesCompleted(id.Value));
+                    }
+
+                case "bountiesPlaced":
+                    if (id == null)
+                    {
+                        return PartialView("_BountiesTable", bounty.GetAccountBountiesPlaced(bounty.GetLoggedInUserId()));
+                    }
+                    else
+                    {
+                        return PartialView("_BountiesTable", bounty.GetBountiesPlaced(id.Value));
+                    }
+
+                case "bountiesPlacedAgainst":
+                    if (id == null)
+                    {
+                        return PartialView("_BountiesTable", bounty.GetAccountBountiesPlacedOn(bounty.GetLoggedInUserId()));
+                    }
+                    else
+                    {
+                        return PartialView("_BountiesTable", bounty.GetBountiesPlacedOn(id.Value));
+                    }
+            }
+
+            return PartialView("_BountiesTable", bounty);
+        }
+
 		public ActionResult _TargetsKilled(Guid? characterId = null)
 		{
 			Bounty bounty = new Bounty();
 
 			if(characterId == null)
 			{
-				return View("_BountiesTable", bounty.GetAccountBountiesCompleted(bounty.GetLoggedInUserId()));
+				return PartialView("_BountiesTable", bounty.GetAccountBountiesCompleted(bounty.GetLoggedInUserId()));
 			}
 			else
 			{
-				return View("_BountiesTable", bounty.GetBountiesCompleted(characterId.Value));
+                return PartialView("_BountiesTable", bounty.GetBountiesCompleted(characterId.Value));
 			}
 		}
 
