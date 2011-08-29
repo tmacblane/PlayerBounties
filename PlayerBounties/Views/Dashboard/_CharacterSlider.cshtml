@@ -134,6 +134,11 @@
 									@Html.ActionLink(item.Name, "Details", "Character", new { id = item.Id }, null)
 								</th>
 							</tr>
+							<tr>							
+								<th colspan="2">
+									@item.Shard.Name
+								</th>
+							</tr>
 						</table>	
 					</div>   
 				}

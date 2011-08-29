@@ -341,79 +341,79 @@ namespace PlayerBounties.Controllers
             switch (statistic)
             {
                 case "targetsKilled":
-                    if (id == null)
+                    if (id == Guid.Empty)
                     {
-                        return PartialView("_BountiesTable", bounty.GetAccountBountiesCompleted(bounty.GetLoggedInUserId()));
+						if(bounty.GetAccountBountiesCompleted(bounty.GetLoggedInUserId()).Count() != 0)
+						{
+							return PartialView("_BountiesTable", bounty.GetAccountBountiesCompleted(bounty.GetLoggedInUserId()));
+						}
+						else
+						{
+							return null;
+						}
                     }
                     else
-                    {
-                        return PartialView("_BountiesTable", bounty.GetBountiesCompleted(id.Value));
+					{
+						if(bounty.GetBountiesCompleted(id.Value).Count() != 0)
+						{
+							return PartialView("_BountiesTable", bounty.GetBountiesCompleted(id.Value));
+						}
+						else
+						{
+							return null;
+						}
                     }
 
                 case "bountiesPlaced":
-                    if (id == null)
-                    {
-                        return PartialView("_BountiesTable", bounty.GetAccountBountiesPlaced(bounty.GetLoggedInUserId()));
+					if(id == Guid.Empty)
+					{
+						if(bounty.GetAccountBountiesPlaced(bounty.GetLoggedInUserId()).Count() != 0)
+						{
+							return PartialView("_BountiesTable", bounty.GetAccountBountiesPlaced(bounty.GetLoggedInUserId()));
+						}
+						else
+						{
+							return null;
+						}
                     }
                     else
-                    {
-                        return PartialView("_BountiesTable", bounty.GetBountiesPlaced(id.Value));
+					{
+						if(bounty.GetBountiesPlaced(id.Value).Count() != 0)
+						{
+							return PartialView("_BountiesTable", bounty.GetBountiesPlaced(id.Value));
+						}
+						else
+						{
+							return null;
+						}
                     }
 
                 case "bountiesPlacedAgainst":
-                    if (id == null)
-                    {
-                        return PartialView("_BountiesTable", bounty.GetAccountBountiesPlacedOn(bounty.GetLoggedInUserId()));
+					if(id == Guid.Empty)
+					{
+						if(bounty.GetAccountBountiesPlacedOn(bounty.GetLoggedInUserId()).Count() != 0)
+						{
+							return PartialView("_BountiesTable", bounty.GetAccountBountiesPlacedOn(bounty.GetLoggedInUserId()));
+						}
+						else
+						{
+							return null;
+						}
                     }
                     else
-                    {
-                        return PartialView("_BountiesTable", bounty.GetBountiesPlacedOn(id.Value));
+					{
+						if(bounty.GetBountiesPlacedOn(id.Value).Count() != 0)
+						{
+							return PartialView("_BountiesTable", bounty.GetBountiesPlacedOn(id.Value));
+						}
+						else
+						{
+							return null;
+						}
                     }
             }
 
             return PartialView("_BountiesTable", bounty);
-        }
-
-		public ActionResult _TargetsKilled(Guid? characterId = null)
-		{
-			Bounty bounty = new Bounty();
-
-			if(characterId == null)
-			{
-				return PartialView("_BountiesTable", bounty.GetAccountBountiesCompleted(bounty.GetLoggedInUserId()));
-			}
-			else
-			{
-                return PartialView("_BountiesTable", bounty.GetBountiesCompleted(characterId.Value));
-			}
-		}
-
-		public ActionResult _BountiesPlaced(Guid? characterId = null)
-		{
-			Bounty bounty = new Bounty();
-
-			if(characterId == null)
-			{
-				return View("_BountiesTable", bounty.GetAccountBountiesPlaced(bounty.GetLoggedInUserId()));
-			}
-			else
-			{
-				return View("_BountiesTable", bounty.GetBountiesPlaced(characterId.Value));
-			}
-		}
-
-		public ActionResult _BountiesPlacedAgainst(Guid? characterId = null)
-		{
-			Bounty bounty = new Bounty();
-
-			if(characterId == null)
-			{
-				return View("_BountiesTable", bounty.GetAccountBountiesPlacedOn(bounty.GetLoggedInUserId()));
-			}
-			else
-			{
-				return View("_BountiesTable", bounty.GetBountiesPlacedOn(characterId.Value));
-			}
 		}
 
 		#endregion

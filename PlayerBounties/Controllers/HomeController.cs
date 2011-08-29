@@ -14,7 +14,9 @@ namespace PlayerBounties.Controllers
 	{
 		#region Fields
 
+		private Bounty bounty = new Bounty();
 		private Character character = new Character();
+		private KillShotImage killShotImage = new KillShotImage();
 		private PlayerBountyContext db = new PlayerBountyContext();
 
 		#endregion
@@ -47,6 +49,26 @@ namespace PlayerBounties.Controllers
 		public ActionResult Dashboard()
 		{
 			return View(this.character);
+		}
+
+		public ActionResult KillShotImages(string imageType)
+		{
+			List<KillShotImage> killShotImages = new List<KillShotImage>();
+			List<Guid> killImageIds = new List<Guid>();
+
+			killImageIds = this.bounty.GetMostRecentlyCompletedBounties(25);
+
+			foreach(Guid killImageId in killImageIds)
+			{
+				killShotImages.Add(new KillShotImage
+				{
+					Id = this.db.KillShotImages.Find(killImageId).Id,
+					FileName = this.db.KillShotImages.Find(killImageId).FileName,
+					FilePath = this.db.KillShotImages.Find(killImageId).FilePath
+				});
+			}
+
+			return PartialView("_KillShotImageSlider", killShotImages);
 		}
 
 		#endregion

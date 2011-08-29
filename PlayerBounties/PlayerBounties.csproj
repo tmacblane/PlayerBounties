@@ -181,7 +181,12 @@
     <Content Include="Views\Home\Rules.cshtml" />
     <Content Include="Views\Dashboard\_KillShotImages.cshtml" />
     <Content Include="Views\Character\_KillShotImages.cshtml" />
-    <Content Include="Views\Character\_Statistics.cshtml" />
+    <Content Include="Views\Shared\Statistics\_TargetsKilled.cshtml" />
+    <Content Include="Views\Shared\Statistics\_BountiesPlaced.cshtml" />
+    <Content Include="Views\Shared\Statistics\_BountiesPlacedAgainst.cshtml" />
+    <Content Include="Views\Home\_KillShotImages.cshtml" />
+    <Content Include="Views\Statistics\_TopMarks.cshtml" />
+    <Content Include="Views\Statistics\_TopClients.cshtml" />
     <None Include="_bin_deployableAssemblies\Microsoft.Web.Infrastructure.dll" />
     <None Include="_bin_deployableAssemblies\System.Web.WebPages.Razor.dll" />
     <None Include="_bin_deployableAssemblies\System.Web.WebPages.dll" />
@@ -321,7 +326,7 @@
         <WebProjectProperties>
           <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>10150</DevelopmentServerPort>
+          <DevelopmentServerPort>56226</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl>
           </IISUrl>

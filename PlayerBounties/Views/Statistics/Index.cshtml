@@ -2,4 +2,19 @@
     ViewBag.Title = "Statistics";
 }
 
-@Html.Partial("_BountiesSummary")
+<div class="divSize95">
+	@Html.Partial("_BountiesSummary")
+</div>
+
+<div class="divSize95">
+	@Html.Action("TopHunters", "Statistics")
+</div>
+
+<div class="divSize95">
+	@Html.Action("TopMarks", "Statistics")
+</div>
+
+<div class="divSize95">
+	@Html.Action("TopClients", "Statistics")
+</div>
+

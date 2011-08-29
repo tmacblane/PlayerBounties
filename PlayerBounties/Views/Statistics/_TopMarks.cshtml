@@ -1,10 +1,10 @@
 ﻿@model IEnumerable<PlayerBounties.Models.Character>
 
-<div id="topHuntersTable" class="statisticsContainer">
+<div id="topMarksTable" class="statisticsContainer">
 	<table cellspacing="0" cellpadding="5" border="0">
 		<thead>
 			<tr>
-				<th colspan="4" style="text-align: left;">Top Hunters</th>
+				<th colspan="3" style="text-align: left;">Top Marks</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -12,7 +12,6 @@
 				<th>Character Name</th>
 				<th>Shard</th>
 				<th>Bounties</th>
-				<th>Amount Earned</th>
 			</tr>
 		
 			@foreach(var item in Model)
@@ -25,21 +24,11 @@
 						@item.CharacterShard(item.Id)
 					</td>
 					<td align="center">
-						@if(item.GetBountiesKilledCount(item.Id) != 0)
-						{
-							<a style="cursor: pointer;" id="targetsKilledLink">@item.GetBountiesKilledCount(item.Id).ToString()</a>
-						}
-						else
-						{
-							<text>0</text>
-						}
-					</td>
-					<td align="left">
-						To Do
+						@item.GetBountiesPlacedOnCount(item.Id)
 					</td>
 				</tr>
 			}
 
 		</tbody>
-	</table>	
+	</table>
 </div>

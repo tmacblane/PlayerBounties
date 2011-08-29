@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<PlayerBounties.Models.Bounty>
            
 <div style="margin-left: 10px;">
-	<table cellspacing="0" cellpadding="5" border="0">
+	<table id="bountiesTable" cellspacing="0" cellpadding="5" border="0">
 		<thead>
 			<tr>
 				<th>Target</th>
@@ -12,23 +12,23 @@
 				<th>Killed On</th>
 				<th>Killed By</th>
 				<th>Status</th>
-				<th>Details</th>
+				<th></th>
 			</tr>
 		</thead>
 		<tbody>
 			@foreach(var item in Model)
 			{
-				<tr class="@item.GetFactionStyle(item.CharacterAllegience(item.PlacedOnId))">
-					<td class="@item.GetClassStyle(item.CharacterClass(item.PlacedOnId))">@Html.ActionLink(@item.CharacterName(item.PlacedOnId).ToString(), "Details", "Character", new { id = item.PlacedOnId }, null)</td>
+				<tr>
+					<td class="classTxt @item.GetClassStyle(item.CharacterClass(item.PlacedOnId))">@Html.ActionLink(@item.CharacterName(item.PlacedOnId).ToString(), "Details", "Character", new { id = item.PlacedOnId }, null)</td>
 					<td>@item.CharacterShard(item.PlacedOnId)</td>
 					<td>@item.CharacterClass(item.PlacedOnId)</td>
-					<td>@item.DatePlaced</td>
-					<td class="@item.GetClassStyle(item.CharacterClass(item.PlacedById))">@Html.ActionLink(@item.CharacterName(item.PlacedById).ToString(), "Details", "Character", new { id = item.PlacedById }, null)</td>
+					<td>@item.DatePlaced.Value.ToShortDateString()</td>
+					<td class="classTxt @item.GetClassStyle(item.CharacterClass(item.PlacedById))">@Html.ActionLink(@item.CharacterName(item.PlacedById).ToString(), "Details", "Character", new { id = item.PlacedById }, null)</td>
 
 					@if(item.KilledById != null)
 					{
-						<td>@item.DateCompleted</td>
-						<td class="@item.GetClassStyle(item.CharacterClass(item.KilledById.Value))">@Html.ActionLink(@item.CharacterName(item.KilledById.Value).ToString(), "Details", "Character", new { id = item.KilledById.Value }, null)</td>
+						<td>@item.DateCompleted.Value.ToShortDateString()</td>
+						<td class="classTxt @item.GetClassStyle(item.CharacterClass(item.KilledById.Value))">@Html.ActionLink(@item.CharacterName(item.KilledById.Value).ToString(), "Details", "Character", new { id = item.KilledById.Value }, null)</td>
 					}
 					else
 					{
@@ -37,13 +37,9 @@
 					}
 			
 					<td>@item.GetStatus(item.Id)</td>
-					<td>@Html.ActionLink("Details", "Details", "Bounty", new { id = item.Id }, null)</td>
+					<td style="text-align: center;">@Html.ActionLink("Details", "Details", "Bounty", new { id = item.Id }, null)</td>
 				</tr>
 			}
 		</tbody>
 	</table>
 </div>
-
-<div class="rowBlank">		
-	<input type="button" value="<< Back" onclick="window.history.back()"/>
-</div>	

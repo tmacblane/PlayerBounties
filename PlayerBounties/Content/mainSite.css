@@ -164,6 +164,32 @@ img
     text-align: center;
 }
 
+.ui-dialog 
+{ 
+	position: absolute;
+	overflow: hidden; 
+	background-color: #FFFFFF;
+	border: 1px solid #BBBBBB;
+    box-shadow: 0 2px 4px #BBBBBB;
+}
+
+.bountyStatisticsModal
+{
+	background-color: #FFFFFF;
+}
+
+.bountyStatisticsModal table
+{
+	width: 910px;
+	border: 1px solid #BBBBBB;
+    box-shadow: 0 2px 4px #BBBBBB;
+}
+
+.bountyStatisticsModal tr
+{
+	height: 30px;
+}
+
 .standardButton .content a
 {
 	text-decoration: none;
@@ -267,6 +293,19 @@ input[type="submit"] input[value], input[type="button"] input[value]
     z-index: 0;
 }
 
+.statisticsContainer
+{
+	margin: 20px 10px;
+	background-color: #FFFFFF;
+	border-style: solid;
+    border-width: 1px;
+	padding: 20px;
+    width: auto;
+    border: 1px solid #BBBBBB;
+    border-radius: 4px 4px 4px 4px;
+    box-shadow: 0 2px 4px #BBBBBB;
+}
+
 #accountStatistics, #playerStatistics
 {
 	float: right;
@@ -349,16 +388,16 @@ table
 
 /* TABS
 ----------------------------------------------------------*/
-#tabs 
-{ 
-	height: 183px; 
-	padding: 0;
+#tabs
+{
+height: 183px;
+padding: 0;
 }
 
 #tabs div
 {
-	height: 147px;
-	padding: 0;
+height: 147px;
+padding: 0;
 }
  
 .tabs-bottom 
@@ -397,9 +436,9 @@ table
 ----------------------------------------------------------*/
 #btnSliderCharacterCreate
 {
-	width: 95px;
+	width: 100px;
 	height: 60px;
-	margin: 25px 10px;
+	margin: 30px 10px;
 }
 
 .slider
@@ -450,7 +489,7 @@ table
 .character-scroll-content-item, .image-scroll-content-item 
 { 
 	width: 125px; 
-	height: 125px; 
+	height: 130px; 
 	float: left; 
 	margin: 10px; 
 	font-size: 12px; 
@@ -493,8 +532,6 @@ table
 	top: 50%; 
 }
 
-
-
 .republic
 {
 	background-image: url("../../Content/Images/search_logos.png");
@@ -517,6 +554,13 @@ table
 	font-size: 12px;
 }
 
+#bountiesTable
+{
+	font-family: Verdana,arial,sans-serif;
+    font-size: 12px;
+    text-align: left;
+}
+
 /* CLASS COLORS AND ICONS
 ----------------------------------------------------------*/
 
@@ -530,8 +574,6 @@ table
 
 .classTxt
 {
-	font-family: Verdana,arial,sans-serif;
-    font-size: 12px;
     font-weight: bold;
 }
 

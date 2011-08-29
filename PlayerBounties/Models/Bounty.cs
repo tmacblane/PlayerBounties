@@ -168,7 +168,7 @@ namespace PlayerBounties.Models
 
 		public IEnumerable<Bounty> GetCompletedBounties()
 		{
-			return this.db.Bounties.Where(b => b.KilledById != null);
+			return this.db.Bounties.Where(b => b.IsCompletionPending == false);
 		}
 
 		public IEnumerable<Bounty> GetActiveBounties()
@@ -187,16 +187,95 @@ namespace PlayerBounties.Models
 			return largestBounty;
 		}
 
-		// public IEnumerable<Bounty> GetTopHuntersList()
-		// {
-		//     IEnumerable<Bounty> completedBounties = this.GetCompletedBounties();
-		//
-		//     foreach(Bounty bounty in completedBounties)
-		//     {
-		//         // get a count of distinct killed by id's
-		//         // http://stackoverflow.com/questions/454601/how-to-count-duplicates-in-list-with-linq
-		//     }
-		// }
+		public List<Guid> GetTopHuntersList()
+		{
+			Character character = new Character();
+			List<Guid> characterIds = new List<Guid>();
+			List<Guid> topHunters = new List<Guid>();
+
+			IEnumerable<Bounty> completedBounties = this.GetCompletedBounties();
+
+			foreach(Bounty bounty in completedBounties)
+			{
+				characterIds.Add(bounty.KilledById.Value);
+			}
+
+			var hunters = from x in characterIds
+						  group x by x into g
+						  let count = g.Count()
+						  orderby count descending
+						  select new
+						  {
+							  Id = g.Key
+						  };
+
+			foreach(var hunter in hunters)
+			{
+				topHunters.Add(hunter.Id);
+			}
+
+			return topHunters;
+		}
+
+		public List<Guid> GetTopMarksList()
+		{
+			Character character = new Character();
+			List<Guid> characterIds = new List<Guid>();
+			List<Guid> topMarks = new List<Guid>();
+
+			IEnumerable<Bounty> completedBounties = this.GetCompletedBounties();
+
+			foreach(Bounty bounty in completedBounties)
+			{
+				characterIds.Add(bounty.PlacedOnId);
+			}
+
+			var marks = from x in characterIds
+						  group x by x into g
+						  let count = g.Count()
+						  orderby count descending
+						  select new
+						  {
+							  Id = g.Key
+						  };
+
+			foreach(var mark in marks)
+			{
+				topMarks.Add(mark.Id);
+			}
+
+			return topMarks;
+		}
+
+		public List<Guid> GetTopClientsList()
+		{
+			Character character = new Character();
+			List<Guid> characterIds = new List<Guid>();
+			List<Guid> topClients = new List<Guid>();
+
+			IEnumerable<Bounty> completedBounties = this.GetCompletedBounties();
+
+			foreach(Bounty bounty in completedBounties)
+			{
+				characterIds.Add(bounty.PlacedById);
+			}
+
+			var clients = from x in characterIds
+						  group x by x into g
+						  let count = g.Count()
+						  orderby count descending
+						  select new
+						  {
+							  Id = g.Key
+						  };
+
+			foreach(var client in clients)
+			{
+				topClients.Add(client.Id);
+			}
+
+			return topClients;
+		}
 
 		public List<Bounty> GetAccountBountiesCompleted(Guid accountId)
 		{
@@ -377,7 +456,63 @@ namespace PlayerBounties.Models
 			return character.GetFactionStyle(factionName);
 		}
 
-		public List<Guid> GetAllKillShotImageIds(Guid accountId, string imageType)
+		public List<Guid> GetMostRecentlyCompletedBounties(int count)
+		{
+			List<Guid> killShotImages = new List<Guid>();
+
+			IQueryable<Bounty> completedBountiesKilledBy = this.db.Bounties.Where(b => b.IsCompletionPending == false).OrderByDescending(b => b.DateCompleted);
+
+			foreach(Bounty completedBounty in completedBountiesKilledBy.Take(count))
+			{
+				killShotImages.Add(completedBounty.KillShotImageId.Value);
+			}
+
+			return killShotImages;
+		}
+
+		public List<Guid> GetAllKillShotImageIds(string imageType)
+		{
+			Character character = new Character();
+
+			List<Guid> killShotImages = new List<Guid>();
+
+			switch(imageType)
+			{
+				case "bountiesPlaced":
+						IQueryable<Bounty> completedBountiesPlacedBy = this.db.Bounties.Where(b => b.IsCompletionPending == false);
+
+						foreach(Bounty completedBounty in completedBountiesPlacedBy)
+						{
+							killShotImages.Add(completedBounty.KillShotImageId.Value);
+						}
+
+					break;
+
+				case "targetsKilled":
+						IQueryable<Bounty> completedBountiesKilledBy = this.db.Bounties.Where(b => b.IsCompletionPending == false);
+
+						foreach(Bounty completedBounty in completedBountiesKilledBy)
+						{
+							killShotImages.Add(completedBounty.KillShotImageId.Value);
+						}
+
+					break;
+
+				case "bountiesPlacedOn":
+						IQueryable<Bounty> completedBountiesPlacedOn = this.db.Bounties.Where(b => b.IsCompletionPending == false);
+
+						foreach(Bounty completedBounty in completedBountiesPlacedOn)
+						{
+							killShotImages.Add(completedBounty.KillShotImageId.Value);
+						}
+
+					break;
+			}
+
+			return killShotImages;
+		}
+
+		public List<Guid> GetAllKillShotImageIdsByAccount(Guid accountId, string imageType)
 		{
 			Character character = new Character();
 			var accountCharacters = character.GetAllCharactersForAnAccount(accountId);

@@ -16,7 +16,6 @@ namespace PlayerBounties.Controllers
 
 		private Account account = new Account();
 		private Bounty bounty = new Bounty();
-		private Character character = new Character();
 		private PlayerBountyContext db = new PlayerBountyContext();
 
 		#endregion
@@ -35,7 +34,53 @@ namespace PlayerBounties.Controllers
 
 		public ActionResult TopHunters()
 		{
-			return View(this.bounty);
+			List<Guid> characterIds = bounty.GetTopHuntersList();
+			List<Character> topHunters = new List<Character>();
+
+			foreach(Guid characterId in characterIds.Take(5))
+			{
+				topHunters.Add(new Character
+				{
+					Id = this.db.Characters.Find(characterId).Id,
+					Name = this.db.Characters.Find(characterId).Name
+				});
+			}
+
+			return PartialView("_TopHunters", topHunters);
+		}
+
+		public ActionResult TopMarks()
+		{
+			List<Guid> characterIds = bounty.GetTopMarksList();
+			List<Character> topMarks = new List<Character>();
+
+			foreach(Guid characterId in characterIds.Take(5))
+			{
+				topMarks.Add(new Character
+				{
+					Id = this.db.Characters.Find(characterId).Id,
+					Name = this.db.Characters.Find(characterId).Name
+				});
+			}
+
+			return PartialView("_TopMarks", topMarks);
+		}
+
+		public ActionResult TopClients()
+		{
+			List<Guid> characterIds = bounty.GetTopClientsList();
+			List<Character> topClients = new List<Character>();
+
+			foreach(Guid characterId in characterIds.Take(5))
+			{
+				topClients.Add(new Character
+				{
+					Id = this.db.Characters.Find(characterId).Id,
+					Name = this.db.Characters.Find(characterId).Name
+				});
+			}
+
+			return PartialView("_TopClients", topClients);
 		}
 
 		#endregion
