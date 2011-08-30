@@ -408,24 +408,24 @@ table
 
 /* TABS
 ----------------------------------------------------------*/
-#tabs
+#killTabs
 {
-height: 183px;
-padding: 0;
+	height: 225px;
+	padding: 0px;
 }
 
 #tabs div
 {
-height: 147px;
-padding: 0;
+	height: 147px;
+	padding: 0;
 }
  
-.tabs-bottom 
+.killTabs-bottom 
 { 
 	position: relative; 
 } 
 
-.tabs-bottom .ui-tabs-panel 
+.killTabs-bottom .ui-tabs-panel 
 { 
 	height: 140px;
 } 
@@ -439,7 +439,7 @@ padding: 0;
 	padding: 0 0 0.2em 2px;
 } 
 
-.tabs-bottom .ui-tabs-nav li 
+.killTabs-bottom .ui-tabs-nav li 
 { 
 	margin-top: -2px !important; 
 	margin-bottom: 1px !important; 
@@ -450,6 +450,11 @@ padding: 0;
 .ui-tabs-selected 
 { 
 	margin-top: -3px !important; 
+}
+
+#targetsKilledImages, #bountiesPlacedImages, #bountiesOnImages
+{
+	padding-left: 0;
 }
 
 /* SLIDER
