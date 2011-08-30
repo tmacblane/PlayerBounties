@@ -1,15 +1,14 @@
-﻿@using(Html.BeginForm("Index", "Search", FormMethod.Post, new { id = "searchForm" }))    
+﻿
+@using(Html.BeginForm("Index", "Search", FormMethod.Post, new { id = "searchForm" }))    
 {
-    <div id="search">
-		<table cellspacing="0" cellpadding="5" border="0">
-			<tr>
-				<td id="searchTxt" style="width: 250px;">
-					@Html.TextBox("txtSearch")
-				</td>
-				<td id="searchbtn">
-					<input id="Search" type="submit" value="Search" />
-				</td>
-			</tr>
-		</table>
-    </div>
+	<table cellspacing="0" cellpadding="5" border="0">
+		<tr>
+			<td id="searchTxt" style="width: 250px;">
+				@Html.TextBox("txtSearch", "Search for characters", new { onfocus = "this.value==this.defaultValue?this.value='':null" } )
+			</td>
+			<td id="searchbtn">
+				<input id="Search" type="submit" value="Search" />
+			</td>
+		</tr>
+	</table>
 }

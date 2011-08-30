@@ -4,7 +4,85 @@
     ViewBag.Title = "Character Details - " + Model.Name;
 }
 
-<div style="margin: 10px;">
+<script type="text/javascript">
+	$(function () {
+
+	    $("#targetsKilledModal").dialog({
+	        autoOpen: false,
+	        height: 500,
+	        width: 950,
+	        modal: true,
+	        closeOnEscape: true,
+	        draggable: false,
+	        resizable: false,
+	        buttons: {
+	            Close: function () {
+	                $(this).dialog("close");
+	            }
+	        }
+	    });
+
+	    $("#bountiesPlacedModal").dialog({
+	    	autoOpen: false,
+	    	height: 500,
+	    	width: 950,
+			modal: true,
+			closeOnEscape: true,
+			draggable: false,
+			resizable: false,
+			buttons: {
+				Close: function()
+				{
+					$(this).dialog("close");
+				}
+			}
+	    });
+
+	    $("#bountiesAgainstModal").dialog({
+	    	autoOpen: false,
+	    	height: 500,
+	    	width: 950,
+	    	modal: true,
+			closeOnEscape: true,
+			draggable: false,
+			resizable: false,
+			buttons: {
+				Close: function()
+				{
+					$(this).dialog("close");
+				}
+			}
+	    });
+
+	    $("#targetsKilledLink").click(function () {
+			$("#targetsKilledModal").dialog("open");
+		});
+
+		$("#bountiesPlacedLink").click(function()
+		{
+			$("#bountiesPlacedModal").dialog("open");
+		});
+
+		$("#bountiesAgainstLink").click(function()
+		{
+			$("#bountiesAgainstModal").dialog("open");
+		});
+	});
+</script>
+
+<div id="targetsKilledModal" class="bountyStatisticsModal" title="Targets killed by @Model.Name">
+    @Html.Partial("Statistics/_TargetsKilled", Model)
+</div>
+
+<div id="bountiesPlacedModal" class="bountyStatisticsModal" title="Bounties placed by @Model.Name">
+    @Html.Partial("Statistics/_BountiesPlaced", Model)
+</div>
+
+<div id="bountiesAgainstModal" class="bountyStatisticsModal" title="Bounties placed on @Model.Name">
+    @Html.Partial("Statistics/_BountiesPlacedAgainst", Model)
+</div>
+
+<div id="characterInfoTop" style="margin: 10px;">
 	<div id="leftColumn">
 		<table>
 			<tr style="height: 20px;">
@@ -58,8 +136,8 @@
 				</td>
 				<td align="left">
 					@if(Model.GetBountiesKilledCount(Model.Id) != 0)
-					{
-						@Html.ActionLink(Model.GetBountiesKilledCount(Model.Id).ToString(), "_TargetsKilled", "Bounty", new { characterId = Model.Id }, null)
+                    {
+                        <a style="cursor: pointer;" id="targetsKilledLink">@Model.GetBountiesKilledCount(Model.Id).ToString()</a>
 					}
 					else
 					{
@@ -74,7 +152,7 @@
 				<td align="left">
 					@if(Model.GetBountiesPlacedCount(Model.Id) != 0)
 					{
-						@Html.ActionLink(Model.GetBountiesPlacedCount(Model.Id).ToString(), "_BountiesPlaced", "Bounty", new { characterId = Model.Id }, null)
+                        <a style="cursor: pointer;" id="bountiesPlacedLink">@Model.GetBountiesPlacedCount(Model.Id).ToString()</a>
 					}
 					else
 					{
@@ -88,13 +166,13 @@
 				</td>
 				<td align="left">
 					@if(Model.GetBountiesPlacedOnCount(Model.Id) != 0)
-					{
-						@Html.ActionLink(Model.GetBountiesPlacedOnCount(Model.Id).ToString(), "_BountiesPlacedAgainst", "Bounty", new { characterId = Model.Id }, null)
-					}
-					else
-					{
+					 {
+						<a style="cursor: pointer;" id="bountiesAgainstLink">@Model.GetBountiesPlacedOnCount(Model.Id).ToString()</a>
+					 }
+					 else
+					 {
 						<text>0</text>
-					}
+					 }
 				</td>
 			</tr>
 		</table>
@@ -107,7 +185,7 @@
 				<td class="inputLabelCell">
 					@Html.LabelFor(model => model.Name):
 				</td>
-				<td align="left">
+				<td align="left" class=@Model.GetClassStyle(Model.CharacterClass(Model.Id))>
 					@if(Request.IsAuthenticated)
 					{
 						if(Model.IsCharacterOwner(Model.GetLoggedInUserId(), Model.Id))
@@ -122,8 +200,7 @@
 					else
 					{
 						<span>@Html.DisplayFor(model => model.Name)</span>
-					}
-				
+					}				
 				</td>
 			</tr>
 			<tr>
@@ -190,7 +267,7 @@
 						</td>
 					</tr>
 			   }
-			}
+		   }
 		
 			@if(Model.Bio != null)
 			{
@@ -209,10 +286,6 @@
 
 </div>
 
-<div id="imageSlider" class="divSize95" style="margin-top: 100px;">
-	@Html.Action("KillImages", "Character")
-</div>
-
 <div id="talesFromTheHunt" class="divSize95">
 	<p>Link to Tales from hunt</p>
 </div>
@@ -220,3 +293,5 @@
 <div class="rowBlank">		
 	<input type="button" value="<< Back" onclick="window.history.back()"/>
 </div>	
+
+@Html.Partial("_KillShotImages", Model, null)

@@ -109,9 +109,9 @@
 			<label for="file">FileName:</label>
 			<input type="file" name="file" id="file" />			
 	
-			@Html.DropDownList("CharacterList", String.Empty)<br />
-			<p>Don't see the character you killed with...click here to create them</p>
-		}
+				@Html.DropDownList("CharacterList", string.Empty)<br />
+                <text>Don't see your character listed...@Html.ActionLink("click here", "Create", "Character", null, null) to create them</text>
+        }
 
 		if(Model.IsBountyOwner(Model.GetLoggedInUserId(), Model.Id))
 		{
@@ -131,7 +131,6 @@
 			}
 		}
 		
-		<input type="button" value="Back" onclick="window.history.back()" />
-		
+		<input type="button" value="Back" onclick="window.history.back()" />		
 	</div>
 }

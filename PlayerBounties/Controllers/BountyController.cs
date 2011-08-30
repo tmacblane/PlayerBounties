@@ -111,19 +111,23 @@ namespace PlayerBounties.Controllers
 		public ActionResult Details(Guid id)
 		{
 			Bounty bounty = this.db.Bounties.Find(id);
+			var loggedInUser = this.account.GetLoggedInUserId();
 
 			if(Request.IsAuthenticated)
 			{
-				var characters = this.character.GetAllCharactersOnAShardForAnAccount(this.account.GetLoggedInUserId(), bounty.CharacterShard(bounty.PlacedOnId));
-				var defaultCharacter = this.character.GetDefaultCharacterForAnAccount(this.account.GetLoggedInUserId());
+				var characters = this.character.GetAllCharactersOnAShardForAnAccount(loggedInUser, bounty.CharacterShard(bounty.PlacedOnId));
+				var defaultCharacter = this.character.GetDefaultCharacterForAnAccount(loggedInUser);
 
-				if(defaultCharacter.Single().Shard.Name == bounty.CharacterShard(bounty.PlacedOnId))
+				if(defaultCharacter.Count() != 0)
 				{
-					ViewBag.CharacterList = new SelectList(characters, "Id", "Name", defaultCharacter.Single().Id);
-				}
-				else
-				{
-					ViewBag.CharacterList = new SelectList(characters, "Id", "Name");
+					if(defaultCharacter.Single().Shard.Name == bounty.CharacterShard(bounty.PlacedOnId))
+					{
+						ViewBag.CharacterList = new SelectList(characters, "Id", "Name", defaultCharacter.Single().Id);
+					}
+					else
+					{
+						ViewBag.CharacterList = new SelectList(characters, "Id", "Name");
+					}
 				}
 			}
 

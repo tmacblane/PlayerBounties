@@ -4,66 +4,164 @@
     ViewBag.Title = "Account Dashboard";
 }
 
-@Html.Partial("_Search")
-<p></p>
+
+<script type="text/javascript">
+	$(function()
+	{
+
+		$("#targetsKilledModal").dialog({
+			autoOpen: false,
+			height: 500,
+			width: 950,
+			modal: true,
+			closeOnEscape: true,
+			draggable: false,
+			resizable: false,
+			buttons: {
+				Close: function()
+				{
+					$(this).dialog("close");
+				}
+			}
+		});
+
+		$("#bountiesPlacedModal").dialog({
+			autoOpen: false,
+			height: 500,
+			width: 950,
+			modal: true,
+			closeOnEscape: true,
+			draggable: false,
+			resizable: false,
+			buttons: {
+				Close: function()
+				{
+					$(this).dialog("close");
+				}
+			}
+		});
+
+		$("#bountiesAgainstModal").dialog({
+			autoOpen: false,
+			height: 500,
+			width: 950,
+			modal: true,
+			closeOnEscape: true,
+			draggable: false,
+			resizable: false,
+			buttons: {
+				Close: function()
+				{
+					$(this).dialog("close");
+				}
+			}
+		});
+
+		$("#targetsKilledLink").click(function()
+		{
+			$("#targetsKilledModal").dialog("open");
+		});
+
+		$("#bountiesPlacedLink").click(function()
+		{
+			$("#bountiesPlacedModal").dialog("open");
+		});
+
+		$("#bountiesAgainstLink").click(function()
+		{
+			$("#bountiesAgainstModal").dialog("open");
+		});
+	});
+</script>
+
+<!-- Modal Windows -->
+<div id="targetsKilledModal" class="bountyStatisticsModal" title="Targets killed">
+    @Html.Partial("Statistics/_TargetsKilled", Model)
+</div>
+
+<div id="bountiesPlacedModal" class="bountyStatisticsModal" title="Bounties placed">
+    @Html.Partial("Statistics/_BountiesPlaced", Model)
+</div>
+
+<div id="bountiesAgainstModal" class="bountyStatisticsModal" title="Bounties placed against">
+    @Html.Partial("Statistics/_BountiesPlacedAgainst", Model)
+</div>
+<!-- -->
+
 <div id="characterManagement">
 	@Html.Action("Characters", "Dashboard")
 </div>
 
-<h3>Account Statistics</h3>
-<table cellspacing="0" cellpadding="2" border="0">
-	<tr>
-		<td class="inputLabelCell">
-			Targets Killed:
-		</td>
-		<td align="left">
-			@if(Model.GetAccountBountiesCompleted(Model.GetLoggedInUserId()).Count() != 0)
-			{
-				@Html.ActionLink(Model.GetAccountBountiesCompleted(Model.GetLoggedInUserId()).Count().ToString(), "_TargetsKilled", "Bounty")
-			}
-			else
-			{
-				<text>0</text>
-			}
-		</td>
-	</tr>
-	<tr>
-		<td class="inputLabelCell">
-			Bounties Placed:
-		</td>
-		<td align="left">
-			@if(Model.GetAccountBountiesPlaced(Model.GetLoggedInUserId()).Count() != 0)
-			{
-				@Html.ActionLink(Model.GetAccountBountiesPlaced(Model.GetLoggedInUserId()).Count().ToString(), "_BountiesPlaced", "Bounty", Guid.Empty, null)
-			}
-			else
-			{
-				<text>0</text>
-			}
-		</td>
-	</tr>
-	<tr>
-		<td class="inputLabelCell">
-			Bounties Against:
-		</td>
-		<td align="left">
-			@if(Model.GetAccountBountiesPlacedOn(Model.GetLoggedInUserId()).Count() != 0)
-			{
-				@Html.ActionLink(Model.GetAccountBountiesPlacedOn(Model.GetLoggedInUserId()).Count().ToString(), "_BountiesPlacedAgainst", "Bounty", Guid.Empty, null)
-			}
-			else
-			{
-				<text>0</text>
-			}
-		</td>
-	</tr>
-</table>
-
-<ul>
-	<li>Bounties Signed up for</li>
-	<li>Active Contracts</li>
-</ul>
-
-<div id="killImages">
-	@Html.Action("KillImages", "Dashboard")
+<div class="rowBlank">
+	<div style="float: left;">
+		<input id="btnPlaceBounty" type="button" value="Place a Bounty" onclick="location='../../Bounty/PlaceBounty'" />
+	</div>
+	
+	<div id="accountStatistics" style="float: right;">
+		<table cellspacing="0" cellpadding="2" border="0" >
+			<thead>
+				<tr>
+					<th style="font-size: large;"><u>Account Statistics</u></th>
+					<th style="width: 20px;"></th>
+					<th></th>
+					<th style="width: 20px;"></th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td class="inputLabelCell">
+						Targets Killed:
+					</td>
+					<td align="left">
+						@if(Model.GetAccountBountiesCompleted(Model.GetLoggedInUserId()).Count() != 0)
+						{
+							<a style="cursor: pointer;" id="targetsKilledLink">@Model.GetAccountBountiesCompleted(Model.GetLoggedInUserId()).Count().ToString()</a>
+						}
+						else
+						{
+							<text>0</text>
+						}
+					</td>
+					<td class="inputLabelCell">Bounties Signed Up For:</td>
+					<td align="right">0</td>
+				</tr>
+				<tr>
+					<td class="inputLabelCell">
+						Bounties Placed:
+					</td>
+					<td align="left">
+						@if(Model.GetAccountBountiesPlaced(Model.GetLoggedInUserId()).Count() != 0)
+						{
+							<a style="cursor: pointer;" id="bountiesPlacedLink">@Model.GetAccountBountiesPlaced(Model.GetLoggedInUserId()).Count().ToString()</a>
+						}
+						else
+						{
+							<text>0</text>
+						}
+					</td>
+					<td class="inputLabelCell">Pending Contracts:</td>
+					<td align="right">0</td>
+				</tr>
+				<tr>
+					<td class="inputLabelCell">
+						Bounties Against Me:
+					</td>
+					<td align="left">
+						@if(Model.GetAccountBountiesPlacedOn(Model.GetLoggedInUserId()).Count() != 0)
+						{
+							<a style="cursor: pointer;" id="bountiesAgainstLink">@Model.GetAccountBountiesPlacedOn(Model.GetLoggedInUserId()).Count().ToString()</a>
+						}
+						else
+						{
+							<text>0</text>
+						}
+					</td>
+					<td class="inputLabelCell">Active Contracts:</td>
+					<td align="right">0</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
 </div>
+
+@Html.Partial("../Dashboard/_KillShotImages", new PlayerBounties.Models.KillShotImage(), null)

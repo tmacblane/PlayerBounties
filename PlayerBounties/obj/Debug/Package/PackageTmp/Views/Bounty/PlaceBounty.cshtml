@@ -40,7 +40,7 @@
 				select.empty();
 				select.append($('<option/>', {
 					value: 0,
-					text: "Select a character"
+					text: ""
 				}));
 
 				$.each(shardData, function(index, itemData)
@@ -61,7 +61,7 @@
 	<table id="searchTable" cellspacing="0" cellpadding="5" border="0">
 		<tr>
 			<td class="inputLabelCell">
-				@Html.Label("Character Name")
+				@Html.Label("Character Name"):
 			</td>
 			<td align="left">
 				@Html.TextBox("characterNameTxt")
@@ -69,31 +69,31 @@
 		</tr>
 		<tr>
 			<td class="inputLabelCell">
-				@Html.Label("Faction")
+				@Html.Label("Faction"):
 			</td>
 			<td align="left">
-				@Html.DropDownList("FactionId", String.Empty)
+				@Html.DropDownList("FactionId", string.Empty)
 			</td>
 		</tr>
 		<tr>
 			<td class="inputLabelCell">
-				@Html.Label("Shard")
+				@Html.Label("Shard"):
 			</td>
 			<td align="left">
-				@Html.DropDownList("ShardId", String.Empty)
+				@Html.DropDownList("ShardId", string.Empty)
 			</td>
 		</tr>
 		<tr>
 			<td class="inputLabelCell">
-				@Html.Label("Player Class")
+				@Html.Label("Player Class"):
 			</td>
 			<td align="left">
-				@Html.DropDownList("PlayerClassId", String.Empty)
+				@Html.DropDownList("PlayerClassId", string.Empty)
 			</td>
 		</tr>
 		<tr>
 			<td class="inputLabelCell">
-				@Html.LabelFor(model => model.Amount)
+				@Html.LabelFor(model => model.Amount):
 			</td>
 			<td align="left">
 				@Html.EditorFor(model => model.Amount)
@@ -102,7 +102,7 @@
 		</tr>
 		<tr>
 			<td class="inputLabelCell">
-				@Html.LabelFor(model => model.Reason)
+				@Html.LabelFor(model => model.Reason):
 			</td>
 			<td align="left">
 				@Html.EditorFor(model => model.Reason)
@@ -110,7 +110,7 @@
 		</tr>
 		<tr>
 			<td class="inputLabelCell">
-				@Html.LabelFor(model => model.Message)
+				@Html.LabelFor(model => model.Message):
 			</td>
 			<td align="left">
 				@Html.EditorFor(model => model.Message)
@@ -121,7 +121,7 @@
 				Requested By:
 			</td>
 			<td align="left">
-				@Html.DropDownList("CharacterList", String.Empty) Don't see your character in the list...click here to create them
+				@Html.DropDownList("CharacterList", string.Empty) Don't see your character listed...@Html.ActionLink("click here", "Create", "Character", null, null) to create them
 			</td>
 		</tr>
 	</table>

@@ -113,7 +113,7 @@ img
     margin-bottom: 0px;
     padding: 0;
     width: 100%;
-    z-index: 50;	
+    z-index: 50;
 }
 
 .sectionTitle
@@ -153,7 +153,6 @@ img
 {
 	clear: both;
 	font-size: 10px;
-	clear: both;
     left: 50%;
     margin-left: -500px;
     position: relative;
@@ -163,6 +162,32 @@ img
     color: #FFFFFF;
     padding: 5px 0;
     text-align: center;
+}
+
+.ui-dialog 
+{ 
+	position: absolute;
+	overflow: hidden; 
+	background-color: #FFFFFF;
+	border: 1px solid #BBBBBB;
+    box-shadow: 0 2px 4px #BBBBBB;
+}
+
+.bountyStatisticsModal
+{
+	background-color: #FFFFFF;
+}
+
+.bountyStatisticsModal table
+{
+	width: 910px;
+	border: 1px solid #BBBBBB;
+    box-shadow: 0 2px 4px #BBBBBB;
+}
+
+.bountyStatisticsModal tr
+{
+	height: 30px;
 }
 
 .standardButton .content a
@@ -219,6 +244,17 @@ input[type="submit"] input[value], input[type="button"] input[value]
 	line-height: 30px;
 }
 
+#btnPlaceBounty
+{
+	border-radius: 20px 20px 20px 20px;
+	font-size: 15px;
+	font-weight: bold;
+	width: 200px;
+	height: 40px;
+	margin: 10px;
+    box-shadow: 0 2px 4px #BBBBBB;
+}
+
 #main
 {
 	background: none repeat scroll 0 0 #FFFFFF;
@@ -257,6 +293,44 @@ input[type="submit"] input[value], input[type="button"] input[value]
     z-index: 0;
 }
 
+.statisticsContainer
+{
+	margin: 20px 10px;
+	background-color: #FFFFFF;
+	border-style: solid;
+    border-width: 1px;
+	padding: 20px;
+    width: auto;
+    border: 1px solid #BBBBBB;
+    border-radius: 4px 4px 4px 4px;
+    box-shadow: 0 2px 4px #BBBBBB;
+}
+
+#accountStatistics, #playerStatistics
+{
+	float: right;
+	margin: 20px 10px;
+	background-color: #FFFFFF;
+	border-style: solid;
+    border-width: 1px;
+	padding: 20px;
+    width: auto;
+    border: 1px solid #BBBBBB;
+    border-radius: 4px 4px 4px 4px;
+    box-shadow: 0 2px 4px #BBBBBB;
+}
+
+#leftColumn
+{
+    background-color: #FFFFFF;
+	border-style: solid;
+    border-width: 1px;
+    border: 1px solid #BBBBBB;
+    border-radius: 4px 4px 4px 4px;
+    box-shadow: 0 2px 4px #BBBBBB;
+    height: inherit;
+}
+
 .rowBlank
 {
 	clear: both;
@@ -290,7 +364,7 @@ table
 #middleColumn
 {
 	padding: 0 185px;
-	width: 630px;
+	width: 620px;
 }
 
 
@@ -312,6 +386,152 @@ table
 	position: relative;
 }
 
+/* TABS
+----------------------------------------------------------*/
+#tabs
+{
+height: 183px;
+padding: 0;
+}
+
+#tabs div
+{
+height: 147px;
+padding: 0;
+}
+ 
+.tabs-bottom 
+{ 
+	position: relative; 
+} 
+
+.tabs-bottom .ui-tabs-panel 
+{ 
+	height: 140px;
+} 
+
+.tabs-bottom .ui-tabs-nav 
+{ 
+	position: absolute !important; 
+	left: 0; 
+	bottom: 0; 
+	right:0; 
+	padding: 0 0 0.2em 2px;
+} 
+
+.tabs-bottom .ui-tabs-nav li 
+{ 
+	margin-top: -2px !important; 
+	margin-bottom: 1px !important; 
+	border-top: none; 
+	border-bottom-width: 1px;
+}
+
+.ui-tabs-selected 
+{ 
+	margin-top: -3px !important; 
+}
+
+/* SLIDER
+----------------------------------------------------------*/
+#btnSliderCharacterCreate
+{
+	width: 100px;
+	height: 60px;
+	margin: 30px 10px;
+}
+
+.slider
+{
+	margin-top: 20px;
+}
+
+#slider-frame > div.slider 
+{ 
+	padding: 10px !important; 
+}
+
+.slider-widget-header
+{
+	border: 1px solid #AAAAAA /*{borderColorHeader}*/;
+	background: -moz-linear-gradient(center top , #AAAAAA, #CCCCCC) repeat scroll 0 0 transparent; 
+	background-color: #CCCCCC;
+}
+
+.killslider-widget-header
+{
+	border: 1px solid #AAAAAA /*{borderColorHeader}*/;
+	background: -moz-linear-gradient(center top , #AAAAAA, #CCCCCC) repeat scroll 0 0 transparent; 
+	background-color: #CCCCCC;
+}
+
+* html .scroll-content-item 
+{ 
+	display: inline; 
+} /* IE6 float double margin bug */
+
+.character-scroll-pane, .image-scroll-pane
+{
+	border: 1px solid #AAAAAA /*{borderColorHeader}*/;
+	overflow: auto; 
+	width: 978px; 
+	float:left; 
+	background: -moz-linear-gradient(center top , #333333, #666666) repeat scroll 0 0 transparent; 
+	background-color: #444444;
+}
+
+.character-scroll-content, .image-scroll-content 
+{ 
+	min-width: 99%; 
+	float: left; 
+}
+
+.character-scroll-content-item, .image-scroll-content-item 
+{ 
+	width: 125px; 
+	height: 130px; 
+	float: left; 
+	margin: 10px; 
+	font-size: 12px; 
+	text-align: center;
+}
+
+.character-scroll-bar-wrap, .image-scroll-bar-wrap 
+{ 
+	clear: left; 
+	padding: 0 4px 0 2px; 
+	margin: 0 -1px -1px -1px; 
+}
+
+.character-scroll-bar-wrap .ui-slider, .image-scroll-bar-wrap .ui-slider 
+{ 
+	background: none; 
+	border:0; 
+	height: 17px; 
+	margin: 0 auto;  
+}
+
+.character-scroll-bar-wrap .ui-handle-helper-parent, .image-scroll-bar-wrap .ui-handle-helper-parent 
+{ 
+	position: relative; 
+	width: 100%; 
+	height: 100%; 
+	margin: 0 auto; 
+}
+
+.character-scroll-bar-wrap .ui-slider-handle, .image-scroll-bar-wrap .ui-slider-handle 
+{ 
+	top: 2px; 
+	height: 12px;
+}
+
+.character-scroll-bar-wrap .ui-slider-handle .ui-icon, .image-scroll-bar-wrap .ui-slider-handle .ui-icon 
+{ 
+	margin: -8px auto 0; 
+	position: relative; 
+	top: 50%; 
+}
+
 .republic
 {
 	background-image: url("../../Content/Images/search_logos.png");
@@ -319,9 +539,8 @@ table
 	background-position: 0 0;
 	background-color: rgba(0, 0, 0, 1);
 	color: #FFFFFF;
-	font-weight: bold;
+	font-weight: bolder;
 	font-size: 12px;
-	height: 36px;
 }
 
 .empire
@@ -333,7 +552,13 @@ table
 	color: #FFFFFF;
 	font-weight: bolder;
 	font-size: 12px;
-	height: 36px;
+}
+
+#bountiesTable
+{
+	font-family: Verdana,arial,sans-serif;
+    font-size: 12px;
+    text-align: left;
 }
 
 /* CLASS COLORS AND ICONS
@@ -349,8 +574,6 @@ table
 
 .classTxt
 {
-	font-family: Verdana,arial,sans-serif;
-    font-size: 12px;
     font-weight: bold;
 }
 
@@ -432,77 +655,4 @@ table
 .imperialAgentIcon
 {
 	background-position: right -252px;
-}
-
-/* SLIDER
-----------------------------------------------------------*/
-#slider-frame > div.slider 
-{ 
-	padding: 10px !important; 
-}
-
-* html .scroll-content-item 
-{ 
-	display: inline; 
-} /* IE6 float double margin bug */
-
-.character-scroll-pane, .image-scroll-pane
-{
-	overflow: auto; 
-	width: 99%; 
-	float:left; 
-	background: -moz-linear-gradient(center top , #333333, #666666) repeat scroll 0 0 transparent; 
-	background-color: #333333;
-}
-
-.character-scroll-content, .image-scroll-content 
-{ 
-	min-width: 99%; 
-	float: left; 
-}
-
-.character-scroll-content-item, .image-scroll-content-item 
-{ 
-	width: 125px; 
-	height: 125px; 
-	float: left; 
-	margin: 10px; 
-	font-size: 12px; 
-	text-align: center;
-}
-
-.character-scroll-bar-wrap, .image-scroll-bar-wrap 
-{ 
-	clear: left; 
-	padding: 0 4px 0 2px; 
-	margin: 0 -1px -1px -1px; 
-}
-
-.character-scroll-bar-wrap .ui-slider, .image-scroll-bar-wrap .ui-slider 
-{ 
-	background: none; 
-	border:0; 
-	height: 17px; 
-	margin: 0 auto;  
-}
-
-.character-scroll-bar-wrap .ui-handle-helper-parent, .image-scroll-bar-wrap .ui-handle-helper-parent 
-{ 
-	position: relative; 
-	width: 100%; 
-	height: 100%; 
-	margin: 0 auto; 
-}
-
-.character-scroll-bar-wrap .ui-slider-handle, .image-scroll-bar-wrap .ui-slider-handle 
-{ 
-	top: 2px; 
-	height: 12px;
-}
-
-.character-scroll-bar-wrap .ui-slider-handle .ui-icon, .image-scroll-bar-wrap .ui-slider-handle .ui-icon 
-{ 
-	margin: -8px auto 0; 
-	position: relative; 
-	top: 50%; 
 }
