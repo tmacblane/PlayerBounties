@@ -12,7 +12,7 @@
 				<th>Character Name</th>
 				<th>Shard</th>
 				<th>Bounties</th>
-				<th>Amount Earned</th>
+				<th>Total Earned</th>
 			</tr>
 		
 			@foreach(var item in Model)
@@ -35,7 +35,7 @@
 						}
 					</td>
 					<td align="left">
-						To Do
+						@item.GetAmountEarned(item.Id)
 					</td>
 				</tr>
 			}

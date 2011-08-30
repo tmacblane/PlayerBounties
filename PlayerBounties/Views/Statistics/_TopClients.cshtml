@@ -12,7 +12,7 @@
 				<th>Character Name</th>
 				<th>Shard</th>
 				<th>Bounties</th>
-				<th>Amount Spent</th>
+				<th>Total Spent</th>
 			</tr>
 		
 			@foreach(var item in Model)
@@ -28,7 +28,7 @@
 						@item.GetBountiesPlacedCount(item.Id)
 					</td>
 					<td align="left">
-						To Do
+						@item.GetAmountSpent(item.Id)
 					</td>
 				</tr>
 			}

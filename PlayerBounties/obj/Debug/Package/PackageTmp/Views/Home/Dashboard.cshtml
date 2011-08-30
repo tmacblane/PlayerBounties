@@ -92,9 +92,17 @@
 	@Html.Action("Characters", "Dashboard")
 </div>
 
-<div class="rowBlank">
+<div class="rowBlank" style="margin-left: 10px;">
 	<div style="float: left;">
-		<input id="btnPlaceBounty" type="button" value="Place a Bounty" onclick="location='../../Bounty/PlaceBounty'" />
+		@if(Model.GetAllCharactersForAnAccount(Model.GetLoggedInUserId()).Count() != 0)
+		{
+			<input id="btnPlaceBounty" type="button" value="Place a Bounty" onclick="location='../../Bounty/PlaceBounty'" />
+		}
+		else
+		{
+			<text>To place a bounty you must first add a character.</text><br />
+			<input id="btnPlaceBountyDisabled" type="button" value="Place a Bounty" disabled="disabled" style="float:left;"/>
+		}
 	</div>
 	
 	<div id="accountStatistics" style="float: right;">

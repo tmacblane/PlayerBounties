@@ -255,6 +255,19 @@ input[type="submit"] input[value], input[type="button"] input[value]
     box-shadow: 0 2px 4px #BBBBBB;
 }
 
+#btnPlaceBountyDisabled
+{
+	background: -moz-linear-gradient(center top , #CCCCCC, #BBBBBB) repeat scroll 0 0 transparent;
+	background-color: #CCCCCC;
+	border-radius: 20px 20px 20px 20px;
+	font-size: 15px;
+	font-weight: bold;
+	width: 200px;
+	height: 40px;
+	margin: 10px 10px 10px 0;
+    box-shadow: 0 2px 4px #BBBBBB;
+}
+
 #main
 {
 	background: none repeat scroll 0 0 #FFFFFF;

@@ -396,6 +396,38 @@ namespace PlayerBounties.Models
 			return this.db.Bounties.Where(b => b.PlacedOnId == characterId).Where(b => b.IsPlacementPending == false).Count();
 		}
 
+		public double GetAmountEarned(Guid characterId)
+		{
+			IEnumerable<Bounty> bounties = this.GetBountiesCompleted(characterId);
+
+			double amountEarned = 0;
+
+			foreach(var bounty in bounties)
+			{
+				amountEarned = amountEarned + bounty.Amount;
+			}
+
+			amountEarned = amountEarned - (amountEarned * 0.05);
+
+			// amountEarned + Great Hunt winnings
+
+			return amountEarned;
+		}
+
+		public double GetAmountSpent(Guid characterId)
+		{
+			IEnumerable<Bounty> bounties = this.GetBountiesPlaced(characterId);
+
+			double amountSpent = 0;
+
+			foreach(var bounty in bounties)
+			{
+				amountSpent = amountSpent + bounty.Amount;
+			}
+
+			return amountSpent;
+		}
+
 		public bool IsActiveBountyOnCharacter(Guid characterId)
 		{
 			bool isActiveBounty = false;
