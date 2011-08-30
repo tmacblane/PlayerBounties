@@ -73,7 +73,7 @@
 						@Html.LabelFor(model => model.KilledById):
 					</td>
 					<td align="left">
-						@Html.ActionLink(@Model.CharacterName(Model.KilledById.Value).ToString(), "Details", "Character", new { id = Model.PlacedById }, null)
+						@Html.ActionLink(@Model.CharacterName(Model.KilledById.Value).ToString(), "Details", "Character", new { id = Model.KilledById }, null)
 					</td>
 				</tr>
 	  

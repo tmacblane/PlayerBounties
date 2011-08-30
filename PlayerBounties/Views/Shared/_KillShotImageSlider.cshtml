@@ -88,41 +88,45 @@
 	});
 </script>
 
-@if(Model.Count() != 0)
-{
-	<div class="killShotImageSlider">
-		<div class="image-scroll-pane ui-widget slider-widget-header ui-corner-all">
-			<div class="image-scroll-content" style="width: @Math.Abs(@Model.Count() * 147)px;">
-				@foreach(var item in Model)
-				{
-					<div class="image-scroll-content-item slider-widget-header" >
-						<a href="@Url.Action("Details", "Bounty", new { id = item.GetBountyId(item.Id) })"><img src="../../Content/Images/@item.FileName" alt="Kill Image" id="killImage" style="height: 125px; width:125px;" /></a>
-					</div>   
-				}			
-			</div>
+<div class="slider">
+	<div class="image-scroll-pane ui-widget slider-widget-header ui-corner-all">
+		@if(Model.Count() != 0)
+		{
+			<div class="killShotImageSlider">
+				<div class="image-scroll-pane ui-widget slider-widget-header ui-corner-all">
+					<div class="image-scroll-content" style="width: @Math.Abs(@Model.Count() * 147)px;">
+						@foreach(var item in Model)
+						{
+							<div class="image-scroll-content-item slider-widget-header" >
+								<a href="@Url.Action("Details", "Bounty", new { id = item.GetBountyId(item.Id) })"><img src="../../Content/Images/@item.FileName" alt="Kill Image" id="killImage" style="height: 125px; width:125px;" /></a>
+							</div>   
+						}			
+					</div>
 		
-			@if(Model.Count() > 6)
-			{
-				<div class="image-scroll-bar-wrap ui-widget-content ui-corner-bottom">
-					<div class="image-scroll-bar"></div>
+					@if(Model.Count() > 6)
+					{
+						<div class="image-scroll-bar-wrap ui-widget-content ui-corner-bottom">
+							<div class="image-scroll-bar"></div>
+						</div>
+					}		
 				</div>
-			}		
-		</div>
-	</div>
-}
-else
-{
-	<div class="killShotImageSlider">
-		<div class="image-scroll-pane ui-widget slider-widget-header ui-corner-all">
-			<div class="image-scroll-content" style="width: @Math.Abs(@Model.Count() * 147)px;">
-				<table>
-					<tr>
-						<td style="color: #FFFFFF;">
-							No images have been uploaded
-						</td>
-					</tr>
-				</table>
 			</div>
-		</div>
+		}
+		else
+		{
+			<div class="killShotImageSlider">
+				<div class="image-scroll-pane ui-widget slider-widget-header ui-corner-all">
+					<div class="image-scroll-content" style="width: @Math.Abs(@Model.Count() * 147)px;">
+						<table>
+							<tr>
+								<td style="color: #FFFFFF;">
+									No images have been uploaded
+								</td>
+							</tr>
+						</table>
+					</div>
+				</div>
+			</div>
+		}
 	</div>
-}
+</div>

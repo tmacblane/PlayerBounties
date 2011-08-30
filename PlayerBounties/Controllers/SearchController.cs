@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+
 using PlayerBounties.Models;
 
 namespace PlayerBounties.Controllers
@@ -19,7 +20,7 @@ namespace PlayerBounties.Controllers
 		public ActionResult Index(FormCollection formCollection)
 		{
 			string characterName = formCollection["txtSearch"];
-			Search search = new Search();
+			PlayerBounties.Models.Search search = new Search();
 
 			List<Character> characters = search.FindAllCharactersByName(characterName);
 

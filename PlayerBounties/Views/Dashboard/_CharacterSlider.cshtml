@@ -92,7 +92,7 @@
 	<div class="character-scroll-pane ui-widget slider-widget-header ui-corner-all">
 		@if(Model.Count() == 0)
 		{
-			<div class="character-scroll-content" style="width: @Math.Abs(@Model.Count() * 147)px;">
+			<div class="character-scroll-content" style="width: @Math.Abs(@Model.Count() * 147 + 147)px;">
 				<div class="character-scroll-content-item slider-widget-header">
 					<table>
 						<tr>
@@ -106,7 +106,7 @@
 		}
 		else
 		{
-			<div class="character-scroll-content" style="width: @Math.Abs(@Model.Count() * 147)px;">
+			<div class="character-scroll-content" style="width: @Math.Abs(@Model.Count() * 147 + 147)px;">
 				<div class="character-scroll-content-item slider-widget-header">
 					<table>
 						<tr>

@@ -73,8 +73,6 @@ namespace PlayerBounties.Models
 
 			if(this.db.Accounts.Count() != 0)
 			{
-				var whatever = this.db.Accounts.Where(row => row.EmailAddress == emailAddress);
-
 				if(this.db.Accounts.Where(row => row.EmailAddress == emailAddress).Count() != 0)
 				{
 					loginIdExists = true;

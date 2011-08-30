@@ -14,3 +14,6 @@ C:\Users\TMacBlane\Documents\DevelopmentProjects\PlayerBounties\PlayerBounties\b
 C:\Users\TMacBlane\Documents\DevelopmentProjects\PlayerBounties\PlayerBounties\obj\Debug\ResolveAssemblyReference.cache
 C:\Users\TMacBlane\Documents\DevelopmentProjects\PlayerBounties\PlayerBounties\obj\Debug\PlayerBounties.dll
 C:\Users\TMacBlane\Documents\DevelopmentProjects\PlayerBounties\PlayerBounties\obj\Debug\PlayerBounties.pdb
+C:\Temp\PlayerBounties\PlayerBounties\bin\Postal.dll
+C:\Temp\PlayerBounties\PlayerBounties\bin\RazorEngine.dll
+C:\Temp\PlayerBounties\PlayerBounties\bin\System.Web.Razor.dll

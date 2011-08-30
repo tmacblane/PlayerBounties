@@ -8,6 +8,7 @@ using System.Web.Routing;
 using System.Web.Security;
 
 using PlayerBounties.Models;
+using Postal;
 
 namespace PlayerBounties.Controllers
 {
@@ -84,6 +85,11 @@ namespace PlayerBounties.Controllers
 						FormsAuthentication.SetAuthCookie(signUpModel.Email, false);
 
 						var accountId = this.account.GetUserId(signUpModel.Email);
+
+						// Email notification
+						dynamic email = new Email("Welcome");
+						email.UserEmailAddress = signUpModel.Email;
+						email.Send();
 
 						return RedirectToAction("Create", "Character");
 					}

@@ -8,6 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 
 using PlayerBounties.Models;
+using Postal;
 
 namespace PlayerBounties.Controllers
 {
@@ -101,6 +102,25 @@ namespace PlayerBounties.Controllers
 				this.db.Bounties.Add(bounty);
 				this.db.SaveChanges();
 
+				// Admin alert email notification
+				dynamic pendingBountyAdminAlertEmail = new Email("PendingBountyPlaced-AdminAlert");
+
+				pendingBountyAdminAlertEmail.ClientName = character.CharacterName(bounty.PlacedById);
+				pendingBountyAdminAlertEmail.TargetName = character.CharacterName(bounty.PlacedOnId);
+				pendingBountyAdminAlertEmail.Amount = bounty.Amount;
+
+				pendingBountyAdminAlertEmail.Send();
+
+				// Client alert email notification
+				dynamic pendingBountyClientAlertEmail = new Email("PendingBountyPlaced-ClientAlert");
+
+				pendingBountyClientAlertEmail.UserEmailAddress = this.db.Accounts.Find(accountId).EmailAddress;
+				pendingBountyClientAlertEmail.ClientName = character.CharacterName(bounty.PlacedById);
+				pendingBountyClientAlertEmail.TargetName = character.CharacterName(bounty.PlacedOnId);
+				pendingBountyClientAlertEmail.Amount = bounty.Amount;
+
+				pendingBountyClientAlertEmail.Send();
+
 				return RedirectToAction("Dashboard", "Home");
 			}
 
@@ -111,10 +131,10 @@ namespace PlayerBounties.Controllers
 		public ActionResult Details(Guid id)
 		{
 			Bounty bounty = this.db.Bounties.Find(id);
-			var loggedInUser = this.account.GetLoggedInUserId();
 
 			if(Request.IsAuthenticated)
 			{
+				var loggedInUser = this.account.GetLoggedInUserId();
 				var characters = this.character.GetAllCharactersOnAShardForAnAccount(loggedInUser, bounty.CharacterShard(bounty.PlacedOnId));
 				var defaultCharacter = this.character.GetDefaultCharacterForAnAccount(loggedInUser);
 
@@ -299,6 +319,25 @@ namespace PlayerBounties.Controllers
 					character.IsBountyTarget = true;
 					this.db.Entry(character).State = EntityState.Modified;
 					this.db.SaveChanges();
+
+					// Admin alert email notification
+					dynamic pendingBountyAdminAlertEmail = new Email("PendingBountyPlaced-AdminAlert");
+					
+					pendingBountyAdminAlertEmail.ClientName = character.CharacterName(bounty.PlacedById);
+					pendingBountyAdminAlertEmail.TargetName = character.CharacterName(bounty.PlacedOnId);
+					pendingBountyAdminAlertEmail.Amount = bounty.Amount;
+
+					pendingBountyAdminAlertEmail.Send();
+
+					// Client alert email notification
+					dynamic pendingBountyClientAlertEmail = new Email("PendingBountyPlaced-ClientAlert");
+
+					pendingBountyClientAlertEmail.UserEmailAddress = this.db.Accounts.Find(accountId).EmailAddress;
+					pendingBountyClientAlertEmail.ClientName = character.CharacterName(bounty.PlacedById);
+					pendingBountyClientAlertEmail.TargetName = character.CharacterName(bounty.PlacedOnId);
+
+					pendingBountyClientAlertEmail.Send();
+
 
 					return RedirectToAction("Dashboard", "Home");
 				}
