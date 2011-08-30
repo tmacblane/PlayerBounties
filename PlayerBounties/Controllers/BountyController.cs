@@ -212,9 +212,11 @@ namespace PlayerBounties.Controllers
 		public ActionResult PlaceBounty()
 		{
 			Character character = new Character();
-			var characters = this.character.GetAllCharactersForAnAccount(this.account.GetLoggedInUserId());
+			var loggedInUserId = this.account.GetLoggedInUserId();
 
-			var defaultCharacter = this.character.GetDefaultCharacterForAnAccount(this.account.GetLoggedInUserId());
+			var characters = this.character.GetAllCharactersForAnAccount(loggedInUserId);
+
+			var defaultCharacter = this.character.GetDefaultCharacterForAnAccount(loggedInUserId);
 
 			var sortedShardList = from shard in this.db.Shards
 								  orderby shard.Name ascending
@@ -231,7 +233,15 @@ namespace PlayerBounties.Controllers
 			ViewBag.ShardId = new SelectList(sortedShardList, "Id", "Name");
 			ViewBag.FactionId = new SelectList(sortedFactionList, "Id", "Name");
 			ViewBag.PlayerClassId = new SelectList(sortedPlayerClassList, "Id", "Name");
-			ViewBag.CharacterList = new SelectList(characters, "Id", "Name", defaultCharacter.Single().Id);
+
+			if(characters.Count() != 0)
+			{
+				ViewBag.CharacterList = new SelectList(characters, "Id", "Name", defaultCharacter.Single().Id);
+			}
+			else
+			{
+				ViewBag.CharacterList = new SelectList(characters, "Id", "Name");
+			}
 
 			return View();
 		}
