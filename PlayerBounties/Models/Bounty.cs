@@ -512,6 +512,11 @@ namespace PlayerBounties.Models
 			return killShotImages;
 		}
 
+		public string GetKillShotImage(Guid killShotImageId)
+		{
+			return this.db.KillShotImages.Find(killShotImageId).FileName;
+		}
+
 		public List<Guid> GetAllKillShotImageIds(string imageType)
 		{
 			Character character = new Character();
