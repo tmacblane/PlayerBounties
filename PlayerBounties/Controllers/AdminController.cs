@@ -15,6 +15,7 @@ namespace PlayerBounties.Controllers
 		#region Fields
 
 		private Account account = new Account();
+		private Bounty bounty = new Bounty();
 		private PlayerBountyContext db = new PlayerBountyContext();
 
 		#endregion
@@ -27,7 +28,7 @@ namespace PlayerBounties.Controllers
 		{
 			if(this.account.IsUserAdmin(this.account.GetLoggedInUserId()))
 			{
-				return View();
+				return View(bounty);
 			}
 			else
 			{

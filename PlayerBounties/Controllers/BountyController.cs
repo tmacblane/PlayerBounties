@@ -378,9 +378,9 @@ namespace PlayerBounties.Controllers
 
 		public ActionResult PendingPlacement()
 		{
-			IQueryable<Bounty> bounty = this.db.Bounties.Where(b => b.IsPlacementPending == true);
+			Bounty bounty = new Bounty();
 
-			return View(bounty);
+			return View(bounty.GetPendingPlacementBounties());
 		}
 
 		public ActionResult ApproveBountyPlacement(Guid id)
@@ -421,9 +421,9 @@ namespace PlayerBounties.Controllers
 
 		public ActionResult PendingCompletion()
 		{
-			IQueryable<Bounty> bounty = this.db.Bounties.Where(b => b.IsCompletionPending == true);
+			Bounty bounty = new Bounty();
 
-			return View(bounty);
+			return View(bounty.GetPendingCompletionBounties());
 		}
 
 		public ActionResult ApproveBountyCompletion(Guid id)

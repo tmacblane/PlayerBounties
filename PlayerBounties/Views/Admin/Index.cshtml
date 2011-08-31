@@ -1,4 +1,6 @@
-﻿@{
+﻿@model PlayerBounties.Models.Bounty
+
+@{
     ViewBag.Title = "Admin Tools";
 }
 
@@ -7,6 +9,39 @@
 	<li>@Html.ActionLink("Manage Races", "Index", "Race")</li>
 	<li>@Html.ActionLink("Manage Player Classes", "Index", "PlayerClass")</li>
 	<li>@Html.ActionLink("Manage Shards", "Index", "Shard")</li>
-	<li>@Html.ActionLink("Pending Placement", "PendingPlacement", "Bounty")</li>
-	<li>@Html.ActionLink("Pending Completion", "PendingCompletion", "Bounty")</li>
 </ul>
+
+<div id="leftColumn">
+		<table cellspacing="0" cellpadding="2" border="0">
+			<tr>
+				<td class="inputLabelCell">
+					Pending Placement:
+				</td>
+				<td align="left">
+					@if(Model.GetPendingPlacementBounties().Count() != 0)
+                    {
+                        @Html.ActionLink(Model.GetPendingPlacementBounties().Count().ToString(), "PendingPlacement", "Bounty")
+					}
+					else
+					{
+						<text>0</text>
+					}
+				</td>
+			</tr>
+			<tr>
+				<td class="inputLabelCell">
+					Pending Completion:
+				</td>
+				<td align="left">
+					@if(Model.GetPendingCompletionBounties().Count() != 0)
+					{
+                        @Html.ActionLink(Model.GetPendingCompletionBounties().Count().ToString(), "PendingCompletion", "Bounty")
+					}
+					else
+					{
+						<text>0</text>
+					}
+				</td>
+			</tr>
+		</table>
+	</div>	

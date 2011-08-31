@@ -166,6 +166,16 @@ namespace PlayerBounties.Models
 			return isBountyOwner;
 		}
 
+		public IQueryable<Bounty> GetPendingPlacementBounties()
+		{
+			return this.db.Bounties.Where(b => b.IsPlacementPending == true);
+		}
+
+		public IQueryable<Bounty> GetPendingCompletionBounties()
+		{
+			return this.db.Bounties.Where(b => b.IsCompletionPending == true);
+		}
+
 		public IEnumerable<Bounty> GetCompletedBounties()
 		{
 			return this.db.Bounties.Where(b => b.IsCompletionPending == false);
