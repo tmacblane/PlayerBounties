@@ -201,6 +201,13 @@
     <Content Include="Views\Emails\Welcome.cshtml" />
     <Content Include="Views\Emails\PendingBountyPlaced-AdminAlert.cshtml" />
     <Content Include="Views\Emails\PendingBountyPlaced-ClientAlert.cshtml" />
+    <Content Include="Views\Emails\BountyPlacedApproved-ClientAlert.cshtml" />
+    <Content Include="Views\Emails\BountyPlacedApproved-TargetAlert.cshtml" />
+    <Content Include="Views\Emails\BountyCompletionApproved-ClientAlert.cshtml" />
+    <Content Include="Views\Emails\BountyCompletionApproved-HunterAlert.cshtml" />
+    <Content Include="Views\Emails\BountyCompletionApproved-TargetAlert.cshtml" />
+    <Content Include="Views\Emails\PendingBountyCompletion-AdminAlert.cshtml" />
+    <Content Include="Views\Emails\PendingBountyCompletion-HunterAlert.cshtml" />
     <None Include="_bin_deployableAssemblies\Microsoft.Web.Infrastructure.dll" />
     <None Include="_bin_deployableAssemblies\System.Web.WebPages.Razor.dll" />
     <None Include="_bin_deployableAssemblies\System.Web.WebPages.dll" />

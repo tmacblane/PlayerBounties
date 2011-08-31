@@ -184,6 +184,29 @@ namespace PlayerBounties.Controllers
 
 			this.UploadFiles(bounty);
 
+			// Admin alert email notification
+			dynamic pendingBountyCompletionAdminNotification = new Email("PendingBountyCompletion-AdminAlert");
+
+			pendingBountyCompletionAdminNotification.ClientName = character.CharacterName(bounty.PlacedById);
+			pendingBountyCompletionAdminNotification.TargetName = character.CharacterName(bounty.PlacedOnId);
+			pendingBountyCompletionAdminNotification.HunterName = character.CharacterName(bounty.KilledById.Value);
+			pendingBountyCompletionAdminNotification.Amount = bounty.Amount;
+
+			pendingBountyCompletionAdminNotification.Send();
+
+			// Hunter alert email notification
+			dynamic pendingBountyCompletionHunterNotification = new Email("PendingBountyCompletion-HunterAlert");
+
+			Guid hunterUserId = this.db.Characters.Find(bounty.KilledById.Value).UserId;
+
+			pendingBountyCompletionHunterNotification.UserEmailAddress = this.db.Accounts.Find(hunterUserId).EmailAddress;
+			pendingBountyCompletionHunterNotification.ClientName = character.CharacterName(bounty.PlacedById);
+			pendingBountyCompletionHunterNotification.TargetName = character.CharacterName(bounty.PlacedOnId);
+			pendingBountyCompletionHunterNotification.HunterName = character.CharacterName(bounty.KilledById.Value);
+			pendingBountyCompletionHunterNotification.Amount = bounty.Amount;
+
+			pendingBountyCompletionHunterNotification.Send();
+
 			return RedirectToAction("Dashboard", "Home", null);
 		}
 
@@ -363,8 +386,35 @@ namespace PlayerBounties.Controllers
 		public ActionResult ApproveBountyPlacement(Guid id)
 		{
 			Bounty bounty = this.db.Bounties.Find(id);
+			var accountId = this.account.GetLoggedInUserId();
 
 			bounty.SetPendingPlacementToFalse(bounty);
+			
+			// Client alert email notification
+			dynamic bountyPlacementApprovedClientNotification = new Email("BountyPlacedApproved-ClientAlert");
+
+			bountyPlacementApprovedClientNotification.UserEmailAddress = this.db.Accounts.Find(accountId).EmailAddress;
+			bountyPlacementApprovedClientNotification.ClientName = character.CharacterName(bounty.PlacedById);
+			bountyPlacementApprovedClientNotification.TargetName = character.CharacterName(bounty.PlacedOnId);
+			bountyPlacementApprovedClientNotification.Amount = bounty.Amount;
+
+			bountyPlacementApprovedClientNotification.Send();
+
+			// Target alert email notification (if they are registered)
+			if(this.db.Characters.Find(bounty.PlacedOnId).UserId != Guid.Empty)
+			{
+				Guid userId = this.db.Characters.Find(bounty.PlacedOnId).UserId;
+
+				dynamic bountyPlacementApprovedTargetNotification = new Email("BountyPlacedApproved-TargetAlert");
+
+				bountyPlacementApprovedTargetNotification.UserEmailAddress = this.db.Accounts.Find(userId).EmailAddress;
+				bountyPlacementApprovedTargetNotification.ClientName = character.CharacterName(bounty.PlacedById);
+				bountyPlacementApprovedTargetNotification.TargetName = character.CharacterName(bounty.PlacedOnId);
+				bountyPlacementApprovedTargetNotification.Amount = bounty.Amount;
+				bountyPlacementApprovedTargetNotification.Reason = bounty.Reason;
+
+				bountyPlacementApprovedTargetNotification.Send();
+			}
 
 			return RedirectToAction("PendingPlacement");
 		}
@@ -379,8 +429,50 @@ namespace PlayerBounties.Controllers
 		public ActionResult ApproveBountyCompletion(Guid id)
 		{
 			Bounty bounty = this.db.Bounties.Find(id);
+			var accountId = this.account.GetLoggedInUserId();
 
 			bounty.SetPendingCompletionToFalse(bounty);
+
+			// Client alert email notification
+			dynamic bountyCompletionApprovedClientNotification = new Email("BountyCompletionApproved-ClientAlert");
+
+			bountyCompletionApprovedClientNotification.UserEmailAddress = this.db.Accounts.Find(accountId).EmailAddress;
+			bountyCompletionApprovedClientNotification.ClientName = character.CharacterName(bounty.PlacedById);
+			bountyCompletionApprovedClientNotification.TargetName = character.CharacterName(bounty.PlacedOnId);
+			bountyCompletionApprovedClientNotification.HunterName = character.CharacterName(bounty.KilledById.Value);
+			bountyCompletionApprovedClientNotification.Amount = bounty.Amount;
+
+			bountyCompletionApprovedClientNotification.Send();
+
+			// Hunter alert email notification
+			dynamic bountyCompletionApprovedHunterNotification = new Email("BountyCompletionApproved-HunterAlert");
+
+			Guid hunterUserId = this.db.Characters.Find(bounty.KilledById.Value).UserId;
+
+			bountyCompletionApprovedHunterNotification.UserEmailAddress = this.db.Accounts.Find(hunterUserId).EmailAddress;
+			bountyCompletionApprovedHunterNotification.ClientName = character.CharacterName(bounty.PlacedById);
+			bountyCompletionApprovedHunterNotification.TargetName = character.CharacterName(bounty.PlacedOnId);
+			bountyCompletionApprovedHunterNotification.HunterName = character.CharacterName(bounty.KilledById.Value);
+			bountyCompletionApprovedHunterNotification.Amount = bounty.Amount;
+
+			bountyCompletionApprovedHunterNotification.Send();
+
+			// Target alert email notification (if they are registered)
+			if(this.db.Characters.Find(bounty.PlacedOnId).UserId != Guid.Empty)
+			{
+				Guid userId = this.db.Characters.Find(bounty.PlacedOnId).UserId;
+
+				dynamic bountyPlacementApprovedTargetNotification = new Email("BountyCompletionApproved-TargetAlert");
+
+				bountyPlacementApprovedTargetNotification.UserEmailAddress = this.db.Accounts.Find(userId).EmailAddress;
+				bountyPlacementApprovedTargetNotification.ClientName = character.CharacterName(bounty.PlacedById);
+				bountyPlacementApprovedTargetNotification.TargetName = character.CharacterName(bounty.PlacedOnId);
+				bountyPlacementApprovedTargetNotification.HunterName = character.CharacterName(bounty.KilledById.Value);
+				bountyPlacementApprovedTargetNotification.Amount = bounty.Amount;
+				bountyPlacementApprovedTargetNotification.Reason = bounty.Reason;
+
+				bountyPlacementApprovedTargetNotification.Send();
+			}
 
 			return RedirectToAction("PendingCompletion");
 		}
