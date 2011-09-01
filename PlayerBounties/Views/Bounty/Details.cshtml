@@ -33,13 +33,13 @@
 					<td class="inputLabelCell" style="width: 75px;">
 						Name:
 					</td>
-					<td align="left" style="width: 150px;">
+					<td class="@Model.GetClassStyle(Model.CharacterClass(Model.PlacedOnId))" align="left" style="width: 150px;">
 						@Html.ActionLink(@Model.CharacterName(Model.PlacedOnId).ToString(), "Details", "Character", new { id = Model.PlacedOnId }, null)
 					</td>
 					<td class="inputLabelCell" style="width: 75px;">
 						@Html.LabelFor(model => model.PlacedById):
 					</td>
-					<td align="left" style="width: 75px;">
+					<td class="@Model.GetClassStyle(Model.CharacterClass(Model.PlacedById))" align="left" style="width: 75px;">
 						@Html.ActionLink(@Model.CharacterName(Model.PlacedById).ToString(), "Details", "Character", new { id = Model.PlacedById }, null)
 					</td>
 				</tr>
@@ -69,7 +69,7 @@
 						<td class="inputLabelCell">
 							@Html.LabelFor(model => model.KilledById):
 						</td>
-						<td align="left">
+						<td class="@Model.GetClassStyle(Model.CharacterClass(Model.KilledById.Value))" align="left">
 							@Html.ActionLink(@Model.CharacterName(Model.KilledById.Value).ToString(), "Details", "Character", new { id = Model.KilledById }, null)
 						</td>
 					}

@@ -312,11 +312,18 @@ input[type="submit"] input[value], input[type="button"] input[value]
 	background-color: #FFFFFF;
 	border-style: solid;
     border-width: 1px;
-	padding: 20px;
+	padding: 10px;
     width: auto;
     border: 1px solid #BBBBBB;
     border-radius: 4px 4px 4px 4px;
     box-shadow: 0 2px 4px #BBBBBB;
+}
+
+.statisticsTable
+{
+	 font-size: 12px;
+	 width: 400px;
+	 text-align: left;
 }
 
 #accountStatistics, #playerStatistics
@@ -401,24 +408,24 @@ table
 
 /* TABS
 ----------------------------------------------------------*/
-#tabs
+#killTabs
 {
-height: 183px;
-padding: 0;
+	height: 225px;
+	padding: 0px;
 }
 
 #tabs div
 {
-height: 147px;
-padding: 0;
+	height: 147px;
+	padding: 0;
 }
  
-.tabs-bottom 
+.killTabs-bottom 
 { 
 	position: relative; 
 } 
 
-.tabs-bottom .ui-tabs-panel 
+.killTabs-bottom .ui-tabs-panel 
 { 
 	height: 140px;
 } 
@@ -432,7 +439,7 @@ padding: 0;
 	padding: 0 0 0.2em 2px;
 } 
 
-.tabs-bottom .ui-tabs-nav li 
+.killTabs-bottom .ui-tabs-nav li 
 { 
 	margin-top: -2px !important; 
 	margin-bottom: 1px !important; 
@@ -443,6 +450,11 @@ padding: 0;
 .ui-tabs-selected 
 { 
 	margin-top: -3px !important; 
+}
+
+#targetsKilledImages, #bountiesPlacedImages, #bountiesPlacedOnImages
+{
+	padding-left: 0;
 }
 
 /* SLIDER
