@@ -26,6 +26,7 @@ namespace PlayerBounties.Models
 			set;
 		}
 
+		[Required]
 		[Display(Name = "Amount")]
 		public int Amount
 		{
@@ -96,6 +97,7 @@ namespace PlayerBounties.Models
 			set;
 		}
 
+		[Display(Name = "File Name")]
 		public Guid? KillShotImageId
 		{
 			get;

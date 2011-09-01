@@ -31,21 +31,21 @@ namespace PlayerBounties.Models
 			set;
 		}
 
-		[Required]
+		[Required(ErrorMessage = "Character name is required.")]
 		public string Name
 		{
 			get;
 			set;
 		}
 
-		[Required]
+		[Required(ErrorMessage="Shard is required.")]
 		public Guid ShardId
 		{
 			get;
 			set;
 		}
 
-		[Required]
+		[Required(ErrorMessage = "Faction is required.")]
 		public Guid FactionId
 		{
 			get;
@@ -58,7 +58,7 @@ namespace PlayerBounties.Models
 			set;
 		}
 
-		[Required]
+		[Required(ErrorMessage = "Class is required.")]
 		public Guid PlayerClassId
 		{
 			get;

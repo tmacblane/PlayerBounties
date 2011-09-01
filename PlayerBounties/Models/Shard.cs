@@ -16,7 +16,7 @@ namespace PlayerBounties.Models
 			get;
 			set;
 		}
-
+		
 		[Display(Name = "Shard")]
 		public string Name
 		{
