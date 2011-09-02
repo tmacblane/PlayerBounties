@@ -63,7 +63,9 @@ namespace PlayerBounties.Controllers
 				{
 					Id = this.db.KillShotImages.Find(killImageId).Id,
 					FileName = this.db.KillShotImages.Find(killImageId).FileName,
-					FilePath = this.db.KillShotImages.Find(killImageId).FilePath
+					FilePath = this.db.KillShotImages.Find(killImageId).FilePath,
+					ThumbnailFileName = this.db.KillShotImages.Find(killImageId).ThumbnailFileName,
+					ThumbnailFilePath = this.db.KillShotImages.Find(killImageId).ThumbnailFilePath
 				});
 			}
 

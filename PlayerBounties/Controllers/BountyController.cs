@@ -9,6 +9,8 @@ using System.Web.Mvc;
 
 using PlayerBounties.Models;
 using Postal;
+using System.Drawing;
+using System.Drawing.Imaging;
 
 namespace PlayerBounties.Controllers
 {
@@ -156,12 +158,12 @@ namespace PlayerBounties.Controllers
 
 		[Authorize]
 		[HttpPost]
-		public ActionResult Details(Bounty bounty, Guid id, FormCollection formCollection)
+		public ActionResult Details(Guid id, FormCollection formCollection)
 		{
+			Bounty bounty = this.db.Bounties.Find(id);
+
 			if(ModelState.IsValid)
 			{
-				bounty = this.db.Bounties.Find(id);
-
 				if(Request.IsAuthenticated)
 				{
 					var loggedInUser = this.account.GetLoggedInUserId();
@@ -196,14 +198,19 @@ namespace PlayerBounties.Controllers
 				{
 					bounty.KilledById = Guid.Parse(formCollection["CharacterList"]);
 				}
-
-				if(formCollection["KillShotImageId"] == string.Empty || formCollection["KillShotImageId"] == null)
+								
+				foreach(string file in Request.Files)
 				{
-					ModelState.AddModelError(string.Empty, "You must first upload a file to complete the bounty");
-					
-					return View(bounty);
-				}
+					HttpPostedFileBase hpf = Request.Files[file] as HttpPostedFileBase;
 
+					if(hpf.FileName == null || hpf.FileName == string.Empty)
+					{
+						ModelState.AddModelError(string.Empty, "You must first upload a file to complete the bounty");
+
+						return View(bounty);
+					}
+				}
+				
 				bounty.IsCompletionPending = true;
 				bounty.DateCompleted = DateTime.Now;
 
@@ -631,6 +638,7 @@ namespace PlayerBounties.Controllers
 			foreach(string file in Request.Files)
 			{
 				HttpPostedFileBase hpf = Request.Files[file] as HttpPostedFileBase;
+				string convertedFileName = DateTime.Now.ToString("mmddyyyyhhmmss");
 
 				if(hpf.ContentLength == 0)
 				{
@@ -639,10 +647,14 @@ namespace PlayerBounties.Controllers
 
 				string fileName = hpf.FileName;
 				string filePath = @"Content\Images\";
+				string convertedFilePath = @"Content\Images\KillShots";
+				string thumbnailFilePath = @"Content\Images\Thumbnails\";
 
 				killShotImage.Id = Guid.NewGuid();
-				killShotImage.FileName = fileName;
-				killShotImage.FilePath = filePath;
+				killShotImage.FileName = string.Concat(convertedFileName, ".jpg");
+				killShotImage.FilePath = convertedFilePath;
+				killShotImage.ThumbnailFileName = string.Concat(convertedFileName, "_thumbnail.jpg");
+				killShotImage.FilePath = thumbnailFilePath;
 
 				this.db.KillShotImages.Add(killShotImage);
 				this.db.SaveChanges();
@@ -656,9 +668,162 @@ namespace PlayerBounties.Controllers
 					Path.GetFileName(fileName));
 
 				hpf.SaveAs(savedFileName);
+
+				// Create renamed original image
+				string savedConvertedFileName = Path.Combine(
+					AppDomain.CurrentDomain.BaseDirectory + convertedFilePath,
+					Path.GetFileName(convertedFileName));
+
+				Bitmap bitmap = new Bitmap(savedFileName);
+
+				savedConvertedFileName = string.Concat(savedConvertedFileName, ".jpg");
+
+				this.SaveJpegThumbnail(savedConvertedFileName, bitmap, 100);
+
+				// Create thumbnail file and save
+				string savedThumbnailFileName = Path.Combine(
+					AppDomain.CurrentDomain.BaseDirectory + thumbnailFilePath,
+					Path.GetFileName(convertedFileName));
+
+				savedThumbnailFileName = string.Concat(savedThumbnailFileName, "_thumbnail.jpg");			
+				
+				Image thumbnailKillShotImage = ResizeImage(bitmap, new Size(125, 125));
+
+				this.SaveJpegThumbnail(savedThumbnailFileName, (Bitmap)thumbnailKillShotImage, 100);				
 			}
 
 			return View();
+		}
+
+		//public ActionResult UploadFiles(Bounty bounty)
+		//{
+		//    KillShotImage killShotImage = new KillShotImage();
+
+		//    foreach(string file in Request.Files)
+		//    {
+		//        HttpPostedFileBase hpf = Request.Files[file] as HttpPostedFileBase;
+
+		//        if(hpf.ContentLength == 0)
+		//        {
+		//            continue;
+		//        }
+
+		//        string fileName = DateTime.Now.ToString("mmddyyyyhhmmss");
+		//        string filePath = @"Content\Images\KillShots";
+		//        string thumbnailFilePath = @"Content\Images\Thumbnails\";
+
+		//        string originalFile = Path.Combine(
+		//            AppDomain.CurrentDomain.BaseDirectory + filePath,
+		//            Path.GetFileName(fileName));
+
+		//        hpf.SaveAs(originalFile);
+
+		//        string thumbnailFile = Path.Combine(
+		//            AppDomain.CurrentDomain.BaseDirectory + thumbnailFilePath,
+		//            Path.GetFileName(fileName));
+
+		//        Bitmap thumbnailBitmapImage = new Bitmap(fileName);
+
+		//         convert uploaded image to jpg and save
+		//        string savedFileName = string.Concat(originalFile.Remove(originalFile.Length - 4), ".jpg");
+
+		//        this.SaveJpeg(savedFileName, thumbnailBitmapImage, 100);
+
+		//         scale uploaded image to thumbnail, convert to jpg and save
+		//        string savedThumbnailFileName = string.Concat(thumbnailFile.Remove(thumbnailFile.Length - 4), "_thumbnail.jpg");
+
+		//        Image thumbnailKillShotImage = ResizeImage(thumbnailBitmapImage, new Size(125, 125));
+
+		//        this.SaveJpeg(thumbnailFile, (Bitmap)thumbnailKillShotImage, 100);
+
+		//         write kill shot image to db
+		//        killShotImage.Id = Guid.NewGuid();
+		//        killShotImage.FileName = fileName;
+		//        killShotImage.FilePath = filePath;
+
+		//        this.db.KillShotImages.Add(killShotImage);
+		//        this.db.SaveChanges();
+
+		//        bounty.KillShotImageId = killShotImage.Id;
+		//        this.db.Entry(bounty).State = EntityState.Modified;
+		//        this.db.SaveChanges();
+		//    }
+
+		//    return View();
+		//}
+
+		private void SaveJpegThumbnail(string path, Bitmap img, long quality)
+		{
+			// Encoder parameter for image quality
+			EncoderParameter qualityParam = new EncoderParameter(Encoder.Quality, quality);
+
+			// Jpeg image codec
+			ImageCodecInfo jpegCodec = this.getEncoderInfo("image/jpeg");
+
+			if(jpegCodec == null)
+			{
+				return;
+			}
+
+			EncoderParameters encoderParams = new EncoderParameters(1);
+			encoderParams.Param[0] = qualityParam;
+
+			MemoryStream memoryStream = new MemoryStream();
+			FileStream fileStream = new FileStream(path, FileMode.Create, FileAccess.ReadWrite);
+
+			img.Save(memoryStream, jpegCodec, encoderParams);
+			byte[] matrix = memoryStream.ToArray();
+			fileStream.Write(matrix, 0, matrix.Length);
+
+			memoryStream.Close();
+			fileStream.Close();
+		}
+
+		private ImageCodecInfo getEncoderInfo(string mimeType)
+		{
+			// Get image codecs for all image formats
+			ImageCodecInfo[] codecs = ImageCodecInfo.GetImageEncoders();
+
+			// Find the correct image codec
+			for(int i = 0; i < codecs.Length; i++)
+			{
+				if(codecs[i].MimeType == mimeType)
+				{
+					return codecs[i];
+				}
+			}
+			return null;
+		}
+
+		private static Image ResizeImage(Image imageToResize, Size size)
+		{
+			int sourceWidth = imageToResize.Width;
+			int sourceHeight = imageToResize.Height;
+
+			float nPercent = 0;
+			float nPercentW = 0;
+			float nPercentH = 0;
+
+			nPercentW = ((float)size.Width / (float)sourceWidth);
+			nPercentH = ((float)size.Height / (float)sourceHeight);
+
+			if(nPercentH < nPercentW)
+				nPercent = nPercentH;
+			else
+				nPercent = nPercentW;
+
+			int destWidth = (int)(sourceWidth * nPercent);
+			int destHeight = (int)(sourceHeight * nPercent);
+
+			Bitmap bitmap = new Bitmap(destWidth, destHeight);
+			Graphics graphics = Graphics.FromImage((Image)bitmap);
+
+			graphics.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.Low;
+
+			graphics.DrawImage(imageToResize, 0, 0, destWidth, destHeight);
+			graphics.Dispose();
+
+			return (Image)bitmap;
 		}
 
 		#endregion		

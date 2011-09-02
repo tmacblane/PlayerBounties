@@ -38,6 +38,18 @@ namespace PlayerBounties.Models
 			set;
 		}
 
+		public string ThumbnailFilePath
+		{
+			get;
+			set;
+		}
+
+		public string ThumbnailFileName
+		{
+			get;
+			set;
+		}
+
 		#endregion
 
 		#region Type specific methods
