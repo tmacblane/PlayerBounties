@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<PlayerBounties.Models.KillShotImage>
 
 <script type="text/javascript">
-	$(function()
+	$(function killShotImageSlider()
 	{
 		//imageScrollPane parts
 		var imageScrollPane = $(".image-scroll-pane"),
@@ -26,18 +26,18 @@
 		//append icon to handle
 		var handleHelper = scrollbar.find(".ui-slider-handle")
 
-	.mousedown(function()
-	{
-		scrollbar.width(handleHelper.width());
-	})
+		.mousedown(function()
+		{
+			scrollbar.width(handleHelper.width());
+		})
 
-	.mouseup(function()
-	{
-		scrollbar.width("100%");
-	})
+		.mouseup(function()
+		{
+			scrollbar.width("100%");
+		})
 
-	.append("<span class='ui-icon ui-icon-grip-dotted-vertical'></span>")
-	.wrap("<div class='ui-handle-helper-parent'></div>").parent();
+		.append("<span class='ui-icon ui-icon-grip-dotted-vertical'></span>")
+		.wrap("<div class='ui-handle-helper-parent'></div>").parent();
 
 		//change overflow to hidden now that slider handles the scrolling
 		imageScrollPane.css("overflow", "hidden");
@@ -96,7 +96,7 @@
 				@foreach(var item in Model)
 				{
 					<div class="image-scroll-content-item slider-widget-header" >
-						<a href="@Url.Action("Details", "Bounty", new { id = item.GetBountyId(item.Id) })"><img src="../../Content/Images/Thumbnails/@item.ThumbnailFileName" alt="Kill Image" id="killImage" style="height: 125px; width:125px;" /></a>
+						<a href="@Url.Action("Details", "Bounty", new { id = item.GetBountyId(item.Id) })"><img src="../../Content/Images/Thumbnails/@item.ThumbnailFileName" alt="Kill Image" id="killImage" style="width: 100%" /></a>
 					</div>   
 				}			
 			</div>

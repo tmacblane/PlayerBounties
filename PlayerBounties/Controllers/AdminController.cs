@@ -28,7 +28,7 @@ namespace PlayerBounties.Controllers
 		{
 			if(this.account.IsUserAdmin(this.account.GetLoggedInUserId()))
 			{
-				return View(bounty);
+				return View(this.bounty);
 			}
 			else
 			{

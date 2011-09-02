@@ -111,25 +111,29 @@ namespace PlayerBounties.Models
 		public string CharacterName(Guid characterId)
 		{
 			Character character = new Character();
-			return character.GetCharacterById(characterId).Single().Name;
+
+			return character.CharacterName(characterId);
 		}
 
 		public string CharacterShard(Guid characterId)
 		{
 			Character character = new Character();
-			return character.GetCharacterById(characterId).Single().Shard.Name;
+
+			return character.CharacterShard(characterId);
 		}
 
 		public string CharacterAllegience(Guid characterId)
 		{
 			Character character = new Character();
-			return character.GetCharacterById(characterId).Single().Faction.Name;
+
+			return character.CharacterAllegience(characterId);
 		}
 
 		public string CharacterClass(Guid characterId)
 		{
 			Character character = new Character();
-			return character.GetCharacterById(characterId).Single().PlayerClass.Name;
+
+			return character.CharacterClass(characterId);
 		}
 
 		public void SetPendingPlacementToFalse(Bounty bounty)
@@ -153,11 +157,12 @@ namespace PlayerBounties.Models
 
 		public bool IsBountyOwner(Guid userId, Guid bountyId)
 		{
+			Character character = new Character();
+
 			bool isBountyOwner = false;
 
 			var bounty = this.db.Bounties.Find(bountyId);
 
-			Character character = new Character();
 			Guid characterUserId = character.GetCharacterById(bounty.PlacedById).Single().UserId;
 
 			if(userId == characterUserId)
@@ -201,7 +206,6 @@ namespace PlayerBounties.Models
 
 		public List<Guid> GetTopHuntersList()
 		{
-			Character character = new Character();
 			List<Guid> characterIds = new List<Guid>();
 			List<Guid> topHunters = new List<Guid>();
 
@@ -231,7 +235,6 @@ namespace PlayerBounties.Models
 
 		public List<Guid> GetTopMarksList()
 		{
-			Character character = new Character();
 			List<Guid> characterIds = new List<Guid>();
 			List<Guid> topMarks = new List<Guid>();
 
@@ -243,13 +246,13 @@ namespace PlayerBounties.Models
 			}
 
 			var marks = from x in characterIds
-						  group x by x into g
-						  let count = g.Count()
-						  orderby count descending
-						  select new
-						  {
-							  Id = g.Key
-						  };
+						group x by x into g
+						let count = g.Count()
+						orderby count descending
+						select new
+						{
+							Id = g.Key
+						};
 
 			foreach(var mark in marks)
 			{
@@ -261,7 +264,6 @@ namespace PlayerBounties.Models
 
 		public List<Guid> GetTopClientsList()
 		{
-			Character character = new Character();
 			List<Guid> characterIds = new List<Guid>();
 			List<Guid> topClients = new List<Guid>();
 
@@ -292,7 +294,6 @@ namespace PlayerBounties.Models
 		public List<Bounty> GetAccountBountiesCompleted(Guid accountId)
 		{
 			Character character = new Character();
-
 			List<Bounty> accountBounties = new List<Bounty>();
 
 			IEnumerable<Character> accountCharacters = character.GetAllCharactersForAnAccount(accountId);
@@ -316,7 +317,6 @@ namespace PlayerBounties.Models
 		public List<Bounty> GetAccountBountiesPlaced(Guid accountId)
 		{
 			Character character = new Character();
-
 			List<Bounty> accountBounties = new List<Bounty>();
 
 			IEnumerable<Character> accountCharacters = character.GetAllCharactersForAnAccount(accountId);
@@ -340,7 +340,6 @@ namespace PlayerBounties.Models
 		public List<Bounty> GetAccountBountiesPlacedOn(Guid accountId)
 		{
 			Character character = new Character();
-
 			List<Bounty> accountBounties = new List<Bounty>();
 
 			IEnumerable<Character> accountCharacters = character.GetAllCharactersForAnAccount(accountId);
@@ -363,29 +362,27 @@ namespace PlayerBounties.Models
 
 		public List<Bounty> GetBountiesCompleted(Guid characterId)
 		{
-            Bounty bounty = new Bounty();
+			List<Bounty> characterCompletedBounties = new List<Bounty>();
 
-            List<Bounty> characterCompletedBounties = new List<Bounty>();
+			IEnumerable<Bounty> completedBounties = this.db.Bounties.Where(b => b.KilledById == characterId);
 
-            IEnumerable<Bounty> completedBounties = this.db.Bounties.Where(b => b.KilledById == characterId);
+			if(completedBounties.Count() != 0)
+			{
+				foreach(Bounty completedBounty in completedBounties)
+				{
+					if(this.GetStatus(completedBounty.Id) == "Completed")
+					{
+						characterCompletedBounties.Add(completedBounty);
+					}
+				}
+			}
 
-            if (completedBounties.Count() != 0)
-            {
-                foreach (Bounty completedBounty in completedBounties)
-                {
-                    if (bounty.GetStatus(completedBounty.Id) == "Completed")
-                    {
-                        characterCompletedBounties.Add(completedBounty);
-                    }
-                }
-            }
-
-            return characterCompletedBounties;
+			return characterCompletedBounties;
 		}
 
 		public int GetBountiesCompletedCount(Guid characterId)
 		{
-            return this.GetBountiesCompleted(characterId).Count();
+			return this.GetBountiesCompleted(characterId).Count();
 		}
 
 		public IQueryable<Bounty> GetBountiesPlaced(Guid characterId)
@@ -521,39 +518,37 @@ namespace PlayerBounties.Models
 
 		public List<Guid> GetAllKillShotImageIds(string imageType)
 		{
-			Character character = new Character();
-
 			List<Guid> killShotImages = new List<Guid>();
 
 			switch(imageType)
 			{
 				case "bountiesPlaced":
-						IQueryable<Bounty> completedBountiesPlacedBy = this.db.Bounties.Where(b => b.IsCompletionPending == false);
+					IQueryable<Bounty> completedBountiesPlacedBy = this.db.Bounties.Where(b => b.IsCompletionPending == false);
 
-						foreach(Bounty completedBounty in completedBountiesPlacedBy)
-						{
-							killShotImages.Add(completedBounty.KillShotImageId.Value);
-						}
+					foreach(Bounty completedBounty in completedBountiesPlacedBy)
+					{
+						killShotImages.Add(completedBounty.KillShotImageId.Value);
+					}
 
 					break;
 
 				case "targetsKilled":
-						IQueryable<Bounty> completedBountiesKilledBy = this.db.Bounties.Where(b => b.IsCompletionPending == false);
+					IQueryable<Bounty> completedBountiesKilledBy = this.db.Bounties.Where(b => b.IsCompletionPending == false);
 
-						foreach(Bounty completedBounty in completedBountiesKilledBy)
-						{
-							killShotImages.Add(completedBounty.KillShotImageId.Value);
-						}
+					foreach(Bounty completedBounty in completedBountiesKilledBy)
+					{
+						killShotImages.Add(completedBounty.KillShotImageId.Value);
+					}
 
 					break;
 
 				case "bountiesPlacedOn":
-						IQueryable<Bounty> completedBountiesPlacedOn = this.db.Bounties.Where(b => b.IsCompletionPending == false);
+					IQueryable<Bounty> completedBountiesPlacedOn = this.db.Bounties.Where(b => b.IsCompletionPending == false);
 
-						foreach(Bounty completedBounty in completedBountiesPlacedOn)
-						{
-							killShotImages.Add(completedBounty.KillShotImageId.Value);
-						}
+					foreach(Bounty completedBounty in completedBountiesPlacedOn)
+					{
+						killShotImages.Add(completedBounty.KillShotImageId.Value);
+					}
 
 					break;
 			}
@@ -564,6 +559,7 @@ namespace PlayerBounties.Models
 		public List<Guid> GetAllKillShotImageIdsByAccount(Guid accountId, string imageType)
 		{
 			Character character = new Character();
+
 			var accountCharacters = character.GetAllCharactersForAnAccount(accountId);
 
 			List<Guid> killShotImages = new List<Guid>();
@@ -574,7 +570,7 @@ namespace PlayerBounties.Models
 					foreach(Character accountCharacter in accountCharacters)
 					{
 						IQueryable<Bounty> completedBountiesPlacedBy = this.db.Bounties.Where(b => b.PlacedById == accountCharacter.Id).Where(b => b.IsCompletionPending == false);
-						
+
 						foreach(Bounty completedBounty in completedBountiesPlacedBy)
 						{
 							killShotImages.Add(completedBounty.KillShotImageId.Value);
@@ -613,47 +609,45 @@ namespace PlayerBounties.Models
 			return killShotImages;
 		}
 
-        public List<Guid> GetAllKillShotImageIdsByCharacter(Guid characterId, string imageType)
-        {
-            Character character = new Character();
+		public List<Guid> GetAllKillShotImageIdsByCharacter(Guid characterId, string imageType)
+		{
+			List<Guid> killShotImages = new List<Guid>();
 
-            List<Guid> killShotImages = new List<Guid>();
+			switch(imageType)
+			{
+				case "bountiesPlaced":
+					IQueryable<Bounty> completedBountiesPlacedBy = this.db.Bounties.Where(b => b.PlacedById == characterId).Where(b => b.IsCompletionPending == false);
 
-            switch (imageType)
-            {
-                case "bountiesPlaced":
-                    IQueryable<Bounty> completedBountiesPlacedBy = this.db.Bounties.Where(b => b.PlacedById == characterId).Where(b => b.IsCompletionPending == false);
+					foreach(Bounty completedBounty in completedBountiesPlacedBy)
+					{
+						killShotImages.Add(completedBounty.KillShotImageId.Value);
+					}
 
-                    foreach (Bounty completedBounty in completedBountiesPlacedBy)
-                    {
-                        killShotImages.Add(completedBounty.KillShotImageId.Value);
-                    }
+					break;
 
-                    break;
+				case "targetsKilled":
+					IQueryable<Bounty> completedBountiesKilledBy = this.db.Bounties.Where(b => b.KilledById == characterId).Where(b => b.IsCompletionPending == false);
 
-                case "targetsKilled":
-                    IQueryable<Bounty> completedBountiesKilledBy = this.db.Bounties.Where(b => b.KilledById == characterId).Where(b => b.IsCompletionPending == false);
+					foreach(Bounty completedBounty in completedBountiesKilledBy)
+					{
+						killShotImages.Add(completedBounty.KillShotImageId.Value);
+					}
 
-                    foreach (Bounty completedBounty in completedBountiesKilledBy)
-                    {
-                        killShotImages.Add(completedBounty.KillShotImageId.Value);
-                    }
+					break;
 
-                    break;
+				case "bountiesPlacedOn":
+					IQueryable<Bounty> completedBountiesPlacedOn = this.db.Bounties.Where(b => b.PlacedOnId == characterId).Where(b => b.IsCompletionPending == false);
 
-                case "bountiesPlacedOn":
-                    IQueryable<Bounty> completedBountiesPlacedOn = this.db.Bounties.Where(b => b.PlacedOnId == characterId).Where(b => b.IsCompletionPending == false);
+					foreach(Bounty completedBounty in completedBountiesPlacedOn)
+					{
+						killShotImages.Add(completedBounty.KillShotImageId.Value);
+					}
 
-                    foreach (Bounty completedBounty in completedBountiesPlacedOn)
-                    {
-                        killShotImages.Add(completedBounty.KillShotImageId.Value);
-                    }
+					break;
+			}
 
-                    break;
-            }
-
-            return killShotImages;
-        }
+			return killShotImages;
+		}
 
 		public Guid GetBountyIdFromKillShotImageId(Guid killShotImageId)
 		{

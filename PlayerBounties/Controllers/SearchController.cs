@@ -10,6 +10,12 @@ namespace PlayerBounties.Controllers
 {
 	public class SearchController : Controller
 	{
+		#region Fields
+
+		private Search search = new Search();
+
+		#endregion
+
 		#region Type specific methods
 
 		/// <summary>
@@ -20,9 +26,8 @@ namespace PlayerBounties.Controllers
 		public ActionResult Index(FormCollection formCollection)
 		{
 			string characterName = formCollection["txtSearch"];
-			PlayerBounties.Models.Search search = new Search();
 
-			List<Character> characters = search.FindAllCharactersByName(characterName);
+			List<Character> characters = this.search.FindAllCharactersByName(characterName);
 
 			// SELECT * FROM [characters] WHERE name = '{0}' and server = '{1}', characterName, server
 			// 

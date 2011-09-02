@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Web;
@@ -9,8 +11,6 @@ using System.Web.Mvc;
 
 using PlayerBounties.Models;
 using Postal;
-using System.Drawing;
-using System.Drawing.Imaging;
 
 namespace PlayerBounties.Controllers
 {
@@ -19,7 +19,9 @@ namespace PlayerBounties.Controllers
 		#region Fields
 
 		private Account account = new Account();
+		private Bounty bounty = new Bounty();
 		private Character character = new Character();
+		private KillShotImage killShotImage = new KillShotImage();
 		private PlayerBountyContext db = new PlayerBountyContext();
 
 		#endregion
@@ -38,22 +40,21 @@ namespace PlayerBounties.Controllers
 		[Authorize]
 		public ActionResult Create(Character character)
 		{
-			Bounty bounty = new Bounty();
 			var loggedInUserId = this.account.GetLoggedInUserId();
 
 			character = this.db.Characters.Where(c => c.Id == character.Id).Include(c => c.Shard).Include(c => c.Faction).Include(c => c.Race).Include(c => c.PlayerClass).Single();
 
 			var characters = this.character.GetAllCharactersOnAShardForAnAccount(loggedInUserId, character.Shard.Name);
 			var defaultCharacter = this.character.GetDefaultCharacterForAnAccount(loggedInUserId);
-			
-			bounty.PlacedOnId = character.Id;
-			
+
+			this.bounty.PlacedOnId = character.Id;
+
 			ViewBag.ShardId = new SelectList(this.db.Shards, "Id", "Name", character.ShardId);
 			ViewBag.FactionId = new SelectList(this.db.Factions, "Id", "Name", character.FactionId);
 			ViewBag.RaceId = new SelectList(this.db.Races, "Id", "Name", character.RaceId);
 			ViewBag.PlayerClassId = new SelectList(this.db.PlayerClasses, "Id", "Name", character.PlayerClassId);
 
-			if(defaultCharacter.Single().Shard.Name == bounty.CharacterShard(bounty.PlacedOnId))
+			if(defaultCharacter.Single().Shard.Name == this.bounty.CharacterShard(this.bounty.PlacedOnId))
 			{
 				ViewBag.CharacterList = new SelectList(characters, "Id", "Name", defaultCharacter.Single().Id);
 			}
@@ -62,7 +63,7 @@ namespace PlayerBounties.Controllers
 				ViewBag.CharacterList = new SelectList(characters, "Id", "Name");
 			}
 
-			return View(bounty);
+			return View(this.bounty);
 		}
 
 		// POST: /Character/Create
@@ -70,46 +71,45 @@ namespace PlayerBounties.Controllers
 		[HttpPost]
 		public ActionResult Create(Guid id, FormCollection formCollection)
 		{
-			Bounty bounty = new Bounty();
 			Character character = this.db.Characters.Find(id);
 
 			var accountId = this.account.GetLoggedInUserId();
 
 			if(ModelState.IsValid)
 			{
-				bounty.Id = Guid.NewGuid();
+				this.bounty.Id = Guid.NewGuid();
 
 				// Set bounty details
-				bounty.Amount = int.Parse(formCollection["Amount"]);
-				bounty.Reason = formCollection["Reason"];
-				bounty.Message = formCollection["Message"];
+				this.bounty.Amount = int.Parse(formCollection["Amount"]);
+				this.bounty.Reason = formCollection["Reason"];
+				this.bounty.Message = formCollection["Message"];
 
 				// Checks if a player has a selected a character to place the bounty by
 				// if no character is selected, the default character is assigned
 				// otherwise, the selected player is used
 				if(formCollection["CharacterList"] == string.Empty)
 				{
-					bounty.PlacedById = character.GetDefaultCharacterForAnAccount(accountId).Single().Id;
+					this.bounty.PlacedById = character.GetDefaultCharacterForAnAccount(accountId).Single().Id;
 				}
 				else
 				{
-					bounty.PlacedById = Guid.Parse(formCollection["CharacterList"]);
+					this.bounty.PlacedById = Guid.Parse(formCollection["CharacterList"]);
 				}
 
-				bounty.PlacedOnId = character.Id;
-				bounty.DatePlaced = DateTime.Now;
-				bounty.DateCompleted = null;
-				bounty.IsPlacementPending = true;
+				this.bounty.PlacedOnId = character.Id;
+				this.bounty.DatePlaced = DateTime.Now;
+				this.bounty.DateCompleted = null;
+				this.bounty.IsPlacementPending = true;
 
-				this.db.Bounties.Add(bounty);
+				this.db.Bounties.Add(this.bounty);
 				this.db.SaveChanges();
 
 				// Admin alert email notification
 				dynamic pendingBountyAdminAlertEmail = new Email("PendingBountyPlaced-AdminAlert");
 
-				pendingBountyAdminAlertEmail.ClientName = character.CharacterName(bounty.PlacedById);
-				pendingBountyAdminAlertEmail.TargetName = character.CharacterName(bounty.PlacedOnId);
-				pendingBountyAdminAlertEmail.Amount = bounty.Amount;
+				pendingBountyAdminAlertEmail.ClientName = character.CharacterName(this.bounty.PlacedById);
+				pendingBountyAdminAlertEmail.TargetName = character.CharacterName(this.bounty.PlacedOnId);
+				pendingBountyAdminAlertEmail.Amount = this.bounty.Amount;
 
 				pendingBountyAdminAlertEmail.Send();
 
@@ -117,16 +117,16 @@ namespace PlayerBounties.Controllers
 				dynamic pendingBountyClientAlertEmail = new Email("PendingBountyPlaced-ClientAlert");
 
 				pendingBountyClientAlertEmail.UserEmailAddress = this.db.Accounts.Find(accountId).EmailAddress;
-				pendingBountyClientAlertEmail.ClientName = character.CharacterName(bounty.PlacedById);
-				pendingBountyClientAlertEmail.TargetName = character.CharacterName(bounty.PlacedOnId);
-				pendingBountyClientAlertEmail.Amount = bounty.Amount;
+				pendingBountyClientAlertEmail.ClientName = character.CharacterName(this.bounty.PlacedById);
+				pendingBountyClientAlertEmail.TargetName = character.CharacterName(this.bounty.PlacedOnId);
+				pendingBountyClientAlertEmail.Amount = this.bounty.Amount;
 
 				pendingBountyClientAlertEmail.Send();
 
 				return RedirectToAction("Dashboard", "Home");
 			}
 
-			return View(bounty);
+			return View(this.bounty);
 		}
 
 		// GET: /Bounty/Details/5
@@ -182,9 +182,7 @@ namespace PlayerBounties.Controllers
 						}
 					}
 				}
-
-				Character character = new Character();
-
+				
 				var accountId = this.account.GetLoggedInUserId();
 
 				// Checks if a player has a selected a character to place the bounty by
@@ -192,13 +190,13 @@ namespace PlayerBounties.Controllers
 				// otherwise, the selected player is used
 				if(formCollection["CharacterList"] == string.Empty)
 				{
-					bounty.KilledById = character.GetDefaultCharacterForAnAccount(accountId).Single().Id;
+					bounty.KilledById = this.character.GetDefaultCharacterForAnAccount(accountId).Single().Id;
 				}
 				else
 				{
 					bounty.KilledById = Guid.Parse(formCollection["CharacterList"]);
 				}
-								
+
 				foreach(string file in Request.Files)
 				{
 					HttpPostedFileBase hpf = Request.Files[file] as HttpPostedFileBase;
@@ -210,7 +208,7 @@ namespace PlayerBounties.Controllers
 						return View(bounty);
 					}
 				}
-				
+
 				bounty.IsCompletionPending = true;
 				bounty.DateCompleted = DateTime.Now;
 
@@ -222,9 +220,9 @@ namespace PlayerBounties.Controllers
 				// Admin alert email notification
 				dynamic pendingBountyCompletionAdminNotification = new Email("PendingBountyCompletion-AdminAlert");
 
-				pendingBountyCompletionAdminNotification.ClientName = character.CharacterName(bounty.PlacedById);
-				pendingBountyCompletionAdminNotification.TargetName = character.CharacterName(bounty.PlacedOnId);
-				pendingBountyCompletionAdminNotification.HunterName = character.CharacterName(bounty.KilledById.Value);
+				pendingBountyCompletionAdminNotification.ClientName = this.character.CharacterName(bounty.PlacedById);
+				pendingBountyCompletionAdminNotification.TargetName = this.character.CharacterName(bounty.PlacedOnId);
+				pendingBountyCompletionAdminNotification.HunterName = this.character.CharacterName(bounty.KilledById.Value);
 				pendingBountyCompletionAdminNotification.Amount = bounty.Amount;
 
 				pendingBountyCompletionAdminNotification.Send();
@@ -287,12 +285,11 @@ namespace PlayerBounties.Controllers
 		}
 
 		#endregion
-		
+
 		// GET: /Bounty/PlaceBounty
 		[Authorize]
 		public ActionResult PlaceBounty()
 		{
-			Character character = new Character();
 			var loggedInUserId = this.account.GetLoggedInUserId();
 
 			var characters = this.character.GetAllCharactersForAnAccount(loggedInUserId);
@@ -332,7 +329,6 @@ namespace PlayerBounties.Controllers
 		[HttpPost]
 		public ActionResult PlaceBounty(Bounty bounty, FormCollection formCollection)
 		{
-			Character character = new Character();
 			string characterName = formCollection["characterNameTxt"];
 			Guid characterId = Guid.Empty;
 			Guid shardId = Guid.Parse(formCollection["ShardId"]);
@@ -344,27 +340,27 @@ namespace PlayerBounties.Controllers
 			{
 				bounty.Id = Guid.NewGuid();
 
-				if(character.GetCharacter(characterName, shardId, factionId).Count().Equals(0))
+				if(this.character.GetCharacter(characterName, shardId, factionId).Count().Equals(0))
 				{
-					character.Name = characterName;
-					character.ShardId = shardId;
-					character.FactionId = factionId;
-					character.PlayerClassId = playerClassId;
+					this.character.Name = characterName;
+					this.character.ShardId = shardId;
+					this.character.FactionId = factionId;
+					this.character.PlayerClassId = playerClassId;
 
 					CharacterController characterController = new CharacterController();
-					characterId = characterController.CreateBountyCharacter(character);
+					characterId = characterController.CreateBountyCharacter(this.character);
 				}
 				else
 				{
-					characterId = character.GetCharacter(characterName, shardId, factionId).Single().Id;
+					characterId = this.character.GetCharacter(characterName, shardId, factionId).Single().Id;
 				}
 
-				character = this.db.Characters.Find(characterId);
+				Character characterResult = this.db.Characters.Find(characterId);
 
-				if(character.IsBountyTarget == false)
+				if(characterResult.IsBountyTarget == false)
 				{
 					// Set bounty details
-					bounty.PlacedById = character.GetDefaultCharacterForAnAccount(accountId).Single().Id;
+					bounty.PlacedById = characterResult.GetDefaultCharacterForAnAccount(accountId).Single().Id;
 					bounty.PlacedOnId = characterId;
 					bounty.KilledById = null;
 					bounty.DatePlaced = DateTime.Now;
@@ -377,15 +373,15 @@ namespace PlayerBounties.Controllers
 					this.db.SaveChanges();
 
 					// Set character is bounty target to true and update the record
-					character.IsBountyTarget = true;
-					this.db.Entry(character).State = EntityState.Modified;
+					characterResult.IsBountyTarget = true;
+					this.db.Entry(characterResult).State = EntityState.Modified;
 					this.db.SaveChanges();
 
 					// Admin alert email notification
 					dynamic pendingBountyAdminAlertEmail = new Email("PendingBountyPlaced-AdminAlert");
-					
-					pendingBountyAdminAlertEmail.ClientName = character.CharacterName(bounty.PlacedById);
-					pendingBountyAdminAlertEmail.TargetName = character.CharacterName(bounty.PlacedOnId);
+
+					pendingBountyAdminAlertEmail.ClientName = characterResult.CharacterName(bounty.PlacedById);
+					pendingBountyAdminAlertEmail.TargetName = characterResult.CharacterName(bounty.PlacedOnId);
 					pendingBountyAdminAlertEmail.Amount = bounty.Amount;
 
 					pendingBountyAdminAlertEmail.Send();
@@ -394,31 +390,29 @@ namespace PlayerBounties.Controllers
 					dynamic pendingBountyClientAlertEmail = new Email("PendingBountyPlaced-ClientAlert");
 
 					pendingBountyClientAlertEmail.UserEmailAddress = this.db.Accounts.Find(accountId).EmailAddress;
-					pendingBountyClientAlertEmail.ClientName = character.CharacterName(bounty.PlacedById);
-					pendingBountyClientAlertEmail.TargetName = character.CharacterName(bounty.PlacedOnId);
+					pendingBountyClientAlertEmail.ClientName = characterResult.CharacterName(bounty.PlacedById);
+					pendingBountyClientAlertEmail.TargetName = characterResult.CharacterName(bounty.PlacedOnId);
+					pendingBountyClientAlertEmail.Amount = bounty.Amount;
 
 					pendingBountyClientAlertEmail.Send();
-
 
 					return RedirectToAction("Dashboard", "Home");
 				}
 				else
 				{
 					// alert that there is a bounty on this target
-					return RedirectToAction("PlaceBounty", "Bounty", new { character });
+					return RedirectToAction("PlaceBounty", "Bounty", new { character = characterResult });
 				}
 			}
 			else
 			{
-				return RedirectToAction("PlaceBounty", "Bounty", new { character });
+				return RedirectToAction("PlaceBounty", "Bounty", new { this.character });
 			}
 		}
 
 		public ActionResult PendingPlacement()
 		{
-			Bounty bounty = new Bounty();
-
-			return View(bounty.GetPendingPlacementBounties());
+			return View(this.bounty.GetPendingPlacementBounties());
 		}
 
 		public ActionResult ApproveBountyPlacement(Guid id)
@@ -427,13 +421,13 @@ namespace PlayerBounties.Controllers
 			var accountId = this.account.GetLoggedInUserId();
 
 			bounty.SetPendingPlacementToFalse(bounty);
-			
+
 			// Client alert email notification
 			dynamic bountyPlacementApprovedClientNotification = new Email("BountyPlacedApproved-ClientAlert");
 
 			bountyPlacementApprovedClientNotification.UserEmailAddress = this.db.Accounts.Find(accountId).EmailAddress;
-			bountyPlacementApprovedClientNotification.ClientName = character.CharacterName(bounty.PlacedById);
-			bountyPlacementApprovedClientNotification.TargetName = character.CharacterName(bounty.PlacedOnId);
+			bountyPlacementApprovedClientNotification.ClientName = this.character.CharacterName(bounty.PlacedById);
+			bountyPlacementApprovedClientNotification.TargetName = this.character.CharacterName(bounty.PlacedOnId);
 			bountyPlacementApprovedClientNotification.Amount = bounty.Amount;
 
 			bountyPlacementApprovedClientNotification.Send();
@@ -446,8 +440,8 @@ namespace PlayerBounties.Controllers
 				dynamic bountyPlacementApprovedTargetNotification = new Email("BountyPlacedApproved-TargetAlert");
 
 				bountyPlacementApprovedTargetNotification.UserEmailAddress = this.db.Accounts.Find(userId).EmailAddress;
-				bountyPlacementApprovedTargetNotification.ClientName = character.CharacterName(bounty.PlacedById);
-				bountyPlacementApprovedTargetNotification.TargetName = character.CharacterName(bounty.PlacedOnId);
+				bountyPlacementApprovedTargetNotification.ClientName = this.character.CharacterName(bounty.PlacedById);
+				bountyPlacementApprovedTargetNotification.TargetName = this.character.CharacterName(bounty.PlacedOnId);
 				bountyPlacementApprovedTargetNotification.Amount = bounty.Amount;
 				bountyPlacementApprovedTargetNotification.Reason = bounty.Reason;
 
@@ -459,9 +453,7 @@ namespace PlayerBounties.Controllers
 
 		public ActionResult PendingCompletion()
 		{
-			Bounty bounty = new Bounty();
-
-			return View(bounty.GetPendingCompletionBounties());
+			return View(this.bounty.GetPendingCompletionBounties());
 		}
 
 		public ActionResult ApproveBountyCompletion(Guid id)
@@ -475,9 +467,9 @@ namespace PlayerBounties.Controllers
 			dynamic bountyCompletionApprovedClientNotification = new Email("BountyCompletionApproved-ClientAlert");
 
 			bountyCompletionApprovedClientNotification.UserEmailAddress = this.db.Accounts.Find(accountId).EmailAddress;
-			bountyCompletionApprovedClientNotification.ClientName = character.CharacterName(bounty.PlacedById);
-			bountyCompletionApprovedClientNotification.TargetName = character.CharacterName(bounty.PlacedOnId);
-			bountyCompletionApprovedClientNotification.HunterName = character.CharacterName(bounty.KilledById.Value);
+			bountyCompletionApprovedClientNotification.ClientName = this.character.CharacterName(bounty.PlacedById);
+			bountyCompletionApprovedClientNotification.TargetName = this.character.CharacterName(bounty.PlacedOnId);
+			bountyCompletionApprovedClientNotification.HunterName = this.character.CharacterName(bounty.KilledById.Value);
 			bountyCompletionApprovedClientNotification.Amount = bounty.Amount;
 
 			bountyCompletionApprovedClientNotification.Send();
@@ -488,9 +480,9 @@ namespace PlayerBounties.Controllers
 			Guid hunterUserId = this.db.Characters.Find(bounty.KilledById.Value).UserId;
 
 			bountyCompletionApprovedHunterNotification.UserEmailAddress = this.db.Accounts.Find(hunterUserId).EmailAddress;
-			bountyCompletionApprovedHunterNotification.ClientName = character.CharacterName(bounty.PlacedById);
-			bountyCompletionApprovedHunterNotification.TargetName = character.CharacterName(bounty.PlacedOnId);
-			bountyCompletionApprovedHunterNotification.HunterName = character.CharacterName(bounty.KilledById.Value);
+			bountyCompletionApprovedHunterNotification.ClientName = this.character.CharacterName(bounty.PlacedById);
+			bountyCompletionApprovedHunterNotification.TargetName = this.character.CharacterName(bounty.PlacedOnId);
+			bountyCompletionApprovedHunterNotification.HunterName = this.character.CharacterName(bounty.KilledById.Value);
 			bountyCompletionApprovedHunterNotification.Amount = bounty.Amount;
 
 			bountyCompletionApprovedHunterNotification.Send();
@@ -503,9 +495,9 @@ namespace PlayerBounties.Controllers
 				dynamic bountyPlacementApprovedTargetNotification = new Email("BountyCompletionApproved-TargetAlert");
 
 				bountyPlacementApprovedTargetNotification.UserEmailAddress = this.db.Accounts.Find(userId).EmailAddress;
-				bountyPlacementApprovedTargetNotification.ClientName = character.CharacterName(bounty.PlacedById);
-				bountyPlacementApprovedTargetNotification.TargetName = character.CharacterName(bounty.PlacedOnId);
-				bountyPlacementApprovedTargetNotification.HunterName = character.CharacterName(bounty.KilledById.Value);
+				bountyPlacementApprovedTargetNotification.ClientName = this.character.CharacterName(bounty.PlacedById);
+				bountyPlacementApprovedTargetNotification.TargetName = this.character.CharacterName(bounty.PlacedOnId);
+				bountyPlacementApprovedTargetNotification.HunterName = this.character.CharacterName(bounty.KilledById.Value);
 				bountyPlacementApprovedTargetNotification.Amount = bounty.Amount;
 				bountyPlacementApprovedTargetNotification.Reason = bounty.Reason;
 
@@ -514,93 +506,89 @@ namespace PlayerBounties.Controllers
 
 			return RedirectToAction("PendingCompletion");
 		}
+		
+		public ActionResult BountyStatistics(string statistic, Guid? id = null)
+		{
+			var loggedInUserId = this.bounty.GetLoggedInUserId();
 
-		#region Bounty Statistics
-
-        public ActionResult BountyStatistics(string statistic, Guid? id = null)
-        {   
-            Bounty bounty = new Bounty();
-
-            switch (statistic)
-            {
-                case "targetsKilled":
-                    if (id == Guid.Empty)
-                    {
-						if(bounty.GetAccountBountiesCompleted(bounty.GetLoggedInUserId()).Count() != 0)
-						{
-							return PartialView("_BountiesTable", bounty.GetAccountBountiesCompleted(bounty.GetLoggedInUserId()));
-						}
-						else
-						{
-							return null;
-						}
-                    }
-                    else
-					{
-						if(bounty.GetBountiesCompleted(id.Value).Count() != 0)
-						{
-							return PartialView("_BountiesTable", bounty.GetBountiesCompleted(id.Value));
-						}
-						else
-						{
-							return null;
-						}
-                    }
-
-                case "bountiesPlaced":
+			switch(statistic)
+			{
+				case "targetsKilled":
 					if(id == Guid.Empty)
 					{
-						if(bounty.GetAccountBountiesPlaced(bounty.GetLoggedInUserId()).Count() != 0)
+						if(this.bounty.GetAccountBountiesCompleted(loggedInUserId).Count() != 0)
 						{
-							return PartialView("_BountiesTable", bounty.GetAccountBountiesPlaced(bounty.GetLoggedInUserId()));
+							return PartialView("_BountiesTable", this.bounty.GetAccountBountiesCompleted(loggedInUserId));
 						}
 						else
 						{
 							return null;
 						}
-                    }
-                    else
+					}
+					else
 					{
-						if(bounty.GetBountiesPlaced(id.Value).Count() != 0)
+						if(this.bounty.GetBountiesCompleted(id.Value).Count() != 0)
 						{
-							return PartialView("_BountiesTable", bounty.GetBountiesPlaced(id.Value));
+							return PartialView("_BountiesTable", this.bounty.GetBountiesCompleted(id.Value));
 						}
 						else
 						{
 							return null;
 						}
-                    }
+					}
 
-                case "bountiesPlacedAgainst":
+				case "bountiesPlaced":
 					if(id == Guid.Empty)
 					{
-						if(bounty.GetAccountBountiesPlacedOn(bounty.GetLoggedInUserId()).Count() != 0)
+						if(this.bounty.GetAccountBountiesPlaced(loggedInUserId).Count() != 0)
 						{
-							return PartialView("_BountiesTable", bounty.GetAccountBountiesPlacedOn(bounty.GetLoggedInUserId()));
+							return PartialView("_BountiesTable", this.bounty.GetAccountBountiesPlaced(loggedInUserId));
 						}
 						else
 						{
 							return null;
 						}
-                    }
-                    else
+					}
+					else
 					{
-						if(bounty.GetBountiesPlacedOn(id.Value).Count() != 0)
+						if(this.bounty.GetBountiesPlaced(id.Value).Count() != 0)
 						{
-							return PartialView("_BountiesTable", bounty.GetBountiesPlacedOn(id.Value));
+							return PartialView("_BountiesTable", this.bounty.GetBountiesPlaced(id.Value));
 						}
 						else
 						{
 							return null;
 						}
-                    }
-            }
+					}
 
-            return PartialView("_BountiesTable", bounty);
+				case "bountiesPlacedAgainst":
+					if(id == Guid.Empty)
+					{
+						if(this.bounty.GetAccountBountiesPlacedOn(loggedInUserId).Count() != 0)
+						{
+							return PartialView("_BountiesTable", this.bounty.GetAccountBountiesPlacedOn(loggedInUserId));
+						}
+						else
+						{
+							return null;
+						}
+					}
+					else
+					{
+						if(this.bounty.GetBountiesPlacedOn(id.Value).Count() != 0)
+						{
+							return PartialView("_BountiesTable", this.bounty.GetBountiesPlacedOn(id.Value));
+						}
+						else
+						{
+							return null;
+						}
+					}
+			}
+
+			return PartialView("_BountiesTable", this.bounty);
 		}
-
-		#endregion
-
+		
 		[AcceptVerbs(HttpVerbs.Get)]
 		public JsonResult LoadPlayerClassesByFaction(Guid factionId)
 		{
@@ -631,8 +619,6 @@ namespace PlayerBounties.Controllers
 
 		public ActionResult UploadFiles(Bounty bounty)
 		{
-			KillShotImage killShotImage = new KillShotImage();
-
 			var r = new List<KillShotImage>();
 
 			foreach(string file in Request.Files)
@@ -650,16 +636,16 @@ namespace PlayerBounties.Controllers
 				string convertedFilePath = @"Content\Images\KillShots";
 				string thumbnailFilePath = @"Content\Images\Thumbnails\";
 
-				killShotImage.Id = Guid.NewGuid();
-				killShotImage.FileName = string.Concat(convertedFileName, ".jpg");
-				killShotImage.FilePath = convertedFilePath;
-				killShotImage.ThumbnailFileName = string.Concat(convertedFileName, "_thumbnail.jpg");
-				killShotImage.FilePath = thumbnailFilePath;
+				this.killShotImage.Id = Guid.NewGuid();
+				this.killShotImage.FileName = string.Concat(convertedFileName, ".jpg");
+				this.killShotImage.FilePath = convertedFilePath;
+				this.killShotImage.ThumbnailFileName = string.Concat(convertedFileName, "_thumbnail.jpg");
+				this.killShotImage.FilePath = thumbnailFilePath;
 
-				this.db.KillShotImages.Add(killShotImage);
+				this.db.KillShotImages.Add(this.killShotImage);
 				this.db.SaveChanges();
 
-				bounty.KillShotImageId = killShotImage.Id;
+				bounty.KillShotImageId = this.killShotImage.Id;
 				this.db.Entry(bounty).State = EntityState.Modified;
 				this.db.SaveChanges();
 
@@ -685,148 +671,17 @@ namespace PlayerBounties.Controllers
 					AppDomain.CurrentDomain.BaseDirectory + thumbnailFilePath,
 					Path.GetFileName(convertedFileName));
 
-				savedThumbnailFileName = string.Concat(savedThumbnailFileName, "_thumbnail.jpg");			
-				
+				savedThumbnailFileName = string.Concat(savedThumbnailFileName, "_thumbnail.jpg");
+
 				Image thumbnailKillShotImage = ResizeImage(bitmap, new Size(125, 125));
 
-				this.SaveJpegThumbnail(savedThumbnailFileName, (Bitmap)thumbnailKillShotImage, 100);				
+				this.SaveJpegThumbnail(savedThumbnailFileName, (Bitmap)thumbnailKillShotImage, 100);
 			}
 
 			return View();
 		}
 
-		//public ActionResult UploadFiles(Bounty bounty)
-		//{
-		//    KillShotImage killShotImage = new KillShotImage();
-
-		//    foreach(string file in Request.Files)
-		//    {
-		//        HttpPostedFileBase hpf = Request.Files[file] as HttpPostedFileBase;
-
-		//        if(hpf.ContentLength == 0)
-		//        {
-		//            continue;
-		//        }
-
-		//        string fileName = DateTime.Now.ToString("mmddyyyyhhmmss");
-		//        string filePath = @"Content\Images\KillShots";
-		//        string thumbnailFilePath = @"Content\Images\Thumbnails\";
-
-		//        string originalFile = Path.Combine(
-		//            AppDomain.CurrentDomain.BaseDirectory + filePath,
-		//            Path.GetFileName(fileName));
-
-		//        hpf.SaveAs(originalFile);
-
-		//        string thumbnailFile = Path.Combine(
-		//            AppDomain.CurrentDomain.BaseDirectory + thumbnailFilePath,
-		//            Path.GetFileName(fileName));
-
-		//        Bitmap thumbnailBitmapImage = new Bitmap(fileName);
-
-		//         convert uploaded image to jpg and save
-		//        string savedFileName = string.Concat(originalFile.Remove(originalFile.Length - 4), ".jpg");
-
-		//        this.SaveJpeg(savedFileName, thumbnailBitmapImage, 100);
-
-		//         scale uploaded image to thumbnail, convert to jpg and save
-		//        string savedThumbnailFileName = string.Concat(thumbnailFile.Remove(thumbnailFile.Length - 4), "_thumbnail.jpg");
-
-		//        Image thumbnailKillShotImage = ResizeImage(thumbnailBitmapImage, new Size(125, 125));
-
-		//        this.SaveJpeg(thumbnailFile, (Bitmap)thumbnailKillShotImage, 100);
-
-		//         write kill shot image to db
-		//        killShotImage.Id = Guid.NewGuid();
-		//        killShotImage.FileName = fileName;
-		//        killShotImage.FilePath = filePath;
-
-		//        this.db.KillShotImages.Add(killShotImage);
-		//        this.db.SaveChanges();
-
-		//        bounty.KillShotImageId = killShotImage.Id;
-		//        this.db.Entry(bounty).State = EntityState.Modified;
-		//        this.db.SaveChanges();
-		//    }
-
-		//    return View();
-		//}
-
-		private void SaveJpegThumbnail(string path, Bitmap img, long quality)
-		{
-			// Encoder parameter for image quality
-			EncoderParameter qualityParam = new EncoderParameter(Encoder.Quality, quality);
-
-			// Jpeg image codec
-			ImageCodecInfo jpegCodec = this.getEncoderInfo("image/jpeg");
-
-			if(jpegCodec == null)
-			{
-				return;
-			}
-
-			EncoderParameters encoderParams = new EncoderParameters(1);
-			encoderParams.Param[0] = qualityParam;
-
-			MemoryStream memoryStream = new MemoryStream();
-			FileStream fileStream = new FileStream(path, FileMode.Create, FileAccess.ReadWrite);
-
-			img.Save(memoryStream, jpegCodec, encoderParams);
-			byte[] matrix = memoryStream.ToArray();
-			fileStream.Write(matrix, 0, matrix.Length);
-
-			memoryStream.Close();
-			fileStream.Close();
-		}
-
-		private ImageCodecInfo getEncoderInfo(string mimeType)
-		{
-			// Get image codecs for all image formats
-			ImageCodecInfo[] codecs = ImageCodecInfo.GetImageEncoders();
-
-			// Find the correct image codec
-			for(int i = 0; i < codecs.Length; i++)
-			{
-				if(codecs[i].MimeType == mimeType)
-				{
-					return codecs[i];
-				}
-			}
-			return null;
-		}
-
-		private static Image ResizeImage(Image imageToResize, Size size)
-		{
-			int sourceWidth = imageToResize.Width;
-			int sourceHeight = imageToResize.Height;
-
-			float nPercent = 0;
-			float nPercentW = 0;
-			float nPercentH = 0;
-
-			nPercentW = ((float)size.Width / (float)sourceWidth);
-			nPercentH = ((float)size.Height / (float)sourceHeight);
-
-			if(nPercentH < nPercentW)
-				nPercent = nPercentH;
-			else
-				nPercent = nPercentW;
-
-			int destWidth = (int)(sourceWidth * nPercent);
-			int destHeight = (int)(sourceHeight * nPercent);
-
-			Bitmap bitmap = new Bitmap(destWidth, destHeight);
-			Graphics graphics = Graphics.FromImage((Image)bitmap);
-
-			graphics.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.Low;
-
-			graphics.DrawImage(imageToResize, 0, 0, destWidth, destHeight);
-			graphics.Dispose();
-
-			return (Image)bitmap;
-		}
-
-		#endregion		
+		#endregion
 
 		#region Base class overrides
 
@@ -847,11 +702,88 @@ namespace PlayerBounties.Controllers
 
 		private IEnumerable<Character> GetCharactersPerShard(Guid shardId)
 		{
-			Character character = new Character();
-
-			Guid loggedInUserId = character.GetLoggedInUserId();
+			Guid loggedInUserId = this.character.GetLoggedInUserId();
 
 			return this.db.Characters.Where(c => c.UserId == loggedInUserId).Where(c => c.ShardId == shardId);
+		}
+
+		private void SaveJpegThumbnail(string path, Bitmap img, long quality)
+		{
+			// Encoder parameter for image quality
+			EncoderParameter qualityParam = new EncoderParameter(Encoder.Quality, quality);
+
+			// Jpeg image codec
+			ImageCodecInfo jpegCodec = this.GetEncoderInfo("image/jpeg");
+
+			if(jpegCodec == null)
+			{
+				return;
+			}
+
+			EncoderParameters encoderParams = new EncoderParameters(1);
+			encoderParams.Param[0] = qualityParam;
+
+			MemoryStream memoryStream = new MemoryStream();
+			FileStream fileStream = new FileStream(path, FileMode.Create, FileAccess.ReadWrite);
+
+			img.Save(memoryStream, jpegCodec, encoderParams);
+			byte[] matrix = memoryStream.ToArray();
+			fileStream.Write(matrix, 0, matrix.Length);
+
+			memoryStream.Close();
+			fileStream.Close();
+		}
+
+		private ImageCodecInfo GetEncoderInfo(string mimeType)
+		{
+			// Get image codecs for all image formats
+			ImageCodecInfo[] codecs = ImageCodecInfo.GetImageEncoders();
+
+			// Find the correct image codec
+			for(int i = 0; i < codecs.Length; i++)
+			{
+				if(codecs[i].MimeType == mimeType)
+				{
+					return codecs[i];
+				}
+			}
+
+			return null;
+		}
+
+		private static Image ResizeImage(Image imageToResize, Size size)
+		{
+			int sourceWidth = imageToResize.Width;
+			int sourceHeight = imageToResize.Height;
+
+			float percent = 0;
+			float percentW = 0;
+			float percentH = 0;
+
+			percentW = (float)size.Width / (float)sourceWidth;
+			percentH = (float)size.Height / (float)sourceHeight;
+
+			if(percentH < percentW)
+			{
+				percent = percentH;
+			}
+			else
+			{
+				percent = percentW;
+			}
+
+			int destWidth = (int)(sourceWidth * percent);
+			int destHeight = (int)(sourceHeight * percent);
+
+			Bitmap bitmap = new Bitmap(destWidth, destHeight);
+			Graphics graphics = Graphics.FromImage((Image)bitmap);
+
+			graphics.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.Low;
+
+			graphics.DrawImage(imageToResize, 0, 0, destWidth, destHeight);
+			graphics.Dispose();
+
+			return (Image)bitmap;
 		}
 
 		#endregion

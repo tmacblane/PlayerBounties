@@ -38,7 +38,7 @@ namespace PlayerBounties.Models
 			set;
 		}
 
-		[Required(ErrorMessage="Shard is required.")]
+		[Required(ErrorMessage = "Shard is required.")]
 		public Guid ShardId
 		{
 			get;
@@ -166,6 +166,7 @@ namespace PlayerBounties.Models
 		{
 			var character = this.db.Characters.Find(characterId);
 			character.IsPrimary = false;
+
 			this.db.Entry(character).State = EntityState.Modified;
 			this.db.SaveChanges();
 		}
@@ -186,11 +187,9 @@ namespace PlayerBounties.Models
 		{
 			bool isCharacterOwner = false;
 
-			var character = this.db.Characters.Find(characterId);
-
 			try
 			{
-				if(userId == character.UserId)
+				if(userId == this.db.Characters.Find(characterId).UserId)
 				{
 					isCharacterOwner = true;
 				}
@@ -204,48 +203,43 @@ namespace PlayerBounties.Models
 
 		public string CharacterName(Guid characterId)
 		{
-			Character character = new Character();
-			return character.GetCharacterById(characterId).Single().Name;
+			return this.GetCharacterById(characterId).Single().Name;
 		}
 
 		public string CharacterShard(Guid characterId)
 		{
-			Character character = new Character();
-			return character.GetCharacterById(characterId).Single().Shard.Name;
+			return this.GetCharacterById(characterId).Single().Shard.Name;
 		}
 
 		public string CharacterAllegience(Guid characterId)
 		{
-			Character character = new Character();
-			return character.GetCharacterById(characterId).Single().Faction.Name;
+			return this.GetCharacterById(characterId).Single().Faction.Name;
 		}
 
 		public string CharacterClass(Guid characterId)
 		{
-			Character character = new Character();
-			return character.GetCharacterById(characterId).Single().PlayerClass.Name;
+			return this.GetCharacterById(characterId).Single().PlayerClass.Name;
 		}
 
 		public string CharacterRace(Guid characterId)
 		{
-			Character character = new Character();
-			return character.GetCharacterById(characterId).Single().Race.Name;
+			return this.GetCharacterById(characterId).Single().Race.Name;
 		}
 
-        public List<Bounty> GetBountiesKilled(Guid characterId)
-        {
-            Bounty bounty = new Bounty();
+		public List<Bounty> GetBountiesKilled(Guid characterId)
+		{
+			Bounty bounty = new Bounty();
 
-            return bounty.GetBountiesCompleted(characterId);
-        }
+			return bounty.GetBountiesCompleted(characterId);
+		}
 
 		public int GetBountiesKilledCount(Guid characterId)
 		{
 			Bounty bounty = new Bounty();
-			
+
 			return bounty.GetBountiesCompletedCount(characterId);
 		}
-		
+
 		public List<Bounty> GetAccountBountiesCompleted(Guid accountId)
 		{
 			Bounty bounty = new Bounty();

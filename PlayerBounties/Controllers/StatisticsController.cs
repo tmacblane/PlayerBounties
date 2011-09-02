@@ -34,7 +34,7 @@ namespace PlayerBounties.Controllers
 
 		public ActionResult TopHunters()
 		{
-			List<Guid> characterIds = bounty.GetTopHuntersList();
+			List<Guid> characterIds = this.bounty.GetTopHuntersList();
 			List<Character> topHunters = new List<Character>();
 
 			foreach(Guid characterId in characterIds.Take(5))
@@ -51,7 +51,7 @@ namespace PlayerBounties.Controllers
 
 		public ActionResult TopMarks()
 		{
-			List<Guid> characterIds = bounty.GetTopMarksList();
+			List<Guid> characterIds = this.bounty.GetTopMarksList();
 			List<Character> topMarks = new List<Character>();
 
 			foreach(Guid characterId in characterIds.Take(5))
@@ -68,7 +68,7 @@ namespace PlayerBounties.Controllers
 
 		public ActionResult TopClients()
 		{
-			List<Guid> characterIds = bounty.GetTopClientsList();
+			List<Guid> characterIds = this.bounty.GetTopClientsList();
 			List<Character> topClients = new List<Character>();
 
 			foreach(Guid characterId in characterIds.Take(5))

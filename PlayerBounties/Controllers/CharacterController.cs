@@ -45,20 +45,20 @@ namespace PlayerBounties.Controllers
 		public ActionResult Create()
 		{
 			var sortedShardList = from shard in this.db.Shards
-								   orderby shard.Name ascending
-								   select shard;
+								  orderby shard.Name ascending
+								  select shard;
 
 			var sortedFactionList = from faction in this.db.Factions
-									 orderby faction.Name ascending
-									 select faction;
+									orderby faction.Name ascending
+									select faction;
 
 			var sortedRaceList = from race in this.db.Races
-								  orderby race.Name ascending
-								  select race;
+								 orderby race.Name ascending
+								 select race;
 
 			var sortedPlayerClassList = from playerClass in this.db.PlayerClasses
-										 orderby playerClass.Name ascending
-										 select playerClass;
+										orderby playerClass.Name ascending
+										select playerClass;
 
 			ViewBag.ShardId = new SelectList(sortedShardList, "Id", "Name");
 			ViewBag.FactionId = new SelectList(sortedFactionList, "Id", "Name");
@@ -188,7 +188,7 @@ namespace PlayerBounties.Controllers
 		{
 			var accountId = this.account.GetLoggedInUserId();
 
-			this.db.Entry(character).State = EntityState.Modified;			
+			this.db.Entry(character).State = EntityState.Modified;
 
 			if(this.character.IsCharacterOwner(accountId, character.Id) || this.character.UserId == Guid.Empty)
 			{
@@ -223,7 +223,7 @@ namespace PlayerBounties.Controllers
 			{
 				return RedirectToAction("Dashboard", "Home");
 			}
-		}		
+		}
 
 		[AcceptVerbs(HttpVerbs.Get)]
 		public JsonResult LoadPlayerClassesByFaction(Guid factionId)
@@ -239,40 +239,40 @@ namespace PlayerBounties.Controllers
 			return Json(playerClassData, JsonRequestBehavior.AllowGet);
 		}
 
-        public ActionResult KillShotImages(Guid characterId, string imageType)
-        {
-            List<KillShotImage> killShotImages = new List<KillShotImage>();
-            List<Guid> killImageIds = new List<Guid>();
+		public ActionResult KillShotImages(Guid characterId, string imageType)
+		{
+			List<KillShotImage> killShotImages = new List<KillShotImage>();
+			List<Guid> killImageIds = new List<Guid>();
 
-            switch (imageType)
-            {
-                case "bountiesPlaced":
-                    killImageIds = this.bounty.GetAllKillShotImageIdsByCharacter(characterId, imageType);
-                    break;
+			switch(imageType)
+			{
+				case "bountiesPlaced":
+					killImageIds = this.bounty.GetAllKillShotImageIdsByCharacter(characterId, imageType);
+					break;
 
-                case "targetsKilled":
-                    killImageIds = this.bounty.GetAllKillShotImageIdsByCharacter(characterId, imageType);
-                    break;
+				case "targetsKilled":
+					killImageIds = this.bounty.GetAllKillShotImageIdsByCharacter(characterId, imageType);
+					break;
 
-                case "bountiesPlacedOn":
-                    killImageIds = this.bounty.GetAllKillShotImageIdsByCharacter(characterId, imageType);
-                    break;
-            }
+				case "bountiesPlacedOn":
+					killImageIds = this.bounty.GetAllKillShotImageIdsByCharacter(characterId, imageType);
+					break;
+			}
 
-            foreach (Guid killImageId in killImageIds)
-            {
-                killShotImages.Add(new KillShotImage
-                {
-                    Id = this.db.KillShotImages.Find(killImageId).Id,
-                    FileName = this.db.KillShotImages.Find(killImageId).FileName,
-                    FilePath = this.db.KillShotImages.Find(killImageId).FilePath,
+			foreach(Guid killImageId in killImageIds)
+			{
+				killShotImages.Add(new KillShotImage
+				{
+					Id = this.db.KillShotImages.Find(killImageId).Id,
+					FileName = this.db.KillShotImages.Find(killImageId).FileName,
+					FilePath = this.db.KillShotImages.Find(killImageId).FilePath,
 					ThumbnailFileName = this.db.KillShotImages.Find(killImageId).ThumbnailFileName,
 					ThumbnailFilePath = this.db.KillShotImages.Find(killImageId).ThumbnailFilePath
-                });
-            }
+				});
+			}
 
-            return PartialView("_KillShotImageSlider", killShotImages);
-        }
+			return PartialView("_KillShotImageSlider", killShotImages);
+		}
 
 		#endregion
 

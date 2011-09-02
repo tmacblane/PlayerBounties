@@ -13,6 +13,7 @@ namespace PlayerBounties.Models
 	{
 		#region Fields
 
+		private Bounty bounty = new Bounty();
 		private PlayerBountyContext db = new PlayerBountyContext();
 
 		#endregion
@@ -56,9 +57,7 @@ namespace PlayerBounties.Models
 
 		public Guid GetBountyId(Guid killShotImageId)
 		{
-			Bounty bounty = new Bounty();
-
-			return bounty.GetBountyIdFromKillShotImageId(killShotImageId);
+			return this.bounty.GetBountyIdFromKillShotImageId(killShotImageId);
 		}
 
 		#endregion

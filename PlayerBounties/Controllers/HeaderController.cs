@@ -12,13 +12,17 @@ namespace PlayerBounties.Controllers
 {
 	public class HeaderController : Controller
 	{
+		#region Fields
+
+		private Account account = new Account();
+
+		#endregion
+
 		#region Type specific methods
 
 		public ActionResult _Header()
 		{
-			Account account = new Account();
-
-			return View(account);
+			return View(this.account);
 		}		
 
 		#endregion

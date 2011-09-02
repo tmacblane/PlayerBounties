@@ -44,7 +44,7 @@ namespace PlayerBounties.Controllers
 
 			switch(imageType)
 			{
-                case "bountiesPlaced":
+				case "bountiesPlaced":
 					killImageIds = this.bounty.GetAllKillShotImageIdsByAccount(this.account.GetLoggedInUserId(), imageType);
 					break;
 
@@ -52,7 +52,7 @@ namespace PlayerBounties.Controllers
 					killImageIds = this.bounty.GetAllKillShotImageIdsByAccount(this.account.GetLoggedInUserId(), imageType);
 					break;
 
-                case "bountiesPlacedOn":
+				case "bountiesPlacedOn":
 					killImageIds = this.bounty.GetAllKillShotImageIdsByAccount(this.account.GetLoggedInUserId(), imageType);
 					break;
 			}
