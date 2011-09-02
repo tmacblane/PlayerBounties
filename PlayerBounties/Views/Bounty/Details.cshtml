@@ -115,14 +115,17 @@
 				</tr>
 
 				<!-- If logged in userId != placedOn userId -->
-				<tr>
-					<td class="inputLabelCell" valign="top">
-						@Html.LabelFor(model => model.Message):
-					</td>
-					<td align="left" colspan="3">
-						<span>@Html.DisplayFor(model => model.Message)</span>
-					</td>
-				</tr>
+				@if(Model.GetLoggedInUserId() != Model.GetCharacterUserId(Model.PlacedOnId))
+				{
+					<tr>
+						<td class="inputLabelCell" valign="top">
+							@Html.LabelFor(model => model.Message):
+						</td>
+						<td align="left" colspan="3">
+							<span>@Html.DisplayFor(model => model.Message)</span>
+						</td>
+					</tr>
+				}
 				<!-- -->
 
 			</tbody>

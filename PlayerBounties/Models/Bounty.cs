@@ -155,6 +155,11 @@ namespace PlayerBounties.Models
 			return this.db.Accounts.Where(row => row.EmailAddress == System.Web.HttpContext.Current.User.Identity.Name).Single().Id;
 		}
 
+		public Guid GetCharacterUserId(Guid characterId)
+		{
+			return this.db.Characters.Find(characterId).UserId;
+		}
+
 		public bool IsBountyOwner(Guid userId, Guid bountyId)
 		{
 			Character character = new Character();
