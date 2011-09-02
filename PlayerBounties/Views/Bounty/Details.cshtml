@@ -114,8 +114,7 @@
 					</td>
 				</tr>
 
-				<!-- If logged in userId != placedOn userId -->
-				@if(Model.GetLoggedInUserId() != Model.GetCharacterUserId(Model.PlacedOnId))
+				@if(Model.GetLoggedInUserId() != Model.GetCharacterUserId(Model.PlacedOnId) && Model.GetStatus(Model.Id) != "Completed")
 				{
 					<tr>
 						<td class="inputLabelCell" valign="top">
