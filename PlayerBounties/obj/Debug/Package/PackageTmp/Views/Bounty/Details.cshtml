@@ -114,23 +114,28 @@
 					</td>
 				</tr>
 
-				<!-- If logged in userId != placedOn userId -->
-				<tr>
-					<td class="inputLabelCell" valign="top">
-						@Html.LabelFor(model => model.Message):
-					</td>
-					<td align="left" colspan="3">
-						<span>@Html.DisplayFor(model => model.Message)</span>
-					</td>
-				</tr>
-				<!-- -->
+				@if(Model.GetLoggedInUserId() != Model.GetCharacterUserId(Model.PlacedOnId) || Model.GetStatus(Model.Id) == "Completed")
+				{
+					<tr>
+						<td class="inputLabelCell" valign="top">
+							@Html.LabelFor(model => model.Message):
+						</td>
+						<td align="left" colspan="3">
+							<span>@Html.DisplayFor(model => model.Message)</span>
+						</td>
+					</tr>
+				}
+				
 
 			</tbody>
 		</table>
 	</div>
 </div>
 
-@using(Html.BeginForm("Details", "Bounty", FormMethod.Post, new { enctype = "multipart/form-data" }))
+@using(Html.BeginForm("Details", "Bounty", FormMethod.Post, new
+{
+	enctype = "multipart/form-data"
+}))
 {
     @Html.ValidationSummary(true)
 
@@ -140,7 +145,10 @@
 		if(Model.GetStatus(Model.Id) == "Active")
 		{	
 			@Html.LabelFor(model => model.KillShotImageId)
-			@Html.TextBoxFor(m => m.KillShotImageId, new { type = "file" })
+			@Html.TextBoxFor(m => m.KillShotImageId, new
+{
+	type = "file"
+})
 	
 			@Html.DropDownList("CharacterList", string.Empty)<br />
             <text>Don't see your character listed...@Html.ActionLink("click here", "Create", "Character", null, null) to create them</text>
@@ -150,7 +158,10 @@
 		{
 			if(Model.GetStatus(Model.Id) == "Placement Pending")
 			{
-				@Html.ActionLink("Edit", "Edit", new { id = Model.Id })
+				@Html.ActionLink("Edit", "Edit", new
+{
+	id = Model.Id
+})
 			}
 		}
 	}
