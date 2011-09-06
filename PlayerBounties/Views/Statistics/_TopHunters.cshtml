@@ -1,45 +1,48 @@
 ﻿@model IEnumerable<PlayerBounties.Models.Character>
 
-<div id="topHuntersTable" class="statisticsContainer">
-	<table class="statisticsTable" cellspacing="0" cellpadding="3" border="0" >
-		<thead>
-			<tr>
-				<th colspan="4">Top Hunters</th>
-			</tr>
-		</thead>
-		<tbody>
-			<tr>
-				<th>Character Name</th>
-				<th>Shard</th>
-				<th style="text-align: center;">Bounties</th>
-				<th>Total Earned</th>
-			</tr>
-		
-			@foreach(var item in Model)
-			{
+@if(Model.Count() > 0)
+{
+	<div id="topHuntersTable" class="statisticsContainer">
+		<table class="statisticsTable" cellspacing="0" cellpadding="3" border="0" >
+			<thead>
 				<tr>
-					<td class="inputLabelCell @item.GetClassStyle(item.CharacterClass(item.Id))">
-						@Html.ActionLink(item.Name, "Details", "Character", new { id = item.Id }, null)
-					</td>
-					<td align="left">
-						@item.CharacterShard(item.Id)
-					</td>
-					<td align="center">
-						@if(item.GetBountiesKilledCount(item.Id) != 0)
-						{
-							<a style="cursor: pointer;" id="targetsKilledLink">@item.GetBountiesKilledCount(item.Id).ToString()</a>
-						}
-						else
-						{
-							<text>0</text>
-						}
-					</td>
-					<td align="left">
-						@item.GetAmountEarned(item.Id)
-					</td>
+					<th colspan="4">Top Hunters</th>
 				</tr>
-			}
+			</thead>
+			<tbody>
+				<tr>
+					<th>Character Name</th>
+					<th>Shard</th>
+					<th style="text-align: center;">Bounties</th>
+					<th>Total Earned</th>
+				</tr>
+		
+				@foreach(var item in Model)
+				{
+					<tr>
+						<td class="inputLabelCell @item.GetClassStyle(item.CharacterClass(item.Id))">
+							@Html.ActionLink(item.Name, "Details", "Character", new { id = item.Id }, null)
+						</td>
+						<td align="left">
+							@item.CharacterShard(item.Id)
+						</td>
+						<td align="center">
+							@if(item.GetBountiesKilledCount(item.Id) != 0)
+							{
+								<a style="cursor: pointer;" id="targetsKilledLink">@item.GetBountiesKilledCount(item.Id).ToString()</a>
+							}
+							else
+							{
+								<text>0</text>
+							}
+						</td>
+						<td align="left">
+							@item.GetAmountEarned(item.Id)
+						</td>
+					</tr>
+				}
 
-		</tbody>
-	</table>	
-</div>
+			</tbody>
+		</table>	
+	</div>
+}

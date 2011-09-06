@@ -340,7 +340,7 @@ namespace PlayerBounties.Controllers
 			{
 				bounty.Id = Guid.NewGuid();
 
-				if(this.character.GetCharacter(characterName, shardId, factionId).Count().Equals(0))
+				if(this.character.GetCharacterByName(characterName, shardId, factionId).Count().Equals(0))
 				{
 					this.character.Name = characterName;
 					this.character.ShardId = shardId;
@@ -352,7 +352,7 @@ namespace PlayerBounties.Controllers
 				}
 				else
 				{
-					characterId = this.character.GetCharacter(characterName, shardId, factionId).Single().Id;
+					characterId = this.character.GetCharacterByName(characterName, shardId, factionId).Single().Id;
 				}
 
 				Character characterResult = this.db.Characters.Find(characterId);

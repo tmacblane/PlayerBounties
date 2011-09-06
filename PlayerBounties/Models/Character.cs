@@ -147,7 +147,7 @@ namespace PlayerBounties.Models
 			return this.db.Characters.Where(c => c.Id == characterId).Include(c => c.Shard).Include(c => c.Faction).Include(c => c.Race).Include(c => c.PlayerClass);
 		}
 
-		public IQueryable<Character> GetCharacter(string name, Guid shard, Guid faction)
+		public IQueryable<Character> GetCharacterByName(string name, Guid shard, Guid faction)
 		{
 			return this.db.Characters.Where(c => c.Name == name).Where(c => c.Shard.Id == shard).Where(c => c.Faction.Id == faction);
 		}
@@ -196,6 +196,7 @@ namespace PlayerBounties.Models
 			}
 			catch(Exception)
 			{
+				isCharacterOwner = false;
 			}
 
 			return isCharacterOwner;
@@ -203,27 +204,36 @@ namespace PlayerBounties.Models
 
 		public string CharacterName(Guid characterId)
 		{
-			return this.GetCharacterById(characterId).Single().Name;
+			return this.db.Characters.Find(characterId).Name;
+			// return this.GetCharacterById(characterId).Single().Name;
 		}
 
 		public string CharacterShard(Guid characterId)
 		{
-			return this.GetCharacterById(characterId).Single().Shard.Name;
+			// return this.GetCharacterById(characterId).Single().Shard.Name;
+
+			return this.db.Characters.Where(c => c.Id == characterId).Include(c => c.Shard).Single().Shard.Name;
 		}
 
 		public string CharacterAllegience(Guid characterId)
 		{
-			return this.GetCharacterById(characterId).Single().Faction.Name;
+			// return this.GetCharacterById(characterId).Single().Faction.Name;
+
+			return this.db.Characters.Where(c => c.Id == characterId).Include(c => c.Faction).Single().Faction.Name;
 		}
 
 		public string CharacterClass(Guid characterId)
 		{
-			return this.GetCharacterById(characterId).Single().PlayerClass.Name;
+			// return this.GetCharacterById(characterId).Single().PlayerClass.Name;
+
+			return this.db.Characters.Where(c => c.Id == characterId).Include(c => c.PlayerClass).Single().PlayerClass.Name;
 		}
 
 		public string CharacterRace(Guid characterId)
 		{
-			return this.GetCharacterById(characterId).Single().Race.Name;
+			//return this.GetCharacterById(characterId).Single().Race.Name;
+
+			return this.db.Characters.Where(c => c.Id == characterId).Include(c => c.Race).Single().Race.Name;
 		}
 
 		public List<Bounty> GetBountiesKilled(Guid characterId)

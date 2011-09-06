@@ -77,9 +77,9 @@ namespace PlayerBounties.Controllers
 
 			if(ModelState.IsValid)
 			{
-				if(character.GetCharacter(character.Name, character.ShardId, character.FactionId).Count() != 0)
+				if(character.GetCharacterByName(character.Name, character.ShardId, character.FactionId).Count() != 0)
 				{
-					Character existingCharacter = character.GetCharacter(character.Name, character.ShardId, character.FactionId).Single();
+					Character existingCharacter = character.GetCharacterByName(character.Name, character.ShardId, character.FactionId).Single();
 
 					if(existingCharacter.UserId == Guid.Empty)
 					{
