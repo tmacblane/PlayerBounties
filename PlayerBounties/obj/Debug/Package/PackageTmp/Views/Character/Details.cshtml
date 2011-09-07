@@ -4,84 +4,6 @@
     ViewBag.Title = "Character Details - " + Model.Name;
 }
 
-<script type="text/javascript">
-	$(function () {
-
-	    $("#targetsKilledModal").dialog({
-	        autoOpen: false,
-	        height: 500,
-	        width: 950,
-	        modal: true,
-	        closeOnEscape: true,
-	        draggable: false,
-	        resizable: false,
-	        buttons: {
-	            Close: function () {
-	                $(this).dialog("close");
-	            }
-	        }
-	    });
-
-	    $("#bountiesPlacedModal").dialog({
-	    	autoOpen: false,
-	    	height: 500,
-	    	width: 950,
-			modal: true,
-			closeOnEscape: true,
-			draggable: false,
-			resizable: false,
-			buttons: {
-				Close: function()
-				{
-					$(this).dialog("close");
-				}
-			}
-	    });
-
-	    $("#bountiesAgainstModal").dialog({
-	    	autoOpen: false,
-	    	height: 500,
-	    	width: 950,
-	    	modal: true,
-			closeOnEscape: true,
-			draggable: false,
-			resizable: false,
-			buttons: {
-				Close: function()
-				{
-					$(this).dialog("close");
-				}
-			}
-	    });
-
-	    $("#targetsKilledLink").click(function () {
-			$("#targetsKilledModal").dialog("open");
-		});
-
-		$("#bountiesPlacedLink").click(function()
-		{
-			$("#bountiesPlacedModal").dialog("open");
-		});
-
-		$("#bountiesAgainstLink").click(function()
-		{
-			$("#bountiesAgainstModal").dialog("open");
-		});
-	});
-</script>
-
-<div id="targetsKilledModal" class="bountyStatisticsModal" title="Targets killed by @Model.Name">
-    @Html.Partial("Statistics/_TargetsKilled", Model)
-</div>
-
-<div id="bountiesPlacedModal" class="bountyStatisticsModal" title="Bounties placed by @Model.Name">
-    @Html.Partial("Statistics/_BountiesPlaced", Model)
-</div>
-
-<div id="bountiesAgainstModal" class="bountyStatisticsModal" title="Bounties placed on @Model.Name">
-    @Html.Partial("Statistics/_BountiesPlacedAgainst", Model)
-</div>
-
 <div id="characterInfoTop" style="margin: 10px;">
 	<div id="leftColumn">
 		<table>
@@ -135,9 +57,13 @@
 					Targets Killed:
 				</td>
 				<td align="left">
-					@if(Model.GetBountiesKilledCount(Model.Id) != 0)
+					@{
+						int killedCount = Model.GetBountiesKilledCount(Model.Id);
+					}
+
+					@if(killedCount != 0)
                     {
-                        <a style="cursor: pointer;" id="targetsKilledLink">@Model.GetBountiesKilledCount(Model.Id).ToString()</a>
+						@Html.ActionLink(killedCount.ToString(), "BountyStatistics", "Bounty", new { id = Model.Id, statistic = "targetsKilled" }, null)
 					}
 					else
 					{
@@ -150,9 +76,13 @@
 					Bounties Placed:
 				</td>
 				<td align="left">
-					@if(Model.GetBountiesPlacedCount(Model.Id) != 0)
+					@{
+						int placedCount = Model.GetBountiesPlacedCount(Model.Id);
+					}
+
+					@if(placedCount != 0)
 					{
-                        <a style="cursor: pointer;" id="bountiesPlacedLink">@Model.GetBountiesPlacedCount(Model.Id).ToString()</a>
+						@Html.ActionLink(placedCount.ToString(), "BountyStatistics", "Bounty", new { id = Model.Id, statistic = "bountiesPlaced" }, null)
 					}
 					else
 					{
@@ -165,14 +95,18 @@
 					Bounties Against:
 				</td>
 				<td align="left">
-					@if(Model.GetBountiesPlacedOnCount(Model.Id) != 0)
-					 {
-						<a style="cursor: pointer;" id="bountiesAgainstLink">@Model.GetBountiesPlacedOnCount(Model.Id).ToString()</a>
-					 }
-					 else
-					 {
+					@{
+						int againstCount = Model.GetBountiesKilledCount(Model.Id);
+					}
+
+					@if(againstCount != 0)
+					{
+						@Html.ActionLink(againstCount.ToString(), "BountyStatistics", "Bounty", new { id = Model.Id, statistic = "bountiesPlacedAgainst" }, null)
+					}
+					else
+					{
 						<text>0</text>
-					 }
+					}
 				</td>
 			</tr>
 		</table>
@@ -195,12 +129,12 @@
 						else
 						{
 							<span>@Html.DisplayFor(model => model.Name)</span>
+							}
 						}
-					}
-					else
-					{
+						else
+						{
 						<span>@Html.DisplayFor(model => model.Name)</span>
-					}				
+						}				
 				</td>
 			</tr>
 			<tr>
@@ -266,8 +200,8 @@
 							<span>@Html.DisplayFor(model => model.IsPrimary)</span>
 						</td>
 					</tr>
-			   }
-		   }
+				}
+			}
 		
 			@if(Model.Bio != null)
 			{
