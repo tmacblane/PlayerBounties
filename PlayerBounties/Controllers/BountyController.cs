@@ -509,7 +509,7 @@ namespace PlayerBounties.Controllers
 		
 		public ActionResult BountyStatistics(string statistic, Guid? id = null)
 		{
-			var loggedInUserId = this.bounty.GetLoggedInUserId();
+			var loggedInUserId = this.bounty.GetLoggedInUserId();			
 
 			switch(statistic)
 			{
@@ -518,7 +518,8 @@ namespace PlayerBounties.Controllers
 					{
 						if(this.bounty.GetAccountBountiesCompleted(loggedInUserId).Count() != 0)
 						{
-							return PartialView("_BountiesTable", this.bounty.GetAccountBountiesCompleted(loggedInUserId));
+							IEnumerable<Bounty> targetsKilled = this.bounty.GetAccountBountiesCompleted(loggedInUserId);
+							return PartialView("_BountiesTable", targetsKilled);
 						}
 						else
 						{
@@ -529,7 +530,8 @@ namespace PlayerBounties.Controllers
 					{
 						if(this.bounty.GetBountiesCompleted(id.Value).Count() != 0)
 						{
-							return PartialView("_BountiesTable", this.bounty.GetBountiesCompleted(id.Value));
+							IEnumerable<Bounty> targetsKilled = this.bounty.GetBountiesCompleted(id.Value);
+							return PartialView("_BountiesTable", targetsKilled);
 						}
 						else
 						{
@@ -585,7 +587,7 @@ namespace PlayerBounties.Controllers
 						}
 					}
 			}
-
+			
 			return PartialView("_BountiesTable", this.bounty);
 		}
 		
