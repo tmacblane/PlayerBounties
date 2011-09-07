@@ -233,9 +233,9 @@ namespace PlayerBounties.Controllers
 				Guid hunterUserId = this.db.Characters.Find(bounty.KilledById.Value).UserId;
 
 				pendingBountyCompletionHunterNotification.UserEmailAddress = this.db.Accounts.Find(hunterUserId).EmailAddress;
-				pendingBountyCompletionHunterNotification.ClientName = character.CharacterName(bounty.PlacedById);
-				pendingBountyCompletionHunterNotification.TargetName = character.CharacterName(bounty.PlacedOnId);
-				pendingBountyCompletionHunterNotification.HunterName = character.CharacterName(bounty.KilledById.Value);
+				pendingBountyCompletionHunterNotification.ClientName = this.character.CharacterName(bounty.PlacedById);
+				pendingBountyCompletionHunterNotification.TargetName = this.character.CharacterName(bounty.PlacedOnId);
+				pendingBountyCompletionHunterNotification.HunterName = this.character.CharacterName(bounty.KilledById.Value);
 				pendingBountyCompletionHunterNotification.Amount = bounty.Amount;
 
 				pendingBountyCompletionHunterNotification.Send();
@@ -509,17 +509,24 @@ namespace PlayerBounties.Controllers
 		
 		public ActionResult BountyStatistics(string statistic, Guid? id = null)
 		{
+			// Get id of user logged in and assign to variable to be used in cases
 			var loggedInUserId = this.bounty.GetLoggedInUserId();			
 
 			switch(statistic)
 			{
 				case "targetsKilled":
+					
+					// Guid.Empty searches for account bounty statistics
 					if(id == Guid.Empty)
 					{
-						if(this.bounty.GetAccountBountiesCompleted(loggedInUserId).Count() != 0)
+						// assign variable to results of GetAccountBountiesCompleted
+						var accountBountiesCompleted = this.bounty.GetAccountBountiesCompleted(loggedInUserId);
+
+						// if count is not 0 return results
+						if(accountBountiesCompleted.Count() != 0)
 						{
-							IEnumerable<Bounty> targetsKilled = this.bounty.GetAccountBountiesCompleted(loggedInUserId);
-							return PartialView("_BountiesTable", targetsKilled);
+							IEnumerable<Bounty> targetsKilled = accountBountiesCompleted;
+							return View("_BountiesTable", targetsKilled);
 						}
 						else
 						{
@@ -528,10 +535,12 @@ namespace PlayerBounties.Controllers
 					}
 					else
 					{
-						if(this.bounty.GetBountiesCompleted(id.Value).Count() != 0)
+						var characterBountiesCompleted = this.bounty.GetBountiesCompleted(id.Value);
+
+						if(characterBountiesCompleted.Count() != 0)
 						{
-							IEnumerable<Bounty> targetsKilled = this.bounty.GetBountiesCompleted(id.Value);
-							return PartialView("_BountiesTable", targetsKilled);
+							IEnumerable<Bounty> targetsKilled = characterBountiesCompleted;
+							return View("_BountiesTable", targetsKilled);
 						}
 						else
 						{
@@ -542,9 +551,11 @@ namespace PlayerBounties.Controllers
 				case "bountiesPlaced":
 					if(id == Guid.Empty)
 					{
-						if(this.bounty.GetAccountBountiesPlaced(loggedInUserId).Count() != 0)
+						var accountBountiesPlaced = this.bounty.GetAccountBountiesPlaced(loggedInUserId);
+
+						if(accountBountiesPlaced.Count() != 0)
 						{
-							return PartialView("_BountiesTable", this.bounty.GetAccountBountiesPlaced(loggedInUserId));
+							return View("_BountiesTable", accountBountiesPlaced);
 						}
 						else
 						{
@@ -553,9 +564,11 @@ namespace PlayerBounties.Controllers
 					}
 					else
 					{
-						if(this.bounty.GetBountiesPlaced(id.Value).Count() != 0)
+						var characterBountiesPlaced = this.bounty.GetBountiesPlaced(id.Value);
+
+						if(characterBountiesPlaced.Count() != 0)
 						{
-							return PartialView("_BountiesTable", this.bounty.GetBountiesPlaced(id.Value));
+							return View("_BountiesTable", characterBountiesPlaced);
 						}
 						else
 						{
@@ -566,9 +579,11 @@ namespace PlayerBounties.Controllers
 				case "bountiesPlacedAgainst":
 					if(id == Guid.Empty)
 					{
-						if(this.bounty.GetAccountBountiesPlacedOn(loggedInUserId).Count() != 0)
+						var accountBountiesAgainst = this.bounty.GetAccountBountiesPlacedOn(loggedInUserId);
+
+						if(accountBountiesAgainst.Count() != 0)
 						{
-							return PartialView("_BountiesTable", this.bounty.GetAccountBountiesPlacedOn(loggedInUserId));
+							return View("_BountiesTable", accountBountiesAgainst);
 						}
 						else
 						{
@@ -577,9 +592,11 @@ namespace PlayerBounties.Controllers
 					}
 					else
 					{
-						if(this.bounty.GetBountiesPlacedOn(id.Value).Count() != 0)
+						var characterBountiesAgainst = this.bounty.GetBountiesPlacedOn(id.Value);
+
+						if(characterBountiesAgainst.Count() != 0)
 						{
-							return PartialView("_BountiesTable", this.bounty.GetBountiesPlacedOn(id.Value));
+							return View("_BountiesTable", characterBountiesAgainst);
 						}
 						else
 						{
@@ -587,8 +604,8 @@ namespace PlayerBounties.Controllers
 						}
 					}
 			}
-			
-			return PartialView("_BountiesTable", this.bounty);
+
+			return View("_BountiesTable", this.bounty);
 		}
 		
 		[AcceptVerbs(HttpVerbs.Get)]

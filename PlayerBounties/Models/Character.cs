@@ -205,34 +205,25 @@ namespace PlayerBounties.Models
 		public string CharacterName(Guid characterId)
 		{
 			return this.db.Characters.Find(characterId).Name;
-			// return this.GetCharacterById(characterId).Single().Name;
 		}
 
 		public string CharacterShard(Guid characterId)
 		{
-			// return this.GetCharacterById(characterId).Single().Shard.Name;
-
 			return this.db.Characters.Where(c => c.Id == characterId).Include(c => c.Shard).Single().Shard.Name;
 		}
 
 		public string CharacterAllegience(Guid characterId)
 		{
-			// return this.GetCharacterById(characterId).Single().Faction.Name;
-
 			return this.db.Characters.Where(c => c.Id == characterId).Include(c => c.Faction).Single().Faction.Name;
 		}
 
 		public string CharacterClass(Guid characterId)
 		{
-			// return this.GetCharacterById(characterId).Single().PlayerClass.Name;
-
 			return this.db.Characters.Where(c => c.Id == characterId).Include(c => c.PlayerClass).Single().PlayerClass.Name;
 		}
 
 		public string CharacterRace(Guid characterId)
 		{
-			//return this.GetCharacterById(characterId).Single().Race.Name;
-
 			return this.db.Characters.Where(c => c.Id == characterId).Include(c => c.Race).Single().Race.Name;
 		}
 
