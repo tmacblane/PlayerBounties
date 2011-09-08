@@ -26,6 +26,13 @@
 
 </div>
 
-<div>
-	@Html.Partial("../Home/_KillShotImages", new PlayerBounties.Models.KillShotImage(), null)
-</div>
+@{
+	PlayerBounties.Models.PlayerBountyContext db = new PlayerBounties.Models.PlayerBountyContext();
+	
+	if(db.KillShotImages.Count() != 0)
+	{
+		<div>
+			@Html.Partial("../Home/_KillShotImages", new PlayerBounties.Models.KillShotImage(), null)
+		</div>	
+	}
+}

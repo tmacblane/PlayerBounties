@@ -50,13 +50,13 @@
 	<div id="tabStripContainer">
 		<div id="tabsWrapper">
 			@if(Request.IsAuthenticated)
-   {
+			{
 				@Html.ActionLink("Home", "Dashboard", "Home")
-   }
-   else
-   {
+			}
+			else
+			{
 				@Html.ActionLink("Home", "Index", "Home")
-   }
+			}
 
 			@Html.ActionLink("About", "About", "Home")
 			@Html.ActionLink("Rules", "Rules", "Home")

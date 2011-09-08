@@ -509,9 +509,14 @@ namespace PlayerBounties.Controllers
 		
 		public ActionResult BountyStatistics(string statistic, Guid? id = null)
 		{
-			// Get id of user logged in and assign to variable to be used in cases
-			var loggedInUserId = this.bounty.GetLoggedInUserId();
 			Character characterInfo = null;
+			Guid loggedInUserId = Guid.Empty;
+
+			// Get id of user logged in and assign to variable to be used in cases
+			if(Request.IsAuthenticated)
+			{
+				loggedInUserId = this.bounty.GetLoggedInUserId();
+			}
 
 			if(id != Guid.Empty || id != null)
 			{
@@ -523,7 +528,7 @@ namespace PlayerBounties.Controllers
 				case "targetsKilled":
 					
 					// Guid.Empty searches for account bounty statistics
-					if(id == Guid.Empty)
+					if(id == Guid.Empty && Request.IsAuthenticated)
 					{
 						// assign variable to results of GetAccountBountiesCompleted
 						var accountBountiesCompleted = this.bounty.GetAccountBountiesCompleted(loggedInUserId);
@@ -557,7 +562,7 @@ namespace PlayerBounties.Controllers
 					}
 
 				case "bountiesPlaced":
-					if(id == Guid.Empty)
+					if(id == Guid.Empty && Request.IsAuthenticated)
 					{
 						var accountBountiesPlaced = this.bounty.GetAccountBountiesPlaced(loggedInUserId);
 
@@ -587,7 +592,7 @@ namespace PlayerBounties.Controllers
 					}
 
 				case "bountiesPlacedAgainst":
-					if(id == Guid.Empty)
+					if(id == Guid.Empty && Request.IsAuthenticated)
 					{
 						var accountBountiesAgainst = this.bounty.GetAccountBountiesPlacedOn(loggedInUserId);
 
