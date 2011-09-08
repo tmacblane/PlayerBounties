@@ -143,12 +143,12 @@ else
 	</div>
 } -->
 
-<div class="anyClass" style="visibility: visible; overflow-x: hidden; overflow-y: hidden; position: relative; z-index: 2; left: 0px; width: 980px; ">
-	<ul style="margin-top: 0px; margin-right: 0px; margin-bottom: 0px; margin-left: 0px; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; padding-left: 0px; position: relative; list-style-type: none; z-index: 1; width: 2890px; left: -510px; ">
+<div class="anyClass" style="visibility: visible; overflow-x: hidden; overflow-y: hidden; position: relative; z-index: 2; left: 0px; width: 945px; ">
+	<ul style="margin-top: 0px; margin-right: 0px; margin-bottom: 0px; margin-left: 0px; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; padding-left: 0px; position: relative; list-style-type: none; z-index: 1; width: @Math.Abs(@Model.Count() * 135)px;">
 		@foreach(var item in Model)
 		{
-			<li style="float: left; width: 125px; height: 125px; margin: 5px;">
-				<a href="@Url.Action("Details", "Bounty", new { id = item.GetBountyId(item.Id) })"><img src="../../Content/Images/Thumbnails/@item.ThumbnailFileName" alt="Kill Image" id="killImage" style="width: 100%" /></a>
+			<li style="float: left; width: 135px; height: 135px;">
+				<a href="@Url.Action("Details", "Bounty", new { id = item.GetBountyId(item.Id) })"><img src="../../Content/Images/Thumbnails/@item.ThumbnailFileName" alt="Kill Image" id="killImage" style="width: 125px" /></a>
 			</li>   
 		}	
 	</ul>
