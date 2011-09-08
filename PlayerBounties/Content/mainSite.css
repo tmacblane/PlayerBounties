@@ -3,6 +3,7 @@
 	height: 100%;
 	width: 100%;
 	background-image: url("../../Content/Images/skyfieldBackground.jpg");
+	background-repeat: repeat;
     z-index: 500;
 }
 
@@ -362,6 +363,14 @@ input[type="submit"] input[value], input[type="button"] input[value]
     width: 100%;
 }
 
+#buttons
+{
+	float:right;
+	margin-right: 20px;
+	margin-bottom: 10px;
+	position: relative;
+}
+
 table
 {
 	border: medium none;
@@ -582,8 +591,10 @@ table
 #bountiesTable
 {
 	font-family: Verdana,arial,sans-serif;
-    font-size: 12px;
-    text-align: left;
+    font-size: 11px;
+    text-align: left;    
+    border-radius: 4px 4px 4px 4px;
+    box-shadow: 0 2px 4px #BBBBBB;
 }
 
 /* CLASS COLORS AND ICONS

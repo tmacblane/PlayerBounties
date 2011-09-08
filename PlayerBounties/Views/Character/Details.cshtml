@@ -96,7 +96,7 @@
 				</td>
 				<td align="left">
 					@{
-						int againstCount = Model.GetBountiesKilledCount(Model.Id);
+						int againstCount = Model.GetBountiesPlacedOnCount(Model.Id);
 					}
 
 					@if(againstCount != 0)
@@ -119,7 +119,7 @@
 				<td class="inputLabelCell">
 					@Html.LabelFor(model => model.Name):
 				</td>
-				<td align="left" class=@Model.GetClassStyle(Model.CharacterClass(Model.Id))>
+				<td align="left" class="@Model.GetClassStyle(Model.CharacterClass(Model.Id))">
 					@if(Request.IsAuthenticated)
 					{
 						if(Model.IsCharacterOwner(Model.GetLoggedInUserId(), Model.Id))

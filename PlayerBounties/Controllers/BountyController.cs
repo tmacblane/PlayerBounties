@@ -510,7 +510,13 @@ namespace PlayerBounties.Controllers
 		public ActionResult BountyStatistics(string statistic, Guid? id = null)
 		{
 			// Get id of user logged in and assign to variable to be used in cases
-			var loggedInUserId = this.bounty.GetLoggedInUserId();			
+			var loggedInUserId = this.bounty.GetLoggedInUserId();
+			Character characterInfo = null;
+
+			if(id != Guid.Empty || id != null)
+			{
+				characterInfo = this.db.Characters.Find(id);
+			}
 
 			switch(statistic)
 			{
@@ -526,6 +532,7 @@ namespace PlayerBounties.Controllers
 						if(accountBountiesCompleted.Count() != 0)
 						{
 							IEnumerable<Bounty> targetsKilled = accountBountiesCompleted;
+							@ViewBag.Title = "Targets Killed";
 							return View("_BountiesTable", targetsKilled);
 						}
 						else
@@ -540,6 +547,7 @@ namespace PlayerBounties.Controllers
 						if(characterBountiesCompleted.Count() != 0)
 						{
 							IEnumerable<Bounty> targetsKilled = characterBountiesCompleted;
+							@ViewBag.Title = "Targets Killed By - " + characterInfo.Name;
 							return View("_BountiesTable", targetsKilled);
 						}
 						else
@@ -555,6 +563,7 @@ namespace PlayerBounties.Controllers
 
 						if(accountBountiesPlaced.Count() != 0)
 						{
+							@ViewBag.Title = "Bounties Placed";
 							return View("_BountiesTable", accountBountiesPlaced);
 						}
 						else
@@ -568,6 +577,7 @@ namespace PlayerBounties.Controllers
 
 						if(characterBountiesPlaced.Count() != 0)
 						{
+							@ViewBag.Title = "Bounties Placed By - " + characterInfo.Name;
 							return View("_BountiesTable", characterBountiesPlaced);
 						}
 						else
@@ -583,6 +593,7 @@ namespace PlayerBounties.Controllers
 
 						if(accountBountiesAgainst.Count() != 0)
 						{
+							@ViewBag.Title = "Bounties Placed Against";
 							return View("_BountiesTable", accountBountiesAgainst);
 						}
 						else
@@ -596,6 +607,7 @@ namespace PlayerBounties.Controllers
 
 						if(characterBountiesAgainst.Count() != 0)
 						{
+							@ViewBag.Title = "Bounties Placed On - " + characterInfo.Name;
 							return View("_BountiesTable", characterBountiesAgainst);
 						}
 						else

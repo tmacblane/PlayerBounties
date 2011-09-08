@@ -1,7 +1,9 @@
 ﻿@model IEnumerable<PlayerBounties.Models.Bounty>
+		   
+<link href="@Url.Content("~/Content/bootstrap-1.1.0.min.css")" rel="stylesheet" type="text/css" />
            
-<div style="margin-left: 10px;">
-	<table id="bountiesTable" cellspacing="0" cellpadding="5" border="0">
+<div style="margin: 20px 20px 0 20px;">
+	<table id="bountiesTable" class="zebra-striped" cellspacing="0" cellpadding="5" border="0">
 		<thead>
 			<tr>
 				<th>Target</th>
@@ -43,3 +45,7 @@
 		</tbody>
 	</table>
 </div>
+
+<div id="buttons">		
+	<input type="button" value="<< Back" onclick="window.history.back()"/>
+</div>	
