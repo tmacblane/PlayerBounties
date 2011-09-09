@@ -709,7 +709,7 @@ namespace PlayerBounties.Controllers
 
 				savedThumbnailFileName = string.Concat(savedThumbnailFileName, "_thumbnail.jpg");
 
-				Image thumbnailKillShotImage = ResizeImage(bitmap, new Size(125, 125));
+				Image thumbnailKillShotImage = ResizeImage(bitmap, new Size(170, 170));
 
 				this.SaveJpegThumbnail(savedThumbnailFileName, (Bitmap)thumbnailKillShotImage, 100);
 			}

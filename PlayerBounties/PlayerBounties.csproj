@@ -121,12 +121,13 @@
     <Content Include="Content\Images\bountyhunter01.jpg" />
     <Content Include="Content\Images\editIcon.gif" />
     <Content Include="Content\Images\mandalorianLogo.png" />
+    <Content Include="Content\Images\navigateLeft.jpg" />
+    <Content Include="Content\Images\navigateRight.jpg" />
     <Content Include="Content\Images\rosterClassIcons.png" />
     <Content Include="Content\Images\search_logos.png" />
     <Content Include="Content\Images\skyfieldBackground.jpg" />
     <Content Include="Content\mainSite.css" />
     <Content Include="Content\republicCustom.css" />
-    <Content Include="Content\skin.css" />
     <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
     <Content Include="Content\themes\base\images\ui-bg_flat_75_ffffff_40x100.png" />
     <Content Include="Content\themes\base\images\ui-bg_glass_55_fbf9ee_1x400.png" />
@@ -155,10 +156,10 @@
     <Content Include="Content\themes\base\jquery.ui.tabs.css" />
     <Content Include="Content\themes\base\jquery.ui.theme.css" />
     <Content Include="Global.asax" />
+    <Content Include="Scripts\jcarousellite_1.0.1.js" />
+    <Content Include="Scripts\jcarousellite_1.0.1.min.js" />
     <Content Include="Scripts\jquery-1.5.1.min.js" />
     <Content Include="Scripts\jquery-ui-1.8.11.min.js" />
-    <Content Include="Scripts\jquery.jcarousel.js" />
-    <Content Include="Scripts\jquery.jcarousel.min.js" />
     <Content Include="Scripts\jquery.tablesorter.min.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\modernizr-1.7.min.js" />

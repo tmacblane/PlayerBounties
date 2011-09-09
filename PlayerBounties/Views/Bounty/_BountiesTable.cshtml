@@ -1,6 +1,13 @@
 ﻿@model IEnumerable<PlayerBounties.Models.Bounty>
 		   
 <link href="@Url.Content("~/Content/bootstrap-1.1.0.min.css")" rel="stylesheet" type="text/css" />
+
+<script type="text/javascript">
+	$(function()
+	{
+		$("table").tablesorter({ sortList: [[1, 0]] });
+	});
+</script>
            
 <div style="margin: 20px 20px 0 20px;">
 	<table id="bountiesTable" class="zebra-striped" cellspacing="0" cellpadding="5" border="0">

@@ -1,155 +1,38 @@
 ﻿@model IEnumerable<PlayerBounties.Models.KillShotImage>
 
 <script type="text/javascript">
-	$(function()
+	$(document).ready(function()
 	{
-		$(".anyClass").jCarouselLite({
+		$(".killShotCarousel .killShotImages").jCarouselLite({
 			btnNext: ".next",
-			btnPrev: ".prev"
-		});
-
-		$(".scrollMore .jCarouselLite").jCarouselLite({
-			btnNext: ".scrollMore .next",
-			btnPrev: ".scrollMore .prev",
-			scroll: 2
+			btnPrev: ".prev",
+			start: 0,
+			visible: 6,
+			scroll: 6,
+			circular: true,
 		});
 	});
 </script>
 
-<!-- <script type="text/javascript">
-	$(function killShotImageSlider()
-	{
-		//imageScrollPane parts
-		var imageScrollPane = $(".image-scroll-pane"),
-		imageScrollContent = $(".image-scroll-content");
-
-		//build slider
-		var scrollbar = $(".image-scroll-bar").slider({
-			slide: function(event, ui)
-			{
-				if(imageScrollContent.width() > imageScrollPane.width())
-				{
-					imageScrollContent.css("margin-left", Math.round(
-					ui.value / 100 * (imageScrollPane.width() - imageScrollContent.width())
-				) + "px");
-				} else
-				{
-					imageScrollContent.css("margin-left", 0);
-				}
-			}
-		});
-
-		//append icon to handle
-		var handleHelper = scrollbar.find(".ui-slider-handle")
-
-		.mousedown(function()
-		{
-			scrollbar.width(handleHelper.width());
-		})
-
-		.mouseup(function()
-		{
-			scrollbar.width("100%");
-		})
-
-		.append("<span class='ui-icon ui-icon-grip-dotted-vertical'></span>")
-		.wrap("<div class='ui-handle-helper-parent'></div>").parent();
-
-		//change overflow to hidden now that slider handles the scrolling
-		imageScrollPane.css("overflow", "hidden");
-
-		//size scrollbar and handle proportionally to scroll distance
-		function sizeScrollbar()
-		{
-			var remainder = imageScrollContent.width() - imageScrollPane.width();
-			var proportion = remainder / imageScrollContent.width();
-			var handleSize = imageScrollPane.width() - (proportion * imageScrollPane.width());
-			scrollbar.find(".ui-slider-handle").css({
-				width: handleSize,
-				"margin-left": -handleSize / 2
-			});
-			handleHelper.width("").width(scrollbar.width() - handleSize);
-		}
-
-		//reset slider value based on scroll content position
-		function resetValue()
-		{
-			var remainder = imageScrollPane.width() - imageScrollContent.width();
-			var leftVal = imageScrollContent.css("margin-left") === "auto" ? 0 :
-			parseInt(imageScrollContent.css("margin-left"));
-			var percentage = Math.round(leftVal / remainder * 100);
-			scrollbar.slider("value", percentage);
-		}
-
-		//if the slider is 100% and window gets larger, reveal content
-		function reflowContent()
-		{
-			var showing = imageScrollContent.width() + parseInt(imageScrollContent.css("margin-left"), 10);
-			var gap = imageScrollPane.width() - showing;
-			if(gap > 0)
-			{
-				imageScrollContent.css("margin-left", parseInt(imageScrollContent.css("margin-left"), 10) + gap);
-			}
-		}
-
-		//change handle position on window resize
-		$(window).resize(function()
-		{
-			resetValue();
-			sizeScrollbar();
-			reflowContent();
-		});
-		//init scrollbar size
-		setTimeout(sizeScrollbar, 10); //safari wants a timeout
-	});
-</script>
-
-@if(Model.Count() != 0)
-{
-	<div class="killShotImageSlider">
-		<div class="image-scroll-pane ui-widget slider-widget-header ui-corner-all">
-			<div class="image-scroll-content" style="width: @Math.Abs(@Model.Count() * 147)px;">
-				@foreach(var item in Model)
-				{
-					<div class="image-scroll-content-item slider-widget-header" >
-						<a href="@Url.Action("Details", "Bounty", new { id = item.GetBountyId(item.Id) })"><img src="../../Content/Images/Thumbnails/@item.ThumbnailFileName" alt="Kill Image" id="killImage" style="width: 100%" /></a>
-					</div>   
-				}			
-			</div>
-		
-			@if(Model.Count() > 6)
-			{
-				<div class="image-scroll-bar-wrap ui-widget-content ui-corner-bottom">
-					<div class="image-scroll-bar"></div>
-				</div>
-			}		
-		</div>
+<div class="killShotCarousel">
+	<div id="leftNavigation" style="width: 19px; float:left;">
+		<img class="prev" src="../../Content/Images/navigateLeft.jpg" alt="prev" id="navigateLeft" style="width: 19px" />
+		<!--<button class="prev">&lt;&lt;</button>-->
 	</div>
-}
-else
-{
-	<div class="killShotImageSlider">
-		<div class="image-scroll-pane ui-widget slider-widget-header ui-corner-all">
-			<div class="image-scroll-content" style="width: @Math.Abs(@Model.Count() * 147)px;">
-				<table>
-					<tr>
-						<td style="color: #FFFFFF;">
-							No images have been uploaded
-						</td>
-					</tr>
-				</table>
-			</div>
-		</div>
-	</div>
-} -->
 
-<div class="anyClass" style="visibility: visible; overflow-x: hidden; overflow-y: hidden; position: relative; z-index: 2; left: 0px; width: 945px; ">
-	<ul style="margin-top: 0px; margin-right: 0px; margin-bottom: 0px; margin-left: 0px; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; padding-left: 0px; position: relative; list-style-type: none; z-index: 1; width: @Math.Abs(@Model.Count() * 135)px;">
-		@foreach(var item in Model)
-		{
-			<li style="float: left; width: 135px; height: 135px;">
-				<a href="@Url.Action("Details", "Bounty", new { id = item.GetBountyId(item.Id) })"><img src="../../Content/Images/Thumbnails/@item.ThumbnailFileName" alt="Kill Image" id="killImage" style="width: 125px" /></a>
-			</li>   
-		}	
-	</ul>
+	<div id="rightNavigation"style="width: 19px; float:right;">
+		<img class="next" src="../../Content/Images/navigateRight.jpg" alt="next" id="navigateRight" style="width: 19px" />
+		<!--<button class="next">&gt;&gt;</button>-->
+	</div>
+
+	<div class="killShotImages" style="visibility: visible; overflow-x: hidden; overflow-y: hidden; position: relative; z-index: 2; left: 0px; width: 942px; ">
+		<ul style="margin-top: 0px; margin-right: 0px; margin-bottom: 0px; margin-left: 0px; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; padding-left: 0px; position: relative; list-style-type: none; z-index: 1; width: @Math.Abs(@Model.Count() * 135)px;">
+			@foreach(var item in Model)
+			{
+				<li style="float: left; width: 145px; height: 145px; background-color: #CCCCCC; margin: 6px;">
+					<a href="@Url.Action("Details", "Bounty", new { id = item.GetBountyId(item.Id) })"><img src="../../Content/Images/Thumbnails/@item.ThumbnailFileName" alt="Kill Image" id="killImage" style="width: 125px" /></a>
+				</li>   
+			}	
+		</ul>
+	</div>
 </div>
