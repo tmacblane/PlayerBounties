@@ -5,7 +5,7 @@
 	{
 		//THSLIDE - THUMBNAILS SLIDER
 		$('#bountyImages').thslide({
-			itemOffset: 151,
+			itemOffset: 180,
 			infiniteScroll: 1
 		});
 	});
@@ -13,23 +13,27 @@
 
 @if(Model.Count() != 0)
 {
-	<h2 style="padding-bottom: 0; margin-bottom: 5px;">Bounty Kill Shots</h2>	
-	<div id="bountyImages" class="thslide">
-		<div class="thslide_nav_previous" style="width: 19px; float:left;">
-			<a href="#"><img class="prev" src="../../Content/Images/navigateLeft.jpg" alt="prev" id="navigateLeft" style="width: 19px" /></a>
-		</div>
-		<div class="thslide_nav_next" style="width: 19px; float:right;">
-			<a href="#"><img class="next" src="../../Content/Images/navigateRight.jpg" alt="next" id="navigateRight" style="width: 19px" /></a>
-		</div>
-		<div class="thslide_list" style="position: relative; overflow: hidden; z-index: 2; left: 0px; width: 942px;" >
-			<ul style="margin-top: 0px; margin-right: 0px; margin-bottom: 0px; margin-left: 0px; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; padding-left: 0px; position: relative; overflow: hidden; list-style-type: none; z-index: 1; width: @Math.Abs(@Model.Count() * 157)px;">
-				@foreach(var item in Model)
-				{
-					<li style="float: left; width: 145px; height: 145px; margin: 6px;">
-						<a href="@Url.Action("Details", "Bounty", new { id = item.GetBountyId(item.Id) })"><img src="../../Content/Images/Thumbnails/@item.ThumbnailFileName" alt="Kill Image" id="killImage" style="width: 145px" /></a>
-					</li>   
-				}	
-			</ul>
+	<div id="bountyImages">
+		<h2 style="margin-bottom: 5px;">Bounty Kill Shots</h2>	
+		<div id="bountyImageSlider" class="thslide">			
+			<div class="thslide_nav_previous" style="width: 30px; float:left;">
+				<a href="#"><input id="btnPrev" type="button" value="<" /></a>
+			</div>
+
+			<div class="thslide_nav_next" style="width: 30px; float:right;">
+				<a href="#"><input id="btnNext" type="button" value=">" /></a>
+			</div>
+
+			<div class="thslide_list" style="position: relative; overflow: hidden; z-index: 2; left: 0px; width: 900px;" >
+				<ul style="margin-top: 0px; margin-right: 0px; margin-bottom: 0px; margin-left: 0px; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; padding-left: 0px; position: relative; overflow: hidden; list-style-type: none; z-index: 1; width: @Math.Abs(@Model.Count() * 180)px;">
+					@foreach(var item in Model)
+					{
+						<li style="float: left; width: 168px; height: 168px; margin: 6px;">
+							<a href="@Url.Action("Details", "Bounty", new { id = item.GetBountyId(item.Id) })"><img src="../../Content/Images/Thumbnails/@item.ThumbnailFileName" alt="Kill Image" id="killImage" style="width: 168px;" /></a>
+						</li>   
+					}	
+				</ul>
+			</div>
 		</div>
 	</div>
 }

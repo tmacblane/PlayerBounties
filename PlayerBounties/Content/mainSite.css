@@ -269,6 +269,26 @@ input[type="submit"] input[value], input[type="button"] input[value]
     box-shadow: 0 2px 4px #BBBBBB;
 }
 
+#btnPrev, #btnNext
+{
+	width: 21px;
+	height: 168px;
+	font-weight: bold;
+	padding: 0;
+}
+
+#btnPrev
+{
+	margin: 6px 3px 6px 6px;
+    border-radius: 6px 0 0 6px;
+}
+
+#btnNext
+{
+	margin: 6px 6px 3px 6px;
+    border-radius: 0 6px 6px 0;
+}
+
 #main
 {
 	background: none repeat scroll 0 0 #FFFFFF;
@@ -595,6 +615,27 @@ table
     text-align: left;    
     border-radius: 4px 4px 4px 4px;
     box-shadow: 0 2px 4px #BBBBBB;
+}
+
+#bountyImages
+{
+	bottom:0;
+	position: absolute;
+	margin: 20px
+}
+
+#bountyImages h2
+{
+	padding-bottom: 0px;
+}
+
+#bountyImageSlider
+{
+	border: 1px solid #AAAAAA;
+    border-radius: 4px 4px 4px 4px;
+    box-shadow: 0 2px 4px #BBBBBB;
+	height: 180px;
+	width: 960px;
 }
 
 /* CLASS COLORS AND ICONS
