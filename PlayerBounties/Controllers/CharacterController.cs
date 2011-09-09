@@ -244,20 +244,7 @@ namespace PlayerBounties.Controllers
 			List<KillShotImage> killShotImages = new List<KillShotImage>();
 			List<Guid> killImageIds = new List<Guid>();
 
-			switch(imageType)
-			{
-				case "bountiesPlaced":
-					killImageIds = this.bounty.GetAllKillShotImageIdsByCharacter(characterId, imageType);
-					break;
-
-				case "targetsKilled":
-					killImageIds = this.bounty.GetAllKillShotImageIdsByCharacter(characterId, imageType);
-					break;
-
-				case "bountiesPlacedOn":
-					killImageIds = this.bounty.GetAllKillShotImageIdsByCharacter(characterId, imageType);
-					break;
-			}
+			killImageIds = this.bounty.GetAllKillShotImageIdsByCharacter(characterId, imageType);
 
 			foreach(Guid killImageId in killImageIds)
 			{
