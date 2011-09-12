@@ -329,11 +329,52 @@ namespace PlayerBounties.Controllers
 		[HttpPost]
 		public ActionResult PlaceBounty(Bounty bounty, FormCollection formCollection)
 		{
-			string characterName = formCollection["characterNameTxt"];
+			string characterName = string.Empty;
 			Guid characterId = Guid.Empty;
-			Guid shardId = Guid.Parse(formCollection["ShardId"]);
-			Guid factionId = Guid.Parse(formCollection["FactionId"]);
-			Guid playerClassId = Guid.Parse(formCollection["PlayerClassId"]);
+			Guid factionId = Guid.Empty;
+			Guid shardId = Guid.Empty;
+			Guid playerClassId = Guid.Empty;
+
+			#region Validation errors
+
+			if(formCollection["characterNameTxt"] == string.Empty)
+			{
+				ModelState.AddModelError("PlayerNameRequired", "Player Name is required.");
+			}
+			else
+			{
+				characterName = formCollection["characterNameTxt"];
+			}
+
+			if(formCollection["FactionId"] == string.Empty)
+			{
+				ModelState.AddModelError("FactionRequired", "Faction is required.");
+			}
+			else
+			{
+				factionId = Guid.Parse(formCollection["FactionId"]);
+			}
+
+			if(formCollection["ShardId"] == string.Empty)
+			{
+				ModelState.AddModelError("ShardRequired", "Shard is required.");
+			}
+			else
+			{
+				shardId = Guid.Parse(formCollection["ShardId"]);
+			}
+
+			if(formCollection["PlayerClassId"] == string.Empty || formCollection["PlayerClassId"] == "0")
+			{
+				ModelState.AddModelError("PlayerClassRequired", "Player Class is required.");
+			}
+			else
+			{
+				playerClassId = Guid.Parse(formCollection["PlayerClassId"]);
+			}			
+
+			#endregion
+
 			var accountId = this.account.GetLoggedInUserId();
 
 			if(ModelState.IsValid)
@@ -359,8 +400,18 @@ namespace PlayerBounties.Controllers
 
 				if(characterResult.IsBountyTarget == false)
 				{
-					// Set bounty details
-					bounty.PlacedById = characterResult.GetDefaultCharacterForAnAccount(accountId).Single().Id;
+					// Checks if a player has a selected a character to place the bounty by
+					// if no character is selected, the default character is assigned
+					// otherwise, the selected player is used
+					if(formCollection["CharacterList"] == string.Empty)
+					{
+						this.bounty.PlacedById = this.character.GetDefaultCharacterForAnAccount(accountId).Single().Id;
+					}
+					else
+					{
+						this.bounty.PlacedById = Guid.Parse(formCollection["CharacterList"]);
+					}
+
 					bounty.PlacedOnId = characterId;
 					bounty.KilledById = null;
 					bounty.DatePlaced = DateTime.Now;
@@ -406,7 +457,41 @@ namespace PlayerBounties.Controllers
 			}
 			else
 			{
-				return RedirectToAction("PlaceBounty", "Bounty", new { this.character });
+				// return RedirectToAction("PlaceBounty", "Bounty", new { this.character });
+				var loggedInUserId = this.account.GetLoggedInUserId();
+
+				var characters = this.character.GetAllCharactersForAnAccount(loggedInUserId);
+
+				var defaultCharacter = this.character.GetDefaultCharacterForAnAccount(loggedInUserId);
+
+				var sortedShardList = from shard in this.db.Shards
+									  orderby shard.Name ascending
+									  select shard;
+
+				var sortedFactionList = from faction in this.db.Factions
+										orderby faction.Name ascending
+										select faction;
+
+				var sortedPlayerClassList = from playerClass in this.db.PlayerClasses
+											orderby playerClass.Name ascending
+											select playerClass;
+
+				ViewBag.ShardId = new SelectList(sortedShardList, "Id", "Name", shardId);
+				ViewBag.FactionId = new SelectList(sortedFactionList, "Id", "Name", factionId);
+				ViewBag.PlayerClassId = new SelectList(sortedPlayerClassList, "Id", "Name", playerClassId);
+
+				ViewBag.characterNameTxt = characterName;
+
+				if(characters.Count() != 0)
+				{
+					ViewBag.CharacterList = new SelectList(characters, "Id", "Name", formCollection["CharacterList"]);
+				}
+				else
+				{
+					ViewBag.CharacterList = new SelectList(characters, "Id", "Name");
+				}
+
+				return View(bounty);
 			}
 		}
 

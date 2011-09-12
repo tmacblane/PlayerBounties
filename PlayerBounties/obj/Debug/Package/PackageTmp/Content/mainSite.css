@@ -635,7 +635,8 @@ table
 }
 
 #bountyImageSlider
-{
+{ 
+	background-color: #666666;
 	border: 1px solid #AAAAAA;
     border-radius: 4px 4px 4px 4px;
     box-shadow: 0 2px 4px #BBBBBB;
