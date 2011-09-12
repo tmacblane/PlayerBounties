@@ -4,7 +4,7 @@
     ViewBag.Title = "Character Details - " + Model.Name;
 }
 
-<div id="characterInfoTop" style="margin: 10px;">
+<div id="characterInfoTop" style="margin: 20px;">
 	<div id="leftColumn">
 		<table>
 			<tr style="height: 20px;">
@@ -220,14 +220,18 @@
 
 </div>
 
-<div id="talesFromTheHunt" class="divSize95">
+<div id="talesFromTheHunt" class="divSize95" style="margin-left: 20px;">
 	<p>Link to Tales from hunt</p>
 </div>
 
-<div class="rowBlank">		
+<div style="margin-right: 20px;">		
 	<input type="button" value="<< Back" onclick="window.history.back()"/>
 </div>	
 
-<div id="dashboardBountyImages">
-	@Html.Partial("../Character/_KillShotImages", Model, null)
-</div>	
+<div id="recentBountyImages">
+	@Html.Action("KillShotImages", "Character", new { characterId = Model.Id, imageType = "targetsKilled" })
+</div>
+
+<!-- <div id="dashboardBountyImages">
+	Html.Partial("../Character/_KillShotImages", Model, null)
+</div> -->

@@ -269,6 +269,26 @@ input[type="submit"] input[value], input[type="button"] input[value]
     box-shadow: 0 2px 4px #BBBBBB;
 }
 
+#btnPrev, #btnNext
+{
+	width: 21px;
+	height: 168px;
+	font-weight: bold;
+	padding: 0;
+}
+
+#btnPrev
+{
+	margin: 6px 3px 6px 6px;
+    border-radius: 6px 0 0 6px;
+}
+
+#btnNext
+{
+	margin: 6px 6px 3px 6px;
+    border-radius: 0 6px 6px 0;
+}
+
 #main
 {
 	background: none repeat scroll 0 0 #FFFFFF;
@@ -456,11 +476,6 @@ table
 	border-bottom-width: 1px;
 }
 
-.ui-tabs-selected 
-{ 
-	margin-top: -3px !important; 
-}
-
 #targetsKilledImages, #bountiesPlacedImages, #bountiesPlacedOnImages
 {
 	padding-left: 0;
@@ -478,6 +493,8 @@ table
 .slider
 {
 	margin-top: 20px;
+	margin-left: 20px;
+	margin-right:20px;
 }
 
 #slider-frame > div.slider 
@@ -508,7 +525,7 @@ table
 {
 	border: 1px solid #AAAAAA /*{borderColorHeader}*/;
 	overflow: auto; 
-	width: 978px; 
+	width: 960px;
 	float:left; 
 	background: -moz-linear-gradient(center top , #333333, #666666) repeat scroll 0 0 transparent; 
 	background-color: #444444;
@@ -592,9 +609,38 @@ table
 {
 	font-family: Verdana,arial,sans-serif;
     font-size: 11px;
-    text-align: left;    
+    text-align: left;   
     border-radius: 4px 4px 4px 4px;
     box-shadow: 0 2px 4px #BBBBBB;
+}
+
+#recentBountyImages
+{
+	bottom:0;
+	position: absolute;
+	margin: 20px;
+}
+
+.dashboardBountyImages
+{
+	bottom:0;
+	position: absolute;
+	margin: 20px;
+	margin-bottom: 45px;
+}
+
+#bountyImages h2
+{
+	padding-bottom: 0px;
+}
+
+#bountyImageSlider
+{
+	border: 1px solid #AAAAAA;
+    border-radius: 4px 4px 4px 4px;
+    box-shadow: 0 2px 4px #BBBBBB;
+	height: 180px;
+	width: 960px;
 }
 
 /* CLASS COLORS AND ICONS

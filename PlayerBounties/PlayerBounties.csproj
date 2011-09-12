@@ -120,9 +120,13 @@
     <Content Include="Content\Images\Avatars\smuggler.png" />
     <Content Include="Content\Images\bountyhunter01.jpg" />
     <Content Include="Content\Images\editIcon.gif" />
+    <Content Include="Content\Images\first.png" />
+    <Content Include="Content\Images\last.png" />
     <Content Include="Content\Images\mandalorianLogo.png" />
     <Content Include="Content\Images\navigateLeft.jpg" />
     <Content Include="Content\Images\navigateRight.jpg" />
+    <Content Include="Content\Images\next.png" />
+    <Content Include="Content\Images\prev.png" />
     <Content Include="Content\Images\rosterClassIcons.png" />
     <Content Include="Content\Images\search_logos.png" />
     <Content Include="Content\Images\skyfieldBackground.jpg" />

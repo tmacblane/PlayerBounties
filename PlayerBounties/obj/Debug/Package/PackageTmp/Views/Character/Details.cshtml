@@ -228,4 +228,10 @@
 	<input type="button" value="<< Back" onclick="window.history.back()"/>
 </div>	
 
-@Html.Partial("_KillShotImages", Model, null)
+<div id="recentBountyImages">
+	@Html.Action("KillShotImages", "Character", new { characterId = Model.Id, imageType = "targetsKilled" })
+</div>
+
+<!-- <div id="dashboardBountyImages">
+	Html.Partial("../Character/_KillShotImages", Model, null)
+</div> -->
