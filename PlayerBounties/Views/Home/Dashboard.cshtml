@@ -8,8 +8,8 @@
 	@Html.Action("Characters", "Dashboard")
 </div>
 
-<div class="rowBlank" style="margin-left: 10px;">
-	<div style="float: left;">
+<div class="rowBlank" style="width: 100%;">
+	<div style="float: left; margin-left: 10px;">
 		@if(Model.GetAllCharactersForAnAccount(Model.GetLoggedInUserId()).Count() != 0)
 		{
 			<input id="btnPlaceBounty" type="button" value="Place a Bounty" onclick="location='../../Bounty/PlaceBounty'" />
@@ -21,7 +21,7 @@
 		}
 	</div>
 	
-	<div id="accountStatistics" style="float: right;">
+	<div id="accountStatistics" style="float: right; margin-right: 20px;">
 		<table cellspacing="0" cellpadding="2" border="0" >
 			<thead>
 				<tr>
@@ -100,4 +100,6 @@
 	</div>
 </div>
 
-@Html.Partial("../Dashboard/_KillShotImages", new PlayerBounties.Models.KillShotImage(), null)
+
+@Html.Action("KillShotImages", "Dashboard", new { imageType = "targetsKilled" })
+<!-- Html.Partial("../Dashboard/_KillShotImages", null) -->

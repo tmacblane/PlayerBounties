@@ -214,7 +214,7 @@
 
 			vertical: false,
 			circular: true,
-			visible: 3,
+			visible: 5,
 			start: 0,
 			scroll: 1,
 

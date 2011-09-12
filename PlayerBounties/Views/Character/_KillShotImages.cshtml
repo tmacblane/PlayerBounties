@@ -10,23 +10,23 @@
 	});
 </script>
 
-<div id="killShotImageTable" style="width: 980px; padding-left: 10px; padding-bottom: 20px; position: absolute; bottom: 0;">
+<div id="killShotImageTable" style="width: 960px; position: absolute; bottom: 0;">
 	<div id="killTabs" class="tabs-bottom">
-		<ul class="killslider-widget-header">
+		<ul class="killslider-widget-header" style="margin:20px; width: 960px;" >
 			<li><a href="#targetsKilledImages">Targets Killed</a></li>
 			<li><a href="#bountiesPlacedImages">Bounties Placed</a></li>
 			<li><a href="#bountiesPlacedOnImages">Bounties Against</a></li>
 		</ul>
 
-		<div id="targetsKilledImages">
+		<div id="targetsKilledImages" class="dashboardBountyImages">
 			@Html.Action("KillShotImages", "Character", new { characterId = Model.Id, imageType = "targetsKilled" })
 		</div>
 
-		<div id="bountiesPlacedImages">
+		<div id="bountiesPlacedImages" class="dashboardBountyImages">
 			@Html.Action("KillShotImages", "Character", new { characterId = Model.Id, imageType = "bountiesPlaced" })
 		</div>
 
-		<div id="bountiesPlacedOnImages">
+		<div id="bountiesPlacedOnImages" class="dashboardBountyImages">
 			@Html.Action("KillShotImages", "Character", new { characterId = Model.Id, imageType = "bountiesPlacedOn" })
 		</div>
 	</div>

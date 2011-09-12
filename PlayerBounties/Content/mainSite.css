@@ -476,11 +476,6 @@ table
 	border-bottom-width: 1px;
 }
 
-.ui-tabs-selected 
-{ 
-	margin-top: -3px !important; 
-}
-
 #targetsKilledImages, #bountiesPlacedImages, #bountiesPlacedOnImages
 {
 	padding-left: 0;
@@ -498,6 +493,8 @@ table
 .slider
 {
 	margin-top: 20px;
+	margin-left: 20px;
+	margin-right:20px;
 }
 
 #slider-frame > div.slider 
@@ -528,7 +525,7 @@ table
 {
 	border: 1px solid #AAAAAA /*{borderColorHeader}*/;
 	overflow: auto; 
-	width: 978px; 
+	width: 960px;
 	float:left; 
 	background: -moz-linear-gradient(center top , #333333, #666666) repeat scroll 0 0 transparent; 
 	background-color: #444444;
@@ -612,16 +609,24 @@ table
 {
 	font-family: Verdana,arial,sans-serif;
     font-size: 11px;
-    text-align: left;    
+    text-align: left;   
     border-radius: 4px 4px 4px 4px;
     box-shadow: 0 2px 4px #BBBBBB;
 }
 
-#bountyImages
+#recentBountyImages
 {
 	bottom:0;
 	position: absolute;
-	margin: 20px
+	margin: 20px;
+}
+
+.dashboardBountyImages
+{
+	bottom:0;
+	position: absolute;
+	margin: 20px;
+	margin-bottom: 45px;
 }
 
 #bountyImages h2

@@ -1,1 +1,30 @@
-﻿@model PlayerBounties.Models.KillShotImage
+﻿<script type="text/javascript">
+    $(function () {
+        $("#killTabs").tabs();
+        $(".tabs-bottom .ui-tabs-nav, .tabs-bottom .ui-tabs-nav > *")
+		.removeClass("ui-corner-all ui-corner-top")
+		.addClass("ui-corner-bottom");
+    });
+</script>
+
+<div id="killShotImageTable" style="width: 960px; position: absolute; bottom: 0;">
+	<div id="killTabs" class="tabs-bottom">
+		<ul class="killslider-widget-header" style="margin:20px; width: 960px;" >
+			<li><a href="#targetsKilledImages">Targets Killed</a></li>
+			<li><a href="#bountiesPlacedImages"">Bounties Placed</a></li>
+			<li><a href="#bountiesPlacedOnImages"">Bounties Against</a></li>
+		</ul>
+
+		<div id="targetsKilledImages" class="dashboardBountyImages" >
+			@Html.Action("KillShotImages", "Dashboard", new { imageType = "targetsKilled" })
+		</div>
+
+		<div id="bountiesPlacedImages" class="dashboardBountyImages")>
+			@Html.Action("KillShotImages", "Dashboard", new { imageType = "bountiesPlaced" })
+		</div>
+
+		<div id="bountiesPlacedOnImages" class="dashboardBountyImages">
+			@Html.Action("KillShotImages", "Dashboard", new { imageType = "bountiesPlacedOn" })
+		</div>
+	</div>
+</div>

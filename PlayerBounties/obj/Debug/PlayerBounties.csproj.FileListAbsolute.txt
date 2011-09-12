@@ -17,3 +17,6 @@ C:\Users\TMacBlane\Documents\DevelopmentProjects\PlayerBounties\PlayerBounties\o
 C:\Temp\PlayerBounties\PlayerBounties\bin\Postal.dll
 C:\Temp\PlayerBounties\PlayerBounties\bin\RazorEngine.dll
 C:\Temp\PlayerBounties\PlayerBounties\bin\System.Web.Razor.dll
+C:\Users\TMacBlane\Documents\DevelopmentProjects\PlayerBounties\PlayerBounties\bin\Postal.dll
+C:\Users\TMacBlane\Documents\DevelopmentProjects\PlayerBounties\PlayerBounties\bin\RazorEngine.dll
+C:\Users\TMacBlane\Documents\DevelopmentProjects\PlayerBounties\PlayerBounties\bin\System.Web.Razor.dll
