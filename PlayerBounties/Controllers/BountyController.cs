@@ -75,58 +75,94 @@ namespace PlayerBounties.Controllers
 
 			var accountId = this.account.GetLoggedInUserId();
 
-			if(ModelState.IsValid)
-			{
-				this.bounty.Id = Guid.NewGuid();
+            if(int.Parse(formCollection["Amount"]) <= 0)
+            {
+                ModelState.AddModelError("Amount", "Amount must be greater than 0");
+            }
+            
+            // Check if character has bounty on them
+            if (this.bounty.IsActiveBountyOnCharacter(character.Id) == true)
+            {
+                ModelState.AddModelError(string.Empty, "A bounty has already been placed on this character");
+            }
 
-				// Set bounty details
-				this.bounty.Amount = int.Parse(formCollection["Amount"]);
-				this.bounty.Reason = formCollection["Reason"];
-				this.bounty.Message = formCollection["Message"];
+            if (ModelState.IsValid)
+            {
+                this.bounty.Id = Guid.NewGuid();
 
-				// Checks if a player has a selected a character to place the bounty by
-				// if no character is selected, the default character is assigned
-				// otherwise, the selected player is used
-				if(formCollection["CharacterList"] == string.Empty)
-				{
-					this.bounty.PlacedById = character.GetDefaultCharacterForAnAccount(accountId).Single().Id;
-				}
-				else
-				{
-					this.bounty.PlacedById = Guid.Parse(formCollection["CharacterList"]);
-				}
+                // Set bounty details
+                this.bounty.Amount = int.Parse(formCollection["Amount"]);
+                this.bounty.Reason = formCollection["Reason"];
+                this.bounty.Message = formCollection["Message"];
 
-				this.bounty.PlacedOnId = character.Id;
-				this.bounty.DatePlaced = DateTime.Now;
-				this.bounty.DateCompleted = null;
-				this.bounty.IsPlacementPending = true;
+                // Checks if a player has a selected a character to place the bounty by
+                // if no character is selected, the default character is assigned
+                // otherwise, the selected player is used
+                if (formCollection["CharacterList"] == string.Empty)
+                {
+                    this.bounty.PlacedById = character.GetDefaultCharacterForAnAccount(accountId).Single().Id;
+                }
+                else
+                {
+                    this.bounty.PlacedById = Guid.Parse(formCollection["CharacterList"]);
+                }
 
-				this.db.Bounties.Add(this.bounty);
-				this.db.SaveChanges();
+                this.bounty.PlacedOnId = character.Id;
+                this.bounty.DatePlaced = DateTime.Now;
+                this.bounty.DateCompleted = null;
+                this.bounty.IsPlacementPending = true;
 
-				// Admin alert email notification
-				dynamic pendingBountyAdminAlertEmail = new Email("PendingBountyPlaced-AdminAlert");
+                this.db.Bounties.Add(this.bounty);
+                this.db.SaveChanges();
 
-				pendingBountyAdminAlertEmail.ClientName = character.CharacterName(this.bounty.PlacedById);
-				pendingBountyAdminAlertEmail.TargetName = character.CharacterName(this.bounty.PlacedOnId);
-				pendingBountyAdminAlertEmail.Amount = this.bounty.Amount;
+                // Admin alert email notification
+                dynamic pendingBountyAdminAlertEmail = new Email("PendingBountyPlaced-AdminAlert");
 
-				pendingBountyAdminAlertEmail.Send();
+                pendingBountyAdminAlertEmail.ClientName = character.CharacterName(this.bounty.PlacedById);
+                pendingBountyAdminAlertEmail.TargetName = character.CharacterName(this.bounty.PlacedOnId);
+                pendingBountyAdminAlertEmail.Amount = this.bounty.Amount;
 
-				// Client alert email notification
-				dynamic pendingBountyClientAlertEmail = new Email("PendingBountyPlaced-ClientAlert");
+                pendingBountyAdminAlertEmail.Send();
 
-				pendingBountyClientAlertEmail.UserEmailAddress = this.db.Accounts.Find(accountId).EmailAddress;
-				pendingBountyClientAlertEmail.ClientName = character.CharacterName(this.bounty.PlacedById);
-				pendingBountyClientAlertEmail.TargetName = character.CharacterName(this.bounty.PlacedOnId);
-				pendingBountyClientAlertEmail.Amount = this.bounty.Amount;
+                // Client alert email notification
+                dynamic pendingBountyClientAlertEmail = new Email("PendingBountyPlaced-ClientAlert");
 
-				pendingBountyClientAlertEmail.Send();
+                pendingBountyClientAlertEmail.UserEmailAddress = this.db.Accounts.Find(accountId).EmailAddress;
+                pendingBountyClientAlertEmail.ClientName = character.CharacterName(this.bounty.PlacedById);
+                pendingBountyClientAlertEmail.TargetName = character.CharacterName(this.bounty.PlacedOnId);
+                pendingBountyClientAlertEmail.Amount = this.bounty.Amount;
 
-				return RedirectToAction("Dashboard", "Home");
-			}
+                pendingBountyClientAlertEmail.Send();
 
-			return View(this.bounty);
+                return RedirectToAction("Dashboard", "Home");
+            }
+            else
+            {
+                var loggedInUserId = this.account.GetLoggedInUserId();
+
+                character = this.db.Characters.Where(c => c.Id == character.Id).Include(c => c.Shard).Include(c => c.Faction).Include(c => c.Race).Include(c => c.PlayerClass).Single();
+
+                var characters = this.character.GetAllCharactersOnAShardForAnAccount(loggedInUserId, character.Shard.Name);
+                var defaultCharacter = this.character.GetDefaultCharacterForAnAccount(loggedInUserId);
+
+                this.bounty.PlacedOnId = character.Id;
+
+                ViewBag.ShardId = new SelectList(this.db.Shards, "Id", "Name", character.ShardId);
+                ViewBag.FactionId = new SelectList(this.db.Factions, "Id", "Name", character.FactionId);
+                ViewBag.RaceId = new SelectList(this.db.Races, "Id", "Name", character.RaceId);
+                ViewBag.PlayerClassId = new SelectList(this.db.PlayerClasses, "Id", "Name", character.PlayerClassId);
+
+                if (defaultCharacter.Single().Shard.Name == this.bounty.CharacterShard(this.bounty.PlacedOnId))
+                {
+                    ViewBag.CharacterList = new SelectList(characters, "Id", "Name", defaultCharacter.Single().Id);
+                }
+                else
+                {
+                    ViewBag.CharacterList = new SelectList(characters, "Id", "Name");
+                }
+
+                return View(this.bounty);
+            }
 		}
 
 		// GET: /Bounty/Details/5
@@ -371,17 +407,29 @@ namespace PlayerBounties.Controllers
 			else
 			{
 				playerClassId = Guid.Parse(formCollection["PlayerClassId"]);
-			}			
+			}
+
+            if (int.Parse(formCollection["Amount"]) <= 0)
+            {
+                ModelState.AddModelError("Amount", "Amount must be greater than 0");
+            }
 
 			#endregion
 
-			var accountId = this.account.GetLoggedInUserId();
+            IQueryable<Character> bountyTarget = this.character.GetCharacterByName(characterName, shardId, factionId);
+
+            if(bountyTarget.Count() != 0 && this.bounty.IsActiveBountyOnCharacter(bountyTarget.Single().Id) == true)
+            {
+                ModelState.AddModelError(string.Empty, "A bounty has already been placed on this character");
+            }
+
+            var accountId = this.account.GetLoggedInUserId();
 
 			if(ModelState.IsValid)
 			{
 				bounty.Id = Guid.NewGuid();
 
-				if(this.character.GetCharacterByName(characterName, shardId, factionId).Count().Equals(0))
+				if(bountyTarget.Count().Equals(0))
 				{
 					this.character.Name = characterName;
 					this.character.ShardId = shardId;
@@ -393,106 +441,95 @@ namespace PlayerBounties.Controllers
 				}
 				else
 				{
-					characterId = this.character.GetCharacterByName(characterName, shardId, factionId).Single().Id;
+					characterId = bountyTarget.Single().Id;
 				}
 
 				Character characterResult = this.db.Characters.Find(characterId);
 
-				if(characterResult.IsBountyTarget == false)
-				{
-					// Checks if a player has a selected a character to place the bounty by
-					// if no character is selected, the default character is assigned
-					// otherwise, the selected player is used
-					if(formCollection["CharacterList"] == string.Empty)
-					{
-						this.bounty.PlacedById = this.character.GetDefaultCharacterForAnAccount(accountId).Single().Id;
-					}
-					else
-					{
-						this.bounty.PlacedById = Guid.Parse(formCollection["CharacterList"]);
-					}
+                // Checks if a player has a selected a character to place the bounty by
+                // if no character is selected, the default character is assigned
+                // otherwise, the selected player is used
+                if (formCollection["CharacterList"] == string.Empty)
+                {
+                    bounty.PlacedById = this.character.GetDefaultCharacterForAnAccount(accountId).Single().Id;
+                }
+                else
+                {
+                    bounty.PlacedById = Guid.Parse(formCollection["CharacterList"]);
+                }
 
-					bounty.PlacedOnId = characterId;
-					bounty.KilledById = null;
-					bounty.DatePlaced = DateTime.Now;
-					bounty.DateCompleted = null;
-					bounty.IsPlacementPending = true;
-					bounty.IsCompletionPending = null;
+                bounty.PlacedOnId = characterId;
+                bounty.KilledById = null;
+                bounty.DatePlaced = DateTime.Now;
+                bounty.DateCompleted = null;
+                bounty.IsPlacementPending = true;
+                bounty.IsCompletionPending = null;
 
-					// Create bounty record
-					this.db.Bounties.Add(bounty);
-					this.db.SaveChanges();
+                // Create bounty record
+                this.db.Bounties.Add(bounty);
+                this.db.SaveChanges();
 
-					// Set character is bounty target to true and update the record
-					characterResult.IsBountyTarget = true;
-					this.db.Entry(characterResult).State = EntityState.Modified;
-					this.db.SaveChanges();
+                // Set character is bounty target to true and update the record
+                characterResult.IsBountyTarget = true;
+                this.db.Entry(characterResult).State = EntityState.Modified;
+                this.db.SaveChanges();
 
-					// Admin alert email notification
-					dynamic pendingBountyAdminAlertEmail = new Email("PendingBountyPlaced-AdminAlert");
+                // Admin alert email notification
+                dynamic pendingBountyAdminAlertEmail = new Email("PendingBountyPlaced-AdminAlert");
 
-					pendingBountyAdminAlertEmail.ClientName = characterResult.CharacterName(bounty.PlacedById);
-					pendingBountyAdminAlertEmail.TargetName = characterResult.CharacterName(bounty.PlacedOnId);
-					pendingBountyAdminAlertEmail.Amount = bounty.Amount;
+                pendingBountyAdminAlertEmail.ClientName = characterResult.CharacterName(bounty.PlacedById);
+                pendingBountyAdminAlertEmail.TargetName = characterResult.CharacterName(bounty.PlacedOnId);
+                pendingBountyAdminAlertEmail.Amount = bounty.Amount;
 
-					pendingBountyAdminAlertEmail.Send();
+                pendingBountyAdminAlertEmail.Send();
 
-					// Client alert email notification
-					dynamic pendingBountyClientAlertEmail = new Email("PendingBountyPlaced-ClientAlert");
+                // Client alert email notification
+                dynamic pendingBountyClientAlertEmail = new Email("PendingBountyPlaced-ClientAlert");
 
-					pendingBountyClientAlertEmail.UserEmailAddress = this.db.Accounts.Find(accountId).EmailAddress;
-					pendingBountyClientAlertEmail.ClientName = characterResult.CharacterName(bounty.PlacedById);
-					pendingBountyClientAlertEmail.TargetName = characterResult.CharacterName(bounty.PlacedOnId);
-					pendingBountyClientAlertEmail.Amount = bounty.Amount;
+                pendingBountyClientAlertEmail.UserEmailAddress = this.db.Accounts.Find(accountId).EmailAddress;
+                pendingBountyClientAlertEmail.ClientName = characterResult.CharacterName(bounty.PlacedById);
+                pendingBountyClientAlertEmail.TargetName = characterResult.CharacterName(bounty.PlacedOnId);
+                pendingBountyClientAlertEmail.Amount = bounty.Amount;
 
-					pendingBountyClientAlertEmail.Send();
+                pendingBountyClientAlertEmail.Send();
 
-					return RedirectToAction("Dashboard", "Home");
-				}
-				else
-				{
-					// alert that there is a bounty on this target
-					return RedirectToAction("PlaceBounty", "Bounty", new { character = characterResult });
-				}
+                return RedirectToAction("Dashboard", "Home");
+			}
+
+			var loggedInUserId = this.account.GetLoggedInUserId();
+
+			var characters = this.character.GetAllCharactersForAnAccount(loggedInUserId);
+
+			var defaultCharacter = this.character.GetDefaultCharacterForAnAccount(loggedInUserId);
+
+			var sortedShardList = from shard in this.db.Shards
+									orderby shard.Name ascending
+									select shard;
+
+			var sortedFactionList = from faction in this.db.Factions
+									orderby faction.Name ascending
+									select faction;
+
+			var sortedPlayerClassList = from playerClass in this.db.PlayerClasses
+										orderby playerClass.Name ascending
+										select playerClass;
+
+			ViewBag.ShardId = new SelectList(sortedShardList, "Id", "Name", shardId);
+			ViewBag.FactionId = new SelectList(sortedFactionList, "Id", "Name", factionId);
+			ViewBag.PlayerClassId = new SelectList(sortedPlayerClassList, "Id", "Name", playerClassId);
+
+			ViewBag.characterNameTxt = characterName;
+
+			if(characters.Count() != 0)
+			{
+				ViewBag.CharacterList = new SelectList(characters, "Id", "Name", formCollection["CharacterList"]);
 			}
 			else
 			{
-				// return RedirectToAction("PlaceBounty", "Bounty", new { this.character });
-				var loggedInUserId = this.account.GetLoggedInUserId();
-
-				var characters = this.character.GetAllCharactersForAnAccount(loggedInUserId);
-
-				var defaultCharacter = this.character.GetDefaultCharacterForAnAccount(loggedInUserId);
-
-				var sortedShardList = from shard in this.db.Shards
-									  orderby shard.Name ascending
-									  select shard;
-
-				var sortedFactionList = from faction in this.db.Factions
-										orderby faction.Name ascending
-										select faction;
-
-				var sortedPlayerClassList = from playerClass in this.db.PlayerClasses
-											orderby playerClass.Name ascending
-											select playerClass;
-
-				ViewBag.ShardId = new SelectList(sortedShardList, "Id", "Name", shardId);
-				ViewBag.FactionId = new SelectList(sortedFactionList, "Id", "Name", factionId);
-				ViewBag.PlayerClassId = new SelectList(sortedPlayerClassList, "Id", "Name", playerClassId);
-
-				ViewBag.characterNameTxt = characterName;
-
-				if(characters.Count() != 0)
-				{
-					ViewBag.CharacterList = new SelectList(characters, "Id", "Name", formCollection["CharacterList"]);
-				}
-				else
-				{
-					ViewBag.CharacterList = new SelectList(characters, "Id", "Name");
-				}
-
-				return View(bounty);
+				ViewBag.CharacterList = new SelectList(characters, "Id", "Name");
 			}
+
+			return View(bounty);
 		}
 
 		public ActionResult PendingPlacement()

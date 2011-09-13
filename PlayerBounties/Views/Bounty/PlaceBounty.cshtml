@@ -1,4 +1,6 @@
 ﻿@model PlayerBounties.Models.Bounty
+           
+<link href="@Url.Content("~/Content/bootstrap-1.1.0.min.css")" rel="stylesheet" type="text/css" />
 		   
 <script type="text/javascript">
 	$(document).ready(function()
@@ -63,6 +65,10 @@
 	});
 </script>
 
+<div class="alert-message error">
+    @Html.ValidationSummary()
+</div>
+
 @using(Html.BeginForm("PlaceBounty", "Bounty", FormMethod.Post, new { id = "bountySearchForm" }))
 {
 	<table id="searchTable" cellspacing="0" cellpadding="5" border="0">
@@ -72,7 +78,7 @@
 			</td>
 			<td align="left">
 				@Html.TextBox("characterNameTxt")
-				@Html.ValidationMessage("PlayerNameRequired")
+				@Html.ValidationMessage("PlayerNameRequired", "*")
 			</td>
 		</tr>
 		<tr>
@@ -81,7 +87,7 @@
 			</td>
 			<td align="left">
 				@Html.DropDownList("FactionId", string.Empty)
-				@Html.ValidationMessage("FactionRequired")
+				@Html.ValidationMessage("FactionRequired", "*")
 			</td>
 		</tr>
 		<tr>
@@ -90,7 +96,7 @@
 			</td>
 			<td align="left">
 				@Html.DropDownList("ShardId", string.Empty)
-				@Html.ValidationMessage("ShardRequired")
+				@Html.ValidationMessage("ShardRequired", "*")
 			</td>
 		</tr>
 		<tr>
@@ -99,7 +105,7 @@
 			</td>
 			<td align="left">
 				@Html.DropDownList("PlayerClassId", string.Empty)
-				@Html.ValidationMessage("PlayerClassRequired")
+				@Html.ValidationMessage("PlayerClassRequired", "*")
 			</td>
 		</tr>
 		<tr>
@@ -108,7 +114,7 @@
 			</td>
 			<td align="left">
 				@Html.EditorFor(model => model.Amount)
-				@Html.ValidationMessageFor(model => model.Amount)
+				@Html.ValidationMessageFor(model => model.Amount, "*")
 			</td>
 		</tr>
 		<tr>
