@@ -7,8 +7,12 @@
 	<div style="margin: 20px; height: 267px;">
 		<div style="float:left; width: 590px;">
 			<div id="welcome" style="height: 120px;">
-				<b style="font-size: x-large; color: #000000;">Welcome to Player Bounties!</b><br />
-				Fusce magna nisl, volutpat vel malesuada placerat, tempor ac libero. Fusce convallis condimentum mi vitae feugiat. Aenean mi nisl, viverra vitae tincidunt at, commodo quis leo. In vel enim sagittis diam suscipit vestibulum. Etiam nulla velit, faucibus in consequat a, egestas eget elit. Aliquam id libero lorem. Suspendisse potenti. Etiam euismod varius consectetur. Vivamus sed mauris nisl.
+				<b style="font-size: x-large; color: #000000;">Welcome to The Great Hunt!</b><br />
+
+				A competition for glory instigated by Mandalore the Lesser in an effort to reunite the clans.  This portal serves as way for
+				the members of the competition to keep track of their kills and achievements as they track targets throughout the galaxy vying
+				to becoming the next champion and claiming the title of Mandalore!
+
 			</div>
 
 			<div id="overallStats" style="position: absolute; margin-top: 30px; width: 310px;">
@@ -46,14 +50,14 @@
 		</div>
 	</div>
 
-	<div id="statistics" style="margin: 20px; clear: both; height: 190px;">
+	<div id="statistics" style="margin: 0 20px 20px 20px; clear: both; height: 190px;">
 		<div style="float: left; width: 308px; margin-right: 15px;">
 			@Html.Action("TopHunters", "Statistics")
 		</div>
 		<div style="float: right; width: 308px; margin-left: 15px;">
 			@Html.Action("TopClients", "Statistics")
 		</div>
-		<div style="width: 308px; margin: 0; overflow: hidden;">
+		<div style="width: 308px; margin: 0; padding-left: 325px;">
 			@Html.Action("TopMarks", "Statistics")
 		</div>
 	</div>
