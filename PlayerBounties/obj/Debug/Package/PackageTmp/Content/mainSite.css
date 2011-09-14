@@ -270,6 +270,17 @@ input[type="submit"] input[value], input[type="button"] input[value]
 	line-height: 30px;
 }
 
+#Search
+{
+	float: right;
+	margin-left: 20px;
+	margin-right: 20px;
+	background: #444444;
+	background: -moz-linear-gradient(center top, #EEEEEE, #FFFFFF) repeat scroll 0 0 transparent;
+	color: #222222;
+	height: 27px;
+}
+
 #btnPlaceBounty
 {
 	border-radius: 20px 20px 20px 20px;

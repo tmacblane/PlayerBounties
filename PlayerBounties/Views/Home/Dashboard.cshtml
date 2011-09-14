@@ -8,7 +8,7 @@
 	@Html.Action("Characters", "Dashboard")
 </div>
 
-<div class="rowBlank" style="width: 100%;">
+<div class="rowBlank" style="width: 100%; margin-bottom: 50px;"">
 	<div style="float: left; margin-left: 10px;">
 		@if(Model.GetAllCharactersForAnAccount(Model.GetLoggedInUserId()).Count() != 0)
 		{
