@@ -75,8 +75,6 @@ namespace PlayerBounties.Controllers
 		{
 			var accountId = this.account.GetLoggedInUserId();
 
-            // check if character being entered has a userId
-
             IQueryable<Character> existingCharacter = character.GetCharacterByName(character.Name, character.ShardId, character.FactionId);
 
             if (existingCharacter.Count() != 0 && existingCharacter.Single().UserId != Guid.Empty)

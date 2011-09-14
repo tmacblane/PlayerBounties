@@ -41,18 +41,10 @@ namespace PlayerBounties.Controllers
 		public ActionResult Create(Character character)
 		{
 			var loggedInUserId = this.account.GetLoggedInUserId();
-
-			character = this.db.Characters.Where(c => c.Id == character.Id).Include(c => c.Shard).Include(c => c.Faction).Include(c => c.Race).Include(c => c.PlayerClass).Single();
-
-			var characters = this.character.GetAllCharactersOnAShardForAnAccount(loggedInUserId, character.Shard.Name);
+            var characters = this.character.GetAllCharactersOnAShardForAnAccount(loggedInUserId, this.character.CharacterShard(character.Id));
 			var defaultCharacter = this.character.GetDefaultCharacterForAnAccount(loggedInUserId);
 
 			this.bounty.PlacedOnId = character.Id;
-
-			ViewBag.ShardId = new SelectList(this.db.Shards, "Id", "Name", character.ShardId);
-			ViewBag.FactionId = new SelectList(this.db.Factions, "Id", "Name", character.FactionId);
-			ViewBag.RaceId = new SelectList(this.db.Races, "Id", "Name", character.RaceId);
-			ViewBag.PlayerClassId = new SelectList(this.db.PlayerClasses, "Id", "Name", character.PlayerClassId);
 
 			if(defaultCharacter.Single().Shard.Name == this.bounty.CharacterShard(this.bounty.PlacedOnId))
 			{
@@ -66,7 +58,7 @@ namespace PlayerBounties.Controllers
 			return View(this.bounty);
 		}
 
-		// POST: /Character/Create
+		// POST: /Bounty/Create
 		[Authorize]
 		[HttpPost]
 		public ActionResult Create(Guid id, FormCollection formCollection)
@@ -78,6 +70,11 @@ namespace PlayerBounties.Controllers
             if(int.Parse(formCollection["Amount"]) <= 0)
             {
                 ModelState.AddModelError("Amount", "Amount must be greater than 0");
+            }
+
+            if (formCollection["CharacterList"] == string.Empty)
+            {
+                ModelState.AddModelError("CharacterList", "You must select a character to place a bounty with.");
             }
             
             // Check if character has bounty on them
@@ -94,19 +91,7 @@ namespace PlayerBounties.Controllers
                 this.bounty.Amount = int.Parse(formCollection["Amount"]);
                 this.bounty.Reason = formCollection["Reason"];
                 this.bounty.Message = formCollection["Message"];
-
-                // Checks if a player has a selected a character to place the bounty by
-                // if no character is selected, the default character is assigned
-                // otherwise, the selected player is used
-                if (formCollection["CharacterList"] == string.Empty)
-                {
-                    this.bounty.PlacedById = character.GetDefaultCharacterForAnAccount(accountId).Single().Id;
-                }
-                else
-                {
-                    this.bounty.PlacedById = Guid.Parse(formCollection["CharacterList"]);
-                }
-
+                this.bounty.PlacedById = Guid.Parse(formCollection["CharacterList"]);
                 this.bounty.PlacedOnId = character.Id;
                 this.bounty.DatePlaced = DateTime.Now;
                 this.bounty.DateCompleted = null;
@@ -375,7 +360,7 @@ namespace PlayerBounties.Controllers
 
 			if(formCollection["characterNameTxt"] == string.Empty)
 			{
-				ModelState.AddModelError("PlayerNameRequired", "Player Name is required.");
+                ModelState.AddModelError("CharacterNameRequired", "Character Name is required.");
 			}
 			else
 			{
@@ -411,7 +396,12 @@ namespace PlayerBounties.Controllers
 
             if (int.Parse(formCollection["Amount"]) <= 0)
             {
-                ModelState.AddModelError("Amount", "Amount must be greater than 0");
+                ModelState.AddModelError("Amount", "Amount must be greater than 0.");
+            }
+
+            if (formCollection["CharacterList"] == string.Empty)
+            {
+                ModelState.AddModelError("CharacterList", "You must select a character to place a bounty with.");
             }
 
 			#endregion
@@ -446,18 +436,7 @@ namespace PlayerBounties.Controllers
 
 				Character characterResult = this.db.Characters.Find(characterId);
 
-                // Checks if a player has a selected a character to place the bounty by
-                // if no character is selected, the default character is assigned
-                // otherwise, the selected player is used
-                if (formCollection["CharacterList"] == string.Empty)
-                {
-                    bounty.PlacedById = this.character.GetDefaultCharacterForAnAccount(accountId).Single().Id;
-                }
-                else
-                {
-                    bounty.PlacedById = Guid.Parse(formCollection["CharacterList"]);
-                }
-
+                bounty.PlacedById = Guid.Parse(formCollection["CharacterList"]);
                 bounty.PlacedOnId = characterId;
                 bounty.KilledById = null;
                 bounty.DatePlaced = DateTime.Now;
