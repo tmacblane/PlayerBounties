@@ -4,10 +4,14 @@
     ViewBag.Title = "Place Bounty - " + Model.CharacterName(Model.PlacedOnId);
 }
 
+<script type="text/javascript">
+    $(document).ready(function () {
+        document.getElementById('Amount').value = "";
+    });
+</script>
+
 @using (Html.BeginForm()) 
 {
-    @Html.ValidationSummary(true)
-
 	<table id="createBountyTable" cellspacing="0" cellpadding="5" border="0">
 		<tr>
 			<td class="inputLabelCell">

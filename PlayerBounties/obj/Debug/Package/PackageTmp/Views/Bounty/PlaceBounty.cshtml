@@ -72,7 +72,11 @@
 			</td>
 			<td align="left">
 				@Html.TextBox("characterNameTxt")
+<<<<<<< HEAD
 				@Html.ValidationMessage("PlayerNameRequired")
+=======
+				@Html.ValidationMessage("CharacterNameRequired", "*")
+>>>>>>> 4b7e439078b70a3d45d582ed5eecddbcf9fc26d4
 			</td>
 		</tr>
 		<tr>
@@ -81,7 +85,11 @@
 			</td>
 			<td align="left">
 				@Html.DropDownList("FactionId", string.Empty)
+<<<<<<< HEAD
 				@Html.ValidationMessage("FactionRequired")
+=======
+				@Html.ValidationMessage("FactionRequired", "*")
+>>>>>>> 4b7e439078b70a3d45d582ed5eecddbcf9fc26d4
 			</td>
 		</tr>
 		<tr>
@@ -90,7 +98,11 @@
 			</td>
 			<td align="left">
 				@Html.DropDownList("ShardId", string.Empty)
+<<<<<<< HEAD
 				@Html.ValidationMessage("ShardRequired")
+=======
+				@Html.ValidationMessage("ShardRequired", "*")
+>>>>>>> 4b7e439078b70a3d45d582ed5eecddbcf9fc26d4
 			</td>
 		</tr>
 		<tr>
@@ -99,7 +111,11 @@
 			</td>
 			<td align="left">
 				@Html.DropDownList("PlayerClassId", string.Empty)
+<<<<<<< HEAD
 				@Html.ValidationMessage("PlayerClassRequired")
+=======
+				@Html.ValidationMessage("PlayerClassRequired", "*")
+>>>>>>> 4b7e439078b70a3d45d582ed5eecddbcf9fc26d4
 			</td>
 		</tr>
 		<tr>
@@ -108,7 +124,7 @@
 			</td>
 			<td align="left">
 				@Html.EditorFor(model => model.Amount)
-				@Html.ValidationMessageFor(model => model.Amount)
+				@Html.ValidationMessageFor(model => model.Amount, "*")
 			</td>
 		</tr>
 		<tr>
@@ -132,14 +148,24 @@
 				Requested By:
 			</td>
 			<td align="left">
+<<<<<<< HEAD
 				@Html.DropDownList("CharacterList", string.Empty) Don't see your character listed...@Html.ActionLink("click here", "Create", "Character", null, null) to create them
 
+=======
+				@Html.DropDownList("CharacterList", string.Empty)
+				@Html.ValidationMessage("CharacterList", "*")
+                Don't see your character listed...@Html.ActionLink("click here", "Create", "Character", null, null) to create them
+>>>>>>> 4b7e439078b70a3d45d582ed5eecddbcf9fc26d4
 			</td>
 		</tr>
 	</table>
 	
 	<div class="rowBlank">
+<<<<<<< HEAD
 		@if(Request.IsAuthenticated)
+=======
+		@if (Request.IsAuthenticated)
+>>>>>>> 4b7e439078b70a3d45d582ed5eecddbcf9fc26d4
   {
 			<input id="placeBountyBtn" type="submit" value="Place Bounty" />
   }

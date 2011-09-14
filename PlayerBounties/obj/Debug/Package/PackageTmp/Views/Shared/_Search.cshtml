@@ -1,5 +1,4 @@
-﻿
-@using(Html.BeginForm("Index", "Search", FormMethod.Post, new { id = "searchForm" }))    
+﻿@using(Html.BeginForm("Index", "Search", FormMethod.Post, new { id = "searchForm" }))    
 {
 	<div id="searchTxt" style="width: 250px; float:left;">@Html.TextBox("txtSearch", "Search for characters", new { onfocus = "this.value==this.defaultValue?this.value='':null" } )</div>
 	<div id="searchbtn" style="float: right;"><input id="Search" class="btn" type="submit" value="Search" /></div>

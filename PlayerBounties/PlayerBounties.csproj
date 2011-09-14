@@ -120,6 +120,7 @@
     <Content Include="Content\Images\Avatars\smuggler.png" />
     <Content Include="Content\Images\bountyhunter01.jpg" />
     <Content Include="Content\Images\editIcon.gif" />
+    <Content Include="Content\Images\Error.png" />
     <Content Include="Content\Images\first.png" />
     <Content Include="Content\Images\last.png" />
     <Content Include="Content\Images\mandalorianLogo.png" />

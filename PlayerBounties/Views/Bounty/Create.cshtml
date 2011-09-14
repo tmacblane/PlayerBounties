@@ -4,9 +4,15 @@
     ViewBag.Title = "Place Bounty - " + Model.CharacterName(Model.PlacedOnId);
 }
 
+<script type="text/javascript">
+    $(document).ready(function () {
+        document.getElementById('Amount').value = "";
+    });
+</script>
+
 @using (Html.BeginForm()) 
 {
-    @Html.ValidationSummary(true)
+    @Html.ValidationSummary(false)
 
 	<table id="createBountyTable" cellspacing="0" cellpadding="5" border="0">
 		<tr>
@@ -47,7 +53,7 @@
 			</td>
 			<td align="left">
 				@Html.EditorFor(model => model.Amount)
-				@Html.ValidationMessageFor(model => model.Amount)
+				@Html.ValidationMessageFor(model => model.Amount, "*")
 			</td>
 		</tr>
 		<tr>
@@ -71,7 +77,9 @@
 				Placed By:
 			</td>
 			<td align="left">
-				@Html.DropDownList("CharacterList", string.Empty) Don't see your character listed...@Html.ActionLink("click here", "Create", "Character", null, null) to create them
+				@Html.DropDownList("CharacterList", string.Empty)
+				@Html.ValidationMessage("CharacterList", "*") 
+                Don't see your character listed...@Html.ActionLink("click here", "Create", "Character", null, null) to create them
 			</td>
 		</tr>
 	</table>

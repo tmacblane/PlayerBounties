@@ -4,6 +4,8 @@
 	ViewBag.Title = "Bounty Details - " + Model.CharacterName(Model.PlacedOnId);
 }
 
+@Html.ValidationSummary(false)
+
 <div id="bountyDetailsTop"  style="margin: 20px;">
 	<div id="leftColumn">
 		<!-- wanted poster background image -->
@@ -33,13 +35,13 @@
 					<td class="inputLabelCell" style="width: 75px;">
 						Name:
 					</td>
-					<td class="@Model.GetClassStyle(Model.CharacterClass(Model.PlacedOnId))" align="left" style="width: 150px;">
+					<td class="@Model.GetClassStyle(Model.CharacterClass(Model.PlacedOnId))" align="left" style="width: 150px; font-weight: bold;">
 						@Html.ActionLink(@Model.CharacterName(Model.PlacedOnId).ToString(), "Details", "Character", new { id = Model.PlacedOnId }, null)
 					</td>
 					<td class="inputLabelCell" style="width: 75px;">
 						@Html.LabelFor(model => model.PlacedById):
 					</td>
-					<td class="@Model.GetClassStyle(Model.CharacterClass(Model.PlacedById))" align="left" style="width: 75px;">
+					<td class="@Model.GetClassStyle(Model.CharacterClass(Model.PlacedById))" align="left" style="width: 75px; font-weight: bold;">
 						@Html.ActionLink(@Model.CharacterName(Model.PlacedById).ToString(), "Details", "Character", new { id = Model.PlacedById }, null)
 					</td>
 				</tr>
@@ -136,37 +138,36 @@
 
 @using(Html.BeginForm("Details", "Bounty", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
-    @Html.ValidationSummary(true)
-
 	<!-- If user is logged in, show div  -->
-	if(Request.IsAuthenticated)
-	{
-		if(Model.GetStatus(Model.Id) == "Active")
-		{	
+    if (Request.IsAuthenticated)
+    {
+        if (Model.GetStatus(Model.Id) == "Active")
+        {	
 			@Html.LabelFor(model => model.KillShotImageId)
 			@Html.TextBoxFor(m => m.KillShotImageId, new { type = "file" })
 	
-			@Html.DropDownList("CharacterList", string.Empty)<br />
+			@Html.DropDownList("CharacterList", string.Empty)
+			@Html.ValidationMessage("CharacterList", "*") <br />
             <text>Don't see your character listed...@Html.ActionLink("click here", "Create", "Character", null, null) to create them</text>
-		}
+        }
 
-		if(Model.IsBountyOwner(Model.GetLoggedInUserId(), Model.Id))
-		{
-			if(Model.GetStatus(Model.Id) == "Placement Pending")
-			{
+        if (Model.IsBountyOwner(Model.GetLoggedInUserId(), Model.Id))
+        {
+            if (Model.GetStatus(Model.Id) == "Placement Pending")
+            {
 				@Html.ActionLink("Edit", "Edit", new { id = Model.Id })
-			}
-		}
-	}
+            }
+        }
+    }
 	
 	<div id="buttons" style="width:100%">
-		@if(Request.IsAuthenticated)
-		{
-			if(Model.GetStatus(Model.Id) == "Active")
-			{
-					<input type="submit" value="Complete Bounty"/>
-			}
-		}
+		@if (Request.IsAuthenticated)
+        {
+            if (Model.GetStatus(Model.Id) == "Active")
+            {
+				<input type="submit" value="Complete Bounty"/>
+            }
+        }
 		
 		<input type="button" value="Back" onclick="window.history.back()" />		
 	</div>

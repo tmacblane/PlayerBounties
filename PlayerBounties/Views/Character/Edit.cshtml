@@ -6,8 +6,6 @@
 
 @using(Html.BeginForm())
 {
-    @Html.ValidationSummary(true)
-
     @Html.HiddenFor(model => model.Id)
 	
 	@Html.Partial("_CharacterAddEdit", Model)

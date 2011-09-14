@@ -5,9 +5,7 @@
 }
 
 @using(Html.BeginForm())
-{
-    @Html.ValidationSummary(true)
-	
+{	
 	@Html.Partial("_CharacterAddEdit", Model)
 	
 	<div class="rowBlank">

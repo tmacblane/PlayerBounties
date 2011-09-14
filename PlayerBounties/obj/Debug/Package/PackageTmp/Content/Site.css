@@ -185,7 +185,8 @@ div#title {
 
 /* Styles for validation helpers
 -----------------------------------------------------------*/
-.field-validation-error {
+.field-validation-error 
+{
     color: #ff0000;
 }
 
@@ -200,7 +201,7 @@ div#title {
 
 .validation-summary-errors {
     font-weight: bold;
-    color: #ff0000;
+    color: #FF0000;
 }
 
 .validation-summary-valid {

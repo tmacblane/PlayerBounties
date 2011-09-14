@@ -186,15 +186,15 @@ namespace PlayerBounties.Models
 	{
 		#region Type specific properties
 
-		[Required]
-		[Display(Name = "Email address")]
+		[Required(ErrorMessage = "Email Address is required.")]
+		[Display(Name = "Email Address")]
 		public string Email
 		{
 			get;
 			set;
 		}
 
-		[Required]
+		[Required(ErrorMessage = "Password is required.")]
 		[DataType(DataType.Password)]
 		[Display(Name = "Password")]
 		public string Password

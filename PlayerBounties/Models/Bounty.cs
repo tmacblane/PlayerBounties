@@ -34,14 +34,16 @@ namespace PlayerBounties.Models
 			set;
 		}
 
-		[Display(Name = "Reason")]
+        [Display(Name = "Reason")]
+        [DataType(DataType.MultilineText)]
 		public string Reason
 		{
 			get;
 			set;
 		}
 
-		[Display(Name = "Message")]
+        [Display(Name = "Message")]
+        [DataType(DataType.MultilineText)]
 		public string Message
 		{
 			get;

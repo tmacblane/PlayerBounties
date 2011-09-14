@@ -36,6 +36,10 @@
 		</div>		
 
         <div id="main">
+            <div class="alert-message error">
+                @Html.ValidationSummary()
+            </div>
+
             @RenderBody()
         </div>
 

@@ -5,28 +5,28 @@
 }
 
 @using (Html.BeginForm()) {
-    @Html.ValidationSummary(true)
+    @Html.ValidationSummary(false)
 
 	<div id="signUpForm" class="centeredForm">
 		<div class="rowBlank">
             @Html.LabelFor(model => model.Email)
+            @Html.ValidationMessageFor(model => model.Email, "*")
 		<br />
             @Html.EditorFor(model => model.Email)
-            @Html.ValidationMessageFor(model => model.Email)
         </div>
 		
 		<div class="rowBlank">
             @Html.LabelFor(model => model.Password)
+            @Html.ValidationMessageFor(model => model.Password, "*")
 		<br />
             @Html.EditorFor(model => model.Password)
-            @Html.ValidationMessageFor(model => model.Password)
         </div>
 		
 		<div class="rowBlank">
             @Html.LabelFor(model => model.ConfirmPassword)
+            @Html.ValidationMessageFor(model => model.ConfirmPassword, "*")
 		<br />
             @Html.EditorFor(model => model.ConfirmPassword)
-            @Html.ValidationMessageFor(model => model.ConfirmPassword)
         </div>
 		
 		<div class="rowBlank">

@@ -71,12 +71,14 @@ namespace PlayerBounties.Models
 			set;
 		}
 
+        [DataType(DataType.MultilineText)]
 		public string Motto
 		{
 			get;
 			set;
 		}
 
+        [DataType(DataType.MultilineText)]
 		public string Bio
 		{
 			get;
