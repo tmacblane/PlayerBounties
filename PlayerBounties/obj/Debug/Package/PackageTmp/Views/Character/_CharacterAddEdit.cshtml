@@ -46,7 +46,7 @@
 		</td>
 		<td align="left">
 			@Html.DropDownList("ShardId", String.Empty)
-			@Html.ValidationMessageFor(model => model.ShardId)
+			@Html.ValidationMessageFor(model => model.ShardId, "Shard is required.")
 		</td>
 	</tr>
 	<tr>
@@ -55,7 +55,7 @@
 		</td>
 		<td align="left">
 			@Html.DropDownList("FactionId", String.Empty)
-			@Html.ValidationMessageFor(model => model.FactionId)
+			@Html.ValidationMessageFor(model => model.FactionId, "Faction is required.")
 		</td>
 	</tr>
 	<tr>
@@ -73,7 +73,7 @@
 		</td>
 		<td align="left">
 			@Html.DropDownList("PlayerClassId", String.Empty)
-			@Html.ValidationMessageFor(model => model.PlayerClassId)
+			@Html.ValidationMessageFor(model => model.PlayerClassId, "Class is required.")
 		</td>
 	</tr>
 	<tr>

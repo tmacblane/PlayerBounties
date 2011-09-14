@@ -136,8 +136,6 @@
 
 @using(Html.BeginForm("Details", "Bounty", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
-    @Html.ValidationSummary(true)
-
 	<!-- If user is logged in, show div  -->
 	if(Request.IsAuthenticated)
 	{

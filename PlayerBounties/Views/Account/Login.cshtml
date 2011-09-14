@@ -6,19 +6,21 @@
 
 @using(Html.BeginForm())
 { 
-	<div id="loginForm" class="centeredForm">
+    @Html.ValidationSummary(false)
+	
+    <div id="loginForm" class="centeredForm">
 		<div class="rowBlank">
 			@Html.LabelFor(m => m.Email)
+			@Html.ValidationMessageFor(m => m.Email, "*")
 		<br />
 			@Html.TextBoxFor(m => m.Email)
-			@Html.ValidationMessageFor(m => m.Email)
 		</div>
 
 		<div class="rowBlank">
 			@Html.LabelFor(m => m.Password)
+			@Html.ValidationMessageFor(m => m.Password, "*")
 		<br />
 			@Html.PasswordFor(m => m.Password)
-			@Html.ValidationMessageFor(m => m.Password)
 		</div>
 		<div class="rowBlank">
 			@Html.LabelFor(m => m.RememberMe)

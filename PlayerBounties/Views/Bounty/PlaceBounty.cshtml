@@ -65,6 +65,8 @@
 
 @using(Html.BeginForm("PlaceBounty", "Bounty", FormMethod.Post, new { id = "bountySearchForm" }))
 {
+    @Html.ValidationSummary(false)
+
 	<table id="searchTable" cellspacing="0" cellpadding="5" border="0">
 		<tr>
 			<td class="inputLabelCell">
@@ -129,7 +131,7 @@
 		</tr>
 		<tr>
 			<td class="inputLabelCell">
-				Requested By:
+				Placed By:
 			</td>
 			<td align="left">
 				@Html.DropDownList("CharacterList", string.Empty)

@@ -56,6 +56,13 @@
 
 </script>
 
+<script type="text/javascript">
+	$(document).ready(function()
+	{
+		$("#bountySearchForm").validate();
+	});
+</script>
+
 @using(Html.BeginForm("PlaceBounty", "Bounty", FormMethod.Post, new { id = "bountySearchForm" }))
 {
 	<table id="searchTable" cellspacing="0" cellpadding="5" border="0">
@@ -65,6 +72,7 @@
 			</td>
 			<td align="left">
 				@Html.TextBox("characterNameTxt")
+				@Html.ValidationMessage("CharacterNameRequired", "*")
 			</td>
 		</tr>
 		<tr>
@@ -73,6 +81,7 @@
 			</td>
 			<td align="left">
 				@Html.DropDownList("FactionId", string.Empty)
+				@Html.ValidationMessage("FactionRequired", "*")
 			</td>
 		</tr>
 		<tr>
@@ -81,6 +90,7 @@
 			</td>
 			<td align="left">
 				@Html.DropDownList("ShardId", string.Empty)
+				@Html.ValidationMessage("ShardRequired", "*")
 			</td>
 		</tr>
 		<tr>
@@ -89,6 +99,7 @@
 			</td>
 			<td align="left">
 				@Html.DropDownList("PlayerClassId", string.Empty)
+				@Html.ValidationMessage("PlayerClassRequired", "*")
 			</td>
 		</tr>
 		<tr>
@@ -97,7 +108,7 @@
 			</td>
 			<td align="left">
 				@Html.EditorFor(model => model.Amount)
-				@Html.ValidationMessageFor(model => model.Amount)
+				@Html.ValidationMessageFor(model => model.Amount, "*")
 			</td>
 		</tr>
 		<tr>
@@ -121,16 +132,18 @@
 				Requested By:
 			</td>
 			<td align="left">
-				@Html.DropDownList("CharacterList", string.Empty) Don't see your character listed...@Html.ActionLink("click here", "Create", "Character", null, null) to create them
+				@Html.DropDownList("CharacterList", string.Empty)
+				@Html.ValidationMessage("CharacterList", "*")
+                Don't see your character listed...@Html.ActionLink("click here", "Create", "Character", null, null) to create them
 			</td>
 		</tr>
 	</table>
 	
 	<div class="rowBlank">
-		@if(Request.IsAuthenticated)
-		{
+		@if (Request.IsAuthenticated)
+  {
 			<input id="placeBountyBtn" type="submit" value="Place Bounty" />
-		}
+  }
 		
 		<input type="button" value="Cancel" onclick="window.history.back()"/>
 	</div>
