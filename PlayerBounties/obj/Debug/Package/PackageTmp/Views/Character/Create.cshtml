@@ -6,8 +6,11 @@
 
 @using(Html.BeginForm())
 {	
-	@Html.Partial("_CharacterAddEdit", Model)
-	
+    @Html.ValidationSummary(false)
+
+    <div class="rowBlank">
+	    @Html.Partial("_CharacterAddEdit", Model)
+	</div>
 	<div class="rowBlank">
 		<input type="submit" value="Create" />			
 		<input type="button" value="Cancel" onclick="window.history.back()"/>

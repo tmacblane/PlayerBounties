@@ -292,6 +292,13 @@ namespace PlayerBounties.Models
 			return bounty.GetAmountSpent(characterId);
 		}
 
+		public double GetAmountWorth(Guid characterId)
+		{
+			Bounty bounty = new Bounty();
+
+			return bounty.GetAmountWorth(characterId);
+		}
+
 		public bool IsActiveBountyOnCharacter(Guid characterId)
 		{
 			Bounty bounty = new Bounty();

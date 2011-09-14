@@ -444,6 +444,20 @@ namespace PlayerBounties.Models
 			return amountSpent;
 		}
 
+		public double GetAmountWorth(Guid characterId)
+		{
+			IEnumerable<Bounty> bounties = this.GetBountiesPlacedOn(characterId);
+
+			double amountWorth = 0;
+
+			foreach(var bounty in bounties)
+			{
+				amountWorth = amountWorth + bounty.Amount;
+			}
+
+			return amountWorth;
+		}
+
 		public bool IsActiveBountyOnCharacter(Guid characterId)
 		{
 			bool isActiveBounty = false;

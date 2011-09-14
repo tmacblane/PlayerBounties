@@ -13,7 +13,6 @@
 			<tbody>
 				<tr>
 					<th>Character Name</th>
-					<th>Shard</th>
 					<th style="text-align: center;">Bounties</th>
 					<th>Total Spent</th>
 				</tr>
@@ -23,9 +22,6 @@
 					<tr>
 						<td class="inputLabelCell @item.GetClassStyle(item.CharacterClass(item.Id))">
 							@Html.ActionLink(item.Name, "Details", "Character", new { id = item.Id }, null)
-						</td>
-						<td align="left">
-							@item.CharacterShard(item.Id)
 						</td>
 						<td align="center">
 							@item.GetBountiesPlacedCount(item.Id)

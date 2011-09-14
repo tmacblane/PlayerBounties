@@ -12,6 +12,8 @@
 
 @using (Html.BeginForm()) 
 {
+    @Html.ValidationSummary(false)
+
 	<table id="createBountyTable" cellspacing="0" cellpadding="5" border="0">
 		<tr>
 			<td class="inputLabelCell">
@@ -51,7 +53,7 @@
 			</td>
 			<td align="left">
 				@Html.EditorFor(model => model.Amount)
-				@Html.ValidationMessageFor(model => model.Amount)
+				@Html.ValidationMessageFor(model => model.Amount, "*")
 			</td>
 		</tr>
 		<tr>
@@ -75,7 +77,9 @@
 				Placed By:
 			</td>
 			<td align="left">
-				@Html.DropDownList("CharacterList", string.Empty) Don't see your character listed...@Html.ActionLink("click here", "Create", "Character", null, null) to create them
+				@Html.DropDownList("CharacterList", string.Empty)
+				@Html.ValidationMessage("CharacterList", "*") 
+                Don't see your character listed...@Html.ActionLink("click here", "Create", "Character", null, null) to create them
 			</td>
 		</tr>
 	</table>

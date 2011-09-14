@@ -119,7 +119,7 @@
 				<td class="inputLabelCell">
 					@Html.LabelFor(model => model.Name):
 				</td>
-				<td align="left" class="@Model.GetClassStyle(Model.CharacterClass(Model.Id))">
+				<td align="left" class="@Model.GetClassStyle(Model.CharacterClass(Model.Id))" style="font-weight: bold;">
 					@if(Request.IsAuthenticated)
 					{
 						if(Model.IsCharacterOwner(Model.GetLoggedInUserId(), Model.Id))

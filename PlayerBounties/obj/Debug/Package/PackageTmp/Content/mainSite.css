@@ -7,6 +7,31 @@
     z-index: 500;
 }
 
+/* VALIDATION MESSAGES   
+----------------------------------------------------------*/
+.validation-summary-errors
+{
+    background-color:#d83a2e;
+    background-repeat:repeat-x;
+    background-image:-khtml-gradient(linear, left top, left bottom, from(#e4776f), to(#d83a2e));
+    background-image:-moz-linear-gradient(#e4776f, #d83a2e);
+    background-image:-ms-linear-gradient(#e4776f, #d83a2e);
+    background-image:-webkit-gradient(linear, left top, left bottom, color-stop(0%, #e4776f), color-stop(100%, #d83a2e));
+    background-image:-webkit-linear-gradient(#e4776f, #d83a2e);
+    background-image:-o-linear-gradient(#e4776f, #d83a2e);
+    background-image:linear-gradient(#e4776f, #d83a2e);
+    border-bottom-color:#b32b21;
+    color: #FFFFFF;
+    font-weight: bold;
+}
+
+.field-validation-error 
+{
+    color: #ff0000;
+    font-weight: bold;
+}
+
+/* */
 .page {
     width: 1000px;
     margin-left: auto;
@@ -310,13 +335,22 @@ input[type="submit"] input[value], input[type="button"] input[value]
 	margin-left: 275px;
 }
 
+#loginForm
+{
+	width: 270px;
+}
+
+#signUpForm
+{
+	width: 400px;
+}
+
 #loginForm, #signUpForm
 {
 	background-color: #FFFFFF;
 	border-style: solid;
     border-width: 1px;
 	padding: 20px;
-    width: 400px;
     border: 1px solid #BBBBBB;
     border-radius: 4px 4px 4px 4px;
     box-shadow: 0 2px 4px #BBBBBB;
@@ -329,21 +363,20 @@ input[type="submit"] input[value], input[type="button"] input[value]
 
 .statisticsContainer
 {
-	margin: 20px 10px;
 	background-color: #FFFFFF;
 	border-style: solid;
     border-width: 1px;
 	padding: 10px;
-    width: auto;
     border: 1px solid #BBBBBB;
     border-radius: 4px 4px 4px 4px;
     box-shadow: 0 2px 4px #BBBBBB;
+    overflow: hidden;
 }
 
 .statisticsTable
 {
 	 font-size: 12px;
-	 width: 400px;
+	 width: 310px;
 	 text-align: left;
 }
 
@@ -616,9 +649,7 @@ table
 
 #recentBountyImages
 {
-	bottom:0;
-	position: absolute;
-	margin: 20px;
+	margin: 0 20px 20px 20px;
 }
 
 .dashboardBountyImages

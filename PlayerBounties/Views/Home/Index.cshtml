@@ -17,44 +17,43 @@
 		</div>
 
 		<div style="float:right;">
-				<div id="loginForm">
-					<div class="rowBlank">
-						@Html.LabelFor(m => m.Email)
-						@Html.ValidationMessageFor(m => m.Email, "*")
-					<br />
-						@Html.TextBoxFor(m => m.Email)
-					</div>
-
-					<div class="rowBlank">
-						@Html.LabelFor(m => m.Password)
-						@Html.ValidationMessageFor(m => m.Password, "*")
-					<br />
-						@Html.PasswordFor(m => m.Password)
-					</div>
-					<div class="rowBlank">
-						<input type="submit" value="Login" />
-					</div>
-
-					<div class="rowBlank">
-						<hr />
-						<ul>
-							<li>@Html.ActionLink("Forgot Your Password?", "Login", "Account")</li>
-							<li>Want to join the hunt?  @Html.ActionLink("Sign Up", "SignUp", "Account")</li>
-						</ul>
-					</div>
+			<div id="loginForm">
+				<div class="rowBlank">
+					@Html.LabelFor(m => m.Email)
+					@Html.ValidationMessageFor(m => m.Email, "*")
+				<br />
+					@Html.TextBoxFor(m => m.Email)
 				</div>
 
+				<div class="rowBlank">
+					@Html.LabelFor(m => m.Password)
+					@Html.ValidationMessageFor(m => m.Password, "*")
+				<br />
+					@Html.PasswordFor(m => m.Password)
+				</div>
+				<div class="rowBlank">
+					<input type="submit" value="Login" />
+				</div>
+
+				<div class="rowBlank">
+					<hr />
+					<ul>
+						<li>@Html.ActionLink("Forgot Your Password?", "Login", "Account")</li>
+						<li>Want to join the hunt?  @Html.ActionLink("Sign Up", "SignUp", "Account")</li>
+					</ul>
+				</div>
 			</div>
+		</div>
 	</div>
 
 	<div id="statistics" style="margin: 20px; clear: both; height: 190px;">
-		<div style="float: left; width: 310px; margin-right: 15px;">
+		<div style="float: left; width: 308px; margin-right: 15px;">
 			@Html.Action("TopHunters", "Statistics")
 		</div>
-		<div style="float: right; width: 310px; margin-left: 15px;">
+		<div style="float: right; width: 308px; margin-left: 15px;">
 			@Html.Action("TopClients", "Statistics")
 		</div>
-		<div style="width: 310px; margin: 0; overflow: hidden;">
+		<div style="width: 308px; margin: 0; overflow: hidden;">
 			@Html.Action("TopMarks", "Statistics")
 		</div>
 	</div>
