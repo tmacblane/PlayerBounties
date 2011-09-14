@@ -310,13 +310,22 @@ input[type="submit"] input[value], input[type="button"] input[value]
 	margin-left: 275px;
 }
 
+#loginForm
+{
+	width: 270px;
+}
+
+#signUpForm
+{
+	width: 400px;
+}
+
 #loginForm, #signUpForm
 {
 	background-color: #FFFFFF;
 	border-style: solid;
     border-width: 1px;
 	padding: 20px;
-    width: 400px;
     border: 1px solid #BBBBBB;
     border-radius: 4px 4px 4px 4px;
     box-shadow: 0 2px 4px #BBBBBB;
@@ -329,21 +338,20 @@ input[type="submit"] input[value], input[type="button"] input[value]
 
 .statisticsContainer
 {
-	margin: 20px 10px;
 	background-color: #FFFFFF;
 	border-style: solid;
     border-width: 1px;
 	padding: 10px;
-    width: auto;
     border: 1px solid #BBBBBB;
     border-radius: 4px 4px 4px 4px;
     box-shadow: 0 2px 4px #BBBBBB;
+    overflow: hidden;
 }
 
 .statisticsTable
 {
 	 font-size: 12px;
-	 width: 400px;
+	 width: 310px;
 	 text-align: left;
 }
 
@@ -616,9 +624,7 @@ table
 
 #recentBountyImages
 {
-	bottom:0;
-	position: absolute;
-	margin: 20px;
+	margin: 0 20px 20px 20px;
 }
 
 .dashboardBountyImages

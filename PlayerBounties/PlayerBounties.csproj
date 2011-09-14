@@ -182,7 +182,7 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Home\About.cshtml" />
-    <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\Home\Index_old.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Web.config" />
@@ -218,6 +218,7 @@
     <Content Include="Views\Emails\BountyCompletionApproved-TargetAlert.cshtml" />
     <Content Include="Views\Emails\PendingBountyCompletion-AdminAlert.cshtml" />
     <Content Include="Views\Emails\PendingBountyCompletion-HunterAlert.cshtml" />
+    <Content Include="Views\Home\Index.cshtml" />
     <None Include="_bin_deployableAssemblies\Microsoft.Web.Infrastructure.dll" />
     <None Include="_bin_deployableAssemblies\System.Web.WebPages.Razor.dll" />
     <None Include="_bin_deployableAssemblies\System.Web.WebPages.dll" />

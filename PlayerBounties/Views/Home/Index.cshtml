@@ -1,31 +1,66 @@
-﻿<div style="float: left; padding-left: 390px;">
-	<input id="btnPlaceBounty" type="button" value="Login" onclick="location='../../Account/Login'" />
-	<br />
-	<input id="btnPlaceBounty" type="button" value="Sign up for the hunt" onclick="location='../../Account/SignUp'" />
-</div>
+﻿@model PlayerBounties.Models.LoginModel
+		   
+@using(Html.BeginForm())
+{    
+	@Html.ValidationSummary()
 
-<div id="statisticsTables" style="padding-top: 110px;">
+	<div style="margin: 20px; height: 267px;">
+		<div style="float:left; width: 590px;">
+			<div id="welcome" style="height: 120px;">
+				<b style="font-size: x-large; color: #000000;">Welcome to Player Bounties!</b><br />
+				Fusce magna nisl, volutpat vel malesuada placerat, tempor ac libero. Fusce convallis condimentum mi vitae feugiat. Aenean mi nisl, viverra vitae tincidunt at, commodo quis leo. In vel enim sagittis diam suscipit vestibulum. Etiam nulla velit, faucibus in consequat a, egestas eget elit. Aliquam id libero lorem. Suspendisse potenti. Etiam euismod varius consectetur. Vivamus sed mauris nisl.
+			</div>
 
-	<div id="leftTables" style="float: left; width: 350px;">
-		<div>
-			@Html.Partial("../Statistics/_BountiesSummary", new PlayerBounties.Models.Bounty())
+			<div id="overallStats" style="position: absolute; margin-top: 30px; width: 310px;">
+				@Html.Partial("../Statistics/_BountiesSummary", new PlayerBounties.Models.Bounty())
+			</div>
 		</div>
-		<div>
+
+		<div style="float:right;">
+				<div id="loginForm">
+					<div class="rowBlank">
+						@Html.LabelFor(m => m.Email)
+						@Html.ValidationMessageFor(m => m.Email, "*")
+					<br />
+						@Html.TextBoxFor(m => m.Email)
+					</div>
+
+					<div class="rowBlank">
+						@Html.LabelFor(m => m.Password)
+						@Html.ValidationMessageFor(m => m.Password, "*")
+					<br />
+						@Html.PasswordFor(m => m.Password)
+					</div>
+					<div class="rowBlank">
+						<input type="submit" value="Login" />
+					</div>
+
+					<div class="rowBlank">
+						<hr />
+						<ul>
+							<li>@Html.ActionLink("Forgot Your Password?", "Login", "Account")</li>
+							<li>Want to join the hunt?  @Html.ActionLink("Sign Up", "SignUp", "Account")</li>
+						</ul>
+					</div>
+				</div>
+
+			</div>
+	</div>
+
+	<div id="statistics" style="margin: 20px; clear: both; height: 190px;">
+		<div style="float: left; width: 310px; margin-right: 15px;">
+			@Html.Action("TopHunters", "Statistics")
+		</div>
+		<div style="float: right; width: 310px; margin-left: 15px;">
+			@Html.Action("TopClients", "Statistics")
+		</div>
+		<div style="width: 310px; margin: 0; overflow: hidden;">
 			@Html.Action("TopMarks", "Statistics")
 		</div>
 	</div>
 
-	<div id="rightTables" style="position: absolute; width: 450px;">
-		<div>
-			@Html.Action("TopHunters", "Statistics")
-		</div>
-		<div>
-			@Html.Action("TopClients", "Statistics")
-		</div>
+	<div id="recentBountyImages">
+		@Html.Action("KillShotImages", "Home", new { imageType = "targetsKilled" })
 	</div>
-
-</div>
-
-<div id="recentBountyImages">
-    @Html.Action("KillShotImages", "Home", new { imageType = "targetsKilled" })
-</div>
+	  
+}
