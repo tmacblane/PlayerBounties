@@ -67,10 +67,14 @@ namespace PlayerBounties.Controllers
 
 			var accountId = this.account.GetLoggedInUserId();
 
-            if(int.Parse(formCollection["Amount"]) <= 0)
-            {
-                ModelState.AddModelError("Amount", "Amount must be greater than 0");
-            }
+			if(formCollection["Amount"] == string.Empty)
+			{
+				ModelState.AddModelError("Amount", "Amount is required.");
+			}
+			else if(int.Parse(formCollection["Amount"]) <= 0)
+			{
+				ModelState.AddModelError("Amount", "Amount must be greater than 0.");
+			}
 
             if (formCollection["CharacterList"] == string.Empty)
             {
@@ -441,7 +445,11 @@ namespace PlayerBounties.Controllers
 				playerClassId = Guid.Parse(formCollection["PlayerClassId"]);
 			}
 
-            if (int.Parse(formCollection["Amount"]) <= 0)
+			if(formCollection["Amount"] == string.Empty)
+			{
+				ModelState.AddModelError("Amount", "Amount is required.");
+			}
+			else if (int.Parse(formCollection["Amount"]) <= 0)
             {
                 ModelState.AddModelError("Amount", "Amount must be greater than 0.");
             }

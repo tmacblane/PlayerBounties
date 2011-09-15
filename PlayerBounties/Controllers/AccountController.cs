@@ -36,7 +36,7 @@ namespace PlayerBounties.Controllers
 			{
 				if(this.account.ValidateUser(loginModel.Email, loginModel.Password))
 				{
-					FormsAuthentication.SetAuthCookie(loginModel.Email, loginModel.RememberMe);
+					FormsAuthentication.SetAuthCookie(loginModel.Email, true);
 					if(Url.IsLocalUrl(returnUrl) && returnUrl.Length > 1 && returnUrl.StartsWith("/")
 						&& !returnUrl.StartsWith("//") && !returnUrl.StartsWith("/\\"))
 					{

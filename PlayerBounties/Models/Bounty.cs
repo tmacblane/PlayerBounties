@@ -26,14 +26,15 @@ namespace PlayerBounties.Models
 			set;
 		}
 
-		[Required]
+		[Required(ErrorMessage="Amount is required.")]
+		[Range(1, int.MaxValue, ErrorMessage = "The Amount must be greater than 0")]
 		[Display(Name = "Amount")]
 		public int Amount
 		{
 			get;
 			set;
 		}
-
+		
         [Display(Name = "Reason")]
         [DataType(DataType.MultilineText)]
 		public string Reason

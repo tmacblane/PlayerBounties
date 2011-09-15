@@ -20,7 +20,7 @@ namespace PlayerBounties.Models
 
 		public List<Character> FindAllCharactersByName(string characterName)
 		{
-			return this.db.Characters.Where(rows => rows.Name == characterName).Include(c => c.Shard).Include(c => c.Faction).Include(c => c.Race).Include(c => c.PlayerClass).ToList();
+			return this.db.Characters.Where(rows => rows.Name.StartsWith(characterName)).Include(c => c.Shard).Include(c => c.Faction).Include(c => c.Race).Include(c => c.PlayerClass).ToList();
 		}
 
 		#endregion

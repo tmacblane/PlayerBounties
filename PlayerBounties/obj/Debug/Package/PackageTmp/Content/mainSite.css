@@ -416,6 +416,15 @@ input[type="submit"] input[value], input[type="button"] input[value]
     height: inherit;
 }
 
+#wantedPoster
+{
+	width: 175px;
+	height: 260px;
+	float: left;
+    background-color: #FFFFFF;
+    height: inherit;
+}
+
 .rowBlank
 {
 	clear: both;

@@ -25,9 +25,14 @@ namespace PlayerBounties.Controllers
 
 		public ActionResult Index()
 		{
-			ViewBag.Message = "Coming Soon!";
-
-			return View();
+			if(Request.IsAuthenticated)
+			{
+				return View("Dashboard", null, this.character);
+			}
+			else
+			{
+				return View();
+			}
 		}
 
 		public ActionResult About()

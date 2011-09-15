@@ -51,7 +51,7 @@
 					}));
 				});
 			});
-		});
+		});		
 	});
 
 </script>
@@ -59,13 +59,30 @@
 <script type="text/javascript">
 	$(document).ready(function()
 	{
-		$("#bountySearchForm").validate();
+		$("#placeBountyBtn").click(function()
+		{
+			jQuery($("characterNameTxt").require(["Character name is required."])
+
+			refUI = document.getElementById("validation-summary-errors-id").lastChild
+
+			if($("characterNameTxt").val() == undefined)
+			{
+				if(refUI != null)
+				{
+					myLi = document.createElement("li");
+					myLi.innerText = "Character name is required.";
+					refUI.appendChild(myLi)
+				}
+			}
+
+			alert("hi there");
+		})
 	});
 </script>
 
 @using(Html.BeginForm("PlaceBounty", "Bounty", FormMethod.Post, new { id = "bountySearchForm" }))
 {
-    @Html.ValidationSummary(false)
+    @Html.ValidationSummary(false, "", new { id = "validation-summary-errors-id" })
 
 	<table id="searchTable" cellspacing="0" cellpadding="5" border="0">
 		<tr>
@@ -142,10 +159,10 @@
 	</table>
 	
 	<div class="rowBlank">
-		@if (Request.IsAuthenticated)
-        {
+		@if(Request.IsAuthenticated)
+  {
 			<input id="placeBountyBtn" type="submit" value="Place Bounty" />
-        }
+  }
 		
 		<input type="button" value="Cancel" onclick="window.history.back()"/>
 	</div>
