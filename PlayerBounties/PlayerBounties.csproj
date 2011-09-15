@@ -131,6 +131,7 @@
     <Content Include="Content\Images\rosterClassIcons.png" />
     <Content Include="Content\Images\search_logos.png" />
     <Content Include="Content\Images\skyfieldBackground.jpg" />
+    <Content Include="Content\Images\wantedPoster.jpg" />
     <Content Include="Content\mainSite.css" />
     <Content Include="Content\republicCustom.css" />
     <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
