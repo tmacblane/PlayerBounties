@@ -782,6 +782,13 @@ namespace PlayerBounties.Models
 			return bountyWatched;
 		}
 
+		public int GetBountyWatchedCount(Guid bountyId)
+		{
+			WatchedBounty watchedBounty = new WatchedBounty();
+
+			return watchedBounty.GetBountyWatchedCount(bountyId);
+		}
+
 		#endregion
 	}
 }
