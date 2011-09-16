@@ -732,17 +732,17 @@ namespace PlayerBounties.Controllers
 			IQueryable<WatchedBounty> watchedBounties = this.db.WatchedBounties.Where(b => b.BountyId == bounty.Id);
 			WatchedBountyController watchedBountyController = new WatchedBountyController();
 
-			dynamic watchedBountyCompletionHunterAlert = new Email("BountyCompletionApproved-WatchedAccountAlert");
+			dynamic watchedBountyCompletionApprovedHunterAlert = new Email("BountyCompletionApproved-WatchedAccountAlert");
 
 			foreach(WatchedBounty watchedBounty in watchedBounties)
 			{
-				watchedBountyCompletionHunterAlert.UserEmailAddress = this.db.Accounts.Find(watchedBounty.AccountId).EmailAddress;
-				watchedBountyCompletionHunterAlert.TargetName = this.character.CharacterName(bounty.PlacedOnId);
-				watchedBountyCompletionHunterAlert.HunterName = this.character.CharacterName(bounty.KilledById.Value);
+				watchedBountyCompletionApprovedHunterAlert.UserEmailAddress = this.db.Accounts.Find(watchedBounty.AccountId).EmailAddress;
+				watchedBountyCompletionApprovedHunterAlert.TargetName = this.character.CharacterName(bounty.PlacedOnId);
+				watchedBountyCompletionApprovedHunterAlert.HunterName = this.character.CharacterName(bounty.KilledById.Value);
 
 				try
 				{
-					watchedBountyCompletionHunterAlert.Send();
+					watchedBountyCompletionApprovedHunterAlert.Send();
 				}
 				catch
 				{
