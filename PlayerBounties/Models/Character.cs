@@ -258,6 +258,20 @@ namespace PlayerBounties.Models
 			return bounty.GetAccountBountiesPlaced(accountId);
 		}
 
+		public List<Bounty> GetAccountPendingBountiesPlaced(Guid accountId)
+		{
+			Bounty bounty = new Bounty();
+
+			return bounty.GetAccountPendingBountiesPlaced(accountId);
+		}
+
+		public List<Bounty> GetAccountActiveBounties(Guid accountId)
+		{
+			Bounty bounty = new Bounty();
+
+			return bounty.GetAccountActiveBounties(accountId);
+		}
+
 		public List<Bounty> GetAccountBountiesPlacedOn(Guid accountId)
 		{
 			Bounty bounty = new Bounty();

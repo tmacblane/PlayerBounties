@@ -795,6 +795,36 @@ namespace PlayerBounties.Controllers
 						}
 					}
 
+				case "pendingBountiesPlaced":
+					if(id == Guid.Empty && Request.IsAuthenticated)
+					{
+						var accountPendingBountiesPlaced = this.bounty.GetAccountPendingBountiesPlaced(loggedInUserId);
+
+						if(accountPendingBountiesPlaced.Count() != 0)
+						{
+							@ViewBag.Title = "Pending Bounties Placed";
+							return View("_BountiesTable", accountPendingBountiesPlaced);
+						}
+						else
+						{
+							return null;
+						}
+					}
+					else
+					{
+						var characterPendingBountiesPlaced = this.bounty.GetPendingBountiesPlaced(id.Value);
+
+						if(characterPendingBountiesPlaced.Count() != 0)
+						{
+							@ViewBag.Title = "Pending Bounties Placed By - " + characterInfo.Name;
+							return View("_BountiesTable", characterPendingBountiesPlaced);
+						}
+						else
+						{
+							return null;
+						}
+					}
+
 				case "bountiesPlacedAgainst":
 					if(id == Guid.Empty && Request.IsAuthenticated)
 					{
@@ -824,6 +854,37 @@ namespace PlayerBounties.Controllers
 							return null;
 						}
 					}
+
+				case "activeBounties":
+					if(id == Guid.Empty && Request.IsAuthenticated)
+					{
+						var accountActiveBounties = this.bounty.GetAccountActiveBounties(loggedInUserId);
+
+						if(accountActiveBounties.Count() != 0)
+						{
+							@ViewBag.Title = "Active Bounties";
+							return View("_BountiesTable", accountActiveBounties);
+						}
+						else
+						{
+							return null;
+						}
+					}
+					else
+					{
+						var characterActiveBounties = this.bounty.GetActiveBountiesPlaced(id.Value);
+
+						if(characterActiveBounties.Count() != 0)
+						{
+							@ViewBag.Title = "Active Bounties Placed By - " + characterInfo.Name;
+							return View("_BountiesTable", characterActiveBounties);
+						}
+						else
+						{
+							return null;
+						}
+					}
+
 			}
 
 			return View("_BountiesTable", this.bounty);

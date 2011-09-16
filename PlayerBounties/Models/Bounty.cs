@@ -345,6 +345,52 @@ namespace PlayerBounties.Models
 			return accountBounties;
 		}
 
+		public List<Bounty> GetAccountPendingBountiesPlaced(Guid accountId)
+		{
+			Character character = new Character();
+			List<Bounty> pendingAccountBounties = new List<Bounty>();
+
+			IEnumerable<Character> accountCharacters = character.GetAllCharactersForAnAccount(accountId);
+
+			foreach(Character accountCharacter in accountCharacters)
+			{
+				IQueryable<Bounty> pendingBounties = this.GetPendingBountiesPlaced(accountCharacter.Id);
+
+				if(pendingBounties.Count() != 0)
+				{
+					foreach(Bounty pendingBounty in pendingBounties)
+					{
+						pendingAccountBounties.Add(pendingBounty);
+					}
+				}
+			}
+
+			return pendingAccountBounties;
+		}
+
+		public List<Bounty> GetAccountActiveBounties(Guid accountId)
+		{
+			Character character = new Character();
+			List<Bounty> activeAccountBounties = new List<Bounty>();
+
+			IEnumerable<Character> accountCharacters = character.GetAllCharactersForAnAccount(accountId);
+
+			foreach(Character accountCharacter in accountCharacters)
+			{
+				IQueryable<Bounty> activeBounties = this.GetActiveBountiesPlaced(accountCharacter.Id);
+
+				if(activeBounties.Count() != 0)
+				{
+					foreach(Bounty activeBounty in activeBounties)
+					{
+						activeAccountBounties.Add(activeBounty);
+					}
+				}
+			}
+
+			return activeAccountBounties;
+		}
+
 		public List<Bounty> GetAccountBountiesPlacedOn(Guid accountId)
 		{
 			Character character = new Character();
@@ -396,6 +442,16 @@ namespace PlayerBounties.Models
 		public IQueryable<Bounty> GetBountiesPlaced(Guid characterId)
 		{
 			return this.db.Bounties.Where(b => b.PlacedById == characterId);
+		}
+
+		public IQueryable<Bounty> GetPendingBountiesPlaced(Guid characterId)
+		{
+			return this.db.Bounties.Where(b => b.PlacedById == characterId).Where(b => b.IsPlacementPending == true);
+		}
+
+		public IQueryable<Bounty> GetActiveBountiesPlaced(Guid characterId)
+		{
+			return this.db.Bounties.Where(b => b.PlacedById == characterId).Where(b => b.IsPlacementPending == false).Where(b => b.KilledById == null);
 		}
 
 		public int GetBountiesPlacedCount(Guid characterId)

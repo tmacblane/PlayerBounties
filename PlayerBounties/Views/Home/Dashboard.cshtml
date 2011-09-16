@@ -8,7 +8,7 @@
 	@Html.Action("Characters", "Dashboard")
 </div>
 
-<div class="rowBlank" style="width: 100%; margin-bottom: 50px;"">
+<div class="rowBlank" style="width: 100%;">
 	<div style="float: left; margin-left: 10px;">
 		@if(Model.GetAllCharactersForAnAccount(Model.GetLoggedInUserId()).Count() != 0)
 		{
@@ -72,7 +72,20 @@
 						}
 					</td>
 					<td class="inputLabelCell">Pending Contracts:</td>
-					<td align="right">0</td>
+					<td align="right">
+						@{
+							int pendingCount = Model.GetAccountPendingBountiesPlaced(Model.GetLoggedInUserId()).Count();
+						}
+
+						@if(pendingCount != 0)
+						{
+							@Html.ActionLink(pendingCount.ToString(), "BountyStatistics", "Bounty", new { id = Model.Id, statistic = "pendingBountiesPlaced" }, null)
+						}
+						else
+						{
+							<text>0</text>
+						}					
+					</td>
 				</tr>
 				<tr>
 					<td class="inputLabelCell">
@@ -93,7 +106,20 @@
 						}
 					</td>
 					<td class="inputLabelCell">Active Contracts:</td>
-					<td align="right">0</td>
+					<td align="right">
+						@{
+							int activeCount = Model.GetAccountActiveBounties(Model.GetLoggedInUserId()).Count();
+						}
+
+						@if(activeCount != 0)
+						{
+							@Html.ActionLink(activeCount.ToString(), "BountyStatistics", "Bounty", new { id = Model.Id, statistic = "activeBounties" }, null)
+						}
+						else
+						{
+							<text>0</text>
+						}	
+					</td>
 				</tr>
 			</tbody>
 		</table>

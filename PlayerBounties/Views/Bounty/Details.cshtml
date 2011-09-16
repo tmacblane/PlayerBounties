@@ -43,7 +43,14 @@
 		<!-- details -->
 		<table id="bountyDetailsTable" cellspacing="0" cellpadding="5" border="0">
 			<tbody>
-				<tr style="height: 20px;"></tr>
+				<tr style="height: 20px;">
+					@if(@Model.GetStatus(Model.Id) != "Completed")
+					 {
+						<td>
+							<a href "watch" style="padding-right: 5px;">Watch</a>0
+						</td>
+					 }
+				</tr>
 				<tr>
 					<td class="inputLabelCell" style="width: 75px;">
 						Name:
