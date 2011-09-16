@@ -51,7 +51,20 @@
 						}
 					</td>
 					<td class="inputLabelCell">Bounties Signed Up For:</td>
-					<td align="right">0</td>
+					<td align="right">
+						@{
+							int bountiesSignedUpForCount = Model.GetAccountBountiesSignedUpFor(Model.GetLoggedInUserId()).Count();
+						}
+
+						@if(bountiesSignedUpForCount != 0)
+						{
+							@Html.ActionLink(bountiesSignedUpForCount.ToString(), "BountyStatistics", "Bounty", new { id = Model.Id, statistic = "bountiesSignedUpFor" }, null)
+						}
+						else
+						{
+						<text>0</text>
+						}
+					</td>
 				</tr>
 				<tr>
 					<td class="inputLabelCell">

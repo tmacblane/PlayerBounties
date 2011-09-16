@@ -89,6 +89,7 @@
     <Compile Include="Controllers\SearchController.cs" />
     <Compile Include="Controllers\ShardController.cs" />
     <Compile Include="Controllers\StatisticsController.cs" />
+    <Compile Include="Controllers\WatchedBountyController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -104,6 +105,7 @@
     <Compile Include="Models\Race.cs" />
     <Compile Include="Models\Search.cs" />
     <Compile Include="Models\Shard.cs" />
+    <Compile Include="Models\WatchedBounty.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

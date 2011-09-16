@@ -293,6 +293,13 @@ namespace PlayerBounties.Models
 			return bounty.GetBountiesPlacedOnCount(characterId);
 		}
 
+		public List<Bounty> GetAccountBountiesSignedUpFor(Guid accountId)
+		{
+			Bounty bounty = new Bounty();
+
+			return bounty.GetAccountBountiesSignedUpFor(accountId);
+		}
+
 		public double GetAmountEarned(Guid characterId)
 		{
 			Bounty bounty = new Bounty();

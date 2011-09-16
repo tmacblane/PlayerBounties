@@ -885,6 +885,26 @@ namespace PlayerBounties.Controllers
 						}
 					}
 
+				case "bountiesSignedUpFor":
+					if(id == Guid.Empty && Request.IsAuthenticated)
+					{
+						List<Bounty> accountBountiesSignedUpFor = this.bounty.GetAccountBountiesSignedUpFor(loggedInUserId);
+
+						if(accountBountiesSignedUpFor.Count() != 0)
+						{
+							@ViewBag.Title = "Bounties Signed Up For";
+							return View("_BountiesTable", accountBountiesSignedUpFor);
+						}
+						else
+						{
+							return null;
+						}
+					}
+					else
+					{
+						return null;
+					}
+
 			}
 
 			return View("_BountiesTable", this.bounty);

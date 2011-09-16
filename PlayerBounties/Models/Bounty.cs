@@ -454,6 +454,42 @@ namespace PlayerBounties.Models
 			return this.db.Bounties.Where(b => b.PlacedById == characterId).Where(b => b.IsPlacementPending == false).Where(b => b.KilledById == null);
 		}
 
+		public List<Bounty> GetAccountBountiesSignedUpFor(Guid accountId)
+		{
+			List<Bounty> bountyInformation = new List<Bounty>();
+
+			IQueryable<WatchedBounty> watchedBounties = this.db.WatchedBounties.Where(b => b.AccountId == accountId);
+
+			foreach(WatchedBounty watchedBounty in watchedBounties)
+			{
+				var bounty = this.db.Bounties.Find(watchedBounty.BountyId);
+
+				bountyInformation.Add(new Bounty
+				{
+					Id = bounty.Id,
+					Amount = bounty.Amount,
+					DateCompleted = bounty.DateCompleted,
+					DatePlaced = bounty.DatePlaced,
+					IsCompletionPending = bounty.IsCompletionPending,
+					IsPlacementPending = bounty.IsPlacementPending,
+					KilledById = bounty.KilledById,
+					KillShotImageId = bounty.KillShotImageId,
+					Message = bounty.Message,
+					PlacedById = bounty.PlacedById,
+					PlacedOnId = bounty.PlacedOnId,
+					Reason = bounty.Reason
+				});
+
+			}
+
+			return bountyInformation;
+		}
+
+		public int GetAccountBountiesSignedUpForCount(Guid accountId)
+		{
+			return this.GetAccountBountiesSignedUpFor(accountId).Count();
+		}
+
 		public int GetBountiesPlacedCount(Guid characterId)
 		{
 			return this.db.Bounties.Where(b => b.PlacedById == characterId).Count();
@@ -730,6 +766,20 @@ namespace PlayerBounties.Models
 		public Guid GetBountyIdFromKillShotImageId(Guid killShotImageId)
 		{
 			return this.db.Bounties.Where(b => b.KillShotImageId == killShotImageId).First().Id;
+		}
+
+		public bool IsBountyWatched(Guid bountyId, Guid accountId)
+		{
+			bool bountyWatched = false;
+
+			WatchedBounty watchedBounty = new WatchedBounty();
+
+			if(watchedBounty.IsBountyWatched(bountyId, accountId) == true)
+			{
+				bountyWatched = true;
+			}
+
+			return bountyWatched;
 		}
 
 		#endregion

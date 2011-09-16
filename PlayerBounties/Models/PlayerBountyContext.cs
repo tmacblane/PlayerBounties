@@ -32,13 +32,13 @@ namespace PlayerBounties.Models
 			set;
 		}
 
-		public DbSet<KillShotImage> KillShotImages
+
+		public DbSet<Faction> Factions
 		{
 			get;
 			set;
 		}
-
-		public DbSet<Faction> Factions
+		public DbSet<KillShotImage> KillShotImages
 		{
 			get;
 			set;
@@ -57,6 +57,12 @@ namespace PlayerBounties.Models
 		}
 
 		public DbSet<Shard> Shards
+		{
+			get;
+			set;
+		}
+
+		public DbSet<WatchedBounty> WatchedBounties
 		{
 			get;
 			set;
