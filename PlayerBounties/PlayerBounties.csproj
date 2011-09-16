@@ -222,6 +222,8 @@
     <Content Include="Views\Emails\PendingBountyCompletion-AdminAlert.cshtml" />
     <Content Include="Views\Emails\PendingBountyCompletion-HunterAlert.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\Emails\PendingBountyCompletion-WatchedAccountAlert.cshtml" />
+    <Content Include="Views\Emails\BountyCompletionApproved-WatchedAccountAlert.cshtml" />
     <None Include="_bin_deployableAssemblies\Microsoft.Web.Infrastructure.dll" />
     <None Include="_bin_deployableAssemblies\System.Web.WebPages.Razor.dll" />
     <None Include="_bin_deployableAssemblies\System.Web.WebPages.dll" />

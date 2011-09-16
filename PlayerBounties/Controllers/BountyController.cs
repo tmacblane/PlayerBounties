@@ -293,6 +293,26 @@ namespace PlayerBounties.Controllers
                     // Need to log when it fails, the email type and information
                 }
 
+				// Hunters watching alert email notification that the bounty has been posted for completion
+				IQueryable<WatchedBounty> watchedBounties = this.db.WatchedBounties.Where(b => b.BountyId == bounty.Id);
+
+				dynamic watchedBountyCompletionHunterAlert = new Email("PendingBountyCompletion-WatchedAccountAlert");
+
+				foreach(WatchedBounty watchedBounty in watchedBounties)
+				{
+					watchedBountyCompletionHunterAlert.UserEmailAddress = this.db.Accounts.Find(watchedBounty.AccountId).EmailAddress;
+					watchedBountyCompletionHunterAlert.TargetName = this.character.CharacterName(bounty.PlacedOnId);
+
+					try
+					{
+						watchedBountyCompletionHunterAlert.Send();
+					}
+					catch
+					{
+						// Need to log when it fails, the email type and information
+					}
+				}
+
 				return RedirectToAction("Dashboard", "Home", null);
 			}
 
@@ -706,6 +726,31 @@ namespace PlayerBounties.Controllers
                 {
                     // Need to log when it fails, the email type and information
                 }
+			}
+
+			// Hunters watching alert email notification that the bounty has been posted for completion
+			IQueryable<WatchedBounty> watchedBounties = this.db.WatchedBounties.Where(b => b.BountyId == bounty.Id);
+			WatchedBountyController watchedBountyController = new WatchedBountyController();
+
+			dynamic watchedBountyCompletionHunterAlert = new Email("BountyCompletionApproved-WatchedAccountAlert");
+
+			foreach(WatchedBounty watchedBounty in watchedBounties)
+			{
+				watchedBountyCompletionHunterAlert.UserEmailAddress = this.db.Accounts.Find(watchedBounty.AccountId).EmailAddress;
+				watchedBountyCompletionHunterAlert.TargetName = this.character.CharacterName(bounty.PlacedOnId);
+				watchedBountyCompletionHunterAlert.HunterName = this.character.CharacterName(bounty.KilledById.Value);
+
+				try
+				{
+					watchedBountyCompletionHunterAlert.Send();
+				}
+				catch
+				{
+					// Need to log when it fails, the email type and information
+				}
+
+				// Remove watched bounty record
+				watchedBountyController.UnWatch(watchedBounty.BountyId, watchedBounty.AccountId);
 			}
 
 			return RedirectToAction("PendingCompletion");
