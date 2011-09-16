@@ -178,7 +178,7 @@ img
 #footer
 {
 	clear: both;
-	font-size: 10px;
+	font-size: 9px;
     left: 50%;
     margin-left: -500px;
     position: relative;
@@ -188,6 +188,7 @@ img
     color: #FFFFFF;
     padding: 5px 0;
     text-align: center;
+    line-height: 1.2em;
 }
 
 .ui-dialog 
@@ -333,7 +334,7 @@ input[type="submit"] input[value], input[type="button"] input[value]
     float: left;
     left: 50%;
     margin-left: -500px;
-    min-height: 650px;
+    min-height: 750px;
     position: relative;
     top: 0;
     width: 1000px;
@@ -669,6 +670,8 @@ table
 
 #recentBountyImages
 {
+	position: absolute;
+	bottom: 0;
 	margin: 0 20px 20px 20px;
 }
 
