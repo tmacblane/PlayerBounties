@@ -378,6 +378,11 @@ namespace PlayerBounties.Controllers
 
 		#endregion
 
+        public ActionResult Bounties()
+        {
+            return View(this.db.Bounties.Where(b => b.IsPlacementPending == false).Where(b => b.KilledById == null));
+        }
+
 		// GET: /Bounty/PlaceBounty
 		[Authorize]
 		public ActionResult PlaceBounty()

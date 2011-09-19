@@ -1,0 +1,85 @@
+﻿@{
+    ViewBag.Title = "Bounties";
+}
+
+@model IEnumerable<PlayerBounties.Models.Bounty>
+		   
+<link href="@Url.Content("~/Content/bootstrap-1.1.0.min.css")" rel="stylesheet" type="text/css" />
+
+<script type="text/javascript">
+    $(function () {
+        $("table")
+			.tablesorter({ sortList: [[3, 1]] })
+			.tablesorterPager({ container: $("#pager") });
+    });
+</script>
+           
+<div style="margin: 20px 20px 0 20px;">
+	<table id="bountiesTable" class="zebra-striped" cellspacing="0" cellpadding="5" border="0">
+		<thead>
+			<tr>
+				<th>Target</th>
+				<th>Shard</th>
+				<th>Class</th>
+				<th>Placed On</th>
+				<th>Client</th>
+                @if (Request.IsAuthenticated)
+                {
+				    <th>Watch</th>
+                }
+				<th>Details</th>
+			</tr>
+		</thead>
+		<tbody>
+			@foreach (var item in Model)
+            {
+				<tr>
+					<td class="classTxt @item.GetClassStyle(item.CharacterClass(item.PlacedOnId))">@Html.ActionLink(@item.CharacterName(item.PlacedOnId).ToString(), "Details", "Character", new { id = item.PlacedOnId }, null)</td>
+					<td>@item.CharacterShard(item.PlacedOnId)</td>
+					<td>@item.CharacterClass(item.PlacedOnId)</td>
+					<td>@item.DatePlaced.Value.ToShortDateString()</td>
+					<td class="classTxt @item.GetClassStyle(item.CharacterClass(item.PlacedById))">@Html.ActionLink(@item.CharacterName(item.PlacedById).ToString(), "Details", "Character", new { id = item.PlacedById }, null)</td>
+                    @if(Request.IsAuthenticated)
+					{
+                        var loggedInUserId = item.GetLoggedInUserId();
+
+                        if(item.IsBountyWatched(item.Id, loggedInUserId) == false)
+					    {
+						    <td>
+							    @Html.ActionLink("Watch", "Watch", "WatchedBounty", new { BountyId = item.Id, AccountId = loggedInUserId, view = "bounties" }, null)								
+						    </td>
+					    }
+					    else
+					    {
+						    <td>
+							    @Html.ActionLink("UnWatch", "UnWatch", "WatchedBounty", new { BountyId = item.Id, AccountId = loggedInUserId, view = "bounties" }, null)							
+						    </td> 
+					    }
+                    }
+
+					<td style="text-align: center;">@Html.ActionLink("Details", "Details", "Bounty", new { id = item.Id }, null)</td>
+				</tr>
+			}
+		</tbody>
+	</table>
+	@if(Model.Count() > 15)
+	{
+		<div id="pager">
+			<form>
+				<img src="../../Content/Images/first.png" class="first" alt="first" />
+				<img src="../../Content/Images/prev.png" class="prev" alt="prev" />
+				<input class="pagedisplay" type="text" />
+				<img src="../../Content/Images/next.png" class="next" alt="next" />
+				<img src="../../Content/Images/last.png" class="last" alt="last" />
+				<!--
+				<select class="pagesize">
+					<option selected="selected" value="10">10</option>
+					<option value="20">20</option>
+					<option value="30">30</option>
+					<option value="40">40</option>
+				</select>
+				-->
+			</form>
+	</div>
+	}
+</div>

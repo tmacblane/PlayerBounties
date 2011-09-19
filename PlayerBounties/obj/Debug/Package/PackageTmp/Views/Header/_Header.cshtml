@@ -49,18 +49,22 @@
 	<!-- Tabs -->
 	<div id="tabStripContainer">
 		<div id="tabsWrapper">
-			@if(Request.IsAuthenticated)
-			{
-				@Html.ActionLink("Dashboard", "Dashboard", "Home")
-			}
-			else
-			{
-				@Html.ActionLink("Home", "Index", "Home")
-			}
+            <ul class="tabs">
+        
+			    @if(Request.IsAuthenticated)
+			    {
+				    <li>@Html.ActionLink("Dashboard", "Dashboard", "Home")</li>
+                }
+                else
+                {
+				    <li>@Html.ActionLink("Home", "Index", "Home")</li>
+                }
 
-			@Html.ActionLink("About", "About", "Home")
-			@Html.ActionLink("Rules", "Rules", "Home")
-			@Html.ActionLink("Statistics", "Index", "Statistics")
+			    <li>@Html.ActionLink("About", "About", "Home")</li>
+			    <li>@Html.ActionLink("Rules", "Rules", "Home")</li>
+			    <li>@Html.ActionLink("Statistics", "Index", "Statistics")</li>
+                <li>@Html.ActionLink("Bounties", "Bounties", "Bounty")</li>
+            </ul>
 		</div>
 	</div>
 </div>

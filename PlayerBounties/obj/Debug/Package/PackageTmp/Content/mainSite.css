@@ -75,6 +75,26 @@ li
 	list-style: none outside none;
 }
 
+a {
+    color: #034af3;
+}
+
+a:link {
+    color: #034af3;
+}
+
+a:visited {
+    color: #034af3;
+}
+
+a:hover {
+    color: #1d60ff;
+}
+
+a:active {
+    color: #034af3;
+}
+
 .headerLinks li
 {
 	display: inline;
@@ -84,29 +104,23 @@ li
     position: relative;
 }
 
-a {
-    color: #034af3;
+.headerLinks a
+{
     text-decoration: none;
 }
 
-a:link {
-    color: #034af3;
+#tabsWrapper a
+{
     text-decoration: none;
 }
 
-a:visited {
-    color: #034af3;
-    text-decoration: none;
-}
+.tabs,.pills{margin:0;padding:0;zoom:1;}.tabs:before,.pills:before,.tabs:after,.pills:after{display:table;content:"";}
+.tabs:after,.pills:after{clear:both;}
+.tabs li,.pills li{display:inline;}.tabs li a,.pills li a{float:left;width:auto;}
+.tabs{width:100%;}.tabs li a{margin-right:2px;padding:0 15px;line-height:35px;-webkit-border-radius:3px 3px 0 0;-moz-border-radius:3px 3px 0 0;border-radius:3px 3px 0 0;}.tabs li
+.tabs li.active a{background-color:#fff;padding:0 14px;border:1px solid #ccc;}
+.pills li.active a{background:#0069d6;color:#fff;text-shadow:0 1px 1px rgba(0, 0, 0, 0.25);}
 
-a:hover {
-    color: #1d60ff;
-    text-decoration: none;
-}
-
-a:active {
-    color: #034af3;
-}
 
 img 
 {
@@ -154,7 +168,7 @@ img
 {
 	left: 204px;
 	position: absolute;
-	bottom: 5px;
+	bottom: 0;
 	font-size: 16px;
 }
 
@@ -352,6 +366,11 @@ input[type="submit"] input[value], input[type="button"] input[value]
 	width: 270px;
 }
 
+#loginForm a, #signUpForm a
+{
+    text-decoration: none;
+}
+
 #signUpForm
 {
 	width: 400px;
@@ -388,7 +407,7 @@ input[type="submit"] input[value], input[type="button"] input[value]
 .statisticsTable
 {
 	 font-size: 12px;
-	 width: 310px;
+	 width: 288px;
 	 text-align: left;
 }
 
@@ -698,6 +717,11 @@ table
 	width: 960px;
 }
 
+#bountyImageSlider a
+{
+    text-decoration: none;
+}
+
 /* CLASS COLORS AND ICONS
 ----------------------------------------------------------*/
 
@@ -712,6 +736,11 @@ table
 .classTxt
 {
     font-weight: bold;
+}
+
+.classTxt a
+{
+    text-decoration: none;
 }
 
 .jediKnightTxt a

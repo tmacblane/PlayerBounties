@@ -25,7 +25,7 @@ namespace PlayerBounties.Controllers
 		#region Type specific methods
 
 		[Authorize]
-		public ActionResult Watch(Guid bountyId, Guid accountId)
+        public ActionResult Watch(Guid bountyId, Guid accountId, string view = "bountyDetails")
 		{
 			Bounty bounty = this.db.Bounties.Find(bountyId);
 
@@ -35,37 +35,74 @@ namespace PlayerBounties.Controllers
 			//    ModelState.AddModelError(string.Empty, "You are already watching this bounty");
 			//}
 
-			if(ModelState.IsValid)
-			{
-				this.watchedBounty.Id = Guid.NewGuid();
-				this.watchedBounty.BountyId = bountyId;
-				this.watchedBounty.AccountId = accountId;
+            if (ModelState.IsValid)
+            {
+                this.watchedBounty.Id = Guid.NewGuid();
+                this.watchedBounty.BountyId = bountyId;
+                this.watchedBounty.AccountId = accountId;
 
-				this.db.WatchedBounties.Add(this.watchedBounty);
-				this.db.SaveChanges();
+                this.db.WatchedBounties.Add(this.watchedBounty);
+                this.db.SaveChanges();
 
-				return RedirectToAction("Details", "Bounty", new { id = bounty.Id });
-			}
+                if (view == "bountyDetails")
+                {
+                    return RedirectToAction("Details", "Bounty", new { id = bounty.Id });
+                }
+                else if (view == "bounties")
+                {
+                    return RedirectToAction("Bounties", "Bounty");
+                }
+            }
+            else
+            {
+                if (view == "bountyDetails")
+                {
+                    return RedirectToAction("Details", "Bounty", new { id = bounty.Id });
+                }
+                else if (view == "bounties")
+                {
+                    return RedirectToAction("Bounties", "Bounty");
+                }
+            }
 
-			return RedirectToAction("Details", "Bounty", new { id = bounty.Id });
+            return RedirectToAction("Details", "Bounty", new { id = bounty.Id });
 		}
 
 		[Authorize]
-		public ActionResult UnWatch(Guid bountyId, Guid accountId)
+		public ActionResult UnWatch(Guid bountyId, Guid accountId, string view = "bountyDetails")
 		{
 			Bounty bounty = this.db.Bounties.Find(bountyId);
 
 			IQueryable<WatchedBounty> watchedBounty = this.watchedBounty.GetWatchedBounty(bountyId, accountId);
 
-			if(watchedBounty.Count() != 0)
-			{
-				WatchedBounty watchedBountyToRemove = this.db.WatchedBounties.Where(b => b.BountyId == bountyId).Where(b => b.AccountId == accountId).Single();
+            if (watchedBounty.Count() != 0)
+            {
+                WatchedBounty watchedBountyToRemove = this.db.WatchedBounties.Where(b => b.BountyId == bountyId).Where(b => b.AccountId == accountId).Single();
 
-				this.db.WatchedBounties.Remove(watchedBountyToRemove);
-				this.db.SaveChanges();
-			}
+                this.db.WatchedBounties.Remove(watchedBountyToRemove);
+                this.db.SaveChanges();
+            }
+            else
+            {
+                if (view == "bountyDetails")
+                {
+                    return RedirectToAction("Details", "Bounty", new { id = bounty.Id });
+                }
+                else if (view == "bounties")
+                {
+                    return RedirectToAction("Bounties", "Bounty");
+                }
+            }
+            
+            if(view == "bounties")
+            {
+                return RedirectToAction("Bounties", "Bounty");
+            }
+            else
+            {
+                return RedirectToAction("Details", "Bounty", new { id = bounty.Id });
+            }
 
-			return RedirectToAction("Details", "Bounty", new { id = bounty.Id });
 		}
 
 		#endregion

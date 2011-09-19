@@ -14,19 +14,19 @@
 				<tr>
 					<th>Character Name</th>
 					<th style="text-align: center;">Bounties</th>
-					<th>Total Spent</th>
+					<th style="text-align: right;">Total Spent</th>
 				</tr>
 		
 				@foreach(var item in Model)
 				{
 					<tr>
-						<td class="inputLabelCell @item.GetClassStyle(item.CharacterClass(item.Id))">
+						<td class="inputLabelCell classTxt @item.GetClassStyle(item.CharacterClass(item.Id))">
 							@Html.ActionLink(item.Name, "Details", "Character", new { id = item.Id }, null)
 						</td>
 						<td align="center">
 							@item.GetBountiesPlacedCount(item.Id)
 						</td>
-						<td align="left">
+						<td align="right">
 							@item.GetAmountSpent(item.Id)
 						</td>
 					</tr>
