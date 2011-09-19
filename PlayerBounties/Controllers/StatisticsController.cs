@@ -7,10 +7,11 @@ using System.Web;
 using System.Web.Mvc;
 
 using PlayerBounties.Models;
+using System.Threading.Tasks;
 
 namespace PlayerBounties.Controllers
 {
-	public class StatisticsController : Controller
+	public class StatisticsController : AsyncController
 	{
 		#region Fields
 
@@ -32,7 +33,13 @@ namespace PlayerBounties.Controllers
 			return View(this.bounty);
 		}
 
-		public ActionResult TopHunters()
+		public void TopHuntersAsync()
+		{
+			AsyncManager.OutstandingOperations.Increment();
+			Task.Factory.StartNew(() => this.TopHuntersHelper());
+		}
+
+		public void TopHuntersHelper()
 		{
 			List<Guid> characterIds = this.bounty.GetTopHuntersList();
 			List<Character> topHunters = new List<Character>();
@@ -46,6 +53,12 @@ namespace PlayerBounties.Controllers
 				});
 			}
 
+			AsyncManager.Parameters["topHunters"] = topHunters;
+			AsyncManager.OutstandingOperations.Decrement();
+		}
+
+		public ActionResult TopHuntersCompleted(List<Character> topHunters)
+		{
 			return PartialView("_TopHunters", topHunters);
 		}
 
