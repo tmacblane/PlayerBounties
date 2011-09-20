@@ -28,6 +28,7 @@ namespace PlayerBounties.Controllers
 		[Authorize]
 		public ViewResult Index()
 		{
+			
 			var characters = this.character.GetAllCharactersForAnAccount(this.account.GetLoggedInUserId());
 			return View(characters.ToList());
 		}
