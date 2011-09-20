@@ -62,7 +62,13 @@ namespace PlayerBounties.Controllers
 			return PartialView("_TopHunters", topHunters);
 		}
 
-		public ActionResult TopMarks()
+		public void TopMarksAsync()
+		{
+			AsyncManager.OutstandingOperations.Increment();
+			Task.Factory.StartNew(() => this.TopMarksHelper());
+		}
+
+		public void TopMarksHelper()
 		{
 			List<Guid> characterIds = this.bounty.GetTopMarksList();
 			List<Character> topMarks = new List<Character>();
@@ -76,10 +82,22 @@ namespace PlayerBounties.Controllers
 				});
 			}
 
+			AsyncManager.Parameters["topMarks"] = topMarks;
+			AsyncManager.OutstandingOperations.Decrement();
+		}
+
+		public ActionResult TopMarksCompleted(List<Character> topMarks)
+		{
 			return PartialView("_TopMarks", topMarks);
 		}
 
-		public ActionResult TopClients()
+		public void TopClientsAsync()
+		{
+			AsyncManager.OutstandingOperations.Increment();
+			Task.Factory.StartNew(() => this.TopClientsHelper());
+		}
+
+		public void TopClientsHelper()
 		{
 			List<Guid> characterIds = this.bounty.GetTopClientsList();
 			List<Character> topClients = new List<Character>();
@@ -92,6 +110,13 @@ namespace PlayerBounties.Controllers
 					Name = this.db.Characters.Find(characterId).Name
 				});
 			}
+
+			AsyncManager.Parameters["topClients"] = topClients;
+			AsyncManager.OutstandingOperations.Decrement();
+		}
+
+		public ActionResult TopClientsCompleted(List<Character> topClients)
+		{
 
 			return PartialView("_TopClients", topClients);
 		}
