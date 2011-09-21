@@ -345,6 +345,53 @@ namespace PlayerBounties.Models
 			return accountBounties;
 		}
 
+		public double GetAccountAmountSpent(Guid accountId)
+		{
+			Character character = new Character();
+			double totalSpent = 0;
+
+			IEnumerable<Character> accountCharacters = character.GetAllCharactersForAnAccount(accountId);
+
+			foreach(Character accountCharacter in accountCharacters)
+			{
+				IQueryable<Bounty> completedBounties = this.GetBountiesPlaced(accountCharacter.Id);
+
+				if(completedBounties.Count() != 0)
+				{
+					foreach(Bounty completedBounty in completedBounties)
+					{
+						totalSpent = totalSpent + completedBounty.Amount;
+					}
+				}
+			}
+
+			return totalSpent;
+		}
+
+
+		public double GetAccountAmountEarned(Guid accountId)
+		{
+			Character character = new Character();
+			double totalEarned = 0;
+
+			IEnumerable<Character> accountCharacters = character.GetAllCharactersForAnAccount(accountId);
+
+			foreach(Character accountCharacter in accountCharacters)
+			{
+				List<Bounty> completedBounties = this.GetBountiesCompleted(accountCharacter.Id);
+
+				if(completedBounties.Count() != 0)
+				{
+					foreach(Bounty completedBounty in completedBounties)
+					{
+						totalEarned = totalEarned + completedBounty.Amount;
+					}
+				}
+			}
+
+			return totalEarned;
+		}
+
 		public List<Bounty> GetAccountPendingBountiesPlaced(Guid accountId)
 		{
 			Character character = new Character();

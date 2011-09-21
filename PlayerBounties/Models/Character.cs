@@ -314,6 +314,20 @@ namespace PlayerBounties.Models
 			return bounty.GetAmountSpent(characterId);
 		}
 
+		public double GetAccountAmountSpent(Guid accountId)
+		{
+			Bounty bounty = new Bounty();
+
+			return bounty.GetAccountAmountSpent(accountId);
+		}
+
+		public double GetAccountAmountEarned(Guid accountId)
+		{
+			Bounty bounty = new Bounty();
+
+			return bounty.GetAccountAmountEarned(accountId);
+		}
+
 		public double GetAmountWorth(Guid characterId)
 		{
 			Bounty bounty = new Bounty();

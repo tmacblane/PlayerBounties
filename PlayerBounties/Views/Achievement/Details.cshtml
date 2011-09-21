@@ -1,0 +1,35 @@
+﻿@model PlayerBounties.Models.Achievement
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<fieldset>
+    <legend>Achievement</legend>
+
+    <div class="display-label">Title</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Title)
+    </div>
+
+    <div class="display-label">Description</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Description)
+    </div>
+
+    <div class="display-label">Points</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Points)
+    </div>
+	
+    <div class="display-label">Requirement</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Requirement)
+    </div>
+</fieldset>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id=Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

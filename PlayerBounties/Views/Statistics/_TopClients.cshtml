@@ -27,7 +27,7 @@
 							@item.GetBountiesPlacedCount(item.Id)
 						</td>
 						<td align="right">
-							@item.GetAmountSpent(item.Id)
+							@string.Format("{0:0,0}", item.GetAmountSpent(item.Id))
 						</td>
 					</tr>
 				}

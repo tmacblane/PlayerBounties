@@ -109,6 +109,37 @@
 					}
 				</td>
 			</tr>
+			<tr>
+				<td colspan="2">
+					<hr />
+				</td>
+			</tr>
+			<tr>
+				<td class="inputLabelCell">Total Spent:</td>
+				<td colspan="3" align="left">
+					@if(placedCount != 0)
+					{
+						@string.Format("{0:0,0}", Model.GetAmountSpent(Model.Id))
+					}
+					else
+					{
+						<text>0</text>
+					}
+				</td>
+			</tr>
+			<tr>
+				<td class="inputLabelCell">Total Earned:</td>
+				<td colspan="3" align="left">
+					@if(killedCount != 0)
+					{
+						@string.Format("{0:0,0}", Model.GetAmountEarned(Model.Id))
+					}
+					else
+					{
+						<text>0</text>
+					}
+				</td>
+			</tr>
 		</table>
 	</div>	
 	

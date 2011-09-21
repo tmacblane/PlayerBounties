@@ -3,14 +3,15 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 
 using PlayerBounties.Models;
-using System.Threading.Tasks;
 
 namespace PlayerBounties.Controllers
 {
+	[OutputCache(Duration = 60)]
 	public class StatisticsController : AsyncController
 	{
 		#region Fields

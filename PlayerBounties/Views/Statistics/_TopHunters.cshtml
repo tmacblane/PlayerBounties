@@ -34,7 +34,7 @@
 							}
 						</td>
 						<td align="right">
-							@item.GetAmountEarned(item.Id)
+							@string.Format("{0:0,0}", item.GetAmountEarned(item.Id))
 						</td>
 					</tr>
 				}

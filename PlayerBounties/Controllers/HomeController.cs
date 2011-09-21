@@ -51,6 +51,7 @@ namespace PlayerBounties.Controllers
 		}
 
 		[Authorize]
+		[OutputCache(Duration = 300)]
 		public ActionResult Dashboard()
 		{
 			return View(this.character);

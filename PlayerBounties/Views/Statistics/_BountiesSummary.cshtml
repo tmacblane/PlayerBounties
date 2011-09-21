@@ -43,7 +43,7 @@
 			{	
 				<tr>
 					<td class="inputLabelCell">Largest Bounty Placed:</td>
-					<td align="left">@Model.GetLargestBountyPlaced().FirstOrDefault().Amount</td>
+					<td align="left">@string.Format("{0:0,0}", Model.GetLargestBountyPlaced().FirstOrDefault().Amount)</td>
 				</tr>
 			}
 			else

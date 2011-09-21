@@ -77,6 +77,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\AchievementController.cs" />
     <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\BountyController.cs" />
     <Compile Include="Controllers\CharacterController.cs" />
@@ -93,10 +94,13 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\EmailNotificationHelper.cs" />
     <Compile Include="Models\Account.cs" />
+    <Compile Include="Models\Achievement.cs" />
     <Compile Include="Models\Avatar.cs" />
     <Compile Include="Models\Bounty.cs" />
     <Compile Include="Models\Character.cs" />
+    <Compile Include="Models\CharacterAchievement.cs" />
     <Compile Include="Models\Faction.cs" />
     <Compile Include="Models\KillShotImage.cs" />
     <Compile Include="Models\PlayerBountyContext.cs" />
@@ -225,6 +229,11 @@
     <Content Include="Views\Emails\PendingBountyCompletion-WatchedAccountAlert.cshtml" />
     <Content Include="Views\Emails\BountyCompletionApproved-WatchedAccountAlert.cshtml" />
     <Content Include="Views\Bounty\Bounties.cshtml" />
+    <Content Include="Views\Achievement\Index.cshtml" />
+    <Content Include="Views\Achievement\Details.cshtml" />
+    <Content Include="Views\Achievement\Create.cshtml" />
+    <Content Include="Views\Achievement\Edit.cshtml" />
+    <Content Include="Views\Achievement\Delete.cshtml" />
     <None Include="_bin_deployableAssemblies\Microsoft.Web.Infrastructure.dll" />
     <None Include="_bin_deployableAssemblies\System.Web.WebPages.Razor.dll" />
     <None Include="_bin_deployableAssemblies\System.Web.WebPages.dll" />

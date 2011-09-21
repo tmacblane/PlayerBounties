@@ -14,6 +14,12 @@ namespace PlayerBounties.Models
 			set;
 		}
 
+		public DbSet<Achievement> Achievements
+		{
+			get;
+			set;
+		}
+
 		public DbSet<Avatar> Avatars
 		{
 			get;
@@ -26,12 +32,17 @@ namespace PlayerBounties.Models
 			set;
 		}
 
-		public DbSet<Character> Characters
+		public DbSet<CharacterAchievement> CharacterAchievements
 		{
 			get;
 			set;
 		}
 
+		public DbSet<Character> Characters
+		{
+			get;
+			set;
+		}
 
 		public DbSet<Faction> Factions
 		{

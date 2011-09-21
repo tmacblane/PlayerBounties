@@ -89,7 +89,7 @@
 			<td class="inputLabelCell">
 				@Html.Label("Character Name"):
 			</td>
-			<td align="left">
+			<td class="inputDataCell" align="left">
 				@Html.TextBox("characterNameTxt")
 				@Html.ValidationMessage("CharacterNameRequired", "*")
 			</td>
@@ -125,7 +125,7 @@
 			<td class="inputLabelCell">
 				@Html.LabelFor(model => model.Amount):
 			</td>
-			<td align="left">
+			<td class="inputDataCell" align="left">
 				@Html.EditorFor(model => model.Amount)
 				@Html.ValidationMessageFor(model => model.Amount, "*")
 			</td>

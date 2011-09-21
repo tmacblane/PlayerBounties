@@ -36,7 +36,7 @@
 		    <td class="inputLabelCell">
 			    @Html.LabelFor(model => model.Name):
 		    </td>
-		    <td align="left">
+		    <td class="inputDataCell" align="left">
 			    @Html.EditorFor(model => model.Name)
 			    @Html.ValidationMessageFor(model => model.Name, "*")
 		    </td>
@@ -45,7 +45,7 @@
 		    <td class="inputLabelCell">
 			    @Html.LabelFor(model => model.Shard):
 		    </td>
-		    <td align="left">
+		    <td class="inputDataCell"  align="left">
 			    @Html.DropDownList("ShardId", String.Empty)
 			    @Html.ValidationMessageFor(model => model.ShardId, "*")
 		    </td>
@@ -54,7 +54,7 @@
 		    <td class="inputLabelCell">
 			    @Html.LabelFor(model => model.Faction):
 		    </td>
-		    <td align="left">
+		    <td class="inputDataCell"  align="left">
 			    @Html.DropDownList("FactionId", String.Empty)
 			    @Html.ValidationMessageFor(model => model.FactionId, "*")
 		    </td>
@@ -63,7 +63,7 @@
 		    <td class="inputLabelCell">
 			    @Html.LabelFor(model => model.Race):
 		    </td>
-		    <td align="left">
+		    <td class="inputDataCell"  align="left">
 			    @Html.DropDownList("RaceId", String.Empty)
 		    </td>
 	    </tr>
@@ -71,7 +71,7 @@
 		    <td class="inputLabelCell">
 			    @Html.LabelFor(model => model.PlayerClass):
 		    </td>
-		    <td align="left">
+		    <td class="inputDataCell"  align="left">
 			    @Html.DropDownList("PlayerClassId", String.Empty)
 			    @Html.ValidationMessageFor(model => model.PlayerClassId, "*")
 		    </td>
@@ -80,7 +80,7 @@
 		    <td class="inputLabelCell" style="vertical-align: top;">
 			    @Html.LabelFor(model => model.Motto):
 		    </td>
-		    <td align="left">
+		    <td class="inputDataCell"  align="left">
 			    @Html.EditorFor(model => model.Motto)
 		    </td>
 	    </tr>
@@ -88,7 +88,7 @@
 		    <td class="inputLabelCell" style="vertical-align: top;">
 			    @Html.LabelFor(model => model.Bio):
 		    </td>
-		    <td align="left">
+		    <td class="inputDataCell"  align="left">
 			    @Html.EditorFor(model => model.Bio)
 		    </td>
 	    </tr>
