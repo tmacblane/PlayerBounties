@@ -467,24 +467,25 @@ namespace PlayerBounties.Controllers
 				this.db.SaveChanges();
 
 				// Character Achievement
-				var bountyPlacedCount = this.bounty.GetBountiesPlacedOnCount(bounty.PlacedById);
+				//var bountyPlacedCount = this.bounty.GetBountiesPlacedOnCount(bounty.PlacedById);
 
-				List<int> bountyPlacedAchievementList = new List<int>()
-				{	
-					1, 5, 10, 25, 50, 100, 250, 500
-				};
+				//List<int> bountyPlacedAchievementList = new List<int>()
+				//{	
+				//    1, 5, 10, 25, 50, 100, 250, 500
+				//};
 
-				foreach(int value in bountyPlacedAchievementList)
-				{
-					if(value == bountyPlacedCount)
-					{
-						// Add achievement value
-					}
-					else
-					{
-						break;
-					}
-				}
+				//foreach(int value in bountyPlacedAchievementList)
+				//{
+				//    if(value == bountyPlacedCount)
+				//    {
+				//        // Check if already has achievement
+				//        // Add achievement value
+				//    }
+				//    else
+				//    {
+				//        break;
+				//    }
+				//}
 
 				// Get amount spent for placedById
 				//		If amount > achievement
