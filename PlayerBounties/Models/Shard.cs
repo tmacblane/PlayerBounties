@@ -8,6 +8,12 @@ namespace PlayerBounties.Models
 {
 	public class Shard
 	{
+		#region Fields
+
+		private PlayerBountyContext db = new PlayerBountyContext();
+
+		#endregion
+
 		#region Type specific properties
 
 		[Key]
@@ -22,6 +28,15 @@ namespace PlayerBounties.Models
 		{
 			get;
 			set;
+		}
+
+		#endregion
+
+		#region Type specific methods
+
+		public IEnumerable<Shard> GetShardsList()
+		{
+			return this.db.Shards.OrderBy(s => s.Name).ToList();
 		}
 
 		#endregion

@@ -8,6 +8,12 @@ namespace PlayerBounties.Models
 {
 	public class Faction
 	{
+		#region Fields
+
+		private PlayerBountyContext db = new PlayerBountyContext();
+
+		#endregion
+
 		#region Type specific properties
 
 		[Key]
@@ -23,6 +29,15 @@ namespace PlayerBounties.Models
 		{
 			get;
 			set;
+		}
+
+		#endregion
+
+		#region Type specific methods
+
+		public IEnumerable<Faction> GetFactionsList()
+		{
+			return this.db.Factions.OrderBy(f => f.Name).ToList();
 		}
 
 		#endregion
