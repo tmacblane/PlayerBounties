@@ -16,10 +16,10 @@ namespace PlayerBounties.ViewModels
 		#region Fields
 
 		private List<SelectListItem> _playerClasses = new List<SelectListItem>();
-		private List<SelectListItem> _shards = new List<SelectListItem>();
 		private List<SelectListItem> _races = new List<SelectListItem>();
 
 		private Faction faction = new Faction();
+		private Shard shard = new Shard();
 		
 		#endregion
 
@@ -86,7 +86,7 @@ namespace PlayerBounties.ViewModels
 		{
 			get
 			{
-				return _shards;
+				return shard.GetShardList();
 			}
 		}
 

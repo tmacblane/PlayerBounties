@@ -41,7 +41,7 @@ namespace PlayerBounties.Models
 			return this.db.Shards.OrderBy(s => s.Name).ToList();
 		}
 
-		public List<SelectListItem> GetFactionList()
+		public List<SelectListItem> GetShardList()
 		{
 			foreach(Shard item in this.GetShardsList())
 			{

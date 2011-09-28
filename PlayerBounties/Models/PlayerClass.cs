@@ -54,7 +54,7 @@ namespace PlayerBounties.Models
 			return this.db.PlayerClasses.OrderBy(p => p.Name).ToList();
 		}
 
-		public List<SelectListItem> GetFactionList()
+		public List<SelectListItem> GetPlayerClassList()
 		{
 			foreach(PlayerClass item in this.GetPlayerClassesList())
 			{

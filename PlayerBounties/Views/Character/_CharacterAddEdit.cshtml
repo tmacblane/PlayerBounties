@@ -1,54 +1,55 @@
 ﻿@model PlayerBounties.ViewModels.CharacterAddEditViewModel
 
-@*<script type="text/javascript">
+<script type="text/javascript">
 	$(document).ready(function()
 	{
-		$("#FactionId").change(function()
-		{
-			var idPlayerClass = $(this).val();
+		var selectedPlayerClass = $("#SelectedPlayerClass");
+		var selectedFaction = $("#SelectedFaction");
 
-			$.getJSON("/Character/LoadPlayerClassesByFaction", { factionId: idPlayerClass },
-			
+		if(selectedFaction.val() != null)
+		{
+			$.getJSON("/Character/LoadPlayerClassesByFaction", { factionId: selectedFaction.val() },
+
 			function(factionData)
 			{
-				var select = $("#PlayerClassId");
-				select.empty();
-				select.append($('<option/>', {
-					value: 0,
-					text: ""
-				}));
-
 				$.each(factionData, function(index, itemData)
 				{
-					select.append($('<option/>', {
+					selectedPlayerClass.append($('<option/>', {
 						value: itemData.Value,
 						text: itemData.Text
 					}));
 				});
 			});
-		});
-	});
-</script>*@
+		}
 
-<script type="text/javascript">
-	$(document).ready(function()
-	{
-		$("#SelectedFaction").change(function()
+		selectedFaction.change(function()
 		{
-			$.get('/Faction/GetFactionsList', function(response)
+			var idPlayerClass = $(this).val();
+
+			selectedPlayerClass.empty();
+			selectedPlayerClass.append($('<option/>', {
+				value: "",
+				text: ""
+			}));
+
+			if(idPlayerClass != "")
 			{
-				var factions = $.evalJSON(response);
-				var ddlSelectedPlayerClasses = $("#SelectedPlayerClass");
+				$.getJSON("/Character/LoadPlayerClassesByFaction", { factionId: idPlayerClass },
 
-				$("#SelectedPlayerClass > option").remove();
-
-				for(i = 0; i < factions.length; i++)
+				function(factionData)
 				{
-					ddlSelectedPlayerClasses.append($("<option />").val(factions[i].Value).text(factions[i].Text));
-				}
-			});
+					$.each(factionData, function(index, itemData)
+					{
+						selectedPlayerClass.append($('<option/>', {
+							value: itemData.Value,
+							text: itemData.Text
+						}));
+					});
+				});
+			}
 		});
 	});
+
 </script>
 
 <table id="characterAddEditTable" cellspacing="0" cellpadding="5" border="0">
@@ -93,7 +94,15 @@
 			    @Html.LabelFor(model => model.Character.PlayerClass):
 		    </td>
 		    <td class="inputDataCell"  align="left">
-				@Html.DropDownListFor(model => model.SelectedPlayerClass, new SelectList(Model.PlayerClasses, "Value", "Text"), string.Empty)
+				@if(Model.SelectedPlayerClass == "" || Model.SelectedPlayerClass == null)
+				{
+					@Html.DropDownListFor(model => model.SelectedPlayerClass, new SelectList(Model.PlayerClasses, "Value", "Text"), string.Empty)
+				}
+				else
+				{
+					@Html.DropDownListFor(model => model.SelectedPlayerClass, new SelectList(Model.PlayerClasses, "Value", "Text", Model.SelectedPlayerClass))
+				}
+
 			    @Html.ValidationMessageFor(model => model.SelectedPlayerClass, "*")
 		    </td>
 	    </tr>
