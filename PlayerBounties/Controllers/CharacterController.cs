@@ -16,14 +16,15 @@ namespace PlayerBounties.Controllers
 		#region Fields
 
 		private Account account = new Account();
+		private Avatar avatar = new Avatar();
 		private Bounty bounty = new Bounty();
-		private KillShotImage killShotImage = new KillShotImage();
 		private Character character = new Character();
 		private Faction faction = new Faction();
+		private KillShotImage killShotImage = new KillShotImage();
+		private PlayerBountyContext db = new PlayerBountyContext();
 		private PlayerClass playerClass = new PlayerClass();
 		private Race race = new Race();
 		private Shard shard = new Shard();
-		private PlayerBountyContext db = new PlayerBountyContext();
 
 		#endregion
 
@@ -33,7 +34,6 @@ namespace PlayerBounties.Controllers
 		[Authorize]
 		public ViewResult Index()
 		{
-
 			var characters = this.character.GetAllCharactersForAnAccount(this.account.GetLoggedInUserId());
 			return View(characters.ToList());
 		}
@@ -48,14 +48,14 @@ namespace PlayerBounties.Controllers
 
 		// GET: /Character/Create
 		[Authorize]
-		public ActionResult Create()
+		public ActionResult Create(CharacterAddEditViewModel characterViewModel)
 		{
 			ViewBag.ShardId = new SelectList(this.shard.GetShardsList(), "Id", "Name");
 			ViewBag.FactionId = new SelectList(this.faction.GetFactionsList(), "Id", "Name");
 			ViewBag.RaceId = new SelectList(this.race.GetRacesList(), "Id", "Name");
 			ViewBag.PlayerClassId = new SelectList(this.playerClass.GetPlayerClassesList(), "Id", "Name");
 
-			return View();
+			return View(characterViewModel);
 		}
 
 		// POST: /Character/Create
@@ -103,7 +103,6 @@ namespace PlayerBounties.Controllers
 					}
 
 					// set character avatar based on class
-					Avatar avatar = new Avatar();
 					character.AvatarId = avatar.GetAvatarBasedOnClass(character.PlayerClassId).Single().id;
 
 					this.db.Characters.Add(character);
@@ -132,8 +131,7 @@ namespace PlayerBounties.Controllers
 				character.UserId = Guid.Empty;
 
 				// set character avatar based on class
-				Avatar avatar = new Avatar();
-				character.AvatarId = avatar.GetAvatarBasedOnClass(character.PlayerClassId).Single().id;
+				character.AvatarId = this.avatar.GetAvatarBasedOnClass(character.PlayerClassId).Single().id;
 
 				this.db.Characters.Add(character);
 				this.db.SaveChanges();
@@ -192,8 +190,7 @@ namespace PlayerBounties.Controllers
 					}
 
 					// set character avatar based on class
-					Avatar avatar = new Avatar();
-					character.AvatarId = avatar.GetAvatarBasedOnClass(character.PlayerClassId).Single().id;
+					character.AvatarId = this.avatar.GetAvatarBasedOnClass(character.PlayerClassId).Single().id;
 
 					this.db.SaveChanges();
 					return RedirectToAction("Dashboard", "Home");

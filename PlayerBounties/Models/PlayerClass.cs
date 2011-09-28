@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 
 namespace PlayerBounties.Models
 {
@@ -10,6 +11,7 @@ namespace PlayerBounties.Models
 	{
 		#region Fields
 
+		private List<SelectListItem> _playerClasses = new List<SelectListItem>();
 		private PlayerBountyContext db = new PlayerBountyContext();
 
 		#endregion
@@ -50,6 +52,20 @@ namespace PlayerBounties.Models
 		public IEnumerable<PlayerClass> GetPlayerClassesList()
 		{
 			return this.db.PlayerClasses.OrderBy(p => p.Name).ToList();
+		}
+
+		public List<SelectListItem> GetFactionList()
+		{
+			foreach(PlayerClass item in this.GetPlayerClassesList())
+			{
+				_playerClasses.Add(new SelectListItem()
+				{
+					Text = item.Name,
+					Value = item.Id.ToString()
+				});
+			}
+
+			return _playerClasses;
 		}
 
 		#endregion

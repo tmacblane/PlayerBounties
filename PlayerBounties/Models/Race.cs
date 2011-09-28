@@ -11,6 +11,7 @@ namespace PlayerBounties.Models
 	{
 		#region Fields
 
+		private List<SelectListItem> _races = new List<SelectListItem>();
 		private PlayerBountyContext db = new PlayerBountyContext();
 
 		#endregion
@@ -44,6 +45,20 @@ namespace PlayerBounties.Models
 		public IEnumerable<Race> GetRacesList()
 		{
 			return this.db.Races.OrderBy(r => r.Name).ToList();
+		}
+
+		public List<SelectListItem> GetFactionList()
+		{
+			foreach(Race item in this.GetRacesList())
+			{
+				_races.Add(new SelectListItem()
+				{
+					Text = item.Name,
+					Value = item.Id.ToString()
+				});
+			}
+
+			return _races;
 		}
 
 		#endregion
