@@ -8,24 +8,37 @@ using System.Web;
 using System.Web.Mvc;
 
 using PlayerBounties.Models;
-
 namespace PlayerBounties.ViewModels
 {
-	public class CharacterAddEditViewModel
+	public class PlaceBountyViewModel
 	{
 		#region Fields
 
+		private List<SelectListItem> _characters = new List<SelectListItem>();
 		private List<SelectListItem> _playerClasses = new List<SelectListItem>();
 		private List<SelectListItem> _races = new List<SelectListItem>();
 
 		private Faction faction = new Faction();
 		private Shard shard = new Shard();
-		
+
 		#endregion
 
 		#region Type specific properties
 
+		public Bounty Bounty
+		{
+			get;
+			set;
+		}
+
 		public Character Character
+		{
+			get;
+			set;
+		}
+
+		[Required(ErrorMessage = "Please select a character")]
+		public Guid SelectedCharacter
 		{
 			get;
 			set;
@@ -87,6 +100,14 @@ namespace PlayerBounties.ViewModels
 			get
 			{
 				return shard.GetShardList();
+			}
+		}
+
+		public List<SelectListItem> Characters
+		{
+			get
+			{
+				return _characters;
 			}
 		}
 

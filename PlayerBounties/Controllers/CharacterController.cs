@@ -131,18 +131,11 @@ namespace PlayerBounties.Controllers
 			{
 				character.Id = Guid.NewGuid();
 				character.UserId = Guid.Empty;
-
-				// set character avatar based on class
 				character.AvatarId = this.avatar.GetAvatarBasedOnClass(character.PlayerClassId).Single().id;
 
 				this.db.Characters.Add(character);
 				this.db.SaveChanges();
 			}
-
-			ViewBag.ShardId = new SelectList(this.shard.GetShardsList(), "Id", "Name", character.ShardId);
-			ViewBag.FactionId = new SelectList(this.faction.GetFactionsList(), "Id", "Name", character.FactionId);
-			ViewBag.RaceId = new SelectList(this.race.GetRacesList(), "Id", "Name", character.RaceId);
-			ViewBag.PlayerClassId = new SelectList(this.playerClass.GetPlayerClassesList(), "Id", "Name", character.PlayerClassId);
 
 			return character.Id;
 		}
@@ -236,6 +229,21 @@ namespace PlayerBounties.Controllers
 			return Json(playerClassData, JsonRequestBehavior.AllowGet);
 		}
 
+		[AcceptVerbs(HttpVerbs.Get)]
+		public JsonResult LoadCharactersByShard(Guid shardId)
+		{
+			var loggedInUserId = this.account.GetLoggedInUserId();
+			var characterList = this.GetCharactersPerShard(loggedInUserId, shardId);
+
+			var characterData = characterList.Select(c => new SelectListItem()
+			{
+				Value = c.Id.ToString(),
+				Text = c.Name
+			});
+
+			return Json(characterData, JsonRequestBehavior.AllowGet);
+		}
+
 		public ActionResult KillShotImages(Guid characterId, string imageType)
 		{
 			List<KillShotImage> killShotImages = new List<KillShotImage>();
@@ -275,6 +283,11 @@ namespace PlayerBounties.Controllers
 		private IEnumerable<PlayerClass> GetPlayerClassesPerFaction(Guid factionId)
 		{
 			return this.db.PlayerClasses.Where(p => p.FactionId == factionId);
+		}
+
+		private IEnumerable<Character> GetCharactersPerShard(Guid accountId, Guid shardId)
+		{
+			return this.db.Characters.Where(c => c.UserId == accountId).Where(c => c.Shard.Id == shardId).Include(c => c.Shard).Include(c => c.Faction).Include(c => c.Race).Include(c => c.PlayerClass);
 		}
 
 		#endregion

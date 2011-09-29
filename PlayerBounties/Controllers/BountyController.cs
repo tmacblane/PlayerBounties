@@ -11,6 +11,7 @@ using System.Web.Mvc;
 
 using PlayerBounties.Helpers;
 using PlayerBounties.Models;
+using PlayerBounties.ViewModels;
 using Postal;
 
 namespace PlayerBounties.Controllers
@@ -21,8 +22,11 @@ namespace PlayerBounties.Controllers
 
 		private Account account = new Account();
 		private Bounty bounty = new Bounty();
+		private BountyCreateViewModel bountyCreateViewModel = new BountyCreateViewModel();
 		private Character character = new Character();
+		private CharacterAddEditViewModel characterAddEditViewModel = new CharacterAddEditViewModel();
 		private KillShotImage killShotImage = new KillShotImage();
+		private PlaceBountyViewModel placeBountyViewModel = new PlaceBountyViewModel();
 		private PlayerBountyContext db = new PlayerBountyContext();
 		private EmailNotificationHelper emailNotificationHelper = new EmailNotificationHelper();
 
@@ -42,47 +46,24 @@ namespace PlayerBounties.Controllers
 		[Authorize]
 		public ActionResult Create(Character character)
 		{
-			var loggedInUserId = this.account.GetLoggedInUserId();
-			var characters = this.character.GetAllCharactersOnAShardForAnAccount(loggedInUserId, this.character.CharacterShard(character.Id));
-			var defaultCharacter = this.character.GetDefaultCharacterForAnAccount(loggedInUserId);
+			this.characterAddEditViewModel.Character = this.db.Characters.Find(character.Id);
 
-			this.bounty.PlacedOnId = character.Id;
-
-			if(defaultCharacter.Single().Shard.Name == this.bounty.CharacterShard(this.bounty.PlacedOnId))
+			var viewModel = new BountyCreateViewModel
 			{
-				ViewBag.CharacterList = new SelectList(characters, "Id", "Name", defaultCharacter.Single().Id);
-			}
-			else
-			{
-				ViewBag.CharacterList = new SelectList(characters, "Id", "Name");
-			}
+				Character = this.characterAddEditViewModel.Character
+			};
 
-			return View(this.bounty);
+			return View(viewModel);
 		}
 
 		// POST: /Bounty/Create
 		[Authorize]
 		[HttpPost]
-		public ActionResult Create(Guid id, FormCollection formCollection)
+		public ActionResult Create(Guid id, BountyCreateViewModel bountyCreateViewModel)
 		{
 			Character character = this.db.Characters.Find(id);
-
 			var accountId = this.account.GetLoggedInUserId();
-
-			if(formCollection["Amount"] == string.Empty)
-			{
-				ModelState.AddModelError("Amount", "Amount is required.");
-			}
-			else if(int.Parse(formCollection["Amount"]) <= 0)
-			{
-				ModelState.AddModelError("Amount", "Amount must be greater than 0.");
-			}
-
-			if(formCollection["CharacterList"] == string.Empty)
-			{
-				ModelState.AddModelError("CharacterList", "You must select a character to place a bounty with.");
-			}
-
+			
 			// Check if character has bounty on them
 			if(this.bounty.IsActiveBountyOnCharacter(character.Id) == true)
 			{
@@ -92,16 +73,17 @@ namespace PlayerBounties.Controllers
 			if(ModelState.IsValid)
 			{
 				this.bounty.Id = Guid.NewGuid();
-
-				// Set bounty details
-				this.bounty.Amount = int.Parse(formCollection["Amount"]);
-				this.bounty.Reason = formCollection["Reason"];
-				this.bounty.Message = formCollection["Message"];
-				this.bounty.PlacedById = Guid.Parse(formCollection["CharacterList"]);
+				this.bounty.Amount = bountyCreateViewModel.Bounty.Amount;
+				this.bounty.Reason = bountyCreateViewModel.Bounty.Reason;
+				this.bounty.Message = bountyCreateViewModel.Bounty.Message;
+				this.bounty.PlacedById = bountyCreateViewModel.SelectedCharacter;
 				this.bounty.PlacedOnId = character.Id;
 				this.bounty.DatePlaced = DateTime.Now;
-				this.bounty.DateCompleted = null;
 				this.bounty.IsPlacementPending = true;
+				this.bounty.DateCompleted = null;
+				this.bounty.IsCompletionPending = null;
+				this.bounty.KilledById = null;
+				this.bounty.KillShotImageId = null;
 
 				this.db.Bounties.Add(this.bounty);
 				this.db.SaveChanges();
@@ -116,30 +98,15 @@ namespace PlayerBounties.Controllers
 			}
 			else
 			{
-				var loggedInUserId = this.account.GetLoggedInUserId();
+				this.characterAddEditViewModel.Character = this.db.Characters.Find(character.Id);
 
-				character = this.db.Characters.Where(c => c.Id == character.Id).Include(c => c.Shard).Include(c => c.Faction).Include(c => c.Race).Include(c => c.PlayerClass).Single();
-
-				var characters = this.character.GetAllCharactersOnAShardForAnAccount(loggedInUserId, character.Shard.Name);
-				var defaultCharacter = this.character.GetDefaultCharacterForAnAccount(loggedInUserId);
-
-				this.bounty.PlacedOnId = character.Id;
-
-				ViewBag.ShardId = new SelectList(this.db.Shards, "Id", "Name", character.ShardId);
-				ViewBag.FactionId = new SelectList(this.db.Factions, "Id", "Name", character.FactionId);
-				ViewBag.RaceId = new SelectList(this.db.Races, "Id", "Name", character.RaceId);
-				ViewBag.PlayerClassId = new SelectList(this.db.PlayerClasses, "Id", "Name", character.PlayerClassId);
-
-				if(defaultCharacter.Single().Shard.Name == this.bounty.CharacterShard(this.bounty.PlacedOnId))
+				var viewModel = new BountyCreateViewModel
 				{
-					ViewBag.CharacterList = new SelectList(characters, "Id", "Name", defaultCharacter.Single().Id);
-				}
-				else
-				{
-					ViewBag.CharacterList = new SelectList(characters, "Id", "Name");
-				}
+					Character = this.characterAddEditViewModel.Character,
+					SelectedCharacter = bountyCreateViewModel.SelectedCharacter
+				};
 
-				return View(this.bounty);
+				return View(viewModel);
 			}
 		}
 
@@ -321,106 +288,21 @@ namespace PlayerBounties.Controllers
 		[Authorize]
 		public ActionResult PlaceBounty()
 		{
-			var loggedInUserId = this.account.GetLoggedInUserId();
-
-			var characters = this.character.GetAllCharactersForAnAccount(loggedInUserId);
-
-			var defaultCharacter = this.character.GetDefaultCharacterForAnAccount(loggedInUserId);
-
-			var sortedShardList = from shard in this.db.Shards
-								  orderby shard.Name ascending
-								  select shard;
-
-			var sortedFactionList = from faction in this.db.Factions
-									orderby faction.Name ascending
-									select faction;
-
-			var sortedPlayerClassList = from playerClass in this.db.PlayerClasses
-										orderby playerClass.Name ascending
-										select playerClass;
-
-			ViewBag.ShardId = new SelectList(sortedShardList, "Id", "Name");
-			ViewBag.FactionId = new SelectList(sortedFactionList, "Id", "Name");
-			ViewBag.PlayerClassId = new SelectList(sortedPlayerClassList, "Id", "Name");
-
-			if(characters.Count() != 0)
-			{
-				ViewBag.CharacterList = new SelectList(characters, "Id", "Name", defaultCharacter.Single().Id);
-			}
-			else
-			{
-				ViewBag.CharacterList = new SelectList(characters, "Id", "Name");
-			}
-
-			return View();
+			return View(this.placeBountyViewModel);
 		}
 
 		// POST: /Bounty/PlaceBounty
 		[Authorize]
 		[HttpPost]
-		public ActionResult PlaceBounty(Bounty bounty, FormCollection formCollection)
+		public ActionResult PlaceBounty(PlaceBountyViewModel placeBountyViewModel)
 		{
 			string characterName = string.Empty;
 			Guid characterId = Guid.Empty;
 			Guid factionId = Guid.Empty;
 			Guid shardId = Guid.Empty;
 			Guid playerClassId = Guid.Empty;
-
-			#region Validation errors
-
-			if(formCollection["characterNameTxt"] == string.Empty)
-			{
-				ModelState.AddModelError("CharacterNameRequired", "Character Name is required.");
-			}
-			else
-			{
-				characterName = formCollection["characterNameTxt"];
-			}
-
-			if(formCollection["FactionId"] == string.Empty)
-			{
-				ModelState.AddModelError("FactionRequired", "Faction is required.");
-			}
-			else
-			{
-				factionId = Guid.Parse(formCollection["FactionId"]);
-			}
-
-			if(formCollection["ShardId"] == string.Empty)
-			{
-				ModelState.AddModelError("ShardRequired", "Shard is required.");
-			}
-			else
-			{
-				shardId = Guid.Parse(formCollection["ShardId"]);
-			}
-
-			if(formCollection["PlayerClassId"] == string.Empty || formCollection["PlayerClassId"] == "0")
-			{
-				ModelState.AddModelError("PlayerClassRequired", "Player Class is required.");
-			}
-			else
-			{
-				playerClassId = Guid.Parse(formCollection["PlayerClassId"]);
-			}
-
-			if(formCollection["Amount"] == string.Empty)
-			{
-				ModelState.AddModelError("Amount", "Amount is required.");
-			}
-			else if(int.Parse(formCollection["Amount"]) <= 0)
-			{
-				ModelState.AddModelError("Amount", "Amount must be greater than 0.");
-			}
-
-			if(formCollection["CharacterList"] == string.Empty)
-			{
-				ModelState.AddModelError("CharacterList", "You must select a character to place a bounty with.");
-			}
-
-			#endregion
-
-			IQueryable<Character> bountyTarget = this.character.GetCharacterByName(characterName, shardId, factionId);
+			
+			IQueryable<Character> bountyTarget = this.character.GetCharacterByName(placeBountyViewModel.Character.Name, placeBountyViewModel.SelectedShard, placeBountyViewModel.SelectedFaction);
 
 			if(bountyTarget.Count() != 0 && this.bounty.IsActiveBountyOnCharacter(bountyTarget.Single().Id) == true)
 			{
@@ -433,10 +315,10 @@ namespace PlayerBounties.Controllers
 
 				if(bountyTarget.Count().Equals(0))
 				{
-					this.character.Name = characterName;
-					this.character.ShardId = shardId;
-					this.character.FactionId = factionId;
-					this.character.PlayerClassId = playerClassId;
+					this.character.Name = placeBountyViewModel.Character.Name;
+					this.character.ShardId = placeBountyViewModel.SelectedShard;
+					this.character.FactionId = placeBountyViewModel.SelectedFaction;
+					this.character.PlayerClassId = placeBountyViewModel.SelectedPlayerClass;
 
 					CharacterController characterController = new CharacterController();
 					characterId = characterController.CreateBountyCharacter(this.character);
@@ -447,13 +329,17 @@ namespace PlayerBounties.Controllers
 				}
 
 				bounty.Id = Guid.NewGuid();
-				bounty.PlacedById = Guid.Parse(formCollection["CharacterList"]);
+				bounty.Amount = placeBountyViewModel.Bounty.Amount;
+				bounty.Reason = placeBountyViewModel.Bounty.Reason;
+				bounty.Message = placeBountyViewModel.Bounty.Message;
+				bounty.PlacedById = placeBountyViewModel.SelectedCharacter;
 				bounty.PlacedOnId = characterId;
-				bounty.KilledById = null;
 				bounty.DatePlaced = DateTime.Now;
-				bounty.DateCompleted = null;
 				bounty.IsPlacementPending = true;
+				bounty.DateCompleted = null;
 				bounty.IsCompletionPending = null;
+				bounty.KilledById = null;
+				bounty.KillShotImageId = null;
 
 				// Create bounty record
 				this.db.Bounties.Add(bounty);
@@ -502,40 +388,7 @@ namespace PlayerBounties.Controllers
 				return RedirectToAction("Dashboard", "Home");
 			}
 
-			var loggedInUserId = this.account.GetLoggedInUserId();
-
-			var characters = this.character.GetAllCharactersForAnAccount(loggedInUserId);
-
-			var defaultCharacter = this.character.GetDefaultCharacterForAnAccount(loggedInUserId);
-
-			var sortedShardList = from shard in this.db.Shards
-								  orderby shard.Name ascending
-								  select shard;
-
-			var sortedFactionList = from faction in this.db.Factions
-									orderby faction.Name ascending
-									select faction;
-
-			var sortedPlayerClassList = from playerClass in this.db.PlayerClasses
-										orderby playerClass.Name ascending
-										select playerClass;
-
-			ViewBag.ShardId = new SelectList(sortedShardList, "Id", "Name", shardId);
-			ViewBag.FactionId = new SelectList(sortedFactionList, "Id", "Name", factionId);
-			ViewBag.PlayerClassId = new SelectList(sortedPlayerClassList, "Id", "Name", playerClassId);
-
-			ViewBag.characterNameTxt = characterName;
-
-			if(characters.Count() != 0)
-			{
-				ViewBag.CharacterList = new SelectList(characters, "Id", "Name", formCollection["CharacterList"]);
-			}
-			else
-			{
-				ViewBag.CharacterList = new SelectList(characters, "Id", "Name");
-			}
-
-			return View(bounty);
+			return View(placeBountyViewModel);
 		}
 
 		public ActionResult PendingPlacement()
