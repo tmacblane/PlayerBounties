@@ -61,6 +61,11 @@ namespace PlayerBounties.Models
 			return _races;
 		}
 
+		public string GetRaceName(Guid raceId)
+		{
+			return this.db.Races.Find(raceId).Name;
+		}
+
 		#endregion
 	}
 }

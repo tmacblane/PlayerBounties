@@ -7,6 +7,7 @@
 		var selectedCharacter = $("#SelectedCharacter");
         var selectedFaction = $("#SelectedFaction");
         var selectedPlayerClass = $("#SelectedPlayerClass");
+		var selectedRace = $("#SelectedRace");
 		var selectedShard = $("#SelectedShard");
 
 		/***** Loads selected player class from model *****/
@@ -25,6 +26,22 @@
 			});
         }
 
+		/***** Loads selected race from model *****/
+		if (selectedPlayerClass.val() != "") {
+            $.getJSON("/Character/LoadRacesByPlayerClass", { playerClassId: idPlayerClass },
+
+			function (playerClassData) {
+				$.each(playerClassData, function (index, itemData) {
+				    selectedRace.append($('<option/>', {
+				        value: itemData.Value,
+				        text: itemData.Text
+				    }));
+				});
+
+                selectedPlayerClass.val('@Model.SelectedRace');
+			});
+        }
+
 		/***** Updates player class based on selected faction *****/
         selectedFaction.change(function () {
             var idPlayerClass = $(this).val();
@@ -34,6 +51,12 @@
                 value: "",
                 text: ""
             }));
+
+			selectedRace.empty();
+			selectedRace.append($('<option/>', {
+				value: "",
+				text: ""
+			}));
 
             if (idPlayerClass != "") {
                 $.getJSON("/Character/LoadPlayerClassesByFaction", { factionId: idPlayerClass },
@@ -48,6 +71,30 @@
 				});
             }
         });
+		
+		/***** Updates race based on selected player class *****/
+		selectedPlayerClass.change(function() {
+			var idPlayerClass = $(this).val();
+
+			selectedRace.empty();
+			selectedRace.append($('<option/>', {
+				value: "",
+				text: ""
+			}));
+			
+			if (idPlayerClass != "") {
+                $.getJSON("/Character/LoadRacesByPlayerClass", { playerClassId: idPlayerClass },
+
+				function (playerClassData) {
+				    $.each(playerClassData, function (index, itemData) {
+				        selectedRace.append($('<option/>', {
+				            value: itemData.Value,
+				            text: itemData.Text
+				        }));
+				    });
+				});
+            }
+		});
 
 		/***** Loads selected character from model *****/
         if (selectedShard.val() != "") {
@@ -123,14 +170,6 @@
 			    @Html.ValidationMessageFor(model => model.SelectedFaction, "*")
 			</td>
 		</tr>
-	    <tr>
-		    <td class="inputLabelCell">
-			    @Html.LabelFor(model => model.Character.Race):
-		    </td>
-		    <td class="inputDataCell"  align="left">
-				@Html.DropDownListFor(model => model.SelectedRace, new SelectList(Model.Races, "Value", "Text"), string.Empty)
-		    </td>
-	    </tr>
 		<tr>
 			<td class="inputLabelCell">
 			    @Html.LabelFor(model => model.Character.PlayerClass):
@@ -140,6 +179,14 @@
 			    @Html.ValidationMessageFor(model => model.SelectedPlayerClass, "*")
 			</td>
 		</tr>
+	    <tr>
+		    <td class="inputLabelCell">
+			    @Html.LabelFor(model => model.Character.Race):
+		    </td>
+		    <td class="inputDataCell"  align="left">
+				@Html.DropDownListFor(model => model.SelectedRace, new SelectList(Model.Races, "Value", "Text"), string.Empty)
+		    </td>
+	    </tr>
 		<tr>
 			<td class="inputLabelCell">
 				@Html.LabelFor(model => model.Bounty.Amount):

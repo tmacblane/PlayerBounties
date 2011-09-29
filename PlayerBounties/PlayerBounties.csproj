@@ -106,6 +106,7 @@
     <Compile Include="Models\PlayerBountyContext.cs" />
     <Compile Include="Models\PlayerBountyInitializer.cs" />
     <Compile Include="Models\PlayerClass.cs" />
+    <Compile Include="Models\PlayerClassRace.cs" />
     <Compile Include="Models\Race.cs" />
     <Compile Include="Models\Search.cs" />
     <Compile Include="Models\Shard.cs" />

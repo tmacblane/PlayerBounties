@@ -229,6 +229,21 @@ namespace PlayerBounties.Controllers
 			return Json(playerClassData, JsonRequestBehavior.AllowGet);
 		}
 
+		
+		[AcceptVerbs(HttpVerbs.Get)]
+		public JsonResult LoadRacesByPlayerClass(Guid playerClassId)
+		{
+			var playerClassRaceList = this.GetRacesPerPlayerClass(playerClassId);
+
+			var playerClassRaceData = playerClassRaceList.Select(r => new SelectListItem()
+			{
+				Value = r.RaceId.ToString(),
+				Text = race.GetRaceName(r.RaceId)
+			});
+
+			return Json(playerClassRaceData.OrderBy(r => r.Text), JsonRequestBehavior.AllowGet);
+		}
+
 		[AcceptVerbs(HttpVerbs.Get)]
 		public JsonResult LoadCharactersByShard(Guid shardId)
 		{
@@ -282,12 +297,17 @@ namespace PlayerBounties.Controllers
 
 		private IEnumerable<PlayerClass> GetPlayerClassesPerFaction(Guid factionId)
 		{
-			return this.db.PlayerClasses.Where(p => p.FactionId == factionId);
+			return this.db.PlayerClasses.Where(p => p.FactionId == factionId).OrderBy(p => p.Name);
 		}
 
 		private IEnumerable<Character> GetCharactersPerShard(Guid accountId, Guid shardId)
 		{
-			return this.db.Characters.Where(c => c.UserId == accountId).Where(c => c.Shard.Id == shardId).Include(c => c.Shard).Include(c => c.Faction).Include(c => c.Race).Include(c => c.PlayerClass);
+			return this.db.Characters.Where(c => c.UserId == accountId).Where(c => c.Shard.Id == shardId).Include(c => c.Shard).Include(c => c.Faction).Include(c => c.Race).Include(c => c.PlayerClass).OrderBy(c => c.Name);
+		}
+
+		private IEnumerable<PlayerClassRace> GetRacesPerPlayerClass(Guid playerClassId)
+		{
+			return this.db.PlayerClassRaces.Where(p => p.PlayerClassId == playerClassId).OrderBy(p => p.RaceId).ToList();
 		}
 
 		#endregion

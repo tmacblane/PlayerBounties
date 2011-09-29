@@ -2,9 +2,13 @@
 
 <script type="text/javascript">
     $(document).ready(function () {
-        var selectedPlayerClass = $("#SelectedPlayerClass");
+	
+		/***** Fields *****/
         var selectedFaction = $("#SelectedFaction");
-
+        var selectedPlayerClass = $("#SelectedPlayerClass");
+		var selectedRace = $("#SelectedRace");
+		
+		/***** Loads selected character from model *****/
         if (selectedFaction.val() != "") {
             $.getJSON("/Character/LoadPlayerClassesByFaction", { factionId: selectedFaction.val() },
 
@@ -19,7 +23,24 @@
                 selectedPlayerClass.val('@Model.SelectedPlayerClass');
 			});
         }
+		
+		/***** Loads selected race from model *****/
+		if (selectedPlayerClass.val() != "") {
+            $.getJSON("/Character/LoadRacesByPlayerClass", { playerClassId: idPlayerClass },
 
+			function (playerClassData) {
+				$.each(playerClassData, function (index, itemData) {
+				    selectedRace.append($('<option/>', {
+				        value: itemData.Value,
+				        text: itemData.Text
+				    }));
+				});
+
+                selectedPlayerClass.val('@Model.SelectedRace');
+			});
+        }
+		
+		/***** Updates player class based on selected faction *****/
         selectedFaction.change(function () {
             var idPlayerClass = $(this).val();
 
@@ -28,6 +49,12 @@
                 value: "",
                 text: ""
             }));
+
+			selectedRace.empty();
+			selectedRace.append($('<option/>', {
+				value: "",
+				text: ""
+			}));
 
             if (idPlayerClass != "") {
                 $.getJSON("/Character/LoadPlayerClassesByFaction", { factionId: idPlayerClass },
@@ -42,6 +69,30 @@
 				});
             }
         });
+		
+		/***** Updates race based on selected player class *****/
+		selectedPlayerClass.change(function() {
+			var idPlayerClass = $(this).val();
+
+			selectedRace.empty();
+			selectedRace.append($('<option/>', {
+				value: "",
+				text: ""
+			}));
+			
+			if (idPlayerClass != "") {
+                $.getJSON("/Character/LoadRacesByPlayerClass", { playerClassId: idPlayerClass },
+
+				function (playerClassData) {
+				    $.each(playerClassData, function (index, itemData) {
+				        selectedRace.append($('<option/>', {
+				            value: itemData.Value,
+				            text: itemData.Text
+				        }));
+				    });
+				});
+            }
+		});
     });
 </script>
 
@@ -76,19 +127,19 @@
 	    </tr>
 	    <tr>
 		    <td class="inputLabelCell">
-			    @Html.LabelFor(model => model.Character.Race):
-		    </td>
-		    <td class="inputDataCell"  align="left">
-				@Html.DropDownListFor(model => model.SelectedRace, new SelectList(Model.Races, "Value", "Text"), string.Empty)
-		    </td>
-	    </tr>
-	    <tr>
-		    <td class="inputLabelCell">
 			    @Html.LabelFor(model => model.Character.PlayerClass):
 		    </td>
 		    <td class="inputDataCell"  align="left">
                 @Html.DropDownListFor(model => model.SelectedPlayerClass, new SelectList(Model.PlayerClasses, "Id", "Name"), string.Empty)
 			    @Html.ValidationMessageFor(model => model.SelectedPlayerClass, "*")
+		    </td>
+	    </tr>
+	    <tr>
+		    <td class="inputLabelCell">
+			    @Html.LabelFor(model => model.Character.Race):
+		    </td>
+		    <td class="inputDataCell"  align="left">
+				@Html.DropDownListFor(model => model.SelectedRace, new SelectList(Model.Races, "Value", "Text"), string.Empty)
 		    </td>
 	    </tr>
 	    <tr>
