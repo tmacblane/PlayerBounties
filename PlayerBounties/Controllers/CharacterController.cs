@@ -19,6 +19,7 @@ namespace PlayerBounties.Controllers
 		private Avatar avatar = new Avatar();
 		private Bounty bounty = new Bounty();
 		private Character character = new Character();
+        private CharacterAddEditViewModel characterAddEditViewModel = new CharacterAddEditViewModel();
 		private Faction faction = new Faction();
 		private KillShotImage killShotImage = new KillShotImage();
 		private PlayerBountyContext db = new PlayerBountyContext();
@@ -50,8 +51,7 @@ namespace PlayerBounties.Controllers
 		[Authorize]
 		public ActionResult Create()
 		{
-			CharacterAddEditViewModel characterAddEditViewModel = new CharacterAddEditViewModel();
-			return View(characterAddEditViewModel);
+			return View(this.characterAddEditViewModel);
 		}
 
 		// POST: /Character/Create
