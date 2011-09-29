@@ -26,7 +26,7 @@ namespace PlayerBounties.Models
 			set;
 		}
 
-		[Required(ErrorMessage="Amount is required.")]
+		[Required(ErrorMessage = "Amount is required.")]
 		[Range(1, int.MaxValue, ErrorMessage = "The Amount must be greater than 0")]
 		[Display(Name = "Amount")]
 		public int Amount
@@ -34,17 +34,17 @@ namespace PlayerBounties.Models
 			get;
 			set;
 		}
-		
-        [Display(Name = "Reason")]
-        [DataType(DataType.MultilineText)]
+
+		[Display(Name = "Reason")]
+		[DataType(DataType.MultilineText)]
 		public string Reason
 		{
 			get;
 			set;
 		}
 
-        [Display(Name = "Message")]
-        [DataType(DataType.MultilineText)]
+		[Display(Name = "Message")]
+		[DataType(DataType.MultilineText)]
 		public string Message
 		{
 			get;
@@ -367,8 +367,7 @@ namespace PlayerBounties.Models
 
 			return totalSpent;
 		}
-
-
+		
 		public double GetAccountAmountEarned(Guid accountId)
 		{
 			Character character = new Character();

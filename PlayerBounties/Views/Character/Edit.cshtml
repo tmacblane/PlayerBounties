@@ -1,12 +1,14 @@
-﻿@model PlayerBounties.Models.Character
+﻿@model PlayerBounties.ViewModels.CharacterAddEditViewModel
 
 @{
-	ViewBag.Title = "Edit Character - " + Model.Name;
+	ViewBag.Title = "Edit Character - " + Model.Character.Name;
 }
 
 @using(Html.BeginForm())
 {
-    @Html.HiddenFor(model => model.Id)
+    @Html.ValidationSummary(false)
+
+    @Html.HiddenFor(model => model.Character.Id)
 	
 	@Html.Partial("_CharacterAddEdit", Model)
 	

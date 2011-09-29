@@ -7,6 +7,7 @@ using System.Web;
 using System.Web.Mvc;
 
 using PlayerBounties.Models;
+using PlayerBounties.ViewModels;
 
 namespace PlayerBounties.Controllers
 {
@@ -15,10 +16,16 @@ namespace PlayerBounties.Controllers
 		#region Fields
 
 		private Account account = new Account();
+		private Avatar avatar = new Avatar();
 		private Bounty bounty = new Bounty();
-		private KillShotImage killShotImage = new KillShotImage();
 		private Character character = new Character();
+        private CharacterAddEditViewModel characterAddEditViewModel = new CharacterAddEditViewModel();
+		private Faction faction = new Faction();
+		private KillShotImage killShotImage = new KillShotImage();
 		private PlayerBountyContext db = new PlayerBountyContext();
+		private PlayerClass playerClass = new PlayerClass();
+		private Race race = new Race();
+		private Shard shard = new Shard();
 
 		#endregion
 
@@ -28,7 +35,6 @@ namespace PlayerBounties.Controllers
 		[Authorize]
 		public ViewResult Index()
 		{
-
 			var characters = this.character.GetAllCharactersForAnAccount(this.account.GetLoggedInUserId());
 			return View(characters.ToList());
 		}
@@ -45,38 +51,17 @@ namespace PlayerBounties.Controllers
 		[Authorize]
 		public ActionResult Create()
 		{
-			var sortedShardList = from shard in this.db.Shards
-								  orderby shard.Name ascending
-								  select shard;
-
-			var sortedFactionList = from faction in this.db.Factions
-									orderby faction.Name ascending
-									select faction;
-
-			var sortedRaceList = from race in this.db.Races
-								 orderby race.Name ascending
-								 select race;
-
-			var sortedPlayerClassList = from playerClass in this.db.PlayerClasses
-										orderby playerClass.Name ascending
-										select playerClass;
-
-			ViewBag.ShardId = new SelectList(sortedShardList, "Id", "Name");
-			ViewBag.FactionId = new SelectList(sortedFactionList, "Id", "Name");
-			ViewBag.RaceId = new SelectList(sortedRaceList, "Id", "Name");
-			ViewBag.PlayerClassId = new SelectList(sortedPlayerClassList, "Id", "Name");
-
-			return View();
+			return View(this.characterAddEditViewModel);
 		}
 
 		// POST: /Character/Create
 		[Authorize]
 		[HttpPost]
-		public ActionResult Create(Character character)
+		public ActionResult Create(CharacterAddEditViewModel characterAddEditViewModel)
 		{
 			var accountId = this.account.GetLoggedInUserId();
 
-			IQueryable<Character> existingCharacter = character.GetCharacterByName(character.Name, character.ShardId, character.FactionId);
+			IQueryable<Character> existingCharacter = this.character.GetCharacterByName(characterAddEditViewModel.Character.Name, characterAddEditViewModel.SelectedShard, characterAddEditViewModel.SelectedFaction);
 
 			if(existingCharacter.Count() != 0 && existingCharacter.Single().UserId != Guid.Empty)
 			{
@@ -87,19 +72,31 @@ namespace PlayerBounties.Controllers
 			{
 				if(existingCharacter.Count() != 0 && existingCharacter.Single().UserId == Guid.Empty)
 				{
-					existingCharacter.Single().Bio = character.Bio;
-					existingCharacter.Single().Motto = character.Motto;
-					existingCharacter.Single().PlayerClassId = character.PlayerClassId;
-					existingCharacter.Single().RaceId = character.RaceId;
+					existingCharacter.Single().Bio = characterAddEditViewModel.Character.Bio;
+					existingCharacter.Single().Motto = characterAddEditViewModel.Character.Motto;
+					existingCharacter.Single().PlayerClassId = characterAddEditViewModel.SelectedPlayerClass;
+					existingCharacter.Single().RaceId = characterAddEditViewModel.SelectedRace;
 
-					this.Edit(existingCharacter.Single());
+					this.Edit(existingCharacter.Single().Id);
 				}
 				else
 				{
 					character.Id = Guid.NewGuid();
 					character.UserId = accountId;
+                    character.Name = characterAddEditViewModel.Character.Name;
+                    character.ShardId = characterAddEditViewModel.SelectedShard;
+                    character.FactionId = characterAddEditViewModel.SelectedFaction;
 
-					if(character.IsPrimary.Equals(true))
+                    if(characterAddEditViewModel.SelectedRace != null)
+                    {
+                        character.RaceId = characterAddEditViewModel.SelectedRace;
+                    }
+
+                    character.PlayerClassId = characterAddEditViewModel.SelectedPlayerClass;
+                    character.Motto = characterAddEditViewModel.Character.Motto;
+                    character.Bio = characterAddEditViewModel.Character.Bio;
+
+					if(characterAddEditViewModel.Character.IsPrimary.Equals(true))
 					{
 						if(character.GetDefaultCharacterForAnAccount(accountId).Count() != 0)
 						{
@@ -113,9 +110,7 @@ namespace PlayerBounties.Controllers
 						character.IsPrimary = true;
 					}
 
-					// set character avatar based on class
-					Avatar avatar = new Avatar();
-					character.AvatarId = avatar.GetAvatarBasedOnClass(character.PlayerClassId).Single().id;
+                    character.AvatarId = avatar.GetAvatarBasedOnClass(characterAddEditViewModel.SelectedPlayerClass).Single().id;
 
 					this.db.Characters.Add(character);
 					this.db.SaveChanges();
@@ -125,11 +120,7 @@ namespace PlayerBounties.Controllers
 			}
 			else
 			{
-				ViewBag.ShardId = new SelectList(this.db.Shards, "Id", "Name", character.ShardId);
-				ViewBag.FactionId = new SelectList(this.db.Factions, "Id", "Name", character.FactionId);
-				ViewBag.RaceId = new SelectList(this.db.Races, "Id", "Name", character.RaceId);
-				ViewBag.PlayerClassId = new SelectList(this.db.PlayerClasses, "Id", "Name", character.PlayerClassId);
-				return View(character);
+				return View(characterAddEditViewModel);
 			}
 		}
 
@@ -140,19 +131,11 @@ namespace PlayerBounties.Controllers
 			{
 				character.Id = Guid.NewGuid();
 				character.UserId = Guid.Empty;
-
-				// set character avatar based on class
-				Avatar avatar = new Avatar();
-				character.AvatarId = avatar.GetAvatarBasedOnClass(character.PlayerClassId).Single().id;
+				character.AvatarId = this.avatar.GetAvatarBasedOnClass(character.PlayerClassId).Single().id;
 
 				this.db.Characters.Add(character);
 				this.db.SaveChanges();
 			}
-
-			ViewBag.ShardId = new SelectList(this.db.Shards, "Id", "Name", character.ShardId);
-			ViewBag.FactionId = new SelectList(this.db.Factions, "Id", "Name", character.FactionId);
-			ViewBag.RaceId = new SelectList(this.db.Races, "Id", "Name", character.RaceId);
-			ViewBag.PlayerClassId = new SelectList(this.db.PlayerClasses, "Id", "Name", character.PlayerClassId);
 
 			return character.Id;
 		}
@@ -163,13 +146,20 @@ namespace PlayerBounties.Controllers
 		{
 			if(this.character.IsCharacterOwner(this.account.GetLoggedInUserId(), id))
 			{
-				Character character = this.db.Characters.Find(id);
-				ViewBag.ShardId = new SelectList(this.db.Shards, "Id", "Name", character.ShardId);
-				ViewBag.FactionId = new SelectList(this.db.Factions, "Id", "Name", character.FactionId);
-				ViewBag.RaceId = new SelectList(this.db.Races, "Id", "Name", character.RaceId);
-				ViewBag.PlayerClassId = new SelectList(this.db.PlayerClasses, "Id", "Name", character.PlayerClassId);
+                CharacterAddEditViewModel characterAddEditViewModel = new CharacterAddEditViewModel();
 
-				return View(character);
+                characterAddEditViewModel.Character = this.db.Characters.Find(id);
+                
+                var viewModel = new CharacterAddEditViewModel
+                {
+                    Character = characterAddEditViewModel.Character,
+                    SelectedFaction = characterAddEditViewModel.Character.FactionId,
+                    SelectedPlayerClass = characterAddEditViewModel.Character.PlayerClassId,
+                    SelectedRace = characterAddEditViewModel.Character.RaceId,
+                    SelectedShard = characterAddEditViewModel.Character.ShardId
+                };
+
+                return View("Edit", viewModel);
 			}
 			else
 			{
@@ -180,8 +170,9 @@ namespace PlayerBounties.Controllers
 		// POST: /Character/Edit/5
 		[Authorize]
 		[HttpPost]
-		public ActionResult Edit(Character character)
+        public ActionResult Edit(CharacterAddEditViewModel characterAddEditViewModel)
 		{
+            Character character = this.db.Characters.Find(characterAddEditViewModel.Character.Id);
 			var accountId = this.account.GetLoggedInUserId();
 
 			this.db.Entry(character).State = EntityState.Modified;
@@ -190,30 +181,33 @@ namespace PlayerBounties.Controllers
 			{
 				if(ModelState.IsValid)
 				{
-					if(character.UserId == Guid.Empty)
+                    if (characterAddEditViewModel.Character.UserId == Guid.Empty)
 					{
-						character.UserId = accountId;
+                        character.UserId = accountId;
 					}
 
-					if(character.GetDefaultCharacterForAnAccount(accountId).Count() == 0)
-					{
-						character.IsPrimary = true;
-					}
+                    character.ShardId = characterAddEditViewModel.SelectedShard;
+                    character.FactionId = characterAddEditViewModel.SelectedFaction;
 
-					// set character avatar based on class
-					Avatar avatar = new Avatar();
-					character.AvatarId = avatar.GetAvatarBasedOnClass(character.PlayerClassId).Single().id;
+                    if (characterAddEditViewModel.SelectedRace != null)
+                    {
+                        character.RaceId = characterAddEditViewModel.SelectedRace;
+                    }
+
+                    character.PlayerClassId = characterAddEditViewModel.SelectedPlayerClass;
+
+                    if (this.character.GetDefaultCharacterForAnAccount(accountId).Count() == 0)
+                    {
+                        character.IsPrimary = true;
+                    }
+
+                    character.AvatarId = this.avatar.GetAvatarBasedOnClass(characterAddEditViewModel.SelectedPlayerClass).Single().id;
 
 					this.db.SaveChanges();
 					return RedirectToAction("Dashboard", "Home");
 				}
 
-				ViewBag.ShardId = new SelectList(this.db.Shards, "Id", "Name", character.ShardId);
-				ViewBag.FactionId = new SelectList(this.db.Factions, "Id", "Name", character.FactionId);
-				ViewBag.RaceId = new SelectList(this.db.Races, "Id", "Name", character.RaceId);
-				ViewBag.PlayerClassId = new SelectList(this.db.PlayerClasses, "Id", "Name", character.PlayerClassId);
-
-				return View(character);
+                return View(characterAddEditViewModel.Character);
 			}
 			else
 			{
@@ -233,6 +227,36 @@ namespace PlayerBounties.Controllers
 			});
 
 			return Json(playerClassData, JsonRequestBehavior.AllowGet);
+		}
+
+		
+		[AcceptVerbs(HttpVerbs.Get)]
+		public JsonResult LoadRacesByPlayerClass(Guid playerClassId)
+		{
+			var playerClassRaceList = this.GetRacesPerPlayerClass(playerClassId);
+
+			var playerClassRaceData = playerClassRaceList.Select(r => new SelectListItem()
+			{
+				Value = r.RaceId.ToString(),
+				Text = race.GetRaceName(r.RaceId)
+			});
+
+			return Json(playerClassRaceData.OrderBy(r => r.Text), JsonRequestBehavior.AllowGet);
+		}
+
+		[AcceptVerbs(HttpVerbs.Get)]
+		public JsonResult LoadCharactersByShard(Guid shardId)
+		{
+			var loggedInUserId = this.account.GetLoggedInUserId();
+			var characterList = this.GetCharactersPerShard(loggedInUserId, shardId);
+
+			var characterData = characterList.Select(c => new SelectListItem()
+			{
+				Value = c.Id.ToString(),
+				Text = c.Name
+			});
+
+			return Json(characterData, JsonRequestBehavior.AllowGet);
 		}
 
 		public ActionResult KillShotImages(Guid characterId, string imageType)
@@ -273,7 +297,17 @@ namespace PlayerBounties.Controllers
 
 		private IEnumerable<PlayerClass> GetPlayerClassesPerFaction(Guid factionId)
 		{
-			return this.db.PlayerClasses.Where(p => p.FactionId == factionId);
+			return this.db.PlayerClasses.Where(p => p.FactionId == factionId).OrderBy(p => p.Name);
+		}
+
+		private IEnumerable<Character> GetCharactersPerShard(Guid accountId, Guid shardId)
+		{
+			return this.db.Characters.Where(c => c.UserId == accountId).Where(c => c.Shard.Id == shardId).Include(c => c.Shard).Include(c => c.Faction).Include(c => c.Race).Include(c => c.PlayerClass).OrderBy(c => c.Name);
+		}
+
+		private IEnumerable<PlayerClassRace> GetRacesPerPlayerClass(Guid playerClassId)
+		{
+			return this.db.PlayerClassRaces.Where(p => p.PlayerClassId == playerClassId).OrderBy(p => p.RaceId).ToList();
 		}
 
 		#endregion

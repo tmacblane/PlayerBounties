@@ -13,6 +13,7 @@ namespace PlayerBounties.Models
 	{
 		#region Fields
 
+		private List<SelectListItem> _characters = new List<SelectListItem>();
 		private PlayerBountyContext db = new PlayerBountyContext();
 
 		#endregion
@@ -143,6 +144,20 @@ namespace PlayerBounties.Models
 		public IQueryable<Character> GetAllCharactersForAnAccount(Guid accountId)
 		{
 			return this.db.Characters.Where(c => c.UserId == accountId).Include(c => c.Shard).Include(c => c.Faction).Include(c => c.Race).Include(c => c.PlayerClass);
+		}
+
+		public List<SelectListItem> GetCharacterListForAnAccount(Guid accountId)
+		{
+			foreach(Character item in this.GetAllCharactersForAnAccount(accountId))
+			{
+				_characters.Add(new SelectListItem()
+				{
+					Text = item.Name,
+					Value = item.Id.ToString()
+				});
+			}
+
+			return _characters;
 		}
 
 		public IQueryable<Character> GetCharacterById(Guid characterId)

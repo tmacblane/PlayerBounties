@@ -61,6 +61,12 @@ namespace PlayerBounties.Models
 			set;
 		}
 
+		public DbSet<PlayerClassRace> PlayerClassRaces
+		{
+			get;
+			set;
+		}
+
 		public DbSet<Race> Races
 		{
 			get;
