@@ -1,55 +1,48 @@
 ﻿@model PlayerBounties.ViewModels.CharacterAddEditViewModel
 
 <script type="text/javascript">
-	$(document).ready(function()
-	{
-		var selectedPlayerClass = $("#SelectedPlayerClass");
-		var selectedFaction = $("#SelectedFaction");
+    $(document).ready(function () {
+        var selectedPlayerClass = $("#SelectedPlayerClass");
+        var selectedFaction = $("#SelectedFaction");
 
-		if(selectedFaction.val() != null)
-		{
-			$.getJSON("/Character/LoadPlayerClassesByFaction", { factionId: selectedFaction.val() },
+        if (selectedFaction.val() != "") {
+            $.getJSON("/Character/LoadPlayerClassesByFaction", { factionId: selectedFaction.val() },
 
-			function(factionData)
-			{
-				$.each(factionData, function(index, itemData)
-				{
-					selectedPlayerClass.append($('<option/>', {
-						value: itemData.Value,
-						text: itemData.Text
-					}));
-				});
+			function (factionData) {
+			    $.each(factionData, function (index, itemData) {
+			        selectedPlayerClass.append($('<option/>', {
+			            value: itemData.Value,
+			            text: itemData.Text,
+			        }));
+			    });
+
+                selectedPlayerClass.val('@Model.SelectedPlayerClass');
 			});
-		}
+        }
 
-		selectedFaction.change(function()
-		{
-			var idPlayerClass = $(this).val();
+        selectedFaction.change(function () {
+            var idPlayerClass = $(this).val();
 
-			selectedPlayerClass.empty();
-			selectedPlayerClass.append($('<option/>', {
-				value: "",
-				text: ""
-			}));
+            selectedPlayerClass.empty();
+            selectedPlayerClass.append($('<option/>', {
+                value: "",
+                text: ""
+            }));
 
-			if(idPlayerClass != "")
-			{
-				$.getJSON("/Character/LoadPlayerClassesByFaction", { factionId: idPlayerClass },
+            if (idPlayerClass != "") {
+                $.getJSON("/Character/LoadPlayerClassesByFaction", { factionId: idPlayerClass },
 
-				function(factionData)
-				{
-					$.each(factionData, function(index, itemData)
-					{
-						selectedPlayerClass.append($('<option/>', {
-							value: itemData.Value,
-							text: itemData.Text
-						}));
-					});
+				function (factionData) {
+				    $.each(factionData, function (index, itemData) {
+				        selectedPlayerClass.append($('<option/>', {
+				            value: itemData.Value,
+				            text: itemData.Text
+				        }));
+				    });
 				});
-			}
-		});
-	});
-
+            }
+        });
+    });
 </script>
 
 <table id="characterAddEditTable" cellspacing="0" cellpadding="5" border="0">
@@ -94,15 +87,7 @@
 			    @Html.LabelFor(model => model.Character.PlayerClass):
 		    </td>
 		    <td class="inputDataCell"  align="left">
-				@if(Model.SelectedPlayerClass == "" || Model.SelectedPlayerClass == null)
-				{
-					@Html.DropDownListFor(model => model.SelectedPlayerClass, new SelectList(Model.PlayerClasses, "Value", "Text"), string.Empty)
-				}
-				else
-				{
-					@Html.DropDownListFor(model => model.SelectedPlayerClass, new SelectList(Model.PlayerClasses, "Value", "Text", Model.SelectedPlayerClass))
-				}
-
+                @Html.DropDownListFor(model => model.SelectedPlayerClass, new SelectList(Model.PlayerClasses, "Id", "Name"), string.Empty)
 			    @Html.ValidationMessageFor(model => model.SelectedPlayerClass, "*")
 		    </td>
 	    </tr>

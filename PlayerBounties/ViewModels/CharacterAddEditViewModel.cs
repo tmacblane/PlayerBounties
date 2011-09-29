@@ -32,27 +32,27 @@ namespace PlayerBounties.ViewModels
 		}
 
 		[Required(ErrorMessage = "Please select a faction")]
-		public string SelectedFaction
+		public Guid SelectedFaction
 		{
 			get;
 			set;
 		}
 
 		[Required(ErrorMessage = "Please select a class")]
-		public string SelectedPlayerClass
+		public Guid SelectedPlayerClass
 		{
 			get;
 			set;
 		}
 
-		public string SelectedRace
+		public Guid? SelectedRace
 		{
 			get;
 			set;
 		}
 
 		[Required(ErrorMessage = "Please select a shard")]
-		public string SelectedShard
+		public Guid SelectedShard
 		{
 			get;
 			set;

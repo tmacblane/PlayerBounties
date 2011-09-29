@@ -61,7 +61,7 @@ namespace PlayerBounties.Controllers
 		{
 			var accountId = this.account.GetLoggedInUserId();
 
-			IQueryable<Character> existingCharacter = this.character.GetCharacterByName(characterAddEditViewModel.Character.Name, Guid.Parse(characterAddEditViewModel.SelectedShard), Guid.Parse(characterAddEditViewModel.SelectedFaction));
+			IQueryable<Character> existingCharacter = this.character.GetCharacterByName(characterAddEditViewModel.Character.Name, characterAddEditViewModel.SelectedShard, characterAddEditViewModel.SelectedFaction);
 
 			if(existingCharacter.Count() != 0 && existingCharacter.Single().UserId != Guid.Empty)
 			{
@@ -74,15 +74,27 @@ namespace PlayerBounties.Controllers
 				{
 					existingCharacter.Single().Bio = characterAddEditViewModel.Character.Bio;
 					existingCharacter.Single().Motto = characterAddEditViewModel.Character.Motto;
-					existingCharacter.Single().PlayerClassId = Guid.Parse(characterAddEditViewModel.SelectedPlayerClass);
-					existingCharacter.Single().RaceId = Guid.Parse(characterAddEditViewModel.SelectedRace);
+					existingCharacter.Single().PlayerClassId = characterAddEditViewModel.SelectedPlayerClass;
+					existingCharacter.Single().RaceId = characterAddEditViewModel.SelectedRace;
 
-					this.Edit(existingCharacter.Single());
+					this.Edit(existingCharacter.Single().Id);
 				}
 				else
 				{
 					character.Id = Guid.NewGuid();
 					character.UserId = accountId;
+                    character.Name = characterAddEditViewModel.Character.Name;
+                    character.ShardId = characterAddEditViewModel.SelectedShard;
+                    character.FactionId = characterAddEditViewModel.SelectedFaction;
+
+                    if(characterAddEditViewModel.SelectedRace != null)
+                    {
+                        character.RaceId = characterAddEditViewModel.SelectedRace;
+                    }
+
+                    character.PlayerClassId = characterAddEditViewModel.SelectedPlayerClass;
+                    character.Motto = characterAddEditViewModel.Character.Motto;
+                    character.Bio = characterAddEditViewModel.Character.Bio;
 
 					if(characterAddEditViewModel.Character.IsPrimary.Equals(true))
 					{
@@ -98,18 +110,7 @@ namespace PlayerBounties.Controllers
 						character.IsPrimary = true;
 					}
 
-					character.Bio = characterAddEditViewModel.Character.Bio;
-					character.Motto = characterAddEditViewModel.Character.Motto;
-					character.FactionId = Guid.Parse(characterAddEditViewModel.SelectedFaction);
-
-					if(characterAddEditViewModel.SelectedRace != null)
-					{
-						character.RaceId = Guid.Parse(characterAddEditViewModel.SelectedRace);
-					}
-
-					character.ShardId = Guid.Parse(characterAddEditViewModel.SelectedShard);
-					character.PlayerClassId = Guid.Parse(characterAddEditViewModel.SelectedPlayerClass);
-					character.AvatarId = avatar.GetAvatarBasedOnClass(Guid.Parse(characterAddEditViewModel.SelectedPlayerClass)).Single().id;
+                    character.AvatarId = avatar.GetAvatarBasedOnClass(characterAddEditViewModel.SelectedPlayerClass).Single().id;
 
 					this.db.Characters.Add(character);
 					this.db.SaveChanges();
@@ -122,69 +123,6 @@ namespace PlayerBounties.Controllers
 				return View(characterAddEditViewModel);
 			}
 		}
-
-		//[Authorize]
-		//[HttpPost]
-		//public ActionResult Create(Character character)
-		//{
-		//    var accountId = this.account.GetLoggedInUserId();
-
-		//    IQueryable<Character> existingCharacter = character.GetCharacterByName(character.Name, character.ShardId, character.FactionId);
-
-		//    if(existingCharacter.Count() != 0 && existingCharacter.Single().UserId != Guid.Empty)
-		//    {
-		//        ModelState.AddModelError("Name", "A character with this information already exists.");
-		//    }
-
-		//    if(ModelState.IsValid)
-		//    {
-		//        if(existingCharacter.Count() != 0 && existingCharacter.Single().UserId == Guid.Empty)
-		//        {
-		//            existingCharacter.Single().Bio = character.Bio;
-		//            existingCharacter.Single().Motto = character.Motto;
-		//            existingCharacter.Single().PlayerClassId = character.PlayerClassId;
-		//            existingCharacter.Single().RaceId = character.RaceId;
-
-		//            this.Edit(existingCharacter.Single());
-		//        }
-		//        else
-		//        {
-		//            character.Id = Guid.NewGuid();
-		//            character.UserId = accountId;
-
-		//            if(character.IsPrimary.Equals(true))
-		//            {
-		//                if(character.GetDefaultCharacterForAnAccount(accountId).Count() != 0)
-		//                {
-		//                    var defaultCharacterId = character.GetDefaultCharacterForAnAccount(accountId).Single().Id;
-
-		//                    character.SetDefaultCharacterToFalse(defaultCharacterId);
-		//                }
-		//            }
-		//            else if(character.GetDefaultCharacterForAnAccount(accountId).Count() == 0)
-		//            {
-		//                character.IsPrimary = true;
-		//            }
-
-		//            // set character avatar based on class
-		//            character.AvatarId = avatar.GetAvatarBasedOnClass(character.PlayerClassId).Single().id;
-
-		//            this.db.Characters.Add(character);
-		//            this.db.SaveChanges();
-		//        }
-
-		//        return RedirectToAction("Dashboard", "Home");
-		//    }
-		//    else
-		//    {
-		//        ViewBag.ShardId = new SelectList(this.shard.GetShardsList(), "Id", "Name", character.ShardId);
-		//        ViewBag.FactionId = new SelectList(this.faction.GetFactionsList(), "Id", "Name", character.FactionId);
-		//        ViewBag.RaceId = new SelectList(this.race.GetRacesList(), "Id", "Name", character.RaceId);
-		//        ViewBag.PlayerClassId = new SelectList(this.playerClass.GetPlayerClassesList(), "Id", "Name", character.PlayerClassId);
-
-		//        return View(character);
-		//    }
-		//}
 
 		[HttpPost]
 		public Guid CreateBountyCharacter(Character character)
@@ -215,14 +153,20 @@ namespace PlayerBounties.Controllers
 		{
 			if(this.character.IsCharacterOwner(this.account.GetLoggedInUserId(), id))
 			{
-				Character character = this.db.Characters.Find(id);
+                CharacterAddEditViewModel characterAddEditViewModel = new CharacterAddEditViewModel();
 
-				ViewBag.ShardId = new SelectList(this.shard.GetShardsList(), "Id", "Name", character.ShardId);
-				ViewBag.FactionId = new SelectList(this.faction.GetFactionsList(), "Id", "Name", character.FactionId);
-				ViewBag.RaceId = new SelectList(this.race.GetRacesList(), "Id", "Name", character.RaceId);
-				ViewBag.PlayerClassId = new SelectList(this.playerClass.GetPlayerClassesList(), "Id", "Name", character.PlayerClassId);
+                characterAddEditViewModel.Character = this.db.Characters.Find(id);
+                
+                var viewModel = new CharacterAddEditViewModel
+                {
+                    Character = characterAddEditViewModel.Character,
+                    SelectedFaction = characterAddEditViewModel.Character.FactionId,
+                    SelectedPlayerClass = characterAddEditViewModel.Character.PlayerClassId,
+                    SelectedRace = characterAddEditViewModel.Character.RaceId,
+                    SelectedShard = characterAddEditViewModel.Character.ShardId
+                };
 
-				return View(character);
+                return View("Edit", viewModel);
 			}
 			else
 			{
@@ -233,8 +177,9 @@ namespace PlayerBounties.Controllers
 		// POST: /Character/Edit/5
 		[Authorize]
 		[HttpPost]
-		public ActionResult Edit(Character character)
+        public ActionResult Edit(CharacterAddEditViewModel characterAddEditViewModel)
 		{
+            Character character = this.db.Characters.Find(characterAddEditViewModel.Character.Id);
 			var accountId = this.account.GetLoggedInUserId();
 
 			this.db.Entry(character).State = EntityState.Modified;
@@ -243,29 +188,33 @@ namespace PlayerBounties.Controllers
 			{
 				if(ModelState.IsValid)
 				{
-					if(character.UserId == Guid.Empty)
+                    if (characterAddEditViewModel.Character.UserId == Guid.Empty)
 					{
-						character.UserId = accountId;
+                        character.UserId = accountId;
 					}
 
-					if(character.GetDefaultCharacterForAnAccount(accountId).Count() == 0)
-					{
-						character.IsPrimary = true;
-					}
+                    character.ShardId = characterAddEditViewModel.SelectedShard;
+                    character.FactionId = characterAddEditViewModel.SelectedFaction;
 
-					// set character avatar based on class
-					character.AvatarId = this.avatar.GetAvatarBasedOnClass(character.PlayerClassId).Single().id;
+                    if (characterAddEditViewModel.SelectedRace != null)
+                    {
+                        character.RaceId = characterAddEditViewModel.SelectedRace;
+                    }
+
+                    character.PlayerClassId = characterAddEditViewModel.SelectedPlayerClass;
+
+                    if (this.character.GetDefaultCharacterForAnAccount(accountId).Count() == 0)
+                    {
+                        character.IsPrimary = true;
+                    }
+
+                    character.AvatarId = this.avatar.GetAvatarBasedOnClass(characterAddEditViewModel.SelectedPlayerClass).Single().id;
 
 					this.db.SaveChanges();
 					return RedirectToAction("Dashboard", "Home");
 				}
 
-				ViewBag.ShardId = new SelectList(this.shard.GetShardsList(), "Id", "Name", character.ShardId);
-				ViewBag.FactionId = new SelectList(this.faction.GetFactionsList(), "Id", "Name", character.FactionId);
-				ViewBag.RaceId = new SelectList(this.race.GetRacesList(), "Id", "Name", character.RaceId);
-				ViewBag.PlayerClassId = new SelectList(this.playerClass.GetPlayerClassesList(), "Id", "Name", character.PlayerClassId);
-
-				return View(character);
+                return View(characterAddEditViewModel.Character);
 			}
 			else
 			{
