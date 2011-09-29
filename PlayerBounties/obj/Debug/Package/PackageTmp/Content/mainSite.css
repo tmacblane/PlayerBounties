@@ -166,7 +166,7 @@ img
 
 #tabStripContainer
 {
-	left: 204px;
+	left: 150px;
 	position: absolute;
 	bottom: 0;
 	font-size: 16px;
@@ -283,6 +283,16 @@ input[type="submit"] input[value], input[type="button"] input[value]
 	font-size: 12px;
 	height: 30px;
 	line-height: 30px;
+}
+
+ .inputDataCell input
+ {
+ 	width: 200px;
+ }
+
+select
+{
+	width: 200px;
 }
 
 #Search
@@ -480,13 +490,14 @@ table
 #rightColumn
 {
 	float: right;
-	width: 175px;
+	width: 200px;
 }
 
 #middleColumn
 {
-	padding: 0 185px;
-	width: 620px;
+	padding-left: 195px;
+	padding-right: 220px;
+	width: 545px;
 }
 
 

@@ -33,12 +33,15 @@
 			</thead>
 			<tbody>
 				<tr>
+					@{
+						var loggedInUserId = Model.GetLoggedInUserId();
+					}
 					<td class="inputLabelCell">
 						Targets Killed:
 					</td>
 					<td align="left">
 						@{
-							int killedCount = Model.GetAccountBountiesCompleted(Model.GetLoggedInUserId()).Count();
+							int killedCount = Model.GetAccountBountiesCompleted(loggedInUserId).Count();
 						}
 
 						@if(killedCount != 0)
@@ -53,7 +56,7 @@
 					<td class="inputLabelCell">Bounties Signed Up For:</td>
 					<td align="right">
 						@{
-							int bountiesSignedUpForCount = Model.GetAccountBountiesSignedUpFor(Model.GetLoggedInUserId()).Count();
+							int bountiesSignedUpForCount = Model.GetAccountBountiesSignedUpFor(loggedInUserId).Count();
 						}
 
 						@if(bountiesSignedUpForCount != 0)
@@ -72,7 +75,7 @@
 					</td>
 					<td align="left">
 						@{
-							int placedCount = Model.GetAccountBountiesPlaced(Model.GetLoggedInUserId()).Count();
+							int placedCount = Model.GetAccountBountiesPlaced(loggedInUserId).Count();
 						}
 
 						@if(placedCount != 0)
@@ -87,7 +90,7 @@
 					<td class="inputLabelCell">Pending Contracts:</td>
 					<td align="right">
 						@{
-							int pendingCount = Model.GetAccountPendingBountiesPlaced(Model.GetLoggedInUserId()).Count();
+							int pendingCount = Model.GetAccountPendingBountiesPlaced(loggedInUserId).Count();
 						}
 
 						@if(pendingCount != 0)
@@ -106,7 +109,7 @@
 					</td>
 					<td align="left">
 						@{
-							int againstCount = Model.GetAccountBountiesPlacedOn(Model.GetLoggedInUserId()).Count();
+							int againstCount = Model.GetAccountBountiesPlacedOn(loggedInUserId).Count();
 						}
 
 						@if(againstCount != 0)
@@ -121,7 +124,7 @@
 					<td class="inputLabelCell">Active Contracts:</td>
 					<td align="right">
 						@{
-							int activeCount = Model.GetAccountActiveBounties(Model.GetLoggedInUserId()).Count();
+							int activeCount = Model.GetAccountActiveBounties(loggedInUserId).Count();
 						}
 
 						@if(activeCount != 0)
@@ -132,6 +135,33 @@
 						{
 							<text>0</text>
 						}	
+					</td>
+				</tr>
+				<tr><td colspan="4"><hr /></td></tr>
+				<tr>
+					<td class="inputLabelCell">Total Spent:</td>
+					<td colspan="3" align="left">
+						@if(placedCount != 0)
+						{
+							@string.Format("{0:0,0}", Model.GetAccountAmountSpent(loggedInUserId))
+						}
+						else
+						{
+							<text>0</text>
+						}
+					</td>
+				</tr>
+				<tr>
+					<td class="inputLabelCell">Total Earned:</td>
+					<td colspan="3" align="left">
+						@if(killedCount != 0)
+						{
+							@string.Format("{0:0,0}", Model.GetAccountAmountEarned(loggedInUserId))
+						}
+						else
+						{
+							<text>0</text>
+						}
 					</td>
 				</tr>
 			</tbody>

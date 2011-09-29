@@ -1,103 +1,169 @@
-﻿@model PlayerBounties.Models.Character
+﻿@model PlayerBounties.ViewModels.CharacterAddEditViewModel
 
 <script type="text/javascript">
-	$(document).ready(function()
-	{
-		$("#FactionId").change(function()
-		{
+    $(document).ready(function () {
+	
+		/***** Fields *****/
+        var selectedFaction = $("#SelectedFaction");
+        var selectedPlayerClass = $("#SelectedPlayerClass");
+		var selectedRace = $("#SelectedRace");
+		
+		/***** Loads selected character from model *****/
+        if (selectedFaction.val() != "") {
+            $.getJSON("/Character/LoadPlayerClassesByFaction", { factionId: selectedFaction.val() },
+
+			function (factionData) {
+			    $.each(factionData, function (index, itemData) {
+			        selectedPlayerClass.append($('<option/>', {
+			            value: itemData.Value,
+			            text: itemData.Text,
+			        }));
+			    });
+
+                selectedPlayerClass.val('@Model.SelectedPlayerClass');
+			});
+        }
+		
+		/***** Loads selected race from model *****/
+		if (selectedPlayerClass.val() != "") {
+            $.getJSON("/Character/LoadRacesByPlayerClass", { playerClassId: idPlayerClass },
+
+			function (playerClassData) {
+				$.each(playerClassData, function (index, itemData) {
+				    selectedRace.append($('<option/>', {
+				        value: itemData.Value,
+				        text: itemData.Text
+				    }));
+				});
+
+                selectedPlayerClass.val('@Model.SelectedRace');
+			});
+        }
+		
+		/***** Updates player class based on selected faction *****/
+        selectedFaction.change(function () {
+            var idPlayerClass = $(this).val();
+
+            selectedPlayerClass.empty();
+            selectedPlayerClass.append($('<option/>', {
+                value: "",
+                text: ""
+            }));
+
+			selectedRace.empty();
+			selectedRace.append($('<option/>', {
+				value: "",
+				text: ""
+			}));
+
+            if (idPlayerClass != "") {
+                $.getJSON("/Character/LoadPlayerClassesByFaction", { factionId: idPlayerClass },
+
+				function (factionData) {
+				    $.each(factionData, function (index, itemData) {
+				        selectedPlayerClass.append($('<option/>', {
+				            value: itemData.Value,
+				            text: itemData.Text
+				        }));
+				    });
+				});
+            }
+        });
+		
+		/***** Updates race based on selected player class *****/
+		selectedPlayerClass.change(function() {
 			var idPlayerClass = $(this).val();
 
-			$.getJSON("/Character/LoadPlayerClassesByFaction", { factionId: idPlayerClass },
+			selectedRace.empty();
+			selectedRace.append($('<option/>', {
+				value: "",
+				text: ""
+			}));
 			
-			function(factionData)
-			{
-				var select = $("#PlayerClassId");
-				select.empty();
-				select.append($('<option/>', {
-					value: 0,
-					text: ""
-				}));
+			if (idPlayerClass != "") {
+                $.getJSON("/Character/LoadRacesByPlayerClass", { playerClassId: idPlayerClass },
 
-				$.each(factionData, function(index, itemData)
-				{
-					select.append($('<option/>', {
-						value: itemData.Value,
-						text: itemData.Text
-					}));
+				function (playerClassData) {
+				    $.each(playerClassData, function (index, itemData) {
+				        selectedRace.append($('<option/>', {
+				            value: itemData.Value,
+				            text: itemData.Text
+				        }));
+				    });
 				});
-			});
+            }
 		});
-	});
+    });
 </script>
 
 <table id="characterAddEditTable" cellspacing="0" cellpadding="5" border="0">
     <tbody>
 	    <tr>
 		    <td class="inputLabelCell">
-			    @Html.LabelFor(model => model.Name):
+			    @Html.LabelFor(model => model.Character.Name):
 		    </td>
-		    <td align="left">
-			    @Html.EditorFor(model => model.Name)
-			    @Html.ValidationMessageFor(model => model.Name, "*")
-		    </td>
-	    </tr>
-	    <tr>
-		    <td class="inputLabelCell">
-			    @Html.LabelFor(model => model.Shard):
-		    </td>
-		    <td align="left">
-			    @Html.DropDownList("ShardId", String.Empty)
-			    @Html.ValidationMessageFor(model => model.ShardId, "*")
+		    <td class="inputDataCell" align="left">
+			    @Html.EditorFor(model => model.Character.Name)
+			    @Html.ValidationMessageFor(model => model.Character.Name, "*")
 		    </td>
 	    </tr>
 	    <tr>
 		    <td class="inputLabelCell">
-			    @Html.LabelFor(model => model.Faction):
+			    @Html.LabelFor(model => model.Character.Shard):
 		    </td>
-		    <td align="left">
-			    @Html.DropDownList("FactionId", String.Empty)
-			    @Html.ValidationMessageFor(model => model.FactionId, "*")
-		    </td>
-	    </tr>
-	    <tr>
-		    <td class="inputLabelCell">
-			    @Html.LabelFor(model => model.Race):
-		    </td>
-		    <td align="left">
-			    @Html.DropDownList("RaceId", String.Empty)
+		    <td class="inputDataCell"  align="left">
+				@Html.DropDownListFor(model => model.SelectedShard, new SelectList(Model.Shards, "Value", "Text"), string.Empty)
+			    @Html.ValidationMessageFor(model => model.SelectedShard, "*")
 		    </td>
 	    </tr>
 	    <tr>
 		    <td class="inputLabelCell">
-			    @Html.LabelFor(model => model.PlayerClass):
+			    @Html.LabelFor(model => model.Character.Faction):
 		    </td>
-		    <td align="left">
-			    @Html.DropDownList("PlayerClassId", String.Empty)
-			    @Html.ValidationMessageFor(model => model.PlayerClassId, "*")
+		    <td class="inputDataCell"  align="left">
+				@Html.DropDownListFor(model => model.SelectedFaction, new SelectList(Model.Factions, "Value", "Text"), string.Empty)
+			    @Html.ValidationMessageFor(model => model.SelectedFaction, "*")
+		    </td>
+	    </tr>
+	    <tr>
+		    <td class="inputLabelCell">
+			    @Html.LabelFor(model => model.Character.PlayerClass):
+		    </td>
+		    <td class="inputDataCell"  align="left">
+                @Html.DropDownListFor(model => model.SelectedPlayerClass, new SelectList(Model.PlayerClasses, "Id", "Name"), string.Empty)
+			    @Html.ValidationMessageFor(model => model.SelectedPlayerClass, "*")
+		    </td>
+	    </tr>
+	    <tr>
+		    <td class="inputLabelCell">
+			    @Html.LabelFor(model => model.Character.Race):
+		    </td>
+		    <td class="inputDataCell"  align="left">
+				@Html.DropDownListFor(model => model.SelectedRace, new SelectList(Model.Races, "Value", "Text"), string.Empty)
 		    </td>
 	    </tr>
 	    <tr>
 		    <td class="inputLabelCell" style="vertical-align: top;">
-			    @Html.LabelFor(model => model.Motto):
+			    @Html.LabelFor(model => model.Character.Motto):
 		    </td>
-		    <td align="left">
-			    @Html.EditorFor(model => model.Motto)
+		    <td class="inputDataCell"  align="left">
+			    @Html.EditorFor(model => model.Character.Motto)
 		    </td>
 	    </tr>
 	    <tr>
 		    <td class="inputLabelCell" style="vertical-align: top;">
-			    @Html.LabelFor(model => model.Bio):
+			    @Html.LabelFor(model => model.Character.Bio):
 		    </td>
-		    <td align="left">
-			    @Html.EditorFor(model => model.Bio)
+		    <td class="inputDataCell"  align="left">
+			    @Html.EditorFor(model => model.Character.Bio)
 		    </td>
 	    </tr>
 	    <tr>
 		    <td class="inputLabelCell">
-			    @Html.LabelFor(model => model.IsPrimary):
+			    @Html.LabelFor(model => model.Character.IsPrimary):
 		    </td>
 		    <td align="left">
-			    @Html.EditorFor(model => model.IsPrimary)
+			    @Html.EditorFor(model => model.Character.IsPrimary)
 		    </td>
 	    </tr>
     </tbody>

@@ -1,10 +1,10 @@
-﻿@model PlayerBounties.Models.Character
+﻿@model PlayerBounties.ViewModels.CharacterAddEditViewModel
 
 @{
 	ViewBag.Title = "Character Creation";
 }
 
-@using(Html.BeginForm())
+@using(Html.BeginForm("Create", "Character"))
 {	
     @Html.ValidationSummary(false)
 

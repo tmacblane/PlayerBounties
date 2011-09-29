@@ -1,83 +1,141 @@
-﻿@model PlayerBounties.Models.Bounty
-		   
+﻿@model PlayerBounties.ViewModels.PlaceBountyViewModel
+
 <script type="text/javascript">
-	$(document).ready(function()
-	{
-		$("#FactionId").change(function()
-		{
+    $(document).ready(function () {
+		
+		/***** Fields *****/
+		var selectedCharacter = $("#SelectedCharacter");
+        var selectedFaction = $("#SelectedFaction");
+        var selectedPlayerClass = $("#SelectedPlayerClass");
+		var selectedRace = $("#SelectedRace");
+		var selectedShard = $("#SelectedShard");
+
+		/***** Loads selected player class from model *****/
+        if (selectedFaction.val() != "") {
+            $.getJSON("/Character/LoadPlayerClassesByFaction", { factionId: selectedFaction.val() },
+
+			function (factionData) {
+			    $.each(factionData, function (index, itemData) {
+			        selectedPlayerClass.append($('<option/>', {
+			            value: itemData.Value,
+			            text: itemData.Text,
+			        }));
+			    });
+
+                selectedPlayerClass.val('@Model.SelectedPlayerClass');
+			});
+        }
+
+		/***** Loads selected race from model *****/
+		if (selectedPlayerClass.val() != "") {
+            $.getJSON("/Character/LoadRacesByPlayerClass", { playerClassId: idPlayerClass },
+
+			function (playerClassData) {
+				$.each(playerClassData, function (index, itemData) {
+				    selectedRace.append($('<option/>', {
+				        value: itemData.Value,
+				        text: itemData.Text
+				    }));
+				});
+
+                selectedPlayerClass.val('@Model.SelectedRace');
+			});
+        }
+
+		/***** Updates player class based on selected faction *****/
+        selectedFaction.change(function () {
+            var idPlayerClass = $(this).val();
+
+            selectedPlayerClass.empty();
+            selectedPlayerClass.append($('<option/>', {
+                value: "",
+                text: ""
+            }));
+
+			selectedRace.empty();
+			selectedRace.append($('<option/>', {
+				value: "",
+				text: ""
+			}));
+
+            if (idPlayerClass != "") {
+                $.getJSON("/Character/LoadPlayerClassesByFaction", { factionId: idPlayerClass },
+
+				function (factionData) {
+				    $.each(factionData, function (index, itemData) {
+				        selectedPlayerClass.append($('<option/>', {
+				            value: itemData.Value,
+				            text: itemData.Text
+				        }));
+				    });
+				});
+            }
+        });
+		
+		/***** Updates race based on selected player class *****/
+		selectedPlayerClass.change(function() {
 			var idPlayerClass = $(this).val();
 
-			$.getJSON("/Bounty/LoadPlayerClassesByFaction", { factionId: idPlayerClass },
+			selectedRace.empty();
+			selectedRace.append($('<option/>', {
+				value: "",
+				text: ""
+			}));
+			
+			if (idPlayerClass != "") {
+                $.getJSON("/Character/LoadRacesByPlayerClass", { playerClassId: idPlayerClass },
 
-			function(factionData)
-			{
-				var select = $("#PlayerClassId");
-				select.empty();
-				select.append($('<option/>', {
-					value: 0,
-					text: ""
-				}));
-
-				$.each(factionData, function(index, itemData)
-				{
-					select.append($('<option/>', {
-						value: itemData.Value,
-						text: itemData.Text
-					}));
+				function (playerClassData) {
+				    $.each(playerClassData, function (index, itemData) {
+				        selectedRace.append($('<option/>', {
+				            value: itemData.Value,
+				            text: itemData.Text
+				        }));
+				    });
 				});
-			});
+            }
 		});
 
-		$("#ShardId").change(function()
-		{
+		/***** Loads selected character from model *****/
+        if (selectedShard.val() != "") {
+            $.getJSON("/Character/LoadCharactersByShard", { shardId: selectedShard.val() },
+
+			function (shardData) {
+			    $.each(shardData, function (index, itemData) {
+			        selectedCharacter.append($('<option/>', {
+			            value: itemData.Value,
+			            text: itemData.Text,
+			        }));
+			    });
+
+                selectedCharacter.val('@Model.SelectedCharacter');
+			});
+        }
+
+		/***** Updates character list based on select shard *****/
+		selectedShard.change(function() {
 			var idShard = $(this).val();
 
-			$.getJSON("/Bounty/LoadCharactersByShard", { shardId: idShard },
+			selectedCharacter.empty();
+			selectedCharacter.append($('<option/>', {
+				value: "",
+				text: ""
+			}));
 
-			function(shardData)
-			{
-				var select = $("#CharacterList");
-				select.empty();
-				select.append($('<option/>', {
-					value: 0,
-					text: ""
-				}));
+			if(idShard != "") {
+				$.getJSON("/Character/LoadCharactersByShard", { shardId: idShard },
 
-				$.each(shardData, function(index, itemData)
-				{
-					select.append($('<option/>', {
-						value: itemData.Value,
-						text: itemData.Text
-					}));
+				function(shardData) {
+					$.each(shardData, function(index, itemData) {
+						selectedCharacter.append($('<option/>', {
+							value: itemData.Value,
+							text: itemData.Text
+						}));
+					});
 				});
-			});
-		});		
-	});
-
-</script>
-
-<script type="text/javascript">
-	$(document).ready(function()
-	{
-		$("#placeBountyBtn").click(function()
-		{
-			jQuery($("characterNameTxt").require(["Character name is required."])
-
-			refUI = document.getElementById("validation-summary-errors-id").lastChild
-
-			if($("characterNameTxt").val() == undefined)
-			{
-				if(refUI != null)
-				{
-					myLi = document.createElement("li");
-					myLi.innerText = "Character name is required.";
-					refUI.appendChild(myLi)
-				}
 			}
-
-			alert("hi there");
-		})
-	});
+		});
+    });
 </script>
 
 @using(Html.BeginForm("PlaceBounty", "Bounty", FormMethod.Post, new { id = "bountySearchForm" }))
@@ -87,63 +145,71 @@
 	<table id="searchTable" cellspacing="0" cellpadding="5" border="0">
 		<tr>
 			<td class="inputLabelCell">
-				@Html.Label("Character Name"):
+			    @Html.LabelFor(model => model.Character.Name):
 			</td>
-			<td align="left">
-				@Html.TextBox("characterNameTxt")
-				@Html.ValidationMessage("CharacterNameRequired", "*")
-			</td>
-		</tr>
-		<tr>
-			<td class="inputLabelCell">
-				@Html.Label("Faction"):
-			</td>
-			<td align="left">
-				@Html.DropDownList("FactionId", string.Empty)
-				@Html.ValidationMessage("FactionRequired", "*")
+			<td class="inputDataCell" align="left">
+			    @Html.EditorFor(model => model.Character.Name)
+			    @Html.ValidationMessageFor(model => model.Character.Name, "*")
 			</td>
 		</tr>
 		<tr>
 			<td class="inputLabelCell">
-				@Html.Label("Shard"):
+			    @Html.LabelFor(model => model.Character.Shard):
 			</td>
 			<td align="left">
-				@Html.DropDownList("ShardId", string.Empty)
-				@Html.ValidationMessage("ShardRequired", "*")
+				@Html.DropDownListFor(model => model.SelectedShard, new SelectList(Model.Shards, "Value", "Text"), string.Empty)
+			    @Html.ValidationMessageFor(model => model.SelectedShard, "*")
 			</td>
 		</tr>
 		<tr>
 			<td class="inputLabelCell">
-				@Html.Label("Player Class"):
+			    @Html.LabelFor(model => model.Character.Faction):
 			</td>
 			<td align="left">
-				@Html.DropDownList("PlayerClassId", string.Empty)
-				@Html.ValidationMessage("PlayerClassRequired", "*")
+				@Html.DropDownListFor(model => model.SelectedFaction, new SelectList(Model.Factions, "Value", "Text"), string.Empty)
+			    @Html.ValidationMessageFor(model => model.SelectedFaction, "*")
 			</td>
 		</tr>
 		<tr>
 			<td class="inputLabelCell">
-				@Html.LabelFor(model => model.Amount):
+			    @Html.LabelFor(model => model.Character.PlayerClass):
 			</td>
 			<td align="left">
-				@Html.EditorFor(model => model.Amount)
-				@Html.ValidationMessageFor(model => model.Amount, "*")
+                @Html.DropDownListFor(model => model.SelectedPlayerClass, new SelectList(Model.PlayerClasses, "Id", "Name"), string.Empty)
+			    @Html.ValidationMessageFor(model => model.SelectedPlayerClass, "*")
+			</td>
+		</tr>
+	    <tr>
+		    <td class="inputLabelCell">
+			    @Html.LabelFor(model => model.Character.Race):
+		    </td>
+		    <td class="inputDataCell"  align="left">
+				@Html.DropDownListFor(model => model.SelectedRace, new SelectList(Model.Races, "Value", "Text"), string.Empty)
+		    </td>
+	    </tr>
+		<tr>
+			<td class="inputLabelCell">
+				@Html.LabelFor(model => model.Bounty.Amount):
+			</td>
+			<td class="inputDataCell" align="left">
+				@Html.EditorFor(model => model.Bounty.Amount)
+				@Html.ValidationMessageFor(model => model.Bounty.Amount, "*")
 			</td>
 		</tr>
 		<tr>
 			<td class="inputLabelCell">
-				@Html.LabelFor(model => model.Reason):
+				@Html.LabelFor(model => model.Bounty.Reason):
 			</td>
 			<td align="left">
-				@Html.EditorFor(model => model.Reason)
+				@Html.EditorFor(model => model.Bounty.Reason)
 			</td>
 		</tr>
 		<tr>
 			<td class="inputLabelCell">
-				@Html.LabelFor(model => model.Message):
+				@Html.LabelFor(model => model.Bounty.Message):
 			</td>
 			<td align="left">
-				@Html.EditorFor(model => model.Message)
+				@Html.EditorFor(model => model.Bounty.Message)
 			</td>
 		</tr>
 		<tr>
@@ -151,8 +217,8 @@
 				Placed By:
 			</td>
 			<td align="left">
-				@Html.DropDownList("CharacterList", string.Empty)
-				@Html.ValidationMessage("CharacterList", "*")
+                @Html.DropDownListFor(model => model.SelectedCharacter, new SelectList(Model.Characters, "Value", "Text"), string.Empty)
+				@Html.ValidationMessageFor(model => model.SelectedCharacter, "*")
                 Don't see your character listed...@Html.ActionLink("click here", "Create", "Character", null, null) to create them
 			</td>
 		</tr>
@@ -160,9 +226,9 @@
 	
 	<div class="rowBlank">
 		@if(Request.IsAuthenticated)
-  {
+		{
 			<input id="placeBountyBtn" type="submit" value="Place Bounty" />
-  }
+		}
 		
 		<input type="button" value="Cancel" onclick="window.history.back()"/>
 	</div>
