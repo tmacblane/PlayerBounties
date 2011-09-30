@@ -6,9 +6,9 @@
 		/***** Fields *****/
         var selectedFaction = $("#SelectedFaction");
         var selectedPlayerClass = $("#SelectedPlayerClass");
-		var selectedRace = $("#SelectedRace");
-		
-		/***** Loads selected character from model *****/
+		var selectedRace = $("#SelectedRace");        
+
+		/***** Loads selected player class from model *****/
         if (selectedFaction.val() != "") {
             $.getJSON("/Character/LoadPlayerClassesByFaction", { factionId: selectedFaction.val() },
 
@@ -23,22 +23,24 @@
                 selectedPlayerClass.val('@Model.SelectedPlayerClass');
 			});
         }
-		
-		/***** Loads selected race from model *****/
-		if (selectedPlayerClass.val() != "") {
-            $.getJSON("/Character/LoadRacesByPlayerClass", { playerClassId: idPlayerClass },
 
-			function (playerClassData) {
-				$.each(playerClassData, function (index, itemData) {
-				    selectedRace.append($('<option/>', {
-				        value: itemData.Value,
-				        text: itemData.Text
-				    }));
+		setTimeout(function(){		
+			/***** Loads selected race from model *****/
+			if (selectedPlayerClass.val() != "") {
+				$.getJSON("/Character/LoadRacesByPlayerClass", { playerClassId: selectedPlayerClass.val() },
+			
+				function (playerClassData) {
+					$.each(playerClassData, function (index, itemData) {
+						selectedRace.append($('<option/>', {
+							value: itemData.Value,
+							text: itemData.Text
+						}));
+					});
+
+					selectedRace.val('@Model.SelectedRace');
 				});
-
-                selectedPlayerClass.val('@Model.SelectedRace');
-			});
-        }
+			}
+		}, 300);
 		
 		/***** Updates player class based on selected faction *****/
         selectedFaction.change(function () {
@@ -130,7 +132,7 @@
 			    @Html.LabelFor(model => model.Character.PlayerClass):
 		    </td>
 		    <td class="inputDataCell"  align="left">
-                @Html.DropDownListFor(model => model.SelectedPlayerClass, new SelectList(Model.PlayerClasses, "Id", "Name"), string.Empty)
+                @Html.DropDownListFor(model => model.SelectedPlayerClass, new SelectList(Model.PlayerClasses, "Value", "Text"), string.Empty)
 			    @Html.ValidationMessageFor(model => model.SelectedPlayerClass, "*")
 		    </td>
 	    </tr>
