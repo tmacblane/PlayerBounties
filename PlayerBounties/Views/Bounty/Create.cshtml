@@ -4,106 +4,16 @@
     ViewBag.Title = "Place Bounty - " + Model.Character.Name;
 }
 
-<script type="text/javascript">
-    $(document).ready(function () {
-		
-		/***** Fields *****/
-		var selectedCharacter = $("#SelectedCharacter");
-		
-		/***** Loads selected character from model *****/
-        if ('@Model.Character.ShardId' != "") {
-            $.getJSON("/Character/LoadCharactersByShard", { shardId: '@Model.Character.ShardId' },
-
-			function (shardData) {
-			    $.each(shardData, function (index, itemData) {
-			        selectedCharacter.append($('<option/>', {
-			            value: itemData.Value,
-			            text: itemData.Text,
-			        }));
-			    });
-			});
-			
-            selectedCharacter.val('@Model.SelectedCharacter');
-        }
-    });
-</script>
-
-@using (Html.BeginForm()) 
-{
+@using(Html.BeginForm("Create", "Bounty"))
+{	
     @Html.ValidationSummary(false)
 
-	<table id="createBountyTable" cellspacing="0" cellpadding="5" border="0">
-		<tr>
-			<td class="inputLabelCell">
-				Character:
-			</td>
-			<td align="left">
-				@Model.Character.CharacterName(Model.Character.Id)
-			</td>
-		</tr>
-		<tr>
-			<td class="inputLabelCell">
-				Shard:
-			</td>
-			<td align="left">
-				@Model.Character.CharacterShard(Model.Character.Id)
-			</td>
-		</tr>
-		<tr>
-			<td class="inputLabelCell">
-				Allegiance:
-			</td>
-			<td align="left">
-				@Model.Character.CharacterAllegience(Model.Character.Id)
-			</td>
-		</tr>
-		<tr>
-			<td class="inputLabelCell">
-				Class:
-			</td>
-			<td align="left">
-				@Model.Character.CharacterClass(Model.Character.Id)
-			</td>
-		</tr>
-		<tr>
-			<td class="inputLabelCell">
-				@Html.LabelFor(model => model.Bounty.Amount):
-			</td>
-			<td class="inputDataCell" align="left">
-				@Html.EditorFor(model => model.Bounty.Amount)
-				@Html.ValidationMessageFor(model => model.Bounty.Amount, "*")
-			</td>
-		</tr>
-		<tr>
-			<td class="inputLabelCell">
-				@Html.LabelFor(model => model.Bounty.Reason):
-			</td>
-			<td align="left">
-				@Html.EditorFor(model => model.Bounty.Reason)
-			</td>
-		</tr>
-		<tr>
-			<td class="inputLabelCell">
-				@Html.LabelFor(model => model.Bounty.Message):
-			</td>
-			<td align="left">
-				@Html.EditorFor(model => model.Bounty.Message)
-			</td>
-		</tr>
-		<tr>
-			<td class="inputLabelCell">
-				Placed By:
-			</td>
-			<td align="left">
-                @Html.DropDownListFor(model => model.SelectedCharacter, new SelectList(Model.Characters, "Value", "Text"), string.Empty)
-				@Html.ValidationMessageFor(model => model.SelectedCharacter, "*")
-                Don't see your character listed...@Html.ActionLink("click here", "Create", "Character", null, null) to create them
-			</td>
-		</tr>
-	</table>
+    <div class="rowBlank">
+	    @Html.Partial("_BountyCreateEdit", Model)
+	</div>
 	
 	<div class="rowBlank">
-		<input type="submit" value="Create" />
+		<input type="submit" value="Create" />			
 		<input type="button" value="Cancel" onclick="window.history.back()"/>
-	</div>
+	</div>	
 }

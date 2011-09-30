@@ -32,7 +32,7 @@
 				</tr>		
 			</table>	
 		</div>
-		<div id="rightColumn" style="width: 300px;">
+		<div id="rightColumn">
 			<!-- kill shot image -->
 			@if(@Model.GetStatus(Model.Id) == "Completed")
 			{
@@ -42,7 +42,7 @@
 			}
 		
 		</div>
-		<div id="middleColumn" style="width: 500px;">
+		<div id="middleColumn">
 			<!-- details -->
 			<table id="bountyDetailsTable" cellspacing="0" cellpadding="5" border="0">
 				<tbody>
@@ -154,7 +154,7 @@
 						<td class="inputLabelCell">
 							Status:
 						</td>
-						<td align="left">
+						<td align="left" style="width: 150px;">
 							<span>@Model.GetStatus(Model.Id)</span>
 						</td>
 					</tr>

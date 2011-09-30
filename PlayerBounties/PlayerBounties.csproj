@@ -238,6 +238,7 @@
     <Content Include="Views\Achievement\Create.cshtml" />
     <Content Include="Views\Achievement\Edit.cshtml" />
     <Content Include="Views\Achievement\Delete.cshtml" />
+    <Content Include="Views\Bounty\_BountyCreateEdit.cshtml" />
     <None Include="_bin_deployableAssemblies\Microsoft.Web.Infrastructure.dll" />
     <None Include="_bin_deployableAssemblies\System.Web.WebPages.Razor.dll" />
     <None Include="_bin_deployableAssemblies\System.Web.WebPages.dll" />

@@ -1,62 +1,22 @@
-﻿@model PlayerBounties.Models.Bounty
+﻿@model PlayerBounties.ViewModels.BountyCreateViewModel
 
 @{
-    ViewBag.Title = "Edit";
+    ViewBag.Title = "Edit Bounty - " + Model.Character.Name;
 }
 
-@using (Html.BeginForm()) {
-    <fieldset>
-        <legend>Bounty</legend>
+@using(Html.BeginForm())
+{
+    @Html.ValidationSummary(false)
 
-        @Html.HiddenFor(model => model.Id)
-		
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.PlacedOnId)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.PlacedOnId)
-            @Html.ValidationMessageFor(model => model.PlacedOnId)
-        </div>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.Amount)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.Amount)
-            @Html.ValidationMessageFor(model => model.Amount)
-        </div>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.Reason)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.Reason)
-            @Html.ValidationMessageFor(model => model.Reason)
-        </div>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.Message)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.Message)
-            @Html.ValidationMessageFor(model => model.Message)
-        </div>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.PlacedById)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.PlacedById)
-            @Html.ValidationMessageFor(model => model.PlacedById)
-        </div>
-
-        <p>
-            <input type="submit" value="Save" />
-        </p>
-    </fieldset>
+    @Html.HiddenFor(model => model.Character.Id)
+	@Html.HiddenFor(model => model.Bounty.Id)
+	
+	<div class="rowBlank">
+	    @Html.Partial("_BountyCreateEdit", Model)
+	</div>
+	
+	<div class="rowBlank">
+		<input type="submit" value="Save" />			
+		<input type="button" value="Cancel" onclick="window.history.back()"/>
+	</div>
 }
-
-<div>
-    @Html.ActionLink("Back to List", "Index")
-</div>

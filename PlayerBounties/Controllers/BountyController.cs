@@ -239,25 +239,67 @@ namespace PlayerBounties.Controllers
 			return View(bounty);
 		}
 
-		// GET: /Bounty/Edit/5 
+		// GET: /Bounty/Edit/5
+		[Authorize]
 		public ActionResult Edit(Guid id)
 		{
-			Bounty bounty = this.db.Bounties.Find(id);
-			return View(bounty);
+			if(this.bounty.IsBountyOwner(this.account.GetLoggedInUserId(), id))
+			{
+				BountyCreateViewModel bountyCreateViewModel = new BountyCreateViewModel();
+
+				bountyCreateViewModel.Bounty = this.db.Bounties.Find(id);
+
+				this.characterAddEditViewModel.Character = this.db.Characters.Find(bountyCreateViewModel.Bounty.PlacedOnId);
+
+				var viewModel = new BountyCreateViewModel
+				{
+					Bounty = bountyCreateViewModel.Bounty,
+					Character = this.characterAddEditViewModel.Character,
+					SelectedCharacter = bountyCreateViewModel.Bounty.PlacedById,
+				};
+
+				return View("Edit", viewModel);
+			}
+			else
+			{
+				return RedirectToAction("Dashboard", "Home");
+			}
 		}
 
 		// POST: /Bounty/Edit/5
 		[HttpPost]
-		public ActionResult Edit(Bounty bounty)
+		public ActionResult Edit(BountyCreateViewModel bountyCreateViewModel)
 		{
+			bountyCreateViewModel.Bounty = this.db.Bounties.Find(bountyCreateViewModel.Bounty.Id);
+			bountyCreateViewModel.Character = this.db.Characters.Find(bountyCreateViewModel.Bounty.PlacedOnId);
+
+			ModelState["Character.Name"].Errors.Clear();
+
 			if(ModelState.IsValid)
 			{
+				this.bounty = bountyCreateViewModel.Bounty;
 				this.db.Entry(bounty).State = EntityState.Modified;
-				this.db.SaveChanges();
-				return RedirectToAction("Index");
-			}
 
-			return View(bounty);
+				this.bounty.PlacedOnId = bountyCreateViewModel.Bounty.PlacedOnId;
+				this.bounty.Amount = bountyCreateViewModel.Bounty.Amount;
+				this.bounty.Reason = bountyCreateViewModel.Bounty.Reason;
+				this.bounty.Message = bountyCreateViewModel.Bounty.Message;
+				this.bounty.PlacedById = bountyCreateViewModel.SelectedCharacter;
+
+				this.db.SaveChanges();
+				return RedirectToAction("Details", new { id = bountyCreateViewModel.Bounty.Id });
+			}
+			else
+			{
+				var viewModel = new BountyCreateViewModel
+				{
+					Bounty = bountyCreateViewModel.Bounty,
+					Character = bountyCreateViewModel.Character,
+					SelectedCharacter = bountyCreateViewModel.Bounty.PlacedById
+				};
+
+				return View("Edit", viewModel);
+			}
 		}
 
 		// GET: /Bounty/Delete/5
