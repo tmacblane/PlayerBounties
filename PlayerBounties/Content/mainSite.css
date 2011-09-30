@@ -285,10 +285,10 @@ input[type="submit"] input[value], input[type="button"] input[value]
 	line-height: 30px;
 }
 
- .inputDataCell input
- {
- 	width: 200px;
- }
+.inputDataCell input
+{
+	width: 200px;
+}
 
 select
 {

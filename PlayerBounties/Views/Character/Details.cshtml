@@ -156,6 +156,8 @@
 						if(Model.IsCharacterOwner(Model.GetLoggedInUserId(), Model.Id))
 						{
 							@Html.ActionLink(@Html.DisplayFor(model => model.Name).ToString(), "Edit", new { id = Model.Id })
+							<span style="margin-left: 10px; font-size: x-small;" >@Html.ActionLink("(edit)", "Edit", new { id = Model.Id }, new { style="color: #034AF3" })</span>
+							
 						}
 						else
 						{
