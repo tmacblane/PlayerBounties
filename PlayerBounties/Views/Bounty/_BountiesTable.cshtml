@@ -12,7 +12,7 @@
 </script>
            
 <div style="margin: 20px 20px 0 20px;">
-	<table id="bountiesTable" class="zebra-striped" cellspacing="0" cellpadding="5" border="0">
+	<table id="bountiesTable" class="tablesorter zebra-striped" cellspacing="0" cellpadding="5" border="0">
 		<thead>
 			<tr>
 				<th>Target</th>
@@ -53,26 +53,22 @@
 			}
 		</tbody>
 	</table>
-	@if(Model.Count() > 15)
-	{
-		<div id="pager">
-			<form>
-				<img src="../../Content/Images/first.png" class="first" alt="first" />
-				<img src="../../Content/Images/prev.png" class="prev" alt="prev" />
-				<input class="pagedisplay" type="text" />
-				<img src="../../Content/Images/next.png" class="next" alt="next" />
-				<img src="../../Content/Images/last.png" class="last" alt="last" />
-				<!--
-				<select class="pagesize">
-					<option selected="selected" value="10">10</option>
-					<option value="20">20</option>
-					<option value="30">30</option>
-					<option value="40">40</option>
-				</select>
-				-->
-			</form>
+	<div id="pager">
+		<form>
+			<img src="../../Content/Images/first.png" class="first" alt="first" />
+			<img src="../../Content/Images/prev.png" class="prev" alt="prev" />
+			<input class="pagedisplay" type="text" />
+			<img src="../../Content/Images/next.png" class="next" alt="next" />
+			<img src="../../Content/Images/last.png" class="last" alt="last" />
+				
+			<select class="pagesize">
+				<option selected="selected" value="10">10</option>
+				<option value="15">15</option>
+				<option value="20">20</option>
+			</select>
+				
+		</form>
 	</div>
-	}
 </div>
 
 <div id="buttons">		
