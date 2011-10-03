@@ -1,57 +1,89 @@
-﻿@{
-    ViewBag.Title = "Bounties";
-}
-
-@model IEnumerable<PlayerBounties.Models.Bounty>
+﻿@model PlayerBounties.ViewModels.BountiesViewModel
 		   
 <link href="@Url.Content("~/Content/bootstrap-1.1.0.min.css")" rel="stylesheet" type="text/css" />
 
 <script type="text/javascript">
     $(function () {
         $("table")
-			.tablesorter({ sortList: [[3, 1]] })
+			.tablesorter({ sortList: [[1, 0]] })
 			.tablesorterPager({ container: $("#pager") });
     });
 </script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+		
+		/***** Fields *****/
+		var selectedShard = $("#SelectedShard");
+
+		selectedShard.change(function() {
+			var idShard = $(this).val();
+
+			if(idShard != "") {
+				$.getJSON("/Character/LoadCharactersByShard", { shardId: idShard },
+
+				function(shardData) {
+					$.each(shardData, function(index, itemData) {
+						selectedCharacter.append($('<option/>', {
+							value: itemData.Value,
+							text: itemData.Text
+						}));
+					});
+				});
+			}
+		});
+	});
+
+</script>
+
+@{
+    ViewBag.Title = "Bounties";
+}
            
 <div style="margin: 20px 20px 0 20px;">
-	<table id="bountiesTable" class="zebra-striped" cellspacing="0" cellpadding="5" border="0">
+	@Html.DropDownListFor(model => model.SelectedShard, new SelectList(Model.Shards, "Value", "Text"), "All Shards") <p />
+
+	@{var bounties = Model.Bounty.GetActiveBounties();	 
+	}
+	<table id="bountiesTable" class="tablesorter zebra-striped" cellspacing="0" cellpadding="5" border="0">
 		<thead>
 			<tr>
 				<th>Target</th>
 				<th>Shard</th>
+				<th>Faction</th>
 				<th>Class</th>
 				<th>Placed On</th>
 				<th>Client</th>
                 @if (Request.IsAuthenticated)
                 {
-				    <th>Watch</th>
+				    <th style="text-align: center;">Watch</th>
                 }
-				<th>Details</th>
+				<th style="text-align: center;">Details</th>
 			</tr>
 		</thead>
 		<tbody>
-			@foreach (var item in Model)
+			@foreach (var item in bounties)
             {
 				<tr>
 					<td class="classTxt @item.GetClassStyle(item.CharacterClass(item.PlacedOnId))">@Html.ActionLink(@item.CharacterName(item.PlacedOnId).ToString(), "Details", "Character", new { id = item.PlacedOnId }, null)</td>
 					<td>@item.CharacterShard(item.PlacedOnId)</td>
+					<td>@item.CharacterAllegience(item.PlacedOnId)</td>
 					<td>@item.CharacterClass(item.PlacedOnId)</td>
 					<td>@item.DatePlaced.Value.ToShortDateString()</td>
 					<td class="classTxt @item.GetClassStyle(item.CharacterClass(item.PlacedById))">@Html.ActionLink(@item.CharacterName(item.PlacedById).ToString(), "Details", "Character", new { id = item.PlacedById }, null)</td>
                     @if(Request.IsAuthenticated)
 					{
-                        var loggedInUserId = item.GetLoggedInUserId();
+						var loggedInUserId = item.GetLoggedInUserId();
 
-                        if(item.IsBountyWatched(item.Id, loggedInUserId) == false)
+						if(item.IsBountyWatched(item.Id, loggedInUserId) == false)
 					    {
-						    <td>
+						    <td style="text-align: center;">
 							    @Html.ActionLink("Watch", "Watch", "WatchedBounty", new { BountyId = item.Id, AccountId = loggedInUserId, view = "bounties" }, null)								
 						    </td>
 					    }
 					    else
 					    {
-						    <td>
+						    <td style="text-align: center;">
 							    @Html.ActionLink("UnWatch", "UnWatch", "WatchedBounty", new { BountyId = item.Id, AccountId = loggedInUserId, view = "bounties" }, null)							
 						    </td> 
 					    }

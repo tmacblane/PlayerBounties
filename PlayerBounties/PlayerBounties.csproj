@@ -112,6 +112,7 @@
     <Compile Include="Models\Shard.cs" />
     <Compile Include="Models\WatchedBounty.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ViewModels\BountiesViewModel.cs" />
     <Compile Include="ViewModels\BountyCreateViewModel.cs" />
     <Compile Include="ViewModels\BountyDetailModel.cs" />
     <Compile Include="ViewModels\CharacterAddEditViewModel.cs" />

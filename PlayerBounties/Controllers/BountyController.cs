@@ -21,6 +21,7 @@ namespace PlayerBounties.Controllers
 		#region Fields
 
 		private Account account = new Account();
+		private BountiesViewModel bountiesViewModel = new BountiesViewModel();
 		private Bounty bounty = new Bounty();
 		private BountyCreateViewModel bountyCreateViewModel = new BountyCreateViewModel();
 		private Character character = new Character();
@@ -323,7 +324,12 @@ namespace PlayerBounties.Controllers
 
 		public ActionResult Bounties()
 		{
-			return View(this.db.Bounties.Where(b => b.IsPlacementPending == false).Where(b => b.KilledById == null));
+			var viewModel = new BountiesViewModel
+			{
+				Bounty = this.bounty
+			};
+
+			return View(viewModel);
 		}
 
 		// GET: /Bounty/PlaceBounty
