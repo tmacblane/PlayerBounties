@@ -61,7 +61,6 @@ namespace PlayerBounties.Models
 
 		#endregion
 
-
 		public int GetBountyWatchedCount(Guid bountyId)
 		{
 			return this.db.WatchedBounties.Where(b => b.BountyId == bountyId).Count();

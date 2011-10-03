@@ -117,29 +117,31 @@ namespace PlayerBounties.Controllers
 
 			if(Request.IsAuthenticated)
 			{
-				var loggedInUser = this.account.GetLoggedInUserId();
-				var characters = this.character.GetAllCharactersOnAShardForAnAccount(loggedInUser, bounty.CharacterShard(bounty.PlacedOnId));
-				var defaultCharacter = this.character.GetDefaultCharacterForAnAccount(loggedInUser);
+				string shardName = this.bounty.CharacterShard(bounty.PlacedOnId);
 
-				if(defaultCharacter.Count() != 0)
+				var viewModel = new BountyDetailModel
 				{
-					if(defaultCharacter.Single().Shard.Name == bounty.CharacterShard(bounty.PlacedOnId))
-					{
-						ViewBag.CharacterList = new SelectList(characters, "Id", "Name", defaultCharacter.Single().Id);
-					}
-					else
-					{
-						ViewBag.CharacterList = new SelectList(characters, "Id", "Name");
-					}
-				}
-			}
+					Bounty = bounty,
+					Character = this.characterAddEditViewModel.Character,
+					SelectedShard = this.db.Shards.Where(s => s.Name == shardName).SingleOrDefault().Id
+				};
 
-			return View(bounty);
+				return View(viewModel);
+			}
+			else
+			{
+				var viewModel = new BountyDetailModel
+				{
+					Bounty = bounty
+				};
+
+				return View(viewModel);
+			}
 		}
 
 		[Authorize]
 		[HttpPost]
-		public ActionResult Details(Guid id, FormCollection formCollection)
+		public ActionResult Details(Guid id, BountyDetailModel bountyDetailModel)
 		{
 			Bounty bounty = this.db.Bounties.Find(id);
 
@@ -152,12 +154,7 @@ namespace PlayerBounties.Controllers
 			// ModelState.AddModelError(string.Empty, "The bounty for this target has already been submitted.");
 			// else if pending completion
 			// ModelState.AddModelError(string.Empty, "The bounty for this target has been submitted for approval.");
-
-			if(formCollection["CharacterList"] == string.Empty)
-			{
-				ModelState.AddModelError("CharacterList", "You must select a character to place a bounty with.");
-			}
-
+			
 			foreach(string file in Request.Files)
 			{
 				HttpPostedFileBase hpf = Request.Files[file] as HttpPostedFileBase;
@@ -167,6 +164,8 @@ namespace PlayerBounties.Controllers
 					ModelState.AddModelError(string.Empty, "You must first upload a file to complete the bounty.");
 				}
 			}
+
+			ModelState["KillShotImageId"].Errors.Clear();
 
 			if(ModelState.IsValid)
 			{
@@ -189,7 +188,7 @@ namespace PlayerBounties.Controllers
 					}
 				}
 
-				bounty.KilledById = Guid.Parse(formCollection["CharacterList"]);
+				bounty.KilledById = bountyDetailModel.SelectedCharacter;
 				bounty.IsCompletionPending = true;
 				bounty.DateCompleted = DateTime.Now;
 
@@ -199,44 +198,37 @@ namespace PlayerBounties.Controllers
 				this.UploadFiles(bounty);
 
 				// Admin alert email notification
-				this.emailNotificationHelper.SendBountyNotificationEmail("PendingBountyCompletion-AdminAlert", this.bounty, Guid.Empty);
+				this.emailNotificationHelper.SendBountyNotificationEmail("PendingBountyCompletion-AdminAlert", bounty, Guid.Empty);
 
 				// Hunter alert email notification
-				Guid hunterUserId = this.db.Characters.Find(bounty.KilledById.Value).UserId;
+				Guid hunterUserId = this.db.Characters.Find(bountyDetailModel.SelectedCharacter).UserId;
 
-				this.emailNotificationHelper.SendBountyNotificationEmail("PendingBountyCompletion-HunterAlert", this.bounty, hunterUserId);
+				this.emailNotificationHelper.SendBountyNotificationEmail("PendingBountyCompletion-HunterAlert", bounty, hunterUserId);
 
 				// Hunters watching alert email notification that the bounty has been posted for completion
 				IQueryable<WatchedBounty> watchedBounties = this.db.WatchedBounties.Where(b => b.BountyId == bounty.Id);
 
 				foreach(WatchedBounty watchedBounty in watchedBounties)
 				{
-					this.emailNotificationHelper.SendBountyNotificationEmail("PendingBountyCompletion-WatchedAccountAlert", this.bounty, watchedBounty.AccountId);
+					this.emailNotificationHelper.SendBountyNotificationEmail("PendingBountyCompletion-WatchedAccountAlert", bounty, watchedBounty.AccountId);
 				}
 
 				return RedirectToAction("Dashboard", "Home", null);
 			}
+			else
+			{				
+				string shardName = this.bounty.CharacterShard(bounty.PlacedOnId);
 
-			if(Request.IsAuthenticated)
-			{
-				loggedInUser = this.account.GetLoggedInUserId();
-				characters = this.character.GetAllCharactersOnAShardForAnAccount(loggedInUser, bounty.CharacterShard(bounty.PlacedOnId));
-				defaultCharacter = this.character.GetDefaultCharacterForAnAccount(loggedInUser);
-
-				if(defaultCharacter.Count() != 0)
+				var viewModel = new BountyDetailModel
 				{
-					if(defaultCharacter.Single().Shard.Name == bounty.CharacterShard(bounty.PlacedOnId))
-					{
-						ViewBag.CharacterList = new SelectList(characters, "Id", "Name", defaultCharacter.Single().Id);
-					}
-					else
-					{
-						ViewBag.CharacterList = new SelectList(characters, "Id", "Name");
-					}
-				}
-			}
+					Bounty = bounty,
+					Character = this.characterAddEditViewModel.Character,
+					SelectedShard = this.db.Shards.Where(s => s.Name == shardName).SingleOrDefault().Id,
+					SelectedCharacter = bountyDetailModel.SelectedCharacter
+				};
 
-			return View(bounty);
+				return View("Details", viewModel);
+			}
 		}
 
 		// GET: /Bounty/Edit/5
@@ -281,7 +273,7 @@ namespace PlayerBounties.Controllers
 				if(ModelState.IsValid)
 				{
 					this.bounty = bountyCreateViewModel.Bounty;
-					this.db.Entry(bounty).State = EntityState.Modified;
+					this.db.Entry(this.bounty).State = EntityState.Modified;
 
 					this.bounty.PlacedOnId = bountyCreateViewModel.Bounty.PlacedOnId;
 					this.bounty.Amount = bountyCreateViewModel.Bounty.Amount;
@@ -378,21 +370,21 @@ namespace PlayerBounties.Controllers
 					characterId = bountyTarget.Single().Id;
 				}
 
-				bounty.Id = Guid.NewGuid();
-				bounty.Amount = placeBountyViewModel.Bounty.Amount;
-				bounty.Reason = placeBountyViewModel.Bounty.Reason;
-				bounty.Message = placeBountyViewModel.Bounty.Message;
-				bounty.PlacedById = placeBountyViewModel.SelectedCharacter;
-				bounty.PlacedOnId = characterId;
-				bounty.DatePlaced = DateTime.Now;
-				bounty.IsPlacementPending = true;
-				bounty.DateCompleted = null;
-				bounty.IsCompletionPending = null;
-				bounty.KilledById = null;
-				bounty.KillShotImageId = null;
+				this.bounty.Id = Guid.NewGuid();
+				this.bounty.Amount = placeBountyViewModel.Bounty.Amount;
+				this.bounty.Reason = placeBountyViewModel.Bounty.Reason;
+				this.bounty.Message = placeBountyViewModel.Bounty.Message;
+				this.bounty.PlacedById = placeBountyViewModel.SelectedCharacter;
+				this.bounty.PlacedOnId = characterId;
+				this.bounty.DatePlaced = DateTime.Now;
+				this.bounty.IsPlacementPending = true;
+				this.bounty.DateCompleted = null;
+				this.bounty.IsCompletionPending = null;
+				this.bounty.KilledById = null;
+				this.bounty.KillShotImageId = null;
 
 				// Create bounty record
-				this.db.Bounties.Add(bounty);
+				this.db.Bounties.Add(this.bounty);
 				this.db.SaveChanges();
 
 				// Set character is bounty target to true and update the record
@@ -454,14 +446,14 @@ namespace PlayerBounties.Controllers
 			bounty.SetPendingPlacementToFalse(bounty);
 
 			// Client alert email notification
-			this.emailNotificationHelper.SendBountyNotificationEmail("BountyPlacedApproved-ClientAlert", this.bounty, accountId);
+			this.emailNotificationHelper.SendBountyNotificationEmail("BountyPlacedApproved-ClientAlert", bounty, accountId);
 
 			// Target alert email notification (if they are registered)
 			if(this.db.Characters.Find(bounty.PlacedOnId).UserId != Guid.Empty)
 			{
 				Guid userId = this.db.Characters.Find(bounty.PlacedOnId).UserId;
 
-				this.emailNotificationHelper.SendBountyNotificationEmail("BountyPlacedApproved-ClientAlert", this.bounty, userId);
+				this.emailNotificationHelper.SendBountyNotificationEmail("BountyPlacedApproved-ClientAlert", bounty, userId);
 			}
 
 			return RedirectToAction("PendingPlacement");
@@ -477,22 +469,22 @@ namespace PlayerBounties.Controllers
 			Bounty bounty = this.db.Bounties.Find(id);
 			var accountId = this.account.GetLoggedInUserId();
 
-			bounty.SetPendingCompletionToFalse(bounty);
+			this.bounty.SetPendingCompletionToFalse(bounty);
 
 			// Client alert email notification
-			this.emailNotificationHelper.SendBountyNotificationEmail("BountyCompletionApproved-ClientAlert", this.bounty, accountId);
+			this.emailNotificationHelper.SendBountyNotificationEmail("BountyCompletionApproved-ClientAlert", bounty, accountId);
 
 			// Hunter alert email notification
 			Guid hunterUserId = this.db.Characters.Find(bounty.KilledById.Value).UserId;
 
-			this.emailNotificationHelper.SendBountyNotificationEmail("BountyCompletionApproved-HunterAlert", this.bounty, hunterUserId);
+			this.emailNotificationHelper.SendBountyNotificationEmail("BountyCompletionApproved-HunterAlert", bounty, hunterUserId);
 
 			// Target alert email notification (if they are registered)
 			if(this.db.Characters.Find(bounty.PlacedOnId).UserId != Guid.Empty)
 			{
 				Guid userId = this.db.Characters.Find(bounty.PlacedOnId).UserId;
 
-				this.emailNotificationHelper.SendBountyNotificationEmail("BountyCompletionApproved-TargetAlert", this.bounty, userId);
+				this.emailNotificationHelper.SendBountyNotificationEmail("BountyCompletionApproved-TargetAlert", bounty, userId);
 			}
 
 			// Hunters watching alert email notification that the bounty has been posted for completion
@@ -501,7 +493,7 @@ namespace PlayerBounties.Controllers
 
 			foreach(WatchedBounty watchedBounty in watchedBounties)
 			{
-				this.emailNotificationHelper.SendBountyNotificationEmail("BountyCompletionApproved-WatchedAccountAlert", this.bounty, watchedBounty.AccountId);
+				this.emailNotificationHelper.SendBountyNotificationEmail("BountyCompletionApproved-WatchedAccountAlert", bounty, watchedBounty.AccountId);
 
 				// Remove watched bounty record
 				watchedBountyController.UnWatch(watchedBounty.BountyId, watchedBounty.AccountId);

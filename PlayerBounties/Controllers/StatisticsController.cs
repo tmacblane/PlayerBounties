@@ -118,7 +118,6 @@ namespace PlayerBounties.Controllers
 
 		public ActionResult TopClientsCompleted(List<Character> topClients)
 		{
-
 			return PartialView("_TopClients", topClients);
 		}
 

@@ -73,14 +73,14 @@ namespace PlayerBounties.Models
 			set;
 		}
 
-        [DataType(DataType.MultilineText)]
+		[DataType(DataType.MultilineText)]
 		public string Motto
 		{
 			get;
 			set;
 		}
 
-        [DataType(DataType.MultilineText)]
+		[DataType(DataType.MultilineText)]
 		public string Bio
 		{
 			get;
@@ -463,6 +463,20 @@ namespace PlayerBounties.Models
 			}
 
 			return killShotImages;
+		}
+
+		public string GetBountyStatus(Guid bountyId)
+		{
+			Bounty bounty = new Bounty();
+
+			return bounty.GetStatus(bountyId);
+		}
+
+		public bool IsBountyWatched(Guid bountyId, Guid accountId)
+		{
+			Bounty bounty = new Bounty();
+
+			return bounty.IsBountyWatched(bountyId, accountId);
 		}
 
 		#endregion

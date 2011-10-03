@@ -198,7 +198,12 @@ namespace PlayerBounties.Models
 
 		public IEnumerable<Bounty> GetActiveBounties()
 		{
-			return this.db.Bounties.Where(b => b.KilledById == Guid.Empty);
+			return this.db.Bounties.Where(b => b.KilledById == null);
+		}
+
+		public IEnumerable<Bounty> GetAllPlacedApprovedBounties()
+		{
+			return this.db.Bounties.Where(b => b.IsPlacementPending == false);
 		}
 
 		public IEnumerable<Bounty> GetLargestBountyPlaced()
@@ -246,9 +251,9 @@ namespace PlayerBounties.Models
 			List<Guid> characterIds = new List<Guid>();
 			List<Guid> topMarks = new List<Guid>();
 
-			IEnumerable<Bounty> completedBounties = this.GetCompletedBounties();
+			IEnumerable<Bounty> activeBounties = this.GetAllPlacedApprovedBounties();
 
-			foreach(Bounty bounty in completedBounties)
+			foreach(Bounty bounty in activeBounties)
 			{
 				characterIds.Add(bounty.PlacedOnId);
 			}
@@ -275,9 +280,9 @@ namespace PlayerBounties.Models
 			List<Guid> characterIds = new List<Guid>();
 			List<Guid> topClients = new List<Guid>();
 
-			IEnumerable<Bounty> completedBounties = this.GetCompletedBounties();
+			IEnumerable<Bounty> activeBounties = this.GetAllPlacedApprovedBounties();
 
-			foreach(Bounty bounty in completedBounties)
+			foreach(Bounty bounty in activeBounties)
 			{
 				characterIds.Add(bounty.PlacedById);
 			}

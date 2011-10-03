@@ -9,8 +9,8 @@ using System.Web.Security;
 
 namespace PlayerBounties.Models
 {
-    public class Achievement
-    {
+	public class Achievement
+	{
 		#region Fields
 
 		private PlayerBountyContext db = new PlayerBountyContext();

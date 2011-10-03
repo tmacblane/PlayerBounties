@@ -19,7 +19,7 @@ namespace PlayerBounties.Controllers
 		private Avatar avatar = new Avatar();
 		private Bounty bounty = new Bounty();
 		private Character character = new Character();
-        private CharacterAddEditViewModel characterAddEditViewModel = new CharacterAddEditViewModel();
+		private CharacterAddEditViewModel characterAddEditViewModel = new CharacterAddEditViewModel();
 		private Faction faction = new Faction();
 		private KillShotImage killShotImage = new KillShotImage();
 		private PlayerBountyContext db = new PlayerBountyContext();
@@ -81,38 +81,38 @@ namespace PlayerBounties.Controllers
 				}
 				else
 				{
-					character.Id = Guid.NewGuid();
-					character.UserId = accountId;
-                    character.Name = characterAddEditViewModel.Character.Name;
-                    character.ShardId = characterAddEditViewModel.SelectedShard;
-                    character.FactionId = characterAddEditViewModel.SelectedFaction;
+					this.character.Id = Guid.NewGuid();
+					this.character.UserId = accountId;
+					this.character.Name = characterAddEditViewModel.Character.Name;
+					this.character.ShardId = characterAddEditViewModel.SelectedShard;
+					this.character.FactionId = characterAddEditViewModel.SelectedFaction;
 
-                    if(characterAddEditViewModel.SelectedRace != null)
-                    {
-                        character.RaceId = characterAddEditViewModel.SelectedRace;
-                    }
+					if(characterAddEditViewModel.SelectedRace != null)
+					{
+						this.character.RaceId = characterAddEditViewModel.SelectedRace;
+					}
 
-                    character.PlayerClassId = characterAddEditViewModel.SelectedPlayerClass;
-                    character.Motto = characterAddEditViewModel.Character.Motto;
-                    character.Bio = characterAddEditViewModel.Character.Bio;
+					this.character.PlayerClassId = characterAddEditViewModel.SelectedPlayerClass;
+					this.character.Motto = characterAddEditViewModel.Character.Motto;
+					this.character.Bio = characterAddEditViewModel.Character.Bio;
 
 					if(characterAddEditViewModel.Character.IsPrimary.Equals(true))
 					{
-						if(character.GetDefaultCharacterForAnAccount(accountId).Count() != 0)
+						if(this.character.GetDefaultCharacterForAnAccount(accountId).Count() != 0)
 						{
-							var defaultCharacterId = character.GetDefaultCharacterForAnAccount(accountId).Single().Id;
+							var defaultCharacterId = this.character.GetDefaultCharacterForAnAccount(accountId).Single().Id;
 
-							character.SetDefaultCharacterToFalse(defaultCharacterId);
+							this.character.SetDefaultCharacterToFalse(defaultCharacterId);
 						}
 					}
-					else if(character.GetDefaultCharacterForAnAccount(accountId).Count() == 0)
+					else if(this.character.GetDefaultCharacterForAnAccount(accountId).Count() == 0)
 					{
-						character.IsPrimary = true;
+						this.character.IsPrimary = true;
 					}
 
-                    character.AvatarId = avatar.GetAvatarBasedOnClass(characterAddEditViewModel.SelectedPlayerClass).Single().id;
+					this.character.AvatarId = this.avatar.GetAvatarBasedOnClass(characterAddEditViewModel.SelectedPlayerClass).Single().id;
 
-					this.db.Characters.Add(character);
+					this.db.Characters.Add(this.character);
 					this.db.SaveChanges();
 				}
 
@@ -146,20 +146,20 @@ namespace PlayerBounties.Controllers
 		{
 			if(this.character.IsCharacterOwner(this.account.GetLoggedInUserId(), id))
 			{
-                CharacterAddEditViewModel characterAddEditViewModel = new CharacterAddEditViewModel();
+				CharacterAddEditViewModel characterAddEditViewModel = new CharacterAddEditViewModel();
 
-                characterAddEditViewModel.Character = this.db.Characters.Find(id);
-                
-                var viewModel = new CharacterAddEditViewModel
-                {
-                    Character = characterAddEditViewModel.Character,
-                    SelectedFaction = characterAddEditViewModel.Character.FactionId,
-                    SelectedPlayerClass = characterAddEditViewModel.Character.PlayerClassId,
-                    SelectedRace = characterAddEditViewModel.Character.RaceId,
-                    SelectedShard = characterAddEditViewModel.Character.ShardId
-                };
+				characterAddEditViewModel.Character = this.db.Characters.Find(id);
 
-                return View("Edit", viewModel);
+				var viewModel = new CharacterAddEditViewModel
+				{
+					Character = characterAddEditViewModel.Character,
+					SelectedFaction = characterAddEditViewModel.Character.FactionId,
+					SelectedPlayerClass = characterAddEditViewModel.Character.PlayerClassId,
+					SelectedRace = characterAddEditViewModel.Character.RaceId,
+					SelectedShard = characterAddEditViewModel.Character.ShardId
+				};
+
+				return View("Edit", viewModel);
 			}
 			else
 			{
@@ -170,44 +170,63 @@ namespace PlayerBounties.Controllers
 		// POST: /Character/Edit/5
 		[Authorize]
 		[HttpPost]
-        public ActionResult Edit(CharacterAddEditViewModel characterAddEditViewModel)
+		public ActionResult Edit(CharacterAddEditViewModel characterAddEditViewModel)
 		{
-            Character character = this.db.Characters.Find(characterAddEditViewModel.Character.Id);
+			Character character = this.db.Characters.Find(characterAddEditViewModel.Character.Id);
 			var accountId = this.account.GetLoggedInUserId();
 
 			this.db.Entry(character).State = EntityState.Modified;
 
 			if(this.character.IsCharacterOwner(accountId, character.Id) || this.character.UserId == Guid.Empty)
 			{
+				IQueryable<Character> existingCharacter = this.character.GetCharacterByName(characterAddEditViewModel.Character.Name, characterAddEditViewModel.SelectedShard, characterAddEditViewModel.SelectedFaction);
+
+				if(existingCharacter.Count() != 0 && existingCharacter.Single().UserId != Guid.Empty && existingCharacter.Single().Id != characterAddEditViewModel.Character.Id)
+				{
+					ModelState.AddModelError("Name", "A character with this information already exists.");
+				}
+
 				if(ModelState.IsValid)
 				{
-                    if (characterAddEditViewModel.Character.UserId == Guid.Empty)
+					if(characterAddEditViewModel.Character.UserId == Guid.Empty)
 					{
-                        character.UserId = accountId;
+						character.UserId = accountId;
 					}
 
-                    character.ShardId = characterAddEditViewModel.SelectedShard;
-                    character.FactionId = characterAddEditViewModel.SelectedFaction;
+					character.Name = characterAddEditViewModel.Character.Name;
+					character.ShardId = characterAddEditViewModel.SelectedShard;
+					character.FactionId = characterAddEditViewModel.SelectedFaction;
 
-                    if (characterAddEditViewModel.SelectedRace != null)
-                    {
-                        character.RaceId = characterAddEditViewModel.SelectedRace;
-                    }
+					if(characterAddEditViewModel.SelectedRace != null)
+					{
+						character.RaceId = characterAddEditViewModel.SelectedRace;
+					}
 
-                    character.PlayerClassId = characterAddEditViewModel.SelectedPlayerClass;
+					character.PlayerClassId = characterAddEditViewModel.SelectedPlayerClass;
 
-                    if (this.character.GetDefaultCharacterForAnAccount(accountId).Count() == 0)
-                    {
-                        character.IsPrimary = true;
-                    }
+					if(this.character.GetDefaultCharacterForAnAccount(accountId).Count() == 0)
+					{
+						character.IsPrimary = true;
+					}
 
-                    character.AvatarId = this.avatar.GetAvatarBasedOnClass(characterAddEditViewModel.SelectedPlayerClass).Single().id;
+					character.AvatarId = this.avatar.GetAvatarBasedOnClass(characterAddEditViewModel.SelectedPlayerClass).Single().id;
 
 					this.db.SaveChanges();
 					return RedirectToAction("Dashboard", "Home");
 				}
+				else
+				{
+					var viewModel = new CharacterAddEditViewModel
+					{
+						Character = characterAddEditViewModel.Character,
+						SelectedFaction = characterAddEditViewModel.Character.FactionId,
+						SelectedPlayerClass = characterAddEditViewModel.Character.PlayerClassId,
+						SelectedRace = characterAddEditViewModel.Character.RaceId,
+						SelectedShard = characterAddEditViewModel.Character.ShardId
+					};
 
-                return View(characterAddEditViewModel.Character);
+					return View("Edit", viewModel);
+				}
 			}
 			else
 			{
@@ -229,7 +248,6 @@ namespace PlayerBounties.Controllers
 			return Json(playerClassData, JsonRequestBehavior.AllowGet);
 		}
 
-		
 		[AcceptVerbs(HttpVerbs.Get)]
 		public JsonResult LoadRacesByPlayerClass(Guid playerClassId)
 		{
@@ -238,7 +256,7 @@ namespace PlayerBounties.Controllers
 			var playerClassRaceData = playerClassRaceList.Select(r => new SelectListItem()
 			{
 				Value = r.RaceId.ToString(),
-				Text = race.GetRaceName(r.RaceId)
+				Text = this.race.GetRaceName(r.RaceId)
 			});
 
 			return Json(playerClassRaceData.OrderBy(r => r.Text), JsonRequestBehavior.AllowGet);

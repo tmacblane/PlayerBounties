@@ -698,6 +698,15 @@ table
     box-shadow: 0 2px 4px #BBBBBB;
 }
 
+#searchResultTable
+{
+	font-family: Verdana,arial,sans-serif;
+    font-size: 11px;
+    text-align: left;   
+    border-radius: 4px 4px 4px 4px;
+    box-shadow: 0 2px 4px #BBBBBB;
+}
+
 #recentBountyImages
 {
 	position: absolute;

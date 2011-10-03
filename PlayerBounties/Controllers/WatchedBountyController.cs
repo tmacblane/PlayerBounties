@@ -46,10 +46,7 @@ namespace PlayerBounties.Controllers
 
 				if(view == "bountyDetails")
 				{
-					return RedirectToAction("Details", "Bounty", new
-					{
-						id = bounty.Id
-					});
+					return RedirectToAction("Details", "Bounty", new { id = bounty.Id });
 				}
 				else if(view == "bounties")
 				{
@@ -60,10 +57,7 @@ namespace PlayerBounties.Controllers
 			{
 				if(view == "bountyDetails")
 				{
-					return RedirectToAction("Details", "Bounty", new
-					{
-						id = bounty.Id
-					});
+					return RedirectToAction("Details", "Bounty", new { id = bounty.Id });
 				}
 				else if(view == "bounties")
 				{
@@ -71,10 +65,7 @@ namespace PlayerBounties.Controllers
 				}
 			}
 
-			return RedirectToAction("Details", "Bounty", new
-			{
-				id = bounty.Id
-			});
+			return RedirectToAction("Details", "Bounty", new { id = bounty.Id });
 		}
 
 		[Authorize]
@@ -95,10 +86,7 @@ namespace PlayerBounties.Controllers
 			{
 				if(view == "bountyDetails")
 				{
-					return RedirectToAction("Details", "Bounty", new
-					{
-						id = bounty.Id
-					});
+					return RedirectToAction("Details", "Bounty", new { id = bounty.Id });
 				}
 				else if(view == "bounties")
 				{
@@ -112,10 +100,7 @@ namespace PlayerBounties.Controllers
 			}
 			else
 			{
-				return RedirectToAction("Details", "Bounty", new
-				{
-					id = bounty.Id
-				});
+				return RedirectToAction("Details", "Bounty", new { id = bounty.Id });
 			}
 
 		}
