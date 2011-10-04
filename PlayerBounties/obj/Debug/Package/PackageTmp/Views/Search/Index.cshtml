@@ -1,79 +1,125 @@
 ﻿@model IEnumerable<PlayerBounties.Models.Character>
 
-@if(Model.Count() != 0)
-{
-	<table class="searchResult" cellspacing="0" cellpadding="5" border="0">
-		<thead>
-			<tr>
-				<th>
-					Name
-				</th>
-				<th>
-					Race
-				</th>
-				<th>
-					Class
-				</th>
-				<th>
-			
-				</th>
-				<th>
-					Shard
-				</th>
-				<th></th>
-			</tr>
-		</thead>
-		<tbody>
-			@foreach(var character in Model)
-			{
-				<tr class="@character.GetFactionStyle(character.Faction.Name)">
-					<td class="@character.GetClassStyle(character.PlayerClass.Name)">
-						@Html.ActionLink(character.Name, "Details", "Character", new { character.Id }, null)
-					</td>
-					<td>
-						@Html.DisplayFor(modelItem => character.Race.Name)
-					</td>
-					<td>
-						@Html.DisplayFor(modelItem => character.PlayerClass.Name)
-					</td>
-					<td>
-					
-					</td>
-					<td>
-						@Html.DisplayFor(modelItem => character.Shard.Name)
-					</td>
-					<td>
-					</td>
+<link href="@Url.Content("~/Content/bootstrap-1.1.0.min.css")" rel="stylesheet" type="text/css" />
 
-					@if(character.GetLoggedInUserId() != Guid.Empty)
-					{
-						if(character.GetAllCharactersForAnAccount(character.GetLoggedInUserId()).Count() != 0)
+<script type="text/javascript">
+	$(function()
+	{
+		$("table")
+			.tablesorter({ sortList: [[1, 0]] })
+			.tablesorterPager({ container: $("#pager") });
+	});
+</script>
+
+<div style="margin: 20px 20px 0 20px;">
+	@if(Model.Count() != 0)
+	{
+		<table id="searchResultTable" class="tablesorter zebra-striped" cellspacing="0" cellpadding="5" border="0">
+			<thead>
+				<tr>
+					<th>Name</th>
+					<th>Shard</th>
+					<th>Faction</th>
+					<th>Class</th>
+					<th>Race</th>
+					<th style="text-align: center;">Details</th>
+					<th></th>
+					<th></th>
+				</tr>
+			</thead>
+			<tbody>
+				@foreach(var character in Model)
+				{
+					var loggedInUserId = character.GetLoggedInUserId();
+					<tr>
+						<td class="@character.GetClassStyle(character.PlayerClass.Name)">
+							@Html.ActionLink(character.Name, "Details", "Character", new { character.Id }, null)
+						</td>
+						<td>
+							@Html.DisplayFor(modelItem => character.Shard.Name)
+						</td>
+						<td>
+							@Html.DisplayFor(modelItem => character.Faction.Name)
+						</td>
+						<td>
+							@Html.DisplayFor(modelItem => character.PlayerClass.Name)
+						</td>
+						<td>
+							@Html.DisplayFor(modelItem => character.Race.Name)
+						</td>
+						<td style="text-align: center;">@Html.ActionLink("Details", "Details", "Character", new { id = character.Id }, null)					
+						</td>
+
+						@if(loggedInUserId != Guid.Empty)
 						{
-							if(character.IsActiveBountyOnCharacter(character.Id) == false)
+							if(character.GetAllCharactersForAnAccount(character.GetLoggedInUserId()).Count() != 0)
 							{
-								<td align="center">
-									@Html.ActionLink("Place a Bounty", "Create", "Bounty", new { id = character.Id }, null)
-								</td>
-							}
-							else
-							{
-								<td align="center">
-									@Html.ActionLink("Active Bounty", "Details", "Bounty", new { id = character.GetActiveBountyId(character.Id) }, null)
-								</td>
+								if(character.IsActiveBountyOnCharacter(character.Id) == false)
+								{
+									<td style="text-align: center;">
+										@Html.ActionLink("Place a Bounty", "Create", "Bounty", new { id = character.Id }, null)
+									</td>
+								}
+								else
+								{
+									<td style="text-align: center;">
+										@Html.ActionLink("Active Bounty", "Details", "Bounty", new { id = character.GetActiveBountyId(character.Id) }, null)
+									</td>
+								}
 							}
 						}
-					}
-				</tr>
-			}
-		</tbody>
-	</table>
-}
-else
-{
-	<p>Your search yielded no results.  Please refine your search and try again.</p>
-}
+						
+						@if(Request.IsAuthenticated)
+                        {
+							if(character.IsActiveBountyOnCharacter(character.Id) == true)
+							{
+								var bountyId = character.GetActiveBountyId(character.Id);
+								if(character.GetBountyStatus(bountyId) != "Completed")
+								{
+									if(character.IsBountyWatched(bountyId, loggedInUserId) == false)
+									{
+										<td style="text-align: center;">
+											@Html.ActionLink("Watch", "Watch", "WatchedBounty", new { BountyId = bountyId, AccountId = loggedInUserId, view = "bountyDetails" }, null)								
+										</td>
+									}
+									else
+									{
+										<td style="text-align: center;">
+											@Html.ActionLink("UnWatch", "UnWatch", "WatchedBounty", new { BountyId = bountyId, AccountId = loggedInUserId, view = "bountyDetails" }, null)							
+										</td> 
+									} 
+								}
+							}
+                        }
 
-<div class="rowBlank">
+						<td></td>
+					</tr>
+				}
+			</tbody>
+		</table>
+		<div id="pager">
+			<form>
+				<img src="../../Content/Images/first.png" class="first" alt="first" />
+				<img src="../../Content/Images/prev.png" class="prev" alt="prev" />
+				<input class="pagedisplay" type="text" />
+				<img src="../../Content/Images/next.png" class="next" alt="next" />
+				<img src="../../Content/Images/last.png" class="last" alt="last" />
+				
+				<select class="pagesize">
+					<option selected="selected" value="10">10</option>
+					<option value="15">15</option>
+					<option value="20">20</option>
+				</select>				
+			</form>
+		</div>
+	}
+	else
+	{
+		<p>Your search yielded no results.  Please refine your search and try again.</p>
+	}
+</div>
+
+<div id="buttons">
 	@if(Request.IsAuthenticated)
 	{
 		<p>Can't find your intended target?  Click to place a bounty!</p>

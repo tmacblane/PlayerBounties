@@ -85,6 +85,7 @@
     <Compile Include="Controllers\FactionController.cs" />
     <Compile Include="Controllers\HeaderController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\MessageController.cs" />
     <Compile Include="Controllers\PlayerClassController.cs" />
     <Compile Include="Controllers\RaceController.cs" />
     <Compile Include="Controllers\SearchController.cs" />
@@ -103,6 +104,7 @@
     <Compile Include="Models\CharacterAchievement.cs" />
     <Compile Include="Models\Faction.cs" />
     <Compile Include="Models\KillShotImage.cs" />
+    <Compile Include="Models\Message.cs" />
     <Compile Include="Models\PlayerBountyContext.cs" />
     <Compile Include="Models\PlayerBountyInitializer.cs" />
     <Compile Include="Models\PlayerClass.cs" />
@@ -132,6 +134,7 @@
     <Content Include="Content\Images\Avatars\smuggler.png" />
     <Content Include="Content\Images\bountyhunter01.jpg" />
     <Content Include="Content\Images\editIcon.gif" />
+    <Content Include="Content\Images\envelopeIcon.gif" />
     <Content Include="Content\Images\Error.png" />
     <Content Include="Content\Images\first.png" />
     <Content Include="Content\Images\last.png" />
@@ -241,6 +244,11 @@
     <Content Include="Views\Achievement\Edit.cshtml" />
     <Content Include="Views\Achievement\Delete.cshtml" />
     <Content Include="Views\Bounty\_BountyCreateEdit.cshtml" />
+    <Content Include="Views\Message\Index.cshtml" />
+    <Content Include="Views\Message\Details.cshtml" />
+    <Content Include="Views\Message\Create.cshtml" />
+    <Content Include="Views\Message\Edit.cshtml" />
+    <Content Include="Views\Message\Delete.cshtml" />
     <None Include="_bin_deployableAssemblies\Microsoft.Web.Infrastructure.dll" />
     <None Include="_bin_deployableAssemblies\System.Web.WebPages.Razor.dll" />
     <None Include="_bin_deployableAssemblies\System.Web.WebPages.dll" />

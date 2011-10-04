@@ -32,7 +32,7 @@
 				{
 					var loggedInUserId = character.GetLoggedInUserId();
 					<tr>
-						<td class="@character.GetClassStyle(character.PlayerClass.Name)">
+						<td class="inputLabelCell classTxt @character.GetClassStyle(character.PlayerClass.Name)">
 							@Html.ActionLink(character.Name, "Details", "Character", new { character.Id }, null)
 						</td>
 						<td>

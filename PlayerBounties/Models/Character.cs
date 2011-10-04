@@ -479,6 +479,11 @@ namespace PlayerBounties.Models
 			return bounty.IsBountyWatched(bountyId, accountId);
 		}
 
+		public Guid GetCharacterUserId(Guid characterId)
+		{
+			return this.db.Characters.Find(characterId).UserId;
+		}
+
 		#endregion
 	}
 }

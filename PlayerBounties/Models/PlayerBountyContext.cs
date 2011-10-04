@@ -49,7 +49,14 @@ namespace PlayerBounties.Models
 			get;
 			set;
 		}
+
 		public DbSet<KillShotImage> KillShotImages
+		{
+			get;
+			set;
+		}
+
+		public DbSet<Message> Messages
 		{
 			get;
 			set;

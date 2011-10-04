@@ -59,11 +59,18 @@ namespace PlayerBounties.Models
 			return bountyWatched;
 		}
 
-		#endregion
+		public IQueryable<WatchedBounty> GetWatchedBounties(Guid bountyId)
+		{
+			return this.db.WatchedBounties.Where(b => b.BountyId == bountyId);
+		}
 
 		public int GetBountyWatchedCount(Guid bountyId)
 		{
-			return this.db.WatchedBounties.Where(b => b.BountyId == bountyId).Count();
+			return this.GetWatchedBounties(bountyId).Count();
 		}
+
+		#endregion
+
+		
 	}
 }

@@ -26,10 +26,11 @@ namespace PlayerBounties.Controllers
 		private BountyCreateViewModel bountyCreateViewModel = new BountyCreateViewModel();
 		private Character character = new Character();
 		private CharacterAddEditViewModel characterAddEditViewModel = new CharacterAddEditViewModel();
+		private EmailNotificationHelper emailNotificationHelper = new EmailNotificationHelper();
 		private KillShotImage killShotImage = new KillShotImage();
+		private Message message = new Message();
 		private PlaceBountyViewModel placeBountyViewModel = new PlaceBountyViewModel();
 		private PlayerBountyContext db = new PlayerBountyContext();
-		private EmailNotificationHelper emailNotificationHelper = new EmailNotificationHelper();
 
 		#endregion
 
@@ -94,6 +95,9 @@ namespace PlayerBounties.Controllers
 
 				// Client alert email notification
 				this.emailNotificationHelper.SendBountyNotificationEmail("PendingBountyPlaced-ClientAlert", this.bounty, accountId);
+
+				// Add notification message
+				this.message.AddBountyNotificationMessage(this.bounty, "Pending Placement");
 
 				return RedirectToAction("Dashboard", "Home");
 			}
@@ -213,6 +217,9 @@ namespace PlayerBounties.Controllers
 				{
 					this.emailNotificationHelper.SendBountyNotificationEmail("PendingBountyCompletion-WatchedAccountAlert", bounty, watchedBounty.AccountId);
 				}
+
+				// Add notification message
+				this.message.AddBountyNotificationMessage(bounty, "Pending Completion");
 
 				return RedirectToAction("Dashboard", "Home", null);
 			}
@@ -427,11 +434,16 @@ namespace PlayerBounties.Controllers
 
 				// Account Achievement
 
-				// Admin alert email notification
+				// Admin alert notification
 				this.emailNotificationHelper.SendBountyNotificationEmail("PendingBountyPlaced-AdminAlert", this.bounty, Guid.Empty);
 
-				// Client alert email notification
+				// Client alert notification
+				// if(notification preference is enabled)
 				this.emailNotificationHelper.SendBountyNotificationEmail("PendingBountyPlaced-ClientAlert", this.bounty, accountId);
+
+				// Add notification message
+				this.message.AddBountyNotificationMessage(this.bounty, "Pending Placement");
+
 
 				return RedirectToAction("Dashboard", "Home");
 			}
@@ -462,6 +474,9 @@ namespace PlayerBounties.Controllers
 				this.emailNotificationHelper.SendBountyNotificationEmail("BountyPlacedApproved-ClientAlert", bounty, userId);
 			}
 
+			// Add notification message
+			this.message.AddBountyNotificationMessage(bounty, "Placement Approved");
+
 			return RedirectToAction("PendingPlacement");
 		}
 
@@ -476,6 +491,11 @@ namespace PlayerBounties.Controllers
 			var accountId = this.account.GetLoggedInUserId();
 
 			this.bounty.SetPendingCompletionToFalse(bounty);
+
+			// Add notification message
+			this.message.AddBountyNotificationMessage(bounty, "Completion Approved");
+
+			#region Email notifications
 
 			// Client alert email notification
 			this.emailNotificationHelper.SendBountyNotificationEmail("BountyCompletionApproved-ClientAlert", bounty, accountId);
@@ -504,6 +524,8 @@ namespace PlayerBounties.Controllers
 				// Remove watched bounty record
 				watchedBountyController.UnWatch(watchedBounty.BountyId, watchedBounty.AccountId);
 			}
+
+			#endregion
 
 			return RedirectToAction("PendingCompletion");
 		}

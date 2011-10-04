@@ -245,9 +245,9 @@
 		 if(Model.Bounty.GetStatus(Model.Bounty.Id) == "Active")
          {	
 			<div style="width: 980px; float: left; margin-left: 20px; margin-bottom: 10px;">
-				@Html.LabelFor(model => model.Bounty.KillShotImageId)
-				@Html.TextBoxFor(m => m.Bounty.KillShotImageId, new { type = "file" })
-				@Html.ValidationMessageFor(model => model.Bounty.KillShotImageId, "*")
+				@Html.LabelFor(model => model.KillShotImageId)
+				@Html.TextBoxFor(m => m.KillShotImageId, new { type = "file" })
+				@Html.ValidationMessageFor(model => model.KillShotImageId, "*")
 				
                 @Html.DropDownListFor(model => model.SelectedCharacter, new SelectList(Model.Characters, "Value", "Text"), string.Empty)
 				@Html.ValidationMessageFor(model => model.SelectedCharacter, "*")
@@ -268,12 +268,12 @@
 	
 	<div id="buttons" style="width:100%">
 		@if(Request.IsAuthenticated)
-  {
-	  if(Model.Bounty.GetStatus(Model.Bounty.Id) == "Active")
-	  {
-				<input type="submit" value="Complete Bounty"/>
-	  }
-  }
+		{
+			if(Model.Bounty.GetStatus(Model.Bounty.Id) == "Active")
+			{
+					<input type="submit" value="Complete Bounty"/>
+			}
+		}
 		
 		<input type="button" value="Back" onclick="window.history.back()" />		
 	</div>

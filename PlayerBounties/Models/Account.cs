@@ -13,6 +13,7 @@ namespace PlayerBounties.Models
 	{
 		#region Fields
 
+		private Message message = new Message();
 		private PlayerBountyContext db = new PlayerBountyContext();
 
 		#endregion
@@ -142,6 +143,21 @@ namespace PlayerBounties.Models
 			}
 
 			return isAdmin;
+		}
+
+		public IQueryable<Message> GetUnreadMessages(Guid userId)
+		{
+			return this.message.GetUnreadMessages(userId);
+		}
+
+		public IQueryable<Message> GetUnreadAdminMessages()
+		{
+			return this.message.GetUnreadAdminMessages();
+		}
+
+		public IQueryable<Account> GetAdminUserIds()
+		{
+			return this.db.Accounts.Where(a => a.IsAdmin == true);
 		}
 
 		#endregion
