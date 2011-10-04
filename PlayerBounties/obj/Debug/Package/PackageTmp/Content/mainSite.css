@@ -689,7 +689,7 @@ table
 	font-size: 12px;
 }
 
-#bountiesTable
+#bountiesTable, #searchResultTable, #messagesTable
 {
 	font-family: Verdana,arial,sans-serif;
     font-size: 11px;
@@ -698,13 +698,10 @@ table
     box-shadow: 0 2px 4px #BBBBBB;
 }
 
-#searchResultTable
+#pager
 {
-	font-family: Verdana,arial,sans-serif;
-    font-size: 11px;
-    text-align: left;   
-    border-radius: 4px 4px 4px 4px;
-    box-shadow: 0 2px 4px #BBBBBB;
+	margin-top: 10px;
+	bottom: 0px;
 }
 
 #recentBountyImages

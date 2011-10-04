@@ -15,35 +15,36 @@
 	<ul class="headerLinks">
 		@if(Request.IsAuthenticated)
 		{
-			if(Model.IsUserAdmin(Model.GetLoggedInUserId()))
+			var loggedInUserId = Model.GetLoggedInUserId();
+
+			if(Model.IsUserAdmin(loggedInUserId))
 			{
 				<li>@Html.ActionLink("Admin", "Index", "Admin")</li>
 				<li>&nbsp;|&nbsp;</li>
+				<li>
+					<a href="@Url.Action("Index", "Message", new { userId = Guid.Empty })"><img src="../../Content/Images/envelopeIcon.gif" alt="Admin Messages" id="adminMessageIcon"/><span style="margin-left: 5px;">(@Model.GetUnreadAdminMessages().Count())</span></a>			
+				</li>
+				<li>&nbsp;|&nbsp;</li>
 			}
+
+			<li>Welcome <strong>@User.Identity.Name</strong></li>
+			<li>&nbsp;|&nbsp;</li>
+			<li>
+				<a href="@Url.Action("Index", "Message", new { userId = loggedInUserId })"><img src="../../Content/Images/envelopeIcon.gif" alt="Messages" id="messageIcon"/><span style="margin-left: 5px;">(@Model.GetUnreadMessages(loggedInUserId).Count())</span></a>			
+			</li>
+			<li>&nbsp;|&nbsp;</li>
+			<li>@Html.ActionLink("My Account", "MyAccount", "Account")</li>
+			<li>&nbsp;|&nbsp;</li>
+			<li>@Html.ActionLink("Log Off", "LogOff", "Account")</li>
 		}
-		<li>@if(Request.IsAuthenticated)
-			{
-				<text>@Html.ActionLink("My Account", "MyAccount", "Account")</text>
-			}
-			else
-			{
-				<text>@Html.ActionLink("Sign Up", "SignUp", "Account")</text>
-			}
-		</li>		
+		else
+		{
+			<li>@Html.ActionLink("Sign Up", "SignUp", "Account")</li>
+			<li>&nbsp;|&nbsp;</li>
+			<li>@Html.ActionLink("Login", "Login", "Account")</li>
+		}
 		<li>&nbsp;|&nbsp;</li>
 		<li>@Html.ActionLink("Help", "Index", "Help")</li>
-		<li>&nbsp;|&nbsp;</li>
-		<li>@if(Request.IsAuthenticated)
-			{
-				<text>Welcome <strong>@User.Identity.Name</strong>
-				<li>&nbsp;|&nbsp;</li>
-				@Html.ActionLink("Log Off", "LogOff", "Account")</text>
-			}
-			else
-			{
-				@Html.ActionLink("Login", "Login", "Account")
-			}
-		</li>
 	</ul>
 				
 	<!-- Tabs -->
@@ -52,13 +53,13 @@
             <ul class="tabs">
         
 			    @if(Request.IsAuthenticated)
-			    {
+	   {
 				    <li>@Html.ActionLink("Dashboard", "Dashboard", "Home")</li>
-                }
-                else
-                {
+	   }
+	   else
+	   {
 				    <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                }
+	   }
 
 			    <li>@Html.ActionLink("About", "About", "Home")</li>
 			    <li>@Html.ActionLink("Rules", "Rules", "Home")</li>
