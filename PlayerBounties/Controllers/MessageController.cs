@@ -13,6 +13,7 @@ namespace PlayerBounties.Controllers
 	{
 		#region Fields
 
+		private Message message = new Message();
 		private PlayerBountyContext db = new PlayerBountyContext();
 
 		#endregion
@@ -20,9 +21,16 @@ namespace PlayerBounties.Controllers
 		#region Type specific methods
 
 		// GET: /Message/
-		public ViewResult Index()
+		public ViewResult Index(Guid userId)
 		{
-			return View(db.Messages.ToList());
+			if(userId == Guid.Empty)
+			{
+				return View(message.GetUnreadAdminMessages());
+			}
+			else
+			{
+				return View(message.GetUnreadMessages(userId));
+			}
 		}
 
 		// GET: /Message/Details/5
