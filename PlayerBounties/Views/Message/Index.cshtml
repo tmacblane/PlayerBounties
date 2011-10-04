@@ -1,30 +1,69 @@
 ﻿@model IEnumerable<PlayerBounties.Models.Message>
 
-<table>
-    <tr>
-        <th>
-            Subject
-        </th>
-        <th>
-            Description
-        </th>
-        <th></th>
-    </tr>
+<link href="@Url.Content("~/Content/bootstrap-1.1.0.min.css")" rel="stylesheet" type="text/css" />
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Subject)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Description)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
-        </td>
-    </tr>
-}
+<script type="text/javascript">
+	$(function()
+	{
+		$("table")
+			.tablesorter({ sortList: [[2]] })
+			.tablesorterPager({ container: $("#pager") });
+	});
+</script>
 
-</table>
+
+<div style="margin: 20px 20px 0 20px;">
+	<table id="messagesTable" class="tablesorter zebra-striped" cellspacing="0" cellpadding="5" border="0">
+		<thead>
+			<tr>
+				<th>
+					Subject
+				</th>
+				<th>
+					Description
+				</th>
+				<th>
+					Date Recieved
+				</th>
+			</tr>
+		</thead>
+		<tbody>
+			@foreach(var item in Model)
+			{
+				<tr>
+					<td>
+						@Html.DisplayFor(modelItem => item.Subject)
+					</td>
+					<td>
+						@Html.DisplayFor(modelItem => item.Description)
+					</td>
+					<td>
+						@Html.DisplayFor(modelItem => item.DateCreated)
+					</td>
+					<td>
+						@Html.ActionLink("Details", "Details", new { id = item.Id }) |
+						@Html.ActionLink("Delete", "Delete", new { id = item.Id })
+					</td>
+				</tr>
+			}
+		</tbody>
+	</table>
+
+	<div style="clear: both; height: 40px;"></div>
+
+	<div id="pager">
+		<form>
+			<img src="../../Content/Images/first.png" class="first" alt="first" />
+			<img src="../../Content/Images/prev.png" class="prev" alt="prev" />
+			<input class="pagedisplay" type="text" />
+			<img src="../../Content/Images/next.png" class="next" alt="next" />
+			<img src="../../Content/Images/last.png" class="last" alt="last" />
+				
+			<select class="pagesize">
+				<option selected="selected" value="10">10</option>
+				<option value="15">15</option>
+				<option value="20">20</option>
+			</select>				
+		</form>
+	</div>
+</div>
