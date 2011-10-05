@@ -1,0 +1,12 @@
+﻿@model PlayerBounties.Models.Account
+		   
+<table id="preferencesTable" cellspacing="0" cellpadding="5" border="0">
+	<tr>
+		<td class="inputLabelCell">
+			@Html.LabelFor(model => model.EmailNotification):
+		</td>
+		<td align="left">
+			@Html.EditorFor(model => model.EmailNotification)
+		</td>
+	</tr>
+</table>

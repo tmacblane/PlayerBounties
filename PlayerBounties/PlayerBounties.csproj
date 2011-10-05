@@ -249,6 +249,7 @@
     <Content Include="Views\Message\Create.cshtml" />
     <Content Include="Views\Message\Edit.cshtml" />
     <Content Include="Views\Message\Delete.cshtml" />
+    <Content Include="Views\Account\_Preferences.cshtml" />
     <None Include="_bin_deployableAssemblies\Microsoft.Web.Infrastructure.dll" />
     <None Include="_bin_deployableAssemblies\System.Web.WebPages.Razor.dll" />
     <None Include="_bin_deployableAssemblies\System.Web.WebPages.dll" />

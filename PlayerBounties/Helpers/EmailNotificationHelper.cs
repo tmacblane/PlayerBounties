@@ -19,33 +19,36 @@ namespace PlayerBounties.Helpers
 
 		public void SendNotificationEmail(Bounty bounty, string emailView, Guid accountId)
 		{
-			if(this.db.Accounts.Find(accountId).EmailNotification == true)
+			if(accountId != Guid.Empty)
 			{
-				dynamic email = new Email(emailView);
-
-				string placedOn = bounty.CharacterName(bounty.PlacedOnId);
-				string placedBy = bounty.CharacterName(bounty.PlacedById);
-				string killedBy = string.Empty;
-
-				email.UserEmailAddress = this.db.Accounts.Find(accountId).EmailAddress;
-				email.Amount = bounty.Amount;
-				email.Reason = bounty.Reason;
-				email.Message = bounty.Message;
-				email.ClientName = placedBy;
-				email.TargetName = placedOn;
-
-				if(bounty.KilledById != null)
+				if(this.db.Accounts.Find(accountId).EmailNotification == true)
 				{
-					killedBy = bounty.CharacterName(bounty.KilledById.Value);
-				}
+					dynamic email = new Email(emailView);
 
-				try
-				{
-					email.Send();
-				}
-				catch
-				{
-					// Need to log when it fails, the email type and information
+					string placedOn = bounty.CharacterName(bounty.PlacedOnId);
+					string placedBy = bounty.CharacterName(bounty.PlacedById);
+					string killedBy = string.Empty;
+
+					email.UserEmailAddress = this.db.Accounts.Find(accountId).EmailAddress;
+					email.Amount = bounty.Amount;
+					email.Reason = bounty.Reason;
+					email.Message = bounty.Message;
+					email.ClientName = placedBy;
+					email.TargetName = placedOn;
+
+					if(bounty.KilledById != null)
+					{
+						killedBy = bounty.CharacterName(bounty.KilledById.Value);
+					}
+
+					try
+					{
+						email.Send();
+					}
+					catch
+					{
+						// Need to log when it fails, the email type and information
+					}
 				}
 			}
 		}

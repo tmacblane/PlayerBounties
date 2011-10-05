@@ -90,7 +90,7 @@ namespace PlayerBounties.Controllers
 				this.db.Bounties.Add(this.bounty);
 				this.db.SaveChanges();
 
-				// if(notification preference is enabled)
+				// Send email notification
 				this.emailNotificationHelper.SendBountyNotificationEmail(this.bounty, "Pending Placement");
 
 				// Add notification message
@@ -199,8 +199,8 @@ namespace PlayerBounties.Controllers
 
 				this.UploadFiles(bounty);
 
-				// if(notification preference is enabled)
-				this.emailNotificationHelper.SendBountyNotificationEmail(this.bounty, "Pending Completion");
+				// Send email notification
+				this.emailNotificationHelper.SendBountyNotificationEmail(bounty, "Pending Completion");
 
 				// Add notification message
 				this.message.AddBountyNotificationMessage(bounty, "Pending Completion");
@@ -418,7 +418,7 @@ namespace PlayerBounties.Controllers
 
 				// Account Achievement
 
-				// if(notification preference is enabled)
+				// Send email notification
 				this.emailNotificationHelper.SendBountyNotificationEmail(this.bounty, "Pending Placement");
 
 				// Add notification message
@@ -442,8 +442,8 @@ namespace PlayerBounties.Controllers
 
 			bounty.SetPendingPlacementToFalse(bounty);
 
-			// if(notification preference is enabled)
-			this.emailNotificationHelper.SendBountyNotificationEmail(this.bounty, "Placement Approved");
+			// Send email notification
+			this.emailNotificationHelper.SendBountyNotificationEmail(bounty, "Placement Approved");
 
 			// Add notification message
 			this.message.AddBountyNotificationMessage(bounty, "Placement Approved");
@@ -466,8 +466,8 @@ namespace PlayerBounties.Controllers
 			// Add notification message
 			this.message.AddBountyNotificationMessage(bounty, "Completion Approved");
 
-			// if(notification preference is enabled)
-			this.emailNotificationHelper.SendBountyNotificationEmail(this.bounty, "Completion Approved");
+			// Send email notification
+			this.emailNotificationHelper.SendBountyNotificationEmail(bounty, "Completion Approved");
 			
 			IQueryable<WatchedBounty> watchedBounties = this.db.WatchedBounties.Where(b => b.BountyId == bounty.Id);
 			WatchedBountyController watchedBountyController = new WatchedBountyController();

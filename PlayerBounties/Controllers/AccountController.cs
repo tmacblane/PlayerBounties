@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.Objects;
 using System.Linq;
 using System.Web;
@@ -17,6 +18,7 @@ namespace PlayerBounties.Controllers
 		#region Fields
 
 		private Account account = new Account();
+		private PlayerBountyContext db = new PlayerBountyContext();
 
 		#endregion		
 
@@ -110,7 +112,8 @@ namespace PlayerBounties.Controllers
 		[Authorize]
 		public ActionResult MyAccount()
 		{
-			return View();
+			Account userAccount = this.db.Accounts.Find(this.account.GetLoggedInUserId());
+			return View(userAccount);
 		}
 
 		// GET: /Account/ChangePassword
@@ -159,6 +162,23 @@ namespace PlayerBounties.Controllers
 		public ActionResult ChangePasswordSuccess()
 		{
 			return View();
+		}
+
+		public ActionResult _Preferences()
+		{
+			Account myAccount = this.db.Accounts.Find(this.account.GetLoggedInUserId());
+			return PartialView(myAccount);
+		}
+
+		[HttpPost]
+		public ActionResult _Preferences(Account account)
+		{
+			this.account = this.db.Accounts.Find(account.GetLoggedInUserId());
+			this.account.EmailNotification = account.EmailNotification;			
+			
+			this.db.Entry(this.account).State = EntityState.Modified;
+			this.db.SaveChanges();
+			return RedirectToAction("MyAccount");
 		}
 
 		#endregion

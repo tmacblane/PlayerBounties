@@ -45,6 +45,7 @@ namespace PlayerBounties.Models
 			set;
 		}
 
+		[Display(Name = "Email Notifications")]
 		public bool EmailNotification
 		{
 			get;
@@ -64,6 +65,8 @@ namespace PlayerBounties.Models
 			this.Id = Guid.NewGuid();
 			this.EmailAddress = signUpModel.Email;
 			this.Password = signUpModel.Password;
+			this.IsAdmin = false;
+			this.EmailNotification = false;
 
 			this.db.Accounts.Add(this);
 			this.db.SaveChanges();
