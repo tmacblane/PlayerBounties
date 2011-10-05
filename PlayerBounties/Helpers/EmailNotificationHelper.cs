@@ -56,6 +56,8 @@ namespace PlayerBounties.Helpers
 		public void SendBountyNotificationEmail(Bounty bounty, string emailType)
 		{
 			Account account = new Account();
+			Favorite favorite = new Favorite();
+			IQueryable<Favorite> favoritedCharacters;
 			WatchedBounty watchedBounty = new WatchedBounty();
 			IQueryable<WatchedBounty> watchedBounties;
 
@@ -86,9 +88,15 @@ namespace PlayerBounties.Helpers
 					this.SendNotificationEmail(bounty, "BountyPlacedApproved-ClientAlert", this.character.GetCharacterUserId(bounty.PlacedById));
 
 					// Target Notification
-					this.SendNotificationEmail(bounty, "BountyPlacedApproved-ClientAlert", this.character.GetCharacterUserId(bounty.PlacedOnId));
+					this.SendNotificationEmail(bounty, "BountyPlacedApproved-TargetAlert", this.character.GetCharacterUserId(bounty.PlacedOnId));
 
 					// Favorited Notifications
+					favoritedCharacters = favorite.GetFavoritedCharacters(bounty.PlacedOnId);
+
+					foreach(Favorite favoritedCharacterItem in favoritedCharacters)
+					{
+						this.SendNotificationEmail(bounty, "BountyPlacedApproved-FavoritedAlert", this.character.GetCharacterUserId(bounty.PlacedOnId));
+					}
 
 					break;
 
@@ -131,6 +139,12 @@ namespace PlayerBounties.Helpers
 					}
 
 					// Favorited Notifications
+					favoritedCharacters = favorite.GetFavoritedCharacters(bounty.PlacedOnId);
+
+					foreach(Favorite favoritedCharacterItem in favoritedCharacters)
+					{
+						this.SendNotificationEmail(bounty, "BountyCompletionApproved-FavoritedAlert", this.character.GetCharacterUserId(bounty.PlacedOnId));
+					}
 
 					break;
 
