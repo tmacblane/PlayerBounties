@@ -88,6 +88,8 @@ namespace PlayerBounties.Helpers
 					// Target Notification
 					this.SendNotificationEmail(bounty, "BountyPlacedApproved-ClientAlert", this.character.GetCharacterUserId(bounty.PlacedOnId));
 
+					// Favorited Notifications
+
 					break;
 
 				case "Pending Completion":
@@ -127,6 +129,8 @@ namespace PlayerBounties.Helpers
 					{
 						this.SendNotificationEmail(bounty, "BountyCompletionApproved-WatchedAccountAlert", watchedBountyItem.AccountId);
 					}
+
+					// Favorited Notifications
 
 					break;
 

@@ -50,6 +50,12 @@ namespace PlayerBounties.Models
 			set;
 		}
 
+		public DbSet<Favorite> Favorites
+		{
+			get;
+			set;
+		}
+
 		public DbSet<KillShotImage> KillShotImages
 		{
 			get;

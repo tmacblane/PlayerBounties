@@ -84,6 +84,8 @@ namespace PlayerBounties.Models
 		{
 			Account account = new Account();
 			Character character = new Character();
+			Favorite favorite = new Favorite();
+			IQueryable<Favorite> favoritedCharacters;
 			WatchedBounty watchedBounty = new WatchedBounty();			
 			IQueryable<WatchedBounty> watchedBounties;
 
@@ -91,6 +93,7 @@ namespace PlayerBounties.Models
 			Message clientMessage;
 			Message hunterMessage;
 			Message targetMessage;
+			Message favoriteMessage;
 			Message watcherMessage;
 
 			List<Guid> adminIds = new List<Guid>();
@@ -178,6 +181,25 @@ namespace PlayerBounties.Models
 					};
 
 					db.Messages.Add(targetMessage);
+
+					// Favorited Notifications
+					favoritedCharacters = favorite.GetFavoritedCharacters(bounty.PlacedOnId);
+
+					foreach(Favorite favoritedCharacterItem in favoritedCharacters)
+					{
+						favoriteMessage = new Message
+						{
+							Id = Guid.NewGuid(),
+							UserId = favoritedCharacterItem.AccountId,
+							DateCreated = dateCreated,
+							Subject = string.Format("New bounty has been placed on {0}", placedOn),
+							Description = string.Format("The character you are watching, {0}, has a new bounty placed on them by {1}", placedOn, placedBy),
+							IsRead = false,
+							IsAdminMessage = false
+						};
+
+						db.Messages.Add(favoriteMessage);
+					}
 
 					db.SaveChanges();
 
@@ -298,6 +320,24 @@ namespace PlayerBounties.Models
 						};
 					
 						db.Messages.Add(watcherMessage);
+					}
+					// Favorited Notifications
+					favoritedCharacters = favorite.GetFavoritedCharacters(bounty.PlacedOnId);
+
+					foreach(Favorite favoritedCharacterItem in favoritedCharacters)
+					{
+						favoriteMessage = new Message
+						{
+							Id = Guid.NewGuid(),
+							UserId = favoritedCharacterItem.AccountId,
+							DateCreated = dateCreated,
+							Subject = string.Format("New bounty on {0} has been completed", placedOn),
+							Description = string.Format("The bounty on {0} has been completed.  {1} was successfully killed by {2}", placedOn, placedOn, placedBy),
+							IsRead = false,
+							IsAdminMessage = false
+						};
+
+						db.Messages.Add(favoriteMessage);
 					}
 
 					db.SaveChanges();

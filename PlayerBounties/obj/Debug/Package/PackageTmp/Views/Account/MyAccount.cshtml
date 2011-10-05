@@ -1,9 +1,18 @@
-﻿@{
+﻿@model PlayerBounties.Models.Account
+		   
+@{
     ViewBag.Title = "My Account";
 }
 
-<h2>My Account</h2>
-
-<p>Account settings go here</p>
-
 <h3>Password Changing</h3>
+
+<h3>Preferences</h3>
+@using(Html.BeginForm("_Preferences", "Account"))
+{
+	<div id="preferences">
+		@Html.Partial("_Preferences", Model, null)
+	</div>
+	<div class="rowBlank">
+		<input type="submit" value="Save" />
+	</div>
+}

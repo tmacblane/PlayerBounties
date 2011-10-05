@@ -70,7 +70,5 @@ namespace PlayerBounties.Models
 		}
 
 		#endregion
-
-		
 	}
 }

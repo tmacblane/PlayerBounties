@@ -220,6 +220,20 @@ namespace PlayerBounties.Models
 			return isCharacterOwner;
 		}
 
+		public bool IsCharacterFavorited(Guid characterId, Guid accountId)
+		{
+			bool characterFavorited = false;
+
+			Favorite favorite = new Favorite();
+
+			if(favorite.IsCharacterFavorited(characterId, accountId) == true)
+			{
+				characterFavorited = true;
+			}
+
+			return characterFavorited;
+		}
+
 		public string CharacterName(Guid characterId)
 		{
 			return this.db.Characters.Find(characterId).Name;
