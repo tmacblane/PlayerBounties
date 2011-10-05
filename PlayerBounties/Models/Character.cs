@@ -329,6 +329,20 @@ namespace PlayerBounties.Models
 			return bounty.GetAccountBountiesSignedUpFor(accountId);
 		}
 
+		public int GetFavoriteCharactersCount(Guid accountId)
+		{
+			Favorite favorite = new Favorite();
+
+			return this.GetFavoriteCharacters(accountId).Count();
+		}
+
+		public IQueryable<Favorite> GetFavoriteCharacters(Guid accountId)
+		{
+			Favorite favorite = new Favorite();
+
+			return favorite.GetFavoriteCharacters(accountId);
+		}
+
 		public double GetAmountEarned(Guid characterId)
 		{
 			Bounty bounty = new Bounty();

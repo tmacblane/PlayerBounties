@@ -674,7 +674,6 @@ namespace PlayerBounties.Controllers
 					{
 						return null;
 					}
-
 			}
 
 			return View("_BountiesTable", this.bounty);

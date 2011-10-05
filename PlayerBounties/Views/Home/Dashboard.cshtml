@@ -137,6 +137,25 @@
 						}	
 					</td>
 				</tr>
+				<tr>
+					<td></td>
+					<td></td>
+					<td class="inputLabelCell">Favorite Characters:</td>
+					<td align="right">
+						@{
+							int favoriteCount = Model.GetFavoriteCharactersCount(loggedInUserId);
+						}
+
+						@if(favoriteCount != 0)
+						{
+							@Html.ActionLink(favoriteCount.ToString(), "Dashboard", "Home", null, null)
+						}
+						else
+						{
+							<text>0</text>
+						}
+					</td>
+				</tr>
 				<tr><td colspan="4"><hr /></td></tr>
 				<tr>
 					<td class="inputLabelCell">Total Spent:</td>

@@ -64,6 +64,11 @@ namespace PlayerBounties.Models
 			return this.db.Favorites.Where(f => f.CharacterId == characterId);
 		}
 
+		public IQueryable<Favorite> GetFavoriteCharacters(Guid accountId)
+		{
+			return this.db.Favorites.Where(f => f.AccountId == accountId);
+		}
+
 		#endregion
 	}
 }
