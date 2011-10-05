@@ -17,26 +17,24 @@ namespace PlayerBounties.Helpers
 
 		#endregion
 
-		public void SendBountyNotificationEmail(string emailType, Bounty bounty, Guid accountId)
+		public void SendNotificationEmail(Bounty bounty, string emailView, Guid accountId)
 		{
-			Bounty bountyModel = bounty;
-			dynamic email = new Email(emailType);
+			dynamic email = new Email(emailView);
 
-			email.Amount = bountyModel.Amount;
-			email.Reason = bountyModel.Reason;
-			email.Message = bountyModel.Message;
+			string placedOn = bounty.CharacterName(bounty.PlacedOnId);
+			string placedBy = bounty.CharacterName(bounty.PlacedById);
+			string killedBy = string.Empty;
 
-			if(accountId != Guid.Empty)
+			email.UserEmailAddress = this.db.Accounts.Find(accountId).EmailAddress;
+			email.Amount = bounty.Amount;
+			email.Reason = bounty.Reason;
+			email.Message = bounty.Message;
+			email.ClientName = placedBy;
+			email.TargetName = placedOn;
+			
+			if(bounty.KilledById != null)
 			{
-				email.UserEmailAddress = this.db.Accounts.Find(accountId).EmailAddress;
-			}
-
-			email.ClientName = this.character.CharacterName(bountyModel.PlacedById);
-			email.TargetName = this.character.CharacterName(bountyModel.PlacedOnId);
-
-			if(bountyModel.KilledById != null)
-			{
-				email.HunterName = this.character.CharacterName(bountyModel.KilledById.Value);
+				killedBy = bounty.CharacterName(bounty.KilledById.Value);
 			}
 
 			try
@@ -46,6 +44,89 @@ namespace PlayerBounties.Helpers
 			catch
 			{
 				// Need to log when it fails, the email type and information
+			}
+		}
+
+		public void SendBountyNotificationEmail(Bounty bounty, string emailType)
+		{
+			Account account = new Account();
+			WatchedBounty watchedBounty = new WatchedBounty();
+			IQueryable<WatchedBounty> watchedBounties;
+
+			List<Guid> adminIds = new List<Guid>();
+			IQueryable<Account> admins = account.GetAdminUserIds();
+
+			foreach(Account admin in admins)
+			{
+				adminIds.Add(admin.Id);
+			}			
+
+			switch(emailType)
+			{
+				case "Pending Placement":
+					// Admin Notification
+					foreach(Guid adminId in adminIds)
+					{
+						this.SendNotificationEmail(bounty, "PendingBountyPlaced-AdminAlert", adminId);
+					}
+
+					// Client Notification
+					this.SendNotificationEmail(bounty, "PendingBountyPlaced-ClientAlert", this.character.GetCharacterUserId(bounty.PlacedById));
+
+					break;
+
+				case "Placement Approved":
+					// Client Notification
+					this.SendNotificationEmail(bounty, "BountyPlacedApproved-ClientAlert", this.character.GetCharacterUserId(bounty.PlacedById));
+
+					// Target Notification
+					this.SendNotificationEmail(bounty, "BountyPlacedApproved-ClientAlert", this.character.GetCharacterUserId(bounty.PlacedOnId));
+
+					break;
+
+				case "Pending Completion":
+					// Admin Notification
+					foreach(Guid adminId in adminIds)
+					{
+						this.SendNotificationEmail(bounty, "PendingBountyCompletion-AdminAlert", adminId);
+					}
+
+					// Hunter Notification
+					this.SendNotificationEmail(bounty, "PendingBountyCompletion-HunterAlert", this.character.GetCharacterUserId(bounty.KilledById.Value));
+
+					// Watcher Notifications
+					watchedBounties = watchedBounty.GetWatchedBounties(bounty.Id);
+
+					foreach(WatchedBounty watchedBountyItem in watchedBounties)
+					{
+						this.SendNotificationEmail(bounty, "PendingBountyCompletion-WatchedAccountAlert", watchedBountyItem.AccountId);
+					}
+					
+					break;
+
+				case "Completion Approved":
+					// Client Notification
+					this.SendNotificationEmail(bounty, "BountyCompletionApproved-ClientAlert", this.character.GetCharacterUserId(bounty.PlacedById));
+
+					// Hunter Notification
+					this.SendNotificationEmail(bounty, "BountyCompletionApproved-HunterAlert", this.character.GetCharacterUserId(bounty.KilledById.Value));
+
+					// Target Notification
+					this.SendNotificationEmail(bounty, "BountyCompletionApproved-TargetAlert", this.character.GetCharacterUserId(bounty.PlacedOnId));
+
+					// Watcher Notifications
+					watchedBounties = watchedBounty.GetWatchedBounties(bounty.Id);
+
+					foreach(WatchedBounty watchedBountyItem in watchedBounties)
+					{
+						this.SendNotificationEmail(bounty, "BountyCompletionApproved-WatchedAccountAlert", watchedBountyItem.AccountId);
+					}
+
+					break;
+
+				// To Do - Completion Denied
+				// To Do - Placement Denied
+				// To Do - Bounty Cancelled
 			}
 		}
 	}

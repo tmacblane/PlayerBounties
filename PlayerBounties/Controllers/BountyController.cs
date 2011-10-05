@@ -90,11 +90,8 @@ namespace PlayerBounties.Controllers
 				this.db.Bounties.Add(this.bounty);
 				this.db.SaveChanges();
 
-				// Admin alert email notification
-				this.emailNotificationHelper.SendBountyNotificationEmail("PendingBountyPlaced-AdminAlert", this.bounty, accountId);
-
-				// Client alert email notification
-				this.emailNotificationHelper.SendBountyNotificationEmail("PendingBountyPlaced-ClientAlert", this.bounty, accountId);
+				// if(notification preference is enabled)
+				this.emailNotificationHelper.SendBountyNotificationEmail(this.bounty, "Pending Placement");
 
 				// Add notification message
 				this.message.AddBountyNotificationMessage(this.bounty, "Pending Placement");
@@ -202,21 +199,8 @@ namespace PlayerBounties.Controllers
 
 				this.UploadFiles(bounty);
 
-				// Admin alert email notification
-				this.emailNotificationHelper.SendBountyNotificationEmail("PendingBountyCompletion-AdminAlert", bounty, Guid.Empty);
-
-				// Hunter alert email notification
-				Guid hunterUserId = this.db.Characters.Find(bountyDetailModel.SelectedCharacter).UserId;
-
-				this.emailNotificationHelper.SendBountyNotificationEmail("PendingBountyCompletion-HunterAlert", bounty, hunterUserId);
-
-				// Hunters watching alert email notification that the bounty has been posted for completion
-				IQueryable<WatchedBounty> watchedBounties = this.db.WatchedBounties.Where(b => b.BountyId == bounty.Id);
-
-				foreach(WatchedBounty watchedBounty in watchedBounties)
-				{
-					this.emailNotificationHelper.SendBountyNotificationEmail("PendingBountyCompletion-WatchedAccountAlert", bounty, watchedBounty.AccountId);
-				}
+				// if(notification preference is enabled)
+				this.emailNotificationHelper.SendBountyNotificationEmail(this.bounty, "Pending Completion");
 
 				// Add notification message
 				this.message.AddBountyNotificationMessage(bounty, "Pending Completion");
@@ -434,16 +418,11 @@ namespace PlayerBounties.Controllers
 
 				// Account Achievement
 
-				// Admin alert notification
-				this.emailNotificationHelper.SendBountyNotificationEmail("PendingBountyPlaced-AdminAlert", this.bounty, Guid.Empty);
-
-				// Client alert notification
 				// if(notification preference is enabled)
-				this.emailNotificationHelper.SendBountyNotificationEmail("PendingBountyPlaced-ClientAlert", this.bounty, accountId);
+				this.emailNotificationHelper.SendBountyNotificationEmail(this.bounty, "Pending Placement");
 
 				// Add notification message
 				this.message.AddBountyNotificationMessage(this.bounty, "Pending Placement");
-
 
 				return RedirectToAction("Dashboard", "Home");
 			}
@@ -463,16 +442,8 @@ namespace PlayerBounties.Controllers
 
 			bounty.SetPendingPlacementToFalse(bounty);
 
-			// Client alert email notification
-			this.emailNotificationHelper.SendBountyNotificationEmail("BountyPlacedApproved-ClientAlert", bounty, accountId);
-
-			// Target alert email notification (if they are registered)
-			if(this.db.Characters.Find(bounty.PlacedOnId).UserId != Guid.Empty)
-			{
-				Guid userId = this.db.Characters.Find(bounty.PlacedOnId).UserId;
-
-				this.emailNotificationHelper.SendBountyNotificationEmail("BountyPlacedApproved-ClientAlert", bounty, userId);
-			}
+			// if(notification preference is enabled)
+			this.emailNotificationHelper.SendBountyNotificationEmail(this.bounty, "Placement Approved");
 
 			// Add notification message
 			this.message.AddBountyNotificationMessage(bounty, "Placement Approved");
@@ -495,37 +466,17 @@ namespace PlayerBounties.Controllers
 			// Add notification message
 			this.message.AddBountyNotificationMessage(bounty, "Completion Approved");
 
-			#region Email notifications
-
-			// Client alert email notification
-			this.emailNotificationHelper.SendBountyNotificationEmail("BountyCompletionApproved-ClientAlert", bounty, accountId);
-
-			// Hunter alert email notification
-			Guid hunterUserId = this.db.Characters.Find(bounty.KilledById.Value).UserId;
-
-			this.emailNotificationHelper.SendBountyNotificationEmail("BountyCompletionApproved-HunterAlert", bounty, hunterUserId);
-
-			// Target alert email notification (if they are registered)
-			if(this.db.Characters.Find(bounty.PlacedOnId).UserId != Guid.Empty)
-			{
-				Guid userId = this.db.Characters.Find(bounty.PlacedOnId).UserId;
-
-				this.emailNotificationHelper.SendBountyNotificationEmail("BountyCompletionApproved-TargetAlert", bounty, userId);
-			}
-
-			// Hunters watching alert email notification that the bounty has been posted for completion
+			// if(notification preference is enabled)
+			this.emailNotificationHelper.SendBountyNotificationEmail(this.bounty, "Completion Approved");
+			
 			IQueryable<WatchedBounty> watchedBounties = this.db.WatchedBounties.Where(b => b.BountyId == bounty.Id);
 			WatchedBountyController watchedBountyController = new WatchedBountyController();
-
+						
+			// Remove watched bounty record
 			foreach(WatchedBounty watchedBounty in watchedBounties)
 			{
-				this.emailNotificationHelper.SendBountyNotificationEmail("BountyCompletionApproved-WatchedAccountAlert", bounty, watchedBounty.AccountId);
-
-				// Remove watched bounty record
 				watchedBountyController.UnWatch(watchedBounty.BountyId, watchedBounty.AccountId);
 			}
-
-			#endregion
 
 			return RedirectToAction("PendingCompletion");
 		}

@@ -45,6 +45,12 @@ namespace PlayerBounties.Models
 			set;
 		}
 
+		public bool EmailNotification
+		{
+			get;
+			set;
+		}
+
 		#endregion
 
 		#region Type specific methods
