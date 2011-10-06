@@ -97,7 +97,7 @@ namespace PlayerBounties.Controllers
 					}
 					else
 					{
-						ModelState.AddModelError(string.Empty, "A user with this email address already exists er some junk");
+						ModelState.AddModelError(string.Empty, "A user with this email address already exists");
 					}
 				}
 			}

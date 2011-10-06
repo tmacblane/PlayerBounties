@@ -36,6 +36,7 @@ namespace PlayerBounties.Models
 		}
 
 		[Display(Name = "Reason")]
+		[StringLength(4000, ErrorMessage = "The {0} must be less than {1} characters.")]
 		[DataType(DataType.MultilineText)]
 		public string Reason
 		{
@@ -44,6 +45,7 @@ namespace PlayerBounties.Models
 		}
 
 		[Display(Name = "Message")]
+		[StringLength(500, ErrorMessage = "The {0} must be less than {1} characters.")]
 		[DataType(DataType.MultilineText)]
 		public string Message
 		{

@@ -52,6 +52,10 @@ namespace PlayerBounties.Controllers
 				{
 					return RedirectToAction("Bounties", "Bounty");
 				}
+				else if(view == "searchResults")
+				{
+					return View("Search");
+				}
 			}
 			else
 			{
@@ -62,6 +66,10 @@ namespace PlayerBounties.Controllers
 				else if(view == "bounties")
 				{
 					return RedirectToAction("Bounties", "Bounty");
+				}
+				else if(view == "searchResults")
+				{
+					return View("Search");
 				}
 			}
 

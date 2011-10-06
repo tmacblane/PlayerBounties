@@ -38,78 +38,86 @@
 
 @{
     ViewBag.Title = "Bounties";
+}           
+
+@{var bounties = Model.Bounty.GetActiveBounties();	 
 }
-           
-<div style="margin: 20px 20px 0 20px;">
-	@Html.DropDownListFor(model => model.SelectedShard, new SelectList(Model.Shards, "Value", "Text"), "All Shards") <p />
-
-	@{var bounties = Model.Bounty.GetActiveBounties();	 
-	}
-	<table id="bountiesTable" class="tablesorter zebra-striped" cellspacing="0" cellpadding="5" border="0">
-		<thead>
-			<tr>
-				<th>Target</th>
-				<th>Shard</th>
-				<th>Faction</th>
-				<th>Class</th>
-				<th>Placed On</th>
-				<th>Client</th>
-                @if (Request.IsAuthenticated)
-                {
-				    <th style="text-align: center;">Watch</th>
-                }
-				<th style="text-align: center;">Details</th>
-			</tr>
-		</thead>
-		<tbody>
-			@foreach (var item in bounties)
-            {
+	
+@if(bounties.Count() > 0)
+{
+	<div style="margin: 20px 20px 0 20px;">
+		@Html.DropDownListFor(model => model.SelectedShard, new SelectList(Model.Shards, "Value", "Text"), "All Shards") <p />
+		
+		<table id="bountiesTable" class="tablesorter zebra-striped" cellspacing="0" cellpadding="5" border="0">
+			<thead>
 				<tr>
-					<td class="classTxt @item.GetClassStyle(item.CharacterClass(item.PlacedOnId))">@Html.ActionLink(@item.CharacterName(item.PlacedOnId).ToString(), "Details", "Character", new { id = item.PlacedOnId }, null)</td>
-					<td>@item.CharacterShard(item.PlacedOnId)</td>
-					<td>@item.CharacterAllegience(item.PlacedOnId)</td>
-					<td>@item.CharacterClass(item.PlacedOnId)</td>
-					<td>@item.DatePlaced.Value.ToShortDateString()</td>
-					<td class="classTxt @item.GetClassStyle(item.CharacterClass(item.PlacedById))">@Html.ActionLink(@item.CharacterName(item.PlacedById).ToString(), "Details", "Character", new { id = item.PlacedById }, null)</td>
-                    @if(Request.IsAuthenticated)
+					<th>Target</th>
+					<th>Shard</th>
+					<th>Faction</th>
+					<th>Class</th>
+					<th>Placed On</th>
+					<th>Client</th>
+					@if (Request.IsAuthenticated)
 					{
-						var loggedInUserId = item.GetLoggedInUserId();
-
-						if(item.IsBountyWatched(item.Id, loggedInUserId) == false)
-					    {
-						    <td style="text-align: center;">
-							    @Html.ActionLink("Watch", "Watch", "WatchedBounty", new { BountyId = item.Id, AccountId = loggedInUserId, view = "bounties" }, null)								
-						    </td>
-					    }
-					    else
-					    {
-						    <td style="text-align: center;">
-							    @Html.ActionLink("UnWatch", "UnWatch", "WatchedBounty", new { BountyId = item.Id, AccountId = loggedInUserId, view = "bounties" }, null)							
-						    </td> 
-					    }
-                    }
-
-					<td style="text-align: center;">@Html.ActionLink("Details", "Details", "Bounty", new { id = item.Id }, null)</td>
+						<th style="text-align: center;">Watch</th>
+					}
+					<th style="text-align: center;">Details</th>
 				</tr>
-			}
-		</tbody>
-	</table>
+			</thead>
+			<tbody>
+				@foreach (var item in bounties)
+				{
+					<tr>
+						<td class="classTxt @item.GetClassStyle(item.CharacterClass(item.PlacedOnId))">@Html.ActionLink(@item.CharacterName(item.PlacedOnId).ToString(), "Details", "Character", new { id = item.PlacedOnId }, null)</td>
+						<td>@item.CharacterShard(item.PlacedOnId)</td>
+						<td>@item.CharacterAllegience(item.PlacedOnId)</td>
+						<td>@item.CharacterClass(item.PlacedOnId)</td>
+						<td>@item.DatePlaced.Value.ToShortDateString()</td>
+						<td class="classTxt @item.GetClassStyle(item.CharacterClass(item.PlacedById))">@Html.ActionLink(@item.CharacterName(item.PlacedById).ToString(), "Details", "Character", new { id = item.PlacedById }, null)</td>
+						@if(Request.IsAuthenticated)
+						{
+							var loggedInUserId = item.GetLoggedInUserId();
 
-	<div style="clear: both; height: 40px;"></div>
+							if(item.IsBountyWatched(item.Id, loggedInUserId) == false)
+							{
+								<td style="text-align: center;">
+									@Html.ActionLink("Watch", "Watch", "WatchedBounty", new { BountyId = item.Id, AccountId = loggedInUserId, view = "bounties" }, null)								
+								</td>
+							}
+							else
+							{
+								<td style="text-align: center;">
+									@Html.ActionLink("UnWatch", "UnWatch", "WatchedBounty", new { BountyId = item.Id, AccountId = loggedInUserId, view = "bounties" }, null)							
+								</td> 
+							}
+						}
 
-	<div id="pager">
-		<form>
-			<img src="../../Content/Images/first.png" class="first" alt="first" />
-			<img src="../../Content/Images/prev.png" class="prev" alt="prev" />
-			<input class="pagedisplay" type="text" />
-			<img src="../../Content/Images/next.png" class="next" alt="next" />
-			<img src="../../Content/Images/last.png" class="last" alt="last" />
+						<td style="text-align: center;">@Html.ActionLink("Details", "Details", "Bounty", new { id = item.Id }, null)</td>
+					</tr>
+				}
+			</tbody>
+		</table>
+
+		<div style="clear: both; height: 40px;"></div>
+
+		<div id="pager">
+			<form>
+				<img src="../../Content/Images/first.png" class="first" alt="first" />
+				<img src="../../Content/Images/prev.png" class="prev" alt="prev" />
+				<input class="pagedisplay" type="text" />
+				<img src="../../Content/Images/next.png" class="next" alt="next" />
+				<img src="../../Content/Images/last.png" class="last" alt="last" />
 				
-			<select class="pagesize">
-				<option selected="selected" value="10">10</option>
-				<option value="15">15</option>
-				<option value="20">20</option>
-			</select>				
-		</form>
+				<select class="pagesize">
+					<option selected="selected" value="10">10</option>
+					<option value="15">15</option>
+					<option value="20">20</option>
+				</select>				
+			</form>
+		</div>
 	</div>
-</div>
+}
+else
+{
+	<text>There are currently no active bounties</text>
+}

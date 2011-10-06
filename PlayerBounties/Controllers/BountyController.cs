@@ -50,6 +50,8 @@ namespace PlayerBounties.Controllers
 		{
 			this.characterAddEditViewModel.Character = this.db.Characters.Find(character.Id);
 
+			ModelState["Name"].Errors.Clear();
+
 			var viewModel = new BountyCreateViewModel
 			{
 				Character = this.characterAddEditViewModel.Character

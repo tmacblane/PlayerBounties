@@ -17,6 +17,10 @@
 		<table id="searchResultTable" class="tablesorter zebra-striped" cellspacing="0" cellpadding="5" border="0">
 			<thead>
 				<tr>
+					@if(Request.IsAuthenticated)
+					{
+						<th></th>
+					}
 					<th>Name</th>
 					<th>Shard</th>
 					<th>Faction</th>
@@ -32,6 +36,21 @@
 				{
 					var loggedInUserId = character.GetLoggedInUserId();
 					<tr>
+						@if(Request.IsAuthenticated)
+						{
+							if(character.IsCharacterFavorited(character.Id, loggedInUserId) == false)
+							{
+								<td style="padding: 0;">
+									<a href="@Url.Action("AddToFavorites", "Favorite", new { characterId = character.Id, AccountId = loggedInUserId, view = "characterDetails" } )"><img src="../../Content/Images/favorites.png" alt="Favorite" id="favoriteImage" style="height: 18px;"/></a>								
+								</td>
+							}
+							else
+							{
+								<td style="padding: 0;">
+									<a href="@Url.Action("RemoveFromFavorites", "Favorite", new { characterId = character.Id, AccountId = loggedInUserId, view = "characterDetails" } )"><img src="../../Content/Images/favorites-gold.png" alt="Favorite" id="favoriteImage" style="height: 18px;"/></a>
+								</td> 
+							}
+						}
 						<td class="inputLabelCell classTxt @character.GetClassStyle(character.PlayerClass.Name)">
 							@Html.ActionLink(character.Name, "Details", "Character", new { character.Id }, null)
 						</td>

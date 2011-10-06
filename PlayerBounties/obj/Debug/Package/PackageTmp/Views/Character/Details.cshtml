@@ -8,7 +8,7 @@
 	<div id="leftColumn">
 		<table>
 			<tr style="height: 20px;">
-				<td>Achievements image
+				<td>
 				</td>
 			</tr>
 			<tr style="height: 150px;">
@@ -211,7 +211,7 @@
 			</tr>
 
 			@if(Model.RaceId != null)
-   {
+			{
 				<tr>
 					<td class="inputLabelCell">
 						@Html.LabelFor(model => model.Race.Name):
@@ -220,10 +220,10 @@
 						<span>@Model.CharacterRace(Model.Id)</span>
 					</td>
 				</tr>
-   }			
+			}			
 		
 			@if(Model.Motto != null)
-   {
+			{
 				<tr>
 					<td class="inputLabelCell">
 						@Html.LabelFor(model => model.Motto):
@@ -232,13 +232,13 @@
 						<span style="font-style: italic;">@Html.DisplayFor(model => model.Motto)</span>
 					</td>
 				</tr>
-   }
+			}
 
 			@if(Request.IsAuthenticated)
-   {
+			{
 
-	   if(Model.IsCharacterOwner(Model.GetLoggedInUserId(), Model.Id))
-	   {
+				if(Model.IsCharacterOwner(Model.GetLoggedInUserId(), Model.Id))
+				{
 					<tr>
 						<td class="inputLabelCell">
 							@Html.LabelFor(model => model.IsPrimary):
@@ -247,11 +247,11 @@
 							<span>@Html.DisplayFor(model => model.IsPrimary)</span>
 						</td>
 					</tr>
-	   }
-   }
+				}
+			}
 		
 			@if(Model.Bio != null)
-   {
+			{
 				<tr>
 					<td class="inputLabelCell">
 						@Html.LabelFor(model => model.Bio):
@@ -260,7 +260,7 @@
 						<span>@Html.DisplayFor(model => model.Bio)</span>
 					</td>
 				</tr>
-   }
+			}
 		
 		</table>
 	</div>
@@ -269,7 +269,7 @@
 
 <div class="rowBlank" style="margin-bottom: 90px;">
 	<div id="talesFromTheHunt" class="divSize95" style="margin-left: 20px;">
-		<p>Link to Tales from hunt</p>
+		<!--<p>Link to Tales from hunt</p>-->
 	</div>
 
 	<div style="margin-right: 20px;">		
@@ -280,7 +280,3 @@
 <div id="recentBountyImages">
 	@Html.Action("KillShotImages", "Character", new { characterId = Model.Id, imageType = "targetsKilled" })
 </div>
-
-<!-- <div id="dashboardBountyImages">
-	Html.Partial("../Character/_KillShotImages", Model, null)
-</div> -->

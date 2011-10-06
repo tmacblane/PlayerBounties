@@ -22,7 +22,7 @@ namespace PlayerBounties.Controllers
 		#region Type specific methods
 
 		[Authorize]
-		public ActionResult AddToFavorites(Guid characterId, Guid accountId)
+		public ActionResult AddToFavorites(Guid characterId, Guid accountId, string view)
 		{
 			if(ModelState.IsValid)
 			{
@@ -33,16 +33,32 @@ namespace PlayerBounties.Controllers
 				this.db.Favorites.Add(this.favorite);
 				this.db.SaveChanges();
 
-				return RedirectToAction("Details", "Character", new { id = characterId });
+				if(view == "characterDetails")
+				{
+					return RedirectToAction("Details", "Character", new { id = characterId });
+				}
+				else if(view == "searchResults")
+				{
+					return RedirectToAction("Index", "Search", null);
+				}
 			}
 			else
 			{
-				return RedirectToAction("Details", "Character", new { id = characterId });
+				if(view == "characterDetails")
+				{
+					return RedirectToAction("Details", "Character", new { id = characterId });
+				}
+				else if(view == "searchResults")
+				{
+					return RedirectToAction("Index", "Search", null);
+				}
 			}
+			
+			return RedirectToAction("Details", "Character", new { id = characterId });
 		}
 
 		[Authorize]
-		public ActionResult RemoveFromFavorites(Guid characterId, Guid accountId)
+		public ActionResult RemoveFromFavorites(Guid characterId, Guid accountId, string view)
 		{
 			IQueryable<Favorite> favoriteCharacter = this.favorite.GetFavoritedCharacter(characterId, accountId);
 
@@ -53,12 +69,28 @@ namespace PlayerBounties.Controllers
 				this.db.Favorites.Remove(favoriteCharacterToRemove);
 				this.db.SaveChanges();
 				
-				return RedirectToAction("Details", "Character", new { id = characterId });
+				if(view == "characterDetails")
+				{
+					return RedirectToAction("Details", "Character", new { id = characterId });
+				}
+				else if(view == "searchResults")
+				{
+					return View("Search");
+				}
 			}
 			else
 			{
-				return RedirectToAction("Details", "Character", new { id = characterId });
+				if(view == "characterDetails")
+				{
+					return RedirectToAction("Details", "Character", new { id = characterId });
+				}
+				else if(view == "searchResults")
+				{
+					return View("Search");
+				}
 			}
+			
+			return RedirectToAction("Details", "Character", new { id = characterId });
 		}
 
 		public IQueryable<Favorite> GetFavoriteCharacters(Guid accountId)

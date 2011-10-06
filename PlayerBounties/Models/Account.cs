@@ -243,6 +243,7 @@ namespace PlayerBounties.Models
 		#region Type specific properties
 
 		[Required]
+		[StringLength(100)]
 		[DataType(DataType.EmailAddress)]
 		[Display(Name = "Email address")]
 		public string Email
@@ -262,6 +263,7 @@ namespace PlayerBounties.Models
 		}
 
 		[Required]
+		[StringLength(100)]
 		[DataType(DataType.Password)]
 		[Display(Name = "Confirm password")]
 		[Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
