@@ -3,7 +3,7 @@
   <publishProfile publishUrl="C:\Temp\PublishedWebSite\" deleteExistingFiles="True" ftpAnonymousLogin="False" ftpPassiveMode="True" msdeploySite="" msdeploySiteID="" msdeployRemoteSitePhysicalPath="" msdeployAllowUntrustedCertificate="False" msdeploySkipExtraFilesOnServer="True" msdeployMarkAsApp="False" profileName="Profile1" publishMethod="FileSystem" replaceMatchingFiles="False" userName="" savePWD="False" userPWD="" SelectedForPublish="True">
     <file relUrl="Content/Images/Avatars/jediKnight.png" publishTime="08/23/2011 13:34:43" />
     <file relUrl="Content/Images/Avatars/smuggler.png" publishTime="08/23/2011 13:34:43" />
-    <file relUrl="Views/Character/Details.cshtml" publishTime="10/06/2011 15:18:04" />
+    <file relUrl="Views/Character/Details.cshtml" publishTime="10/06/2011 16:13:54" />
     <file relUrl="bin/System.Web.WebPages.dll" publishTime="01/05/2011 15:45:38" />
     <file relUrl="Views/Emails/BountyCompletionApproved-ClientAlert.cshtml" publishTime="09/01/2011 12:38:48" />
     <file relUrl="Content/themes/base/jquery.ui.datepicker.css" publishTime="08/04/2011 13:30:44" />
@@ -11,7 +11,7 @@
     <file relUrl="Content/empireCustom.css" publishTime="08/16/2011 12:06:31" />
     <file relUrl="Views/Achievement/Details.cshtml" publishTime="09/21/2011 13:39:53" />
     <file relUrl="Views/Race/Details.cshtml" publishTime="08/04/2011 14:18:34" />
-    <file relUrl="Content/mainSite.css" publishTime="10/05/2011 14:46:22" />
+    <file relUrl="Content/mainSite.css" publishTime="10/06/2011 15:44:51" />
     <file relUrl="bin/Microsoft.Web.Infrastructure.dll" publishTime="01/05/2011 15:45:38" />
     <file relUrl="Content/Images/Avatars/republicTrooper.png" publishTime="08/23/2011 13:34:43" />
     <file relUrl="Content/themes/base/images/ui-bg_highlight-soft_75_cccccc_1x100.png" publishTime="08/04/2011 13:30:44" />
@@ -35,7 +35,7 @@
     <file relUrl="Views/Statistics/_BountiesSummary.cshtml" publishTime="09/20/2011 14:30:38" />
     <file relUrl="Views/Character/_CharacterAddEdit.cshtml" publishTime="10/05/2011 11:48:21" />
     <file relUrl="Views/Achievement/Edit.cshtml" publishTime="09/21/2011 13:40:16" />
-    <file relUrl="Views/Search/Index.cshtml" publishTime="10/04/2011 18:22:59" />
+    <file relUrl="Views/Search/Index.cshtml" publishTime="10/06/2011 16:41:47" />
     <file relUrl="Content/Images/prev.png" publishTime="09/12/2011 14:30:16" />
     <file relUrl="Content/Images/navigateLeft.jpg" publishTime="09/09/2011 10:17:45" />
     <file relUrl="Content/themes/base/images/ui-bg_glass_55_fbf9ee_1x400.png" publishTime="08/04/2011 13:30:44" />
@@ -46,7 +46,7 @@
     <file relUrl="Content/Images/editIcon.gif" publishTime="08/22/2011 17:01:29" />
     <file relUrl="Content/themes/base/jquery.ui.tabs.css" publishTime="08/04/2011 13:30:44" />
     <file relUrl="Views/Faction/Details.cshtml" publishTime="08/04/2011 14:18:50" />
-    <file relUrl="bin/PlayerBounties.pdb" publishTime="10/06/2011 15:39:56" />
+    <file relUrl="bin/PlayerBounties.pdb" publishTime="10/06/2011 18:09:58" />
     <file relUrl="Views/Account/_Preferences.cshtml" publishTime="10/05/2011 12:21:06" />
     <file relUrl="Content/Images/first.png" publishTime="09/12/2011 14:30:16" />
     <file relUrl="Scripts/jquery-ui-1.8.11.min.js" publishTime="08/04/2011 13:30:44" />
@@ -64,7 +64,7 @@
     <file relUrl="Views/PlayerClass/Delete.cshtml" publishTime="08/04/2011 14:19:32" />
     <file relUrl="Views/Emails/_ViewStart.cshtml" publishTime="08/30/2011 14:33:52" />
     <file relUrl="Views/Emails/Welcome.cshtml" publishTime="09/01/2011 12:39:07" />
-    <file relUrl="Web.config" publishTime="09/29/2011 17:32:56" />
+    <file relUrl="Web.config" publishTime="10/06/2011 18:10:50" />
     <file relUrl="Content/Images/Avatars/sithWarrior.png" publishTime="08/23/2011 13:34:43" />
     <file relUrl="Views/Message/Index.cshtml" publishTime="10/04/2011 18:23:31" />
     <file relUrl="bin/System.Web.Mvc.dll" publishTime="01/05/2011 17:42:16" />
@@ -98,6 +98,7 @@
     <file relUrl="Views/Home/About.cshtml" publishTime="08/25/2011 17:34:11" />
     <file relUrl="Views/Bounty/PlaceBounty.cshtml" publishTime="09/29/2011 17:15:03" />
     <file relUrl="Content/themes/base/images/ui-bg_glass_75_e6e6e6_1x400.png" publishTime="08/04/2011 13:30:44" />
+    <file relUrl="favicon.ico" publishTime="10/06/2011 15:57:54" />
     <file relUrl="Views/Statistics/Index.cshtml" publishTime="09/14/2011 14:50:15" />
     <file relUrl="Content/themes/base/jquery.ui.theme.css" publishTime="08/26/2011 15:36:01" />
     <file relUrl="Content/themes/base/images/ui-bg_glass_95_fef1ec_1x400.png" publishTime="08/04/2011 13:30:44" />
@@ -117,7 +118,7 @@
     <file relUrl="Content/Images/wantedPoster.jpg" publishTime="09/15/2011 10:12:30" />
     <file relUrl="Views/Shared/_Search.cshtml" publishTime="09/14/2011 13:47:31" />
     <file relUrl="Global.asax" publishTime="08/04/2011 13:30:40" />
-    <file relUrl="Views/Shared/_Layout.cshtml" publishTime="09/12/2011 14:35:49" />
+    <file relUrl="Views/Shared/_Layout.cshtml" publishTime="10/06/2011 15:52:41" />
     <file relUrl="Content/themes/base/images/ui-icons_cd0a0a_256x240.png" publishTime="08/04/2011 13:30:44" />
     <file relUrl="Content/Images/Avatars/bountyHunter.png" publishTime="08/23/2011 13:34:43" />
     <file relUrl="Views/PlayerClass/Details.cshtml" publishTime="08/04/2011 14:19:30" />
@@ -145,7 +146,7 @@
     <file relUrl="Content/themes/base/images/ui-icons_454545_256x240.png" publishTime="08/04/2011 13:30:44" />
     <file relUrl="Views/Account/MyAccount.cshtml" publishTime="10/05/2011 12:39:42" />
     <file relUrl="Content/Site.css" publishTime="09/14/2011 13:47:31" />
-    <file relUrl="bin/PlayerBounties.dll" publishTime="10/06/2011 15:39:56" />
+    <file relUrl="bin/PlayerBounties.dll" publishTime="10/06/2011 18:09:58" />
     <file relUrl="Content/Images/favorites.png" publishTime="10/05/2011 14:25:48" />
     <file relUrl="bin/System.Web.WebPages.Razor.dll" publishTime="01/05/2011 15:45:38" />
     <file relUrl="Views/Bounty/_BountiesTable.cshtml" publishTime="10/04/2011 18:22:37" />
@@ -161,7 +162,7 @@
     <file relUrl="Content/themes/base/jquery.ui.progressbar.css" publishTime="08/04/2011 13:30:44" />
     <file relUrl="Views/Bounty/PendingPlacement.cshtml" publishTime="08/31/2011 14:00:07" />
     <file relUrl="Content/themes/base/images/ui-bg_flat_75_ffffff_40x100.png" publishTime="08/04/2011 13:30:44" />
-    <file relUrl="App_Data/PlayerBounty.sdf" publishTime="10/06/2011 15:39:10" />
+    <file relUrl="App_Data/PlayerBounty.sdf" publishTime="10/06/2011 18:10:37" />
     <file relUrl="Views/Shared/Statistics/_BountiesPlaced.cshtml" publishTime="08/29/2011 10:04:40" />
     <file relUrl="bin/System.Web.Helpers.dll" publishTime="01/05/2011 15:45:38" />
     <file relUrl="Views/Shared/Statistics/_TargetsKilled.cshtml" publishTime="08/29/2011 10:04:55" />

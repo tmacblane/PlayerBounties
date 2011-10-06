@@ -97,6 +97,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helpers\EmailNotificationHelper.cs" />
+    <Compile Include="Helpers\HandleErrorHm.cs" />
     <Compile Include="Models\Account.cs" />
     <Compile Include="Models\Achievement.cs" />
     <Compile Include="Models\Avatar.cs" />

@@ -196,13 +196,15 @@ namespace PlayerBounties.Controllers
 					character.Name = characterAddEditViewModel.Character.Name;
 					character.ShardId = characterAddEditViewModel.SelectedShard;
 					character.FactionId = characterAddEditViewModel.SelectedFaction;
+					character.PlayerClassId = characterAddEditViewModel.SelectedPlayerClass;
 
 					if(characterAddEditViewModel.SelectedRace != null)
 					{
 						character.RaceId = characterAddEditViewModel.SelectedRace;
 					}
 
-					character.PlayerClassId = characterAddEditViewModel.SelectedPlayerClass;
+					character.Motto = characterAddEditViewModel.Character.Motto;
+					character.Bio = characterAddEditViewModel.Character.Bio;
 
 					if(this.character.GetDefaultCharacterForAnAccount(accountId).Count() == 0)
 					{

@@ -150,13 +150,13 @@
 					if(@Model.IsCharacterFavorited(Model.Id, loggedInUserId) == false)
 					{
 						<td style="padding: 0;">
-							<a href="@Url.Action("AddToFavorites", "Favorite", new { characterId = Model.Id, AccountId = Model.GetLoggedInUserId() } )"><img src="../../Content/Images/favorites.png" alt="Favorite" id="favoriteImage" style="height: 18px;"/></a>								
+							<a href="@Url.Action("AddToFavorites", "Favorite", new { characterId = Model.Id, AccountId = loggedInUserId, view = "characterDetails" } )"><img src="../../Content/Images/favorites.png" alt="Favorite" id="favoriteImage" style="height: 18px;"/></a>								
 						</td>
 					}
 					else
 					{
 						<td style="padding: 0;">
-							<a href="@Url.Action("RemoveFromFavorites", "Favorite", new { characterId = Model.Id, AccountId = Model.GetLoggedInUserId()  } )"><img src="../../Content/Images/favorites-gold.png" alt="Favorite" id="favoriteImage" style="height: 18px;"/></a>
+							<a href="@Url.Action("RemoveFromFavorites", "Favorite", new { characterId = Model.Id, AccountId = loggedInUserId, view = "characterDetails" } )"><img src="../../Content/Images/favorites-gold.png" alt="Favorite" id="favoriteImage" style="height: 18px;"/></a>
 						</td> 
 					}
 				}

@@ -6,6 +6,8 @@ using System.Web.Mvc;
 using System.Web.Routing;
 using System.Data.Entity;
 
+using PlayerBounties.Helpers;
+
 namespace PlayerBounties
 {
 	// Note: For instructions on enabling IIS6 or IIS7 classic mode, 
@@ -15,7 +17,7 @@ namespace PlayerBounties
 	{
 		public static void RegisterGlobalFilters(GlobalFilterCollection filters)
 		{
-			filters.Add(new HandleErrorAttribute());
+			filters.Add(new HandleErrorHmAttribute());
 		}
 
 		public static void RegisterRoutes(RouteCollection routes)
