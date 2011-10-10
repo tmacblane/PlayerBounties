@@ -138,93 +138,100 @@
     });
 </script>
 
+@{
+	ViewBag.Title = "Place Bounty";
+}
+
 @using(Html.BeginForm("PlaceBounty", "Bounty", FormMethod.Post, new { id = "bountySearchForm" }))
 {
     @Html.ValidationSummary(false, "", new { id = "validation-summary-errors-id" })
-
-	<table id="searchTable" cellspacing="0" cellpadding="5" border="0">
-		<tr>
-			<td class="inputLabelCell">
-			    @Html.LabelFor(model => model.Character.Name):
-			</td>
-			<td class="inputDataCell" align="left">
-			    @Html.EditorFor(model => model.Character.Name)
-			    @Html.ValidationMessageFor(model => model.Character.Name, "*")
-			</td>
-		</tr>
-		<tr>
-			<td class="inputLabelCell">
-			    @Html.LabelFor(model => model.Character.Shard):
-			</td>
-			<td align="left">
-				@Html.DropDownListFor(model => model.SelectedShard, new SelectList(Model.Shards, "Value", "Text"), string.Empty)
-			    @Html.ValidationMessageFor(model => model.SelectedShard, "*")
-			</td>
-		</tr>
-		<tr>
-			<td class="inputLabelCell">
-			    @Html.LabelFor(model => model.Character.Faction):
-			</td>
-			<td align="left">
-				@Html.DropDownListFor(model => model.SelectedFaction, new SelectList(Model.Factions, "Value", "Text"), string.Empty)
-			    @Html.ValidationMessageFor(model => model.SelectedFaction, "*")
-			</td>
-		</tr>
-		<tr>
-			<td class="inputLabelCell">
-			    @Html.LabelFor(model => model.Character.PlayerClass):
-			</td>
-			<td align="left">
-                @Html.DropDownListFor(model => model.SelectedPlayerClass, new SelectList(Model.PlayerClasses, "Id", "Name"), string.Empty)
-			    @Html.ValidationMessageFor(model => model.SelectedPlayerClass, "*")
-			</td>
-		</tr>
-	    <tr>
-		    <td class="inputLabelCell">
-			    @Html.LabelFor(model => model.Character.Race):
-		    </td>
-		    <td class="inputDataCell"  align="left">
-				@Html.DropDownListFor(model => model.SelectedRace, new SelectList(Model.Races, "Value", "Text"), string.Empty)
-		    </td>
-	    </tr>
-		<tr>
-			<td class="inputLabelCell">
-				@Html.LabelFor(model => model.Bounty.Amount):
-			</td>
-			<td class="inputDataCell" align="left">
-				@Html.EditorFor(model => model.Bounty.Amount)
-				@Html.ValidationMessageFor(model => model.Bounty.Amount, "*")
-			</td>
-		</tr>
-		<tr>
-			<td class="inputLabelCell">
-				@Html.LabelFor(model => model.Bounty.Reason):
-			</td>
-			<td align="left">
-				@Html.EditorFor(model => model.Bounty.Reason)
-			</td>
-		</tr>
-		<tr>
-			<td class="inputLabelCell">
-				@Html.LabelFor(model => model.Bounty.Message):
-			</td>
-			<td align="left">
-				@Html.EditorFor(model => model.Bounty.Message)
-			</td>
-		</tr>
-		<tr>
-			<td class="inputLabelCell">
-				Placed By:
-			</td>
-			<td align="left">
-                @Html.DropDownListFor(model => model.SelectedCharacter, new SelectList(Model.Characters, "Value", "Text"), string.Empty)
-				@Html.ValidationMessageFor(model => model.SelectedCharacter, "*")
-                Don't see your character listed...@Html.ActionLink("click here", "Create", "Character", null, null) to create them
-			</td>
-		</tr>
-	</table>
+		
+	<div style="margin: 20px;">
+		<table id="searchTable" cellspacing="0" cellpadding="5" border="0">
+			<tr>
+				<td class="inputLabelCell">
+					@Html.LabelFor(model => model.Character.Name):
+				</td>
+				<td class="inputDataCell" align="left">
+					@Html.EditorFor(model => model.Character.Name)
+					@Html.ValidationMessageFor(model => model.Character.Name, "*")
+				</td>
+			</tr>
+			<tr>
+				<td class="inputLabelCell">
+					@Html.LabelFor(model => model.Character.Shard):
+				</td>
+				<td align="left">
+					@Html.DropDownListFor(model => model.SelectedShard, new SelectList(Model.Shards, "Value", "Text"), string.Empty)
+					@Html.ValidationMessageFor(model => model.SelectedShard, "*")
+				</td>
+			</tr>
+			<tr>
+				<td class="inputLabelCell">
+					@Html.LabelFor(model => model.Character.Faction):
+				</td>
+				<td align="left">
+					@Html.DropDownListFor(model => model.SelectedFaction, new SelectList(Model.Factions, "Value", "Text"), string.Empty)
+					@Html.ValidationMessageFor(model => model.SelectedFaction, "*")
+				</td>
+			</tr>
+			<tr>
+				<td class="inputLabelCell">
+					@Html.LabelFor(model => model.Character.PlayerClass):
+				</td>
+				<td align="left">
+					@Html.DropDownListFor(model => model.SelectedPlayerClass, new SelectList(Model.PlayerClasses, "Id", "Name"), string.Empty)
+					@Html.ValidationMessageFor(model => model.SelectedPlayerClass, "*")
+				</td>
+			</tr>
+			<tr>
+				<td class="inputLabelCell">
+					@Html.LabelFor(model => model.Character.Race):
+				</td>
+				<td class="inputDataCell"  align="left">
+					@Html.DropDownListFor(model => model.SelectedRace, new SelectList(Model.Races, "Value", "Text"), string.Empty)
+				</td>
+			</tr>
+			<tr>
+				<td class="inputLabelCell">
+					@Html.LabelFor(model => model.Bounty.Amount):
+				</td>
+				<td class="inputDataCell" align="left">
+					@Html.EditorFor(model => model.Bounty.Amount)
+					@Html.ValidationMessageFor(model => model.Bounty.Amount, "*")
+				</td>
+			</tr>
+			<tr>
+				<td class="inputLabelCell" valign="top">
+					@Html.LabelFor(model => model.Bounty.Reason):
+				</td>
+				<td align="left">
+					@Html.EditorFor(model => model.Bounty.Reason)
+				</td>
+			</tr>
+			<tr>
+				<td class="inputLabelCell" valign="top">
+					@Html.LabelFor(model => model.Bounty.Message):
+				</td>
+				<td align="left">
+					@Html.EditorFor(model => model.Bounty.Message)
+					<text style="vertical-align: top">@Html.ValidationMessageFor(model => model.Bounty.Message, "*")</text>
+				</td>
+			</tr>
+			<tr>
+				<td class="inputLabelCell">
+					Placed By:
+				</td>
+				<td align="left">
+					@Html.DropDownListFor(model => model.SelectedCharacter, new SelectList(Model.Characters, "Value", "Text"), string.Empty)
+					@Html.ValidationMessageFor(model => model.SelectedCharacter, "*")
+					Don't see your character listed...@Html.ActionLink("click here", "Create", "Character", null, null) to create them
+				</td>
+			</tr>
+		</table>
+	</div>
 	
-	<div class="rowBlank">
+	<div style="margin-right: 20px;">
 		@if(Request.IsAuthenticated)
 		{
 			<input id="placeBountyBtn" type="submit" value="Place Bounty" />

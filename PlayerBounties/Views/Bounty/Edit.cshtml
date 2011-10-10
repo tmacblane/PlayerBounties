@@ -11,11 +11,11 @@
     @Html.HiddenFor(model => model.Character.Id)
 	@Html.HiddenFor(model => model.Bounty.Id)
 	
-	<div class="rowBlank">
+	<div style="margin: 20px;">
 	    @Html.Partial("_BountyCreateEdit", Model)
 	</div>
 	
-	<div class="rowBlank">
+	<div style="margin-right: 20px;">
 		<input type="submit" value="Save" />			
 		<input type="button" value="Cancel" onclick="window.history.back()"/>
 	</div>

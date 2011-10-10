@@ -86,7 +86,7 @@
 		</td>
 	</tr>
 	<tr>
-		<td class="inputLabelCell">
+		<td class="inputLabelCell" valign="top">
 			@Html.LabelFor(model => model.Bounty.Reason):
 		</td>
 		<td align="left">
@@ -94,11 +94,12 @@
 		</td>
 	</tr>
 	<tr>
-		<td class="inputLabelCell">
+		<td class="inputLabelCell" valign="top">
 			@Html.LabelFor(model => model.Bounty.Message):
 		</td>
 		<td align="left">
 			@Html.EditorFor(model => model.Bounty.Message)
+			<text style="vertical-align: top">@Html.ValidationMessageFor(model => model.Bounty.Message, "*")</text>
 		</td>
 	</tr>
 	<tr>

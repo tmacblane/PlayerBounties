@@ -85,18 +85,29 @@ namespace PlayerBounties.Controllers
 		public ActionResult Delete(Guid id)
 		{
 			Message message = db.Messages.Find(id);
-			return View(message);
-		}
-
-		// POST: /Message/Delete/5
-		[HttpPost, ActionName("Delete")]
-		public ActionResult DeleteConfirmed(Guid id)
-		{
-			Message message = db.Messages.Find(id);
 			db.Messages.Remove(message);
 			db.SaveChanges();
-			return RedirectToAction("Index");
+
+			if(message.IsAdminMessage == true)
+			{
+				return RedirectToAction("Index", "Message", new { userId = Guid.Empty});
+			}
+			else
+			{
+				return RedirectToAction("Index", "Message", new { userId = message.UserId });
+			}
+
 		}
+
+		//// POST: /Message/Delete/5
+		//[HttpPost, ActionName("Delete")]
+		//public ActionResult DeleteConfirmed(Guid id)
+		//{
+		//    Message message = db.Messages.Find(id);
+		//    db.Messages.Remove(message);
+		//    db.SaveChanges();
+		//    return RedirectToAction("Index");
+		//}
 
 		#endregion
 

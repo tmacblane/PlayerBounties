@@ -386,7 +386,7 @@ select
 	width: 400px;
 }
 
-#loginForm, #signUpForm
+#loginForm, #signUpForm, #preferenceForm
 {
 	background-color: #FFFFFF;
 	border-style: solid;
@@ -689,7 +689,7 @@ table
 	font-size: 12px;
 }
 
-#bountiesTable, #searchResultTable, #messagesTable
+#bountiesTable, #searchResultTable, #messagesTable, #favoritesTable
 {
 	font-family: Verdana,arial,sans-serif;
     font-size: 11px;

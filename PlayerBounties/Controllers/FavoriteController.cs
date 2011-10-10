@@ -21,6 +21,16 @@ namespace PlayerBounties.Controllers
 
 		#region Type specific methods
 
+		public ActionResult Favorites()
+		{
+			Account account = new Account();
+			var accountId = account.GetLoggedInUserId();
+
+			IEnumerable<Favorite> favorite = this.GetFavoriteCharacters(accountId);
+
+			return View(favorite);
+		}
+
 		[Authorize]
 		public ActionResult AddToFavorites(Guid characterId, Guid accountId, string view)
 		{
@@ -76,6 +86,10 @@ namespace PlayerBounties.Controllers
 				else if(view == "searchResults")
 				{
 					return View("Search");
+				}
+				else if(view == "favoritesList")
+				{
+					return RedirectToAction("Favorites", "Favorite", null);
 				}
 			}
 			else

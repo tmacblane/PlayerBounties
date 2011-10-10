@@ -193,7 +193,9 @@
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\modernizr-1.7.min.js" />
     <Content Include="Scripts\playerBounty.js" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
@@ -253,10 +255,10 @@
     <Content Include="Views\Message\Details.cshtml" />
     <Content Include="Views\Message\Create.cshtml" />
     <Content Include="Views\Message\Edit.cshtml" />
-    <Content Include="Views\Message\Delete.cshtml" />
     <Content Include="Views\Account\_Preferences.cshtml" />
     <Content Include="Views\Emails\BountyPlacedApproved-FavoritedAlert.cshtml" />
     <Content Include="Views\Emails\BountyCompletionApproved-FavoritedAlert.cshtml" />
+    <Content Include="Views\Favorite\Favorites.cshtml" />
     <None Include="_bin_deployableAssemblies\Microsoft.Web.Infrastructure.dll" />
     <None Include="_bin_deployableAssemblies\System.Web.WebPages.Razor.dll" />
     <None Include="_bin_deployableAssemblies\System.Web.WebPages.dll" />

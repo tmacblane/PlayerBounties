@@ -10,9 +10,11 @@
 
     @Html.HiddenFor(model => model.Character.Id)
 	
-	@Html.Partial("_CharacterAddEdit", Model)
+	<div style="margin: 20px;">
+	    @Html.Partial("_CharacterAddEdit", Model)
+	</div>
 	
-	<div class="rowBlank">
+	<div style="margin-right: 20px;">
 		<input type="submit" value="Save" />			
 		<input type="button" value="Cancel" onclick="window.history.back()"/>
 	</div>

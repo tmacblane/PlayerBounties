@@ -46,7 +46,7 @@
 @if(bounties.Count() > 0)
 {
 	<div style="margin: 20px 20px 0 20px;">
-		@Html.DropDownListFor(model => model.SelectedShard, new SelectList(Model.Shards, "Value", "Text"), "All Shards") <p />
+		@*@Html.DropDownListFor(model => model.SelectedShard, new SelectList(Model.Shards, "Value", "Text"), "All Shards") <p />*@
 		
 		<table id="bountiesTable" class="tablesorter zebra-striped" cellspacing="0" cellpadding="5" border="0">
 			<thead>
@@ -119,5 +119,7 @@
 }
 else
 {
-	<text>There are currently no active bounties</text>
+	<div style="margin: 20px 20px 0 20px;">
+		<h3>There are currently no active bounties.</h3>
+	</div>
 }

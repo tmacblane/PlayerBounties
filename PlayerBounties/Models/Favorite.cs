@@ -69,6 +69,60 @@ namespace PlayerBounties.Models
 			return this.db.Favorites.Where(f => f.AccountId == accountId);
 		}
 
+		public string CharacterName(Guid characterId)
+		{
+			Character character = new Character();
+
+			return character.CharacterName(characterId);
+		}
+
+		public string CharacterShard(Guid characterId)
+		{
+			Character character = new Character();
+
+			return character.CharacterShard(characterId);
+		}
+
+		public string CharacterAllegience(Guid characterId)
+		{
+			Character character = new Character();
+
+			return character.CharacterAllegience(characterId);
+		}
+
+		public string CharacterClass(Guid characterId)
+		{
+			Character character = new Character();
+
+			return character.CharacterClass(characterId);
+		}
+
+		public string GetClassStyle(string className)
+		{
+			Character character = new Character();
+
+			return character.GetClassStyle(className);
+		}
+
+		public Guid GetLoggedInUserId()
+		{
+			return this.db.Accounts.Where(row => row.EmailAddress == System.Web.HttpContext.Current.User.Identity.Name).Single().Id;
+		}
+
+		public bool IsActiveBountyOnCharacter(Guid characterId)
+		{
+			Bounty bounty = new Bounty();
+
+			return bounty.IsActiveBountyOnCharacter(characterId);
+		}
+
+		public Guid GetActiveBountyId(Guid characterId)
+		{
+			Bounty bounty = new Bounty();
+
+			return bounty.GetActiveBountyId(characterId);
+		}
+
 		#endregion
 	}
 }

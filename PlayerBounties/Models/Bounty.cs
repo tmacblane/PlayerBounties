@@ -44,6 +44,7 @@ namespace PlayerBounties.Models
 			set;
 		}
 
+		[Required(ErrorMessage = "Message is required.")]
 		[Display(Name = "Message")]
 		[StringLength(500, ErrorMessage = "The {0} must be less than {1} characters.")]
 		[DataType(DataType.MultilineText)]
