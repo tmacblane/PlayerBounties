@@ -447,10 +447,10 @@ namespace PlayerBounties.Models
 			switch(factionName)
 			{
 				case "Galactic Republic":
-					return "republic";
+					return "republicTxt";
 
 				case "Sith Empire":
-					return "empire";
+					return "empireTxt";
 			}
 
 			return string.Empty;

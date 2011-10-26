@@ -839,3 +839,15 @@ table
 {
 	background-position: right -252px;
 }
+
+/* FACTION COLORS
+----------------------------------------------------------*/
+.empireTxt 
+{
+	color: #A1222B;
+}
+
+.republicTxt
+{ 
+	color: #354D89; 
+}

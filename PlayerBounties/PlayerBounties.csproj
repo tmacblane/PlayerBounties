@@ -85,6 +85,7 @@
     <Compile Include="Controllers\FactionController.cs" />
     <Compile Include="Controllers\FavoriteController.cs" />
     <Compile Include="Controllers\HeaderController.cs" />
+    <Compile Include="Controllers\HelpController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\MessageController.cs" />
     <Compile Include="Controllers\PlayerClassController.cs" />
@@ -259,6 +260,7 @@
     <Content Include="Views\Emails\BountyPlacedApproved-FavoritedAlert.cshtml" />
     <Content Include="Views\Emails\BountyCompletionApproved-FavoritedAlert.cshtml" />
     <Content Include="Views\Favorite\Favorites.cshtml" />
+    <Content Include="Views\Help\Index.cshtml" />
     <None Include="_bin_deployableAssemblies\Microsoft.Web.Infrastructure.dll" />
     <None Include="_bin_deployableAssemblies\System.Web.WebPages.Razor.dll" />
     <None Include="_bin_deployableAssemblies\System.Web.WebPages.dll" />
