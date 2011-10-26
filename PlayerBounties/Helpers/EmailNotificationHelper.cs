@@ -17,6 +17,23 @@ namespace PlayerBounties.Helpers
 
 		#endregion
 
+		public void SendPasswordResetNotification(string password, ForgotPasswordModel forgotPassword, string emailView)
+		{
+			dynamic email = new Email(emailView);
+
+			email.UserEmailAddress = forgotPassword.EmailAddress;
+			email.Password = password;
+
+			try
+			{
+				email.Send();
+			}
+			catch
+			{
+				// Need to log when it fails, the email type and information
+			}
+		}
+
 		public void SendNotificationEmail(Bounty bounty, string emailView, Guid accountId)
 		{
 			if(accountId != Guid.Empty)

@@ -386,7 +386,7 @@ select
 	width: 400px;
 }
 
-#loginForm, #signUpForm, #preferenceForm
+#loginForm, #signUpForm, #preferenceForm, #changePasswordForm
 {
 	background-color: #FFFFFF;
 	border-style: solid;

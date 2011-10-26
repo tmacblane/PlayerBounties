@@ -61,7 +61,7 @@
 						<td>
 							@Html.DisplayFor(modelItem => character.Shard.Name)
 						</td>
-						<td class="@character.GetFactionStyle(character.Faction.Name)">
+						<td class="@character.GetFactionFontStyle(character.Faction.Name)">
 							@Html.DisplayFor(modelItem => character.Faction.Name)
 						</td>
 						<td>
@@ -113,6 +113,10 @@
 										</td> 
 									} 
 								}
+							}
+							else
+							{
+								<td></td>
 							}
                         }
 					</tr>

@@ -4,7 +4,11 @@
     ViewBag.Title = "My Account";
 }
 
-<div id="preferenceForm" style="width: 40%; margin: 20px;">
+<div id="changePassword">
+	@Html.Partial("_ChangePassword", new PlayerBounties.Models.ChangePasswordModel(), null)
+</div>
+
+<div id="preferenceForm" style="width: 400px; margin: 20px;">
 	<text style="font-size: 18px; font-weight: bolder;">Preferences</text>
 	@using(Html.BeginForm("_Preferences", "Account"))
 	{

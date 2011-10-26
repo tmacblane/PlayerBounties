@@ -386,7 +386,7 @@ select
 	width: 400px;
 }
 
-#loginForm, #signUpForm, #preferenceForm
+#loginForm, #signUpForm, #preferenceForm, #changePasswordForm
 {
 	background-color: #FFFFFF;
 	border-style: solid;
@@ -838,4 +838,16 @@ table
 .imperialAgentIcon
 {
 	background-position: right -252px;
+}
+
+/* FACTION COLORS
+----------------------------------------------------------*/
+.empireTxt 
+{
+	color: #A1222B;
+}
+
+.republicTxt
+{ 
+	color: #354D89; 
 }

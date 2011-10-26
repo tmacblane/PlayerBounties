@@ -442,7 +442,7 @@ namespace PlayerBounties.Models
 			return string.Empty;
 		}
 
-		public string GetFactionStyle(string factionName)
+		public string GetFactionFontStyle(string factionName)
 		{
 			switch(factionName)
 			{
@@ -451,6 +451,20 @@ namespace PlayerBounties.Models
 
 				case "Sith Empire":
 					return "empireTxt";
+			}
+
+			return string.Empty;
+		}
+
+		public string GetFactionStyle(string factionName)
+		{
+			switch(factionName)
+			{
+				case "Galactic Republic":
+					return "republic";
+
+				case "Sith Empire":
+					return "empire";
 			}
 
 			return string.Empty;
