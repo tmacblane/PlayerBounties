@@ -25,8 +25,7 @@
 					if(Model.IsActiveBountyOnCharacter(Model.Id) == false)
 					{
 						<tr>
-							<td align="center">
-								@Html.ActionLink("Place a Bounty", "Create", "Bounty", new { id = Model.Id, Name = Model.Name }, null)
+							<td align="center">@Html.ActionLink("Place a Bounty", "Create", "Bounty", new { id = Model.Id, Name = Model.Name }, null)
 							</td>
 						</tr>
 						}
@@ -169,8 +168,13 @@
 				<td align="left" class="classTxt @Model.GetClassStyle(Model.CharacterClass(Model.Id))" style="font-weight: bold;">
 					@if(Request.IsAuthenticated)
 					{
-						if(Model.IsCharacterOwner(Model.GetLoggedInUserId(), Model.Id))
+						if(Model.UserId != Guid.Empty)
 						{
+							<img src="../../Content/Images/mandalorianLogo.png" alt="R" style="height: 16px; width: 16px;"/><text>&nbsp;</text>						
+						}
+						
+						if(Model.IsCharacterOwner(Model.GetLoggedInUserId(), Model.Id))
+						{							
 							@Html.ActionLink(@Html.DisplayFor(model => model.Name).ToString(), "Edit", new { id = Model.Id })
 							<span style="margin-left: 10px; font-size: x-small;" >@Html.ActionLink("(edit)", "Edit", new { id = Model.Id }, new { style = "color: #034AF3" })</span>
 							
@@ -182,8 +186,8 @@
 					}
 					else
 					{
-							<span>@Html.DisplayFor(model => model.Name)</span>
-						}				
+						<span>@Html.DisplayFor(model => model.Name)</span>
+					}				
 				</td>
 			</tr>
 			<tr>
