@@ -665,6 +665,13 @@ namespace PlayerBounties.Models
 			return character.GetFactionStyle(factionName);
 		}
 
+		public string GetFactionFontStyle(string factionName)
+		{
+			Character character = new Character();
+
+			return character.GetFactionFontStyle(factionName);
+		}
+
 		public List<Guid> GetMostRecentlyCompletedBounties(int count)
 		{
 			List<Guid> killShotImages = new List<Guid>();

@@ -51,6 +51,10 @@
 		<table id="bountiesTable" class="tablesorter zebra-striped" cellspacing="0" cellpadding="5" border="0">
 			<thead>
 				<tr>
+					@if(Request.IsAuthenticated)
+					{
+						<th></th>
+					}
 					<th>Target</th>
 					<th>Shard</th>
 					<th>Faction</th>
@@ -68,9 +72,20 @@
 				@foreach (var item in bounties)
 				{
 					<tr>
+						@if(Request.IsAuthenticated)
+						{
+							if(item.GetCharacterUserId(item.PlacedOnId) != Guid.Empty)
+							{
+								<td><img src="../../Content/Images/mandalorianLogo.png" alt="R" style="height: 16px; width: 16px;"/></td>
+							}
+							else
+							{
+								<td></td>
+							}
+						}
 						<td class="classTxt @item.GetClassStyle(item.CharacterClass(item.PlacedOnId))">@Html.ActionLink(@item.CharacterName(item.PlacedOnId).ToString(), "Details", "Character", new { id = item.PlacedOnId }, null)</td>
 						<td>@item.CharacterShard(item.PlacedOnId)</td>
-						<td>@item.CharacterAllegience(item.PlacedOnId)</td>
+						<td class="@item.GetFactionFontStyle(item.CharacterAllegience(item.PlacedOnId))">@item.CharacterAllegience(item.PlacedOnId)</td>
 						<td>@item.CharacterClass(item.PlacedOnId)</td>
 						<td>@item.DatePlaced.Value.ToShortDateString()</td>
 						<td class="classTxt @item.GetClassStyle(item.CharacterClass(item.PlacedById))">@Html.ActionLink(@item.CharacterName(item.PlacedById).ToString(), "Details", "Character", new { id = item.PlacedById }, null)</td>

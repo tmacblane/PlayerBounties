@@ -20,6 +20,7 @@
 					@if(Request.IsAuthenticated)
 					{
 						<th></th>
+						<th></th>
 					}
 					<th>Name</th>
 					<th>Shard</th>
@@ -42,6 +43,15 @@
 					<tr>
 						@if(Request.IsAuthenticated)
 						{
+							if(character.UserId != Guid.Empty)
+							{
+								<td><img src="../../Content/Images/mandalorianLogo.png" alt="R" style="height: 16px; width: 16px;"/></td>
+							}
+							else
+							{
+								<td></td>
+							}
+							
 							if(character.IsCharacterFavorited(character.Id, loggedInUserId) == false)
 							{
 								<td style="padding: 0;">
