@@ -1,3 +1,159 @@
 ﻿@{
     ViewBag.Title = "Rules";
 }
+
+<div style="margin: 20px;">
+	<ul>
+		<li><a href="#SignUp">Signing Up</a></li>
+		<li><a href="#Roles">Roles</a></li>
+		<li>
+			<ul style="padding-left: 10px;">
+				<li><a href="#Hunter">Role: Hunter</a></li>
+				<li><a href="#Mark">Role: Mark</a></li>
+				<li>
+					<ul style="padding-left: 10px;">
+						<li><a href="#Mark-Registered">Mark: Registered</a></li>
+						<li><a href="#Mark-NonRegistered">Mark: Non-Registered</a></li>
+					</ul>
+				</li>
+				<li><a href="#Client">Role: Client</a></li>
+			</ul>
+		</li>		
+		<li><a href="#Rules">Rules</a></li>
+		<li><a href="#PlaceABounty">Placing a Bounty</a></li>
+		<li><a href="#CompleteABounty">Completing a Bounty</a></li>
+		<li><a href="#Payables">Payables and Receiveables</a></li>
+	</ul>
+	<p></p>
+	<hr />
+	<p></p>
+	<a name="SignUp">Signing Up</a>
+	<br />
+	To participate in The Great Hunt, you must @Html.ActionLink("register", "SignUp", "Account") an account with 
+	playerbounties.com. You must provide a valid email address, and add atleast of one of your <i>Star Wars the 
+	Old Republic</i> characters.
+
+	<p>
+	<strong>NOTE:</strong>  Your password is encrypted and is never known by any member or administrator of 
+	playerbounties.com.  Your email address is also considered private and will never be distributed to any 
+	third party or other Player Bounty members beyond the Administrators.
+	</p>
+	
+	<a name="Roles">Roles</a>
+	<br />
+	There are three main roles that a character takes on, a Mark, Hunter or Client.  Each role is subject to its 
+	own specific set of rules. However, any and all characters can partake in either role at any time.
+
+	<p></p>
+	<a name="Hunter">Role: Hunter</a>
+	<br />
+	A Hunter is the character that will do the hunting.
+
+	<p></p>
+	<a name="Mark">Role: Mark</a>
+	<br />
+	There are two types of marks in the Great Hunt. Registered and Non-Registered.  Each mark type is able to be hunted, 
+	but not necessarily by all registered members.
+
+	<p></p>
+	<a name="Mark-Registered">Mark - Registered:</a>
+	<br />
+	A registered mark is a character that belongs to a registered user of playerbounties.com. These marks can be hunted 
+	by either faction. When hunted by a character of the same faction, the mark must be fought by initiating a 
+	duel. When viewing a bounty, a registered mark will be denoted by &lt;Image Needed&gt;.
+
+	<p></p>
+	<a name="Mark-NonRegistered">Mark - Non-Registered:</a>
+	<br />
+	A non-registerd mark is a character that does not belong to any registered user of playerbounties.com. These marks 
+	should only be hunted by characters of the opposite faction. Hunting these marks is not prohibited by characters of 
+	the same faction, but once making your declaration to collect on the bounty, these players are not required to 
+	accept the duel.
+	
+	<p></p>
+	<a name="Client">Role: Client</a>
+	<br />
+	A Client is a character who has placed a bounty on a mark.
+	
+	<p></p>
+	<a name="Rules">Rules of the Great Hunt (All members MUST READ)</a>
+	<br />
+	A bounty is never assigned to a specific hunter.  Any hunter may kill any mark listed on the Bounties page.  The first 
+	hunter to submit a successful claim will receive the bounty if that bounty is approved.
+
+	<p>
+	A hunter may use any means necessary to locate a target EXCEPT by sending a /tell to the mark directly.
+	</p>
+
+	<p>
+	When approaching a mark, the hunter must announce their intention to collect the bounty in general using "&lt;Mark Name&gt;, 
+	I have been hired to collect a bounty a placed on you by &lt;Client Name&gt;".  The actual wording does not have to match 
+	this exactly, but must include the Client's name.
+	</p>
+
+	<p>
+	Once the announcement has been given, the hunter must then challenge the mark to a duel.  The mark can be given a few 
+	minutes of grace period before accepting the duel for real life issues.  During this time, however, the mark is not allowed 
+	to perform any combat or support-related functions.  Examples include (but are not limited to) using buffs, healing to 
+	full, swapping out armor and weapons.
+	</p>	
+	
+	<a name="PlaceABounty">Placing a Bounty (Clients MUST READ)</a>
+	<br />
+	Every user of the site may place a bounty on a character as long as the user has a character on the same shard as the 
+	intended target.  A character can only have one active bounty placed on them at a time.
+
+	<p>
+	When placing a bounty, a description of the offense may be provided, but is not required.  This description will be 
+	viewable on the bounty details page for everyone to see.  A message to the intended target may also be provided, but is 
+	also not required. This message will not be viewable to any non-registered users, or the registered user to whom the 
+	character belongs to until after the bounty has been completed.
+	</p>
+
+	<p>
+	The credits for any bounty placed must be collected by a Player Bounties administrator before the bounty can be 
+	marked as "Active".
+	</p>
+	
+	@*<a name="CancellingABounty">Cancelling a Bounty</a>
+	Any bounty may be cancelled by the user who created it unless there is a pending claim or the bounty has been 
+	completed. By cancelling a bounty, the user will be refunded the bounty credits minus the house fees.*@
+	
+	<a name="CompleteABounty">Being Hunted (Marks MUST READ)</a>
+	<br />
+	When approached by a hunter and challenged to a duel, the duel must be accepted as a soon as possible.  In-game reasons for
+	delay are not permitted.  Once the duel has been initiated, a registered mark is not allowed to perform any combat or 
+	support-related functions until after the duel has been accepted. Examples include (but are not limited to) using buffs, 
+	healing to full, swapping out armor and weapons. Being confronted at a "bad time" and caught unaware is part of the risk of 
+	being a mark.
+
+	<p></p>
+	<a name="CompleteABounty">Completing a Bounty (Hunters MUST READ)</a>
+	<br />
+	After successfully killing a mark, the hunter must delivery any message described in the bounty EXACTLY as the client 
+	has specified.  A screenshot containing the client's name, the client's message (if provided), and the mark's corpse (with 
+	nameplates turned on) must be taken to document the successful kill. CLAIMS THAT DO NOT MEET THIS CRITERIA WILL BE REJECTED 
+	WITHOUT EXCEPTION. In order to capture the client's name in the screenshot, either the chat window should be enlarged to 
+	show the entire conversation beginning with the initial challenge, or the hunter should incorporate the client's name into 
+	the final message. The hunter will then submit a claim, uploading the screenshot for review.  If the screenshot does not 
+	contain the three elements listed above, the claim will be rejected and the bounty will remain active.
+	
+	<p></p>
+	<a name="Payables">Payables and Receivables</a>
+	<br />
+	Payables and Receiveables are the ingame financial transactions that must take place for playerbounties.com to function
+	properly
+
+	<p>
+	Payables are funds that are owed to a character.  Receiveables are funds to playerbounties.com from a character.
+	</p>
+
+	<p>
+	Each character can view their amount of Payables and Receiveables from the character detail page as well as their accounty
+	dashboard.
+	</p>
+
+	<p>
+	Transactions should only be made with approved playerbounty.com representatives.
+	</p>
+</div>
