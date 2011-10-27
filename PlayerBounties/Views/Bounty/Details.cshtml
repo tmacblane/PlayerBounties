@@ -139,6 +139,13 @@
 							Name:
 						</td>
 						<td class="classTxt @Model.Bounty.GetClassStyle(Model.Bounty.CharacterClass(Model.Bounty.PlacedOnId))" align="left" style="width: 150px; font-weight: bold;">
+							@if(Request.IsAuthenticated)
+							{
+								if(Model.Bounty.GetCharacterUserId(Model.Bounty.PlacedOnId) != Guid.Empty)
+								{
+									<img src="../../Content/Images/mandalorianLogo.png" alt="R" style="height: 16px; width: 16px;"/><text>&nbsp;</text>						
+								}
+							}
 							@Html.ActionLink(@Model.Bounty.CharacterName(Model.Bounty.PlacedOnId).ToString(), "Details", "Character", new { id = Model.Bounty.PlacedOnId }, null)
 						</td>
 						<td class="inputLabelCell" style="width: 75px;">
@@ -210,14 +217,18 @@
 							<span>@Model.Bounty.GetStatus(Model.Bounty.Id)</span>
 						</td>
 					</tr>
-					<tr>
-						<td class="inputLabelCell" valign="top">
-							@Html.LabelFor(model => model.Bounty.Reason):
-						</td>
-						<td align="left" colspan="3">
-							<span>@Html.DisplayFor(model => model.Bounty.Reason)</span>
-						</td>
-					</tr>
+
+					@if(Model.Bounty.Reason != null)
+					{
+						<tr>
+							<td class="inputLabelCell" valign="top">
+								@Html.LabelFor(model => model.Bounty.Reason):
+							</td>
+							<td align="left" colspan="3">
+								<span>@Html.DisplayFor(model => model.Bounty.Reason)</span>
+							</td>
+						</tr>
+					}
 
 					@if (Request.IsAuthenticated)
                     {
