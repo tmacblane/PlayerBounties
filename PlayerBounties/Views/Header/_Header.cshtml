@@ -53,15 +53,15 @@
             <ul class="tabs">
         
 			    @if(Request.IsAuthenticated)
-	   {
+				{
 				    <li>@Html.ActionLink("Dashboard", "Dashboard", "Home")</li>
-	   }
-	   else
-	   {
+				}
+				else
+				{
 				    <li>@Html.ActionLink("Home", "Index", "Home")</li>
-	   }
+				}
 
-			    <li>@Html.ActionLink("About", "About", "Home")</li>
+			    @*<li>@Html.ActionLink("About", "About", "Home")</li>*@
 			    <li>@Html.ActionLink("Rules", "Rules", "Home")</li>
 			    <li>@Html.ActionLink("Statistics", "Index", "Statistics")</li>
                 <li>@Html.ActionLink("Bounties", "Bounties", "Bounty")</li>

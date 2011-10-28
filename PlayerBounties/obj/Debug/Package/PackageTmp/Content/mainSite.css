@@ -455,6 +455,12 @@ select
     height: inherit;
 }
 
+@font-face
+{
+	font-family: Aurebesh;
+	src: url("../../Content/Fonts/Aurebesh.ttf");
+}
+
 .rowBlank
 {
 	clear: both;

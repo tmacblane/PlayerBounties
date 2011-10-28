@@ -266,6 +266,7 @@
     <Content Include="Views\Account\ForgotPassword.cshtml" />
     <Content Include="Views\Account\ResetPasswordSuccess.cshtml" />
     <Content Include="Views\Emails\ResetPassword.cshtml" />
+    <None Include="Content\Fonts\Aurebesh.ttf" />
     <None Include="_bin_deployableAssemblies\Microsoft.Web.Infrastructure.dll" />
     <None Include="_bin_deployableAssemblies\System.Web.WebPages.Razor.dll" />
     <None Include="_bin_deployableAssemblies\System.Web.WebPages.dll" />

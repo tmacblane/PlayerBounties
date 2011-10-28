@@ -65,7 +65,7 @@
 			<table style="background-image: url('../../Content/Images/wantedPoster.jpg'); background-repeat: no-repeat; text-align: center; width: 100%; height:250px; color: #000000;">
 				<tr style="height: 150px;">
 					<td>
-						<p style="font-family: AurebeshAlternate">
+						<p style="font-family: Aurebesh;">
 							<u style="font-size: 28px;">Wanted</u>
 						</p>
                         
@@ -77,7 +77,7 @@
 						<br />
 						<text style="font-size: 20px;">@Model.Bounty.CharacterName(Model.Bounty.PlacedOnId)</text>
 
-						<p style="font-family: AurebeshAlternate; font-size: 24px; ">
+						<p style="font-family: Aurebesh; font-size: 24px; ">
 							<text>$</text>@Model.Bounty.Amount
 						</p>				
 					</td>
@@ -233,7 +233,7 @@
 					@if (Request.IsAuthenticated)
                     {
 						if(Model.Bounty.GetLoggedInUserId() != Model.Bounty.GetCharacterUserId(Model.Bounty.PlacedOnId) || Model.Bounty.GetStatus(Model.Bounty.Id) == "Completed")
-                        {
+						{
 							<tr>
 								<td class="inputLabelCell" valign="top">
 									@Html.LabelFor(model => model.Bounty.Message):
@@ -242,8 +242,22 @@
 									<span>@Html.DisplayFor(model => model.Bounty.Message)</span>
 								</td>
 							</tr>
-                         }
-                     }				
+                        }
+					}
+					else
+					{
+						if(Model.Bounty.IsCompletionPending == false)
+						{
+							<tr>
+								<td class="inputLabelCell" valign="top">
+									@Html.LabelFor(model => model.Bounty.Message):
+								</td>
+								<td align="left" colspan="3">
+									<span>@Html.DisplayFor(model => model.Bounty.Message)</span>
+								</td>
+							</tr>
+						}
+					}		
 
 				</tbody>
 			</table>
@@ -251,13 +265,16 @@
 	</div>
 
 	<!-- If user is logged in, show div  -->
-     if (Request.IsAuthenticated)
-     {
+	 if(Request.IsAuthenticated)
+	 {
 		 if(Model.Bounty.GetStatus(Model.Bounty.Id) == "Active")
-         {	
+		 {	
 			<div style="width: 980px; float: left; margin-left: 20px; margin-bottom: 10px;">
 				@Html.LabelFor(model => model.KillShotImageId)
-				@Html.TextBoxFor(m => m.KillShotImageId, new { type = "file" })
+				@Html.TextBoxFor(m => m.KillShotImageId, new
+{
+	type = "file"
+})
 				@Html.ValidationMessageFor(model => model.KillShotImageId, "*")
 				
                 @Html.DropDownListFor(model => model.SelectedCharacter, new SelectList(Model.Characters, "Value", "Text"), string.Empty)
@@ -272,19 +289,22 @@
 		 {
 			 if(Model.Bounty.GetStatus(Model.Bounty.Id) == "Placement Pending")
 			 {
-				@Html.ActionLink("Edit", "Edit", new { id = Model.Bounty.Id })
+				@Html.ActionLink("Edit", "Edit", new
+{
+	id = Model.Bounty.Id
+})
 			 }
 		 }
 	 }
 	
 	<div id="buttons" style="width:100%">
 		@if(Request.IsAuthenticated)
-		{
-			if(Model.Bounty.GetStatus(Model.Bounty.Id) == "Active")
-			{
+  {
+	  if(Model.Bounty.GetStatus(Model.Bounty.Id) == "Active")
+	  {
 					<input type="submit" value="Complete Bounty"/>
-			}
-		}
+	  }
+  }
 		
 		<input type="button" value="Back" onclick="window.history.back()" />		
 	</div>
