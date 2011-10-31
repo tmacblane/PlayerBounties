@@ -1,7 +1,47 @@
-﻿@{
-    ViewBag.Title = "Help";
+﻿@model PlayerBounties.ViewModels.HelpViewModel
+
+@{
+    ViewBag.Title = "Help and Support";
 }
 
-<h2>FAQ Stuff</h2>
+@using (Html.BeginForm())
+{ 
+    @Html.ValidationSummary(false)
+	
+    <div id="loginForm" style="float: right; width: 400px; margin: 20px;">
+        <div class="rowBlank">
+        Have a question or suggestion?  Send us a message.
+        </div>
+        @if (Request.IsAuthenticated == false)
+        {
+            <div class="rowBlank">
+                @Html.LabelFor(model => model.EmailAddress)
+			    @Html.ValidationMessageFor(model => model.EmailAddress, "*")
+                <br />
+                @Html.EditorFor(model => model.EmailAddress)
+            </div>
+        }
+        <div class="rowBlank">
+            @Html.LabelFor(model => model.SubjectLine)
+			@Html.ValidationMessageFor(model => model.SubjectLine, "*")
+            <br />
+            @Html.EditorFor(model => model.SubjectLine)
+        </div>
+        <div class="rowBlank">
+            @Html.LabelFor(model => model.Message)
+			@Html.ValidationMessageFor(model => model.Message, "*")
+            <br />
+            @Html.EditorFor(model => model.Message)
+        </div>
+		<div class="rowBlank">
+			<input type="submit" value="Submit" />
+		</div>
+    </div>
+}
 
-<h2>Ticket Submission</h2>
+<div style="margin: 20px;">
+    <h2>FAQ stuff</h2>
+    <p>
+
+    </p>
+</div>
