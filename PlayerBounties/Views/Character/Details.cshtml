@@ -8,7 +8,8 @@
 	<div id="leftColumn">
 		<table>
 			<tr style="height: 20px;">
-				<td>Achievements image
+				<td>
+					@*Achievements Image*@
 				</td>
 			</tr>
 			<tr style="height: 150px;">
@@ -24,8 +25,7 @@
 					if(Model.IsActiveBountyOnCharacter(Model.Id) == false)
 					{
 						<tr>
-							<td align="center">
-								@Html.ActionLink("Place a Bounty", "Create", "Bounty", new { id = Model.Id, Name = Model.Name }, null)
+							<td align="center">@Html.ActionLink("Place a Bounty", "Create", "Bounty", new { id = Model.Id, Name = Model.Name }, null)
 							</td>
 						</tr>
 						}
@@ -45,12 +45,10 @@
 
 	<div id="rightColumn">
 		<table cellspacing="0" cellpadding="2" border="0">
-			<tr style="height: 20px;">
-				<td>
-				</td>
+			<tr style="height: 20px;">				
 			</tr>
 			<tr style="height: 150px;">
-				<th colspan="2">Great hunt champ image</th>
+				@*<th colspan="2">Great hunt champ image</th>*@
 			</tr>
 			<tr>
 				<td class="inputLabelCell">
@@ -145,7 +143,24 @@
 	
 	<div id="middleColumn">
 		<table id="characterDetailsTable" cellspacing="0" cellpadding="5" border="0" >
-			<tr style="height: 20px;"></tr>
+			<tr style="height: 20px;">
+				@if(Request.IsAuthenticated)
+				{
+					var loggedInUserId = Model.GetLoggedInUserId();
+					if(@Model.IsCharacterFavorited(Model.Id, loggedInUserId) == false)
+					{
+						<td style="padding: 0;">
+							<a href="@Url.Action("AddToFavorites", "Favorite", new { characterId = Model.Id, AccountId = loggedInUserId, view = "characterDetails" } )"><img src="../../Content/Images/favorites.png" alt="Favorite" id="favoriteImage" style="height: 18px;"/></a>								
+						</td>
+					}
+					else
+					{
+						<td style="padding: 0;">
+							<a href="@Url.Action("RemoveFromFavorites", "Favorite", new { characterId = Model.Id, AccountId = loggedInUserId, view = "characterDetails" } )"><img src="../../Content/Images/favorites-gold.png" alt="Favorite" id="favoriteImage" style="height: 18px;"/></a>
+						</td> 
+					}
+				}
+			</tr>
 			<tr>
 				<td class="inputLabelCell">
 					@Html.LabelFor(model => model.Name):
@@ -153,9 +168,16 @@
 				<td align="left" class="classTxt @Model.GetClassStyle(Model.CharacterClass(Model.Id))" style="font-weight: bold;">
 					@if(Request.IsAuthenticated)
 					{
-						if(Model.IsCharacterOwner(Model.GetLoggedInUserId(), Model.Id))
+						if(Model.UserId != Guid.Empty)
 						{
+							<img src="../../Content/Images/mandalorianLogo.png" alt="R" style="height: 16px; width: 16px;"/><text>&nbsp;</text>						
+						}
+						
+						if(Model.IsCharacterOwner(Model.GetLoggedInUserId(), Model.Id))
+						{							
 							@Html.ActionLink(@Html.DisplayFor(model => model.Name).ToString(), "Edit", new { id = Model.Id })
+							<span style="margin-left: 10px; font-size: x-small;" >@Html.ActionLink("(edit)", "Edit", new { id = Model.Id }, new { style = "color: #034AF3" })</span>
+							
 						}
 						else
 						{
@@ -164,37 +186,8 @@
 					}
 					else
 					{
-					<span>@Html.DisplayFor(model => model.Name)</span>
+						<span>@Html.DisplayFor(model => model.Name)</span>
 					}				
-				</td>
-			</tr>
-			<tr>
-				<td class="inputLabelCell">
-					@Html.LabelFor(model => model.Faction.Name):
-				</td>
-				<td align="left">
-					<span>@Model.CharacterAllegience(Model.Id)</span>
-				</td>
-			</tr>
-
-			@if(Model.Race != null)
-			{
-				<tr>
-					<td class="inputLabelCell">
-						@Html.LabelFor(model => model.Race.Name):
-					</td>
-					<td align="left">
-						<span>@Model.CharacterRace(Model.Id)</span>
-					</td>
-				</tr>
-			}
-			
-			<tr>
-				<td class="inputLabelCell">
-					@Html.LabelFor(model => model.PlayerClass.Name):
-				</td>
-				<td align="left">
-					<span>@Model.CharacterClass(Model.Id)</span>
 				</td>
 			</tr>
 			<tr>
@@ -205,6 +198,34 @@
 					<span>@Model.CharacterShard(Model.Id)</span>
 				</td>
 			</tr>
+			<tr>
+				<td class="inputLabelCell">
+					@Html.LabelFor(model => model.Faction.Name):
+				</td>
+				<td align="left">
+					<span>@Model.CharacterAllegience(Model.Id)</span>
+				</td>
+			</tr>
+			<tr>
+				<td class="inputLabelCell">
+					@Html.LabelFor(model => model.PlayerClass.Name):
+				</td>
+				<td align="left">
+					<span>@Model.CharacterClass(Model.Id)</span>
+				</td>
+			</tr>
+
+			@if(Model.RaceId != null)
+			{
+				<tr>
+					<td class="inputLabelCell">
+						@Html.LabelFor(model => model.Race.Name):
+					</td>
+					<td align="left">
+						<span>@Model.CharacterRace(Model.Id)</span>
+					</td>
+				</tr>
+			}			
 		
 			@if(Model.Motto != null)
 			{
@@ -221,8 +242,8 @@
 			@if(Request.IsAuthenticated)
 			{
 
-			   if(Model.IsCharacterOwner(Model.GetLoggedInUserId(), Model.Id))
-			   {
+				if(Model.IsCharacterOwner(Model.GetLoggedInUserId(), Model.Id))
+				{
 					<tr>
 						<td class="inputLabelCell">
 							@Html.LabelFor(model => model.IsPrimary):
@@ -237,7 +258,7 @@
 			@if(Model.Bio != null)
 			{
 				<tr>
-					<td class="inputLabelCell">
+					<td class="inputLabelCell" valign="top">
 						@Html.LabelFor(model => model.Bio):
 					</td>
 					<td align="left">
@@ -253,7 +274,7 @@
 
 <div class="rowBlank" style="margin-bottom: 90px;">
 	<div id="talesFromTheHunt" class="divSize95" style="margin-left: 20px;">
-		<p>Link to Tales from hunt</p>
+		@*<p>Link to Tales from hunt</p>*@
 	</div>
 
 	<div style="margin-right: 20px;">		
@@ -264,7 +285,3 @@
 <div id="recentBountyImages">
 	@Html.Action("KillShotImages", "Character", new { characterId = Model.Id, imageType = "targetsKilled" })
 </div>
-
-<!-- <div id="dashboardBountyImages">
-	Html.Partial("../Character/_KillShotImages", Model, null)
-</div> -->

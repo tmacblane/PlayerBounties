@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.Objects;
 using System.Linq;
 using System.Web;
@@ -7,6 +8,7 @@ using System.Web.Mvc;
 using System.Web.Routing;
 using System.Web.Security;
 
+using PlayerBounties.Helpers;
 using PlayerBounties.Models;
 using Postal;
 
@@ -17,6 +19,8 @@ namespace PlayerBounties.Controllers
 		#region Fields
 
 		private Account account = new Account();
+		private EmailNotificationHelper emailNotificationHelper = new EmailNotificationHelper();
+		private PlayerBountyContext db = new PlayerBountyContext();
 
 		#endregion		
 
@@ -95,7 +99,7 @@ namespace PlayerBounties.Controllers
 					}
 					else
 					{
-						ModelState.AddModelError(string.Empty, "A user with this email address already exists er some junk");
+						ModelState.AddModelError(string.Empty, "A user with this email address already exists");
 					}
 				}
 			}
@@ -110,12 +114,13 @@ namespace PlayerBounties.Controllers
 		[Authorize]
 		public ActionResult MyAccount()
 		{
-			return View();
+			Account userAccount = this.db.Accounts.Find(this.account.GetLoggedInUserId());
+			return View(userAccount);
 		}
 
 		// GET: /Account/ChangePassword
 		[Authorize]
-		public ActionResult ChangePassword()
+		public ActionResult _ChangePassword()
 		{
 			return View();
 		}
@@ -123,47 +128,126 @@ namespace PlayerBounties.Controllers
 		// POST: /Account/ChangePassword
 		[Authorize]
 		[HttpPost]
-		public ActionResult ChangePassword(ChangePasswordModel account)
+		public ActionResult _ChangePassword(ChangePasswordModel passwordModel)
 		{
-			if(ModelState.IsValid)
+			Account account = new Account();
+			var loggedInUserId = this.account.GetLoggedInUserId();
+			account = this.db.Accounts.Find(loggedInUserId);
+
+			if(this.account.ValidateUser(account.EmailAddress, passwordModel.OldPassword) == false)
 			{
-				// ChangePassword will throw an exception rather
-				// than return false in certain failure scenarios.
-				bool changePasswordSucceeded;
-
-				try
-				{
-					MembershipUser currentUser = Membership.GetUser(User.Identity.Name, true /* userIsOnline */);
-					changePasswordSucceeded = currentUser.ChangePassword(account.OldPassword, account.NewPassword);
-				}
-				catch(Exception)
-				{
-					changePasswordSucceeded = false;
-				}
-
-				if(changePasswordSucceeded)
-				{
-					return RedirectToAction("ChangePasswordSuccess");
-				}
-				else
-				{
-					ModelState.AddModelError(string.Empty, "The current password is incorrect or the new password is invalid.");
-				}
+				ModelState.AddModelError(string.Empty, "Please enter the correct current password.");
 			}
 
-			// If we got this far, something failed, redisplay form
-			return View(account);
+			if(ModelState.IsValid)
+			{
+				if(passwordModel.NewPassword == passwordModel.ConfirmPassword)
+				{
+					this.account = this.db.Accounts.Find(account.GetLoggedInUserId());
+					this.account.Password = account.GetPasswordHash(passwordModel.NewPassword);
+
+					this.db.Entry(this.account).State = EntityState.Modified;
+					this.db.SaveChanges();
+				}
+
+				return RedirectToAction("ChangePasswordSuccess");
+			}
+			else
+			{
+
+				var viewModel = new ChangePasswordModel
+				{
+					OldPassword = string.Empty,
+					NewPassword = string.Empty,
+					ConfirmPassword = string.Empty
+				};
+
+				return View(viewModel);
+
+				// return RedirectToAction("MyAccount");
+			}
 		}
 
 		// GET: /Account/ChangePasswordSuccess
+		[Authorize]
 		public ActionResult ChangePasswordSuccess()
 		{
 			return View();
 		}
 
+		public ActionResult ForgotPassword()
+		{
+			return View();
+		}
+
+		[HttpPost]
+		public ActionResult ForgotPassword(ForgotPasswordModel forgotPassword)
+		{
+			var userAccount = this.db.Accounts.Where(a => a.EmailAddress == forgotPassword.EmailAddress);
+
+			if(userAccount.Count() == 0)
+			{
+				ModelState.AddModelError(string.Empty, "Email address not found");
+			}
+
+			if(ModelState.IsValid)
+			{
+				string newPassword = GetRandomHexPassword();
+
+				this.account = userAccount.Single();
+				this.account.Password = account.GetPasswordHash(newPassword);
+
+				this.db.Entry(this.account).State = EntityState.Modified;
+				this.db.SaveChanges();
+
+				// Send email notification
+				this.emailNotificationHelper.SendPasswordResetNotification(newPassword, forgotPassword, "ResetPassword");
+
+				return RedirectToAction("ResetPasswordSuccess");
+			}
+			else
+			{
+				return View();
+			}
+		}
+
+		public ActionResult ResetPasswordSuccess()
+		{
+			return View();
+		}
+
+		public ActionResult _Preferences()
+		{
+			Account myAccount = this.db.Accounts.Find(this.account.GetLoggedInUserId());
+			return PartialView(myAccount);
+		}
+
+		[HttpPost]
+		public ActionResult _Preferences(Account account)
+		{
+			this.account = this.db.Accounts.Find(account.GetLoggedInUserId());
+			this.account.EmailNotification = account.EmailNotification;			
+			
+			this.db.Entry(this.account).State = EntityState.Modified;
+			this.db.SaveChanges();
+			return RedirectToAction("MyAccount");
+		}
+
 		#endregion
 
 		#region Helper methods
+
+		private static string GetRandomHexPassword()
+		{
+			Random random = new Random();
+
+			byte[] buffer = new byte[4];
+			random.NextBytes(buffer);
+
+			string result = string.Concat(buffer.Select(x => x.ToString("X2")).ToArray());
+
+			return result + random.Next(16).ToString("X");
+		}
 
 		private static string ErrorCodeToString(MembershipCreateStatus createStatus)
 		{

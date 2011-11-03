@@ -1,19 +1,68 @@
-﻿@{
+﻿@model PlayerBounties.ViewModels.BountiesViewModel
+		   
+@{
     ViewBag.Title = "Statistics";
 }
 
-<div>
-	@Html.Partial("_BountiesSummary")
-</div>
+<script type="text/javascript">
+	$(document).ready(function()
+	{
 
-<div>
-	@Html.Action("TopHunters", "Statistics")
-</div>
+		/***** Fields *****/
+		var selectedShard = $("#SelectedShard");
 
-<div>
-	@Html.Action("TopMarks", "Statistics")
-</div>
+		selectedShard.change(function()
+		{
+			var idShard = $(this).val();
 
-<div>
-	@Html.Action("TopClients", "Statistics")
+			if(idShard != "")
+			{
+				$.getJSON("/Character/LoadCharactersByShard", { shardId: idShard },
+
+				function(shardData)
+				{
+					$.each(shardData, function(index, itemData)
+					{
+						selectedCharacter.append($('<option/>', {
+							value: itemData.Value,
+							text: itemData.Text
+						}));
+					});
+				});
+			}
+		});
+	});
+
+</script>
+
+<div id="statistics" style="margin: 20px; clear: both;">
+
+	@*@Html.DropDownListFor(model => model.SelectedShard, new SelectList(Model.Shards, "Value", "Text"), "All Shards") <p />*@
+
+	<table cellspacing="0" cellpadding="0">
+		<tr>
+			<td>
+				<div style="width: 310px; margin-bottom: 15px;">
+					@Html.Partial("../Statistics/_BountiesSummary", new PlayerBounties.Models.Bounty())
+				</div>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<div style="width: 310px;">
+					@Html.Action("TopHunters", "Statistics")
+				</div>
+			</td>
+			<td>
+				<div style="width: 310px; margin-left: 15px; margin-right: 15px;">
+					@Html.Action("TopMarks", "Statistics")
+				</div>
+			</td>
+			<td>
+				<div style="width: 310px;">
+					@Html.Action("TopClients", "Statistics")
+				</div>
+			</td>
+		</tr>
+	</table>
 </div>

@@ -1,7 +1,59 @@
-﻿@model PlayerBounties.Models.Bounty
+﻿@model PlayerBounties.ViewModels.BountyDetailModel
+
+<script type="text/javascript">
+    $(document).ready(function () {
+		
+		/***** Fields *****/
+		var selectedCharacter = $("#SelectedCharacter");
+        var selectedFaction = $("#SelectedFaction");
+        var selectedPlayerClass = $("#SelectedPlayerClass");
+		var selectedRace = $("#SelectedRace");
+		var selectedShard = $("#SelectedShard");
+				
+		/***** Loads selected character from model *****/
+        if (selectedShard.val() != "") {
+            $.getJSON("/Character/LoadCharactersByShard", { shardId: '@Model.SelectedShard' },
+
+			function (shardData) {
+			    $.each(shardData, function (index, itemData) {
+			        selectedCharacter.append($('<option/>', {
+			            value: itemData.Value,
+			            text: itemData.Text,
+			        }));
+			    });
+
+                selectedCharacter.val('@Model.SelectedCharacter');
+			});
+        }
+
+		/***** Updates character list based on select shard *****/
+		selectedShard.change(function() {
+			var idShard = $(this).val();
+
+			selectedCharacter.empty();
+			selectedCharacter.append($('<option/>', {
+				value: "",
+				text: ""
+			}));
+
+			if(idShard != "") {
+				$.getJSON("/Character/LoadCharactersByShard", { shardId: idShard },
+
+				function(shardData) {
+					$.each(shardData, function(index, itemData) {
+						selectedCharacter.append($('<option/>', {
+							value: itemData.Value,
+							text: itemData.Text
+						}));
+					});
+				});
+			}
+		});
+    });
+</script>
 
 @{
-	ViewBag.Title = "Bounty Details - " + Model.CharacterName(Model.PlacedOnId);
+	ViewBag.Title = "Bounty Details - " + Model.Bounty.CharacterName(Model.Bounty.PlacedOnId);
 }
 
 @using(Html.BeginForm("Details", "Bounty", FormMethod.Post, new { enctype = "multipart/form-data" }))
@@ -13,20 +65,20 @@
 			<table style="background-image: url('../../Content/Images/wantedPoster.jpg'); background-repeat: no-repeat; text-align: center; width: 100%; height:250px; color: #000000;">
 				<tr style="height: 150px;">
 					<td>
-						<p style="font-family: AurebeshAlternate">
+						<p style="font-family: Aurebesh;">
 							<u style="font-size: 28px;">Wanted</u>
 						</p>
                         
 						@{
 							PlayerBounties.Models.Character character = new PlayerBounties.Models.Character();
-							character = character.GetCharacterById(Model.PlacedOnId).Single();
+							character = character.GetCharacterById(Model.Bounty.PlacedOnId).Single();
 							<img src="../../@character.GetClassAvatarPath(character.AvatarId.Value)" alt="wanted" id="characterAvatar" style="height: 90px; width: 90px;"/>
 						}
 						<br />
-						<text style="font-size: 20px;">@Model.CharacterName(Model.PlacedOnId)</text>
+						<text style="font-size: 20px;">@Model.Bounty.CharacterName(Model.Bounty.PlacedOnId)</text>
 
-						<p style="font-family: AurebeshAlternate; font-size: 24px; ">
-							<text>$</text>@Model.Amount
+						<p style="font-family: Aurebesh; font-size: 24px; ">
+							<text>$</text>@Model.Bounty.Amount
 						</p>				
 					</td>
 				</tr>		
@@ -34,50 +86,50 @@
 		</div>
 		<div id="rightColumn" style="width: 300px;">
 			<!-- kill shot image -->
-			@if(@Model.GetStatus(Model.Id) == "Completed")
+			@if(@Model.Bounty.GetStatus(Model.Bounty.Id) == "Completed")
 			{
 				<div style="height: 300px; width:300px;" >
-					<img src="../../Content/Images/KillShots/@Model.GetKillShotImage(@Model.KillShotImageId.Value)" alt="Kill Image" id="killImage" style="width:100%;"/>
+					<img src="../../Content/Images/KillShots/@Model.Bounty.GetKillShotImage(@Model.Bounty.KillShotImageId.Value)" alt="Kill Image" id="killImage" style="width:100%;"/>
 				</div>			
 			}
 		
 		</div>
-		<div id="middleColumn" style="width: 500px;">
+		<div id="middleColumn" style="width: 465px; padding-right: 300px;">
 			<!-- details -->
 			<table id="bountyDetailsTable" cellspacing="0" cellpadding="5" border="0">
 				<tbody>
 					<tr style="height: 20px;">
                         @if (Request.IsAuthenticated)
                         {
-                            if (@Model.GetStatus(Model.Id) != "Completed")
+							if(@Model.Bounty.GetStatus(Model.Bounty.Id) != "Completed")
                             {
-                                var loggedInUserId = Model.GetLoggedInUserId();
-                                if (@Model.IsBountyWatched(Model.Id, loggedInUserId) == false)
+								var loggedInUserId = Model.Bounty.GetLoggedInUserId();
+								if(@Model.Bounty.IsBountyWatched(Model.Bounty.Id, loggedInUserId) == false)
                                 {
 		                            <td>
-			                            @Html.ActionLink("Watch", "Watch", "WatchedBounty", new { BountyId = Model.Id, AccountId = loggedInUserId, view = "bountyDetails" }, null)								
+			                            @Html.ActionLink("Watch", "Watch", "WatchedBounty", new { BountyId = Model.Bounty.Id, AccountId = loggedInUserId, view = "bountyDetails" }, null)								
 		                            </td>
                                 }
                                 else
                                 {
 		                            <td>
-			                            @Html.ActionLink("UnWatch", "UnWatch", "WatchedBounty", new { BountyId = Model.Id, AccountId = loggedInUserId, view = "bountyDetails" }, null)							
+			                            @Html.ActionLink("UnWatch", "UnWatch", "WatchedBounty", new { BountyId = Model.Bounty.Id, AccountId = loggedInUserId, view = "bountyDetails" }, null)							
 		                            </td> 
                                 }
                                 
 						        <td>
-							        @Model.GetBountyWatchedCount(Model.Id).ToString() Hunter(s) Watching
+							        @Model.Bounty.GetBountyWatchedCount(Model.Bounty.Id).ToString() Hunter(s) Watching
 						        </td>
                            
                             }
                         }
                         else
                         {
-                            if (@Model.GetStatus(Model.Id) != "Completed")
+							if(@Model.Bounty.GetStatus(Model.Bounty.Id) != "Completed")
                             {
                                 <td></td>
                                 <td>
-							        @Model.GetBountyWatchedCount(Model.Id).ToString() Hunter(s) Watching
+							        @Model.Bounty.GetBountyWatchedCount(Model.Bounty.Id).ToString() Hunter(s) Watching
 						        </td>
                             }
                         }
@@ -86,14 +138,21 @@
 						<td class="inputLabelCell" style="width: 75px;">
 							Name:
 						</td>
-						<td class="classTxt @Model.GetClassStyle(Model.CharacterClass(Model.PlacedOnId))" align="left" style="width: 150px; font-weight: bold;">
-							@Html.ActionLink(@Model.CharacterName(Model.PlacedOnId).ToString(), "Details", "Character", new { id = Model.PlacedOnId }, null)
+						<td class="classTxt @Model.Bounty.GetClassStyle(Model.Bounty.CharacterClass(Model.Bounty.PlacedOnId))" align="left" style="width: 150px; font-weight: bold;">
+							@if(Request.IsAuthenticated)
+							{
+								if(Model.Bounty.GetCharacterUserId(Model.Bounty.PlacedOnId) != Guid.Empty)
+								{
+									<img src="../../Content/Images/mandalorianLogo.png" alt="R" style="height: 16px; width: 16px;"/><text>&nbsp;</text>						
+								}
+							}
+							@Html.ActionLink(@Model.Bounty.CharacterName(Model.Bounty.PlacedOnId).ToString(), "Details", "Character", new { id = Model.Bounty.PlacedOnId }, null)
 						</td>
 						<td class="inputLabelCell" style="width: 75px;">
-							@Html.LabelFor(model => model.PlacedById):
+							@Html.LabelFor(model => model.Bounty.PlacedById):
 						</td>
-						<td class="classTxt @Model.GetClassStyle(Model.CharacterClass(Model.PlacedById))" align="left" style="width: 75px; font-weight: bold;">
-							@Html.ActionLink(@Model.CharacterName(Model.PlacedById).ToString(), "Details", "Character", new { id = Model.PlacedById }, null)
+						<td class="classTxt @Model.Bounty.GetClassStyle(Model.Bounty.CharacterClass(Model.Bounty.PlacedById))" align="left" style="width: 75px; font-weight: bold;">
+							@Html.ActionLink(@Model.Bounty.CharacterName(Model.Bounty.PlacedById).ToString(), "Details", "Character", new { id = Model.Bounty.PlacedById }, null)
 						</td>
 					</tr>
 					<tr>
@@ -101,13 +160,13 @@
 							Faction:
 						</td>
 						<td align="left">
-							<span>@Model.CharacterAllegience(Model.PlacedOnId)</span>
+							<span>@Model.Bounty.CharacterAllegience(Model.Bounty.PlacedOnId)</span>
 						</td>
 						<td class="inputLabelCell">
 							Placed On:
 						</td>
 						<td align="left">
-							<span>@Model.DatePlaced.Value.ToShortDateString()</span>
+							<span>@Model.Bounty.DatePlaced.Value.ToShortDateString()</span>
 						</td>
 					</tr>
 					<tr>
@@ -115,15 +174,15 @@
 							Class:
 						</td>
 						<td align="left">
-							<span>@Model.CharacterClass(Model.PlacedOnId)</span>
+							<span>@Model.Bounty.CharacterClass(Model.Bounty.PlacedOnId)</span>
 						</td>
-						@if (Model.DateCompleted != null)
+						@if(Model.Bounty.DateCompleted != null)
                         {
 							<td class="inputLabelCell">
-								@Html.LabelFor(model => model.KilledById):
+								@Html.LabelFor(model => model.Bounty.KilledById):
 							</td>
-							<td class="classTxt @Model.GetClassStyle(Model.CharacterClass(Model.KilledById.Value))" align="left" style="font-weight: bold;">
-								@Html.ActionLink(@Model.CharacterName(Model.KilledById.Value).ToString(), "Details", "Character", new { id = Model.KilledById }, null)
+							<td class="classTxt @Model.Bounty.GetClassStyle(Model.Bounty.CharacterClass(Model.Bounty.KilledById.Value))" align="left" style="font-weight: bold;">
+								@Html.ActionLink(@Model.Bounty.CharacterName(Model.Bounty.KilledById.Value).ToString(), "Details", "Character", new { id = Model.Bounty.KilledById }, null)
 							</td>
                         }
 					</tr>
@@ -132,55 +191,73 @@
 							Shard:
 						</td>
 						<td align="left">
-							<span>@Model.CharacterShard(Model.PlacedOnId)</span>
+							<span>@Model.Bounty.CharacterShard(Model.Bounty.PlacedOnId)</span>
 						</td>
-						@if (Model.DateCompleted != null)
+						@if(Model.Bounty.DateCompleted != null)
                         {
 							<td class="inputLabelCell">
 								Killed On:
 							</td>
 							<td align="left">
-								<span>@Model.DateCompleted.Value.ToShortDateString()</span>
+								<span>@Model.Bounty.DateCompleted.Value.ToShortDateString()</span>
 							</td>
                         }					
 					</tr>
 					<tr>
 						<td class="inputLabelCell">
-							@Html.LabelFor(model => model.Amount):
+							@Html.LabelFor(model => model.Bounty.Amount):
 						</td>
 						<td align="left">
-							<span>@Html.DisplayFor(model => model.Amount) credits</span>
+							<span>@Html.DisplayFor(model => model.Bounty.Amount) credits</span>
 						</td>
 						<td class="inputLabelCell">
 							Status:
 						</td>
-						<td align="left">
-							<span>@Model.GetStatus(Model.Id)</span>
-						</td>
-					</tr>
-					<tr>
-						<td class="inputLabelCell" valign="top">
-							@Html.LabelFor(model => model.Reason):
-						</td>
-						<td align="left" colspan="3">
-							<span>@Html.DisplayFor(model => model.Reason)</span>
+						<td align="left" style="width: 150px;">
+							<span>@Model.Bounty.GetStatus(Model.Bounty.Id)</span>
 						</td>
 					</tr>
 
+					@if(Model.Bounty.Reason != null)
+					{
+						<tr>
+							<td class="inputLabelCell" valign="top">
+								@Html.LabelFor(model => model.Bounty.Reason):
+							</td>
+							<td align="left" colspan="3">
+								<span>@Html.DisplayFor(model => model.Bounty.Reason)</span>
+							</td>
+						</tr>
+					}
+
 					@if (Request.IsAuthenticated)
                     {
-                        if (Model.GetLoggedInUserId() != Model.GetCharacterUserId(Model.PlacedOnId) || Model.GetStatus(Model.Id) == "Completed")
-                        {
+						if(Model.Bounty.GetLoggedInUserId() != Model.Bounty.GetCharacterUserId(Model.Bounty.PlacedOnId) || Model.Bounty.GetStatus(Model.Bounty.Id) == "Completed")
+						{
 							<tr>
 								<td class="inputLabelCell" valign="top">
-									@Html.LabelFor(model => model.Message):
+									@Html.LabelFor(model => model.Bounty.Message):
 								</td>
 								<td align="left" colspan="3">
-									<span>@Html.DisplayFor(model => model.Message)</span>
+									<span>@Html.DisplayFor(model => model.Bounty.Message)</span>
 								</td>
 							</tr>
-                         }
-                     }				
+                        }
+					}
+					else
+					{
+						if(Model.Bounty.IsCompletionPending == false)
+						{
+							<tr>
+								<td class="inputLabelCell" valign="top">
+									@Html.LabelFor(model => model.Bounty.Message):
+								</td>
+								<td align="left" colspan="3">
+									<span>@Html.DisplayFor(model => model.Bounty.Message)</span>
+								</td>
+							</tr>
+						}
+					}		
 
 				</tbody>
 			</table>
@@ -188,39 +265,46 @@
 	</div>
 
 	<!-- If user is logged in, show div  -->
-     if (Request.IsAuthenticated)
-     {
-         if (Model.GetStatus(Model.Id) == "Active")
-         {	
+	 if(Request.IsAuthenticated)
+	 {
+		 if(Model.Bounty.GetStatus(Model.Bounty.Id) == "Active")
+		 {	
 			<div style="width: 980px; float: left; margin-left: 20px; margin-bottom: 10px;">
 				@Html.LabelFor(model => model.KillShotImageId)
-				@Html.TextBoxFor(m => m.KillShotImageId, new { type = "file" })
-	
-				@Html.DropDownList("CharacterList", string.Empty)
-				@Html.ValidationMessage("CharacterList", "*") <br />			
+				@Html.TextBoxFor(m => m.KillShotImageId, new
+{
+	type = "file"
+})
+				@Html.ValidationMessageFor(model => model.KillShotImageId, "*")
+				
+                @Html.DropDownListFor(model => model.SelectedCharacter, new SelectList(Model.Characters, "Value", "Text"), string.Empty)
+				@Html.ValidationMessageFor(model => model.SelectedCharacter, "*")
 			</div>
 			<div style="width: 980px; float: left; margin-left: 20px;">
 				<text>Don't see your character listed...@Html.ActionLink("click here", "Create", "Character", null, null) to create them</text>
 			</div>
-         }
+		 }
 
-         if (Model.IsBountyOwner(Model.GetLoggedInUserId(), Model.Id))
-         {
-             if (Model.GetStatus(Model.Id) == "Placement Pending")
-             {
-				@Html.ActionLink("Edit", "Edit", new { id = Model.Id })
-             }
-         }
-     }
+		 if(Model.Bounty.IsBountyOwner(Model.Bounty.GetLoggedInUserId(), Model.Bounty.Id))
+		 {
+			 if(Model.Bounty.GetStatus(Model.Bounty.Id) == "Placement Pending")
+			 {
+				@Html.ActionLink("Edit", "Edit", new
+{
+	id = Model.Bounty.Id
+})
+			 }
+		 }
+	 }
 	
 	<div id="buttons" style="width:100%">
-		@if (Request.IsAuthenticated)
-        {
-            if (Model.GetStatus(Model.Id) == "Active")
-            {
-				<input type="submit" value="Complete Bounty"/>
-            }
-        }
+		@if(Request.IsAuthenticated)
+  {
+	  if(Model.Bounty.GetStatus(Model.Bounty.Id) == "Active")
+	  {
+					<input type="submit" value="Complete Bounty"/>
+	  }
+  }
 		
 		<input type="button" value="Back" onclick="window.history.back()" />		
 	</div>

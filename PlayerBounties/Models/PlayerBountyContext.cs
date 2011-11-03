@@ -49,13 +49,32 @@ namespace PlayerBounties.Models
 			get;
 			set;
 		}
+
+		public DbSet<Favorite> Favorites
+		{
+			get;
+			set;
+		}
+
 		public DbSet<KillShotImage> KillShotImages
 		{
 			get;
 			set;
 		}
 
+		public DbSet<Message> Messages
+		{
+			get;
+			set;
+		}
+
 		public DbSet<PlayerClass> PlayerClasses
+		{
+			get;
+			set;
+		}
+
+		public DbSet<PlayerClassRace> PlayerClassRaces
 		{
 			get;
 			set;

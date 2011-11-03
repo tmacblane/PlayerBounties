@@ -8,6 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 
 using PlayerBounties.Models;
+using PlayerBounties.ViewModels;
 
 namespace PlayerBounties.Controllers
 {
@@ -18,6 +19,7 @@ namespace PlayerBounties.Controllers
 
 		private Account account = new Account();
 		private Bounty bounty = new Bounty();
+		private BountiesViewModel bountiesViewModel = new BountiesViewModel();
 		private PlayerBountyContext db = new PlayerBountyContext();
 
 		#endregion
@@ -26,7 +28,7 @@ namespace PlayerBounties.Controllers
 
 		public ActionResult Index()
 		{
-			return View(this.bounty);
+			return View(this.bountiesViewModel);
 		}
 
 		public ActionResult BountiesSummary()
@@ -118,7 +120,6 @@ namespace PlayerBounties.Controllers
 
 		public ActionResult TopClientsCompleted(List<Character> topClients)
 		{
-
 			return PartialView("_TopClients", topClients);
 		}
 

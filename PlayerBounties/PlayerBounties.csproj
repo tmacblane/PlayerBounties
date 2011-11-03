@@ -83,8 +83,11 @@
     <Compile Include="Controllers\CharacterController.cs" />
     <Compile Include="Controllers\DashboardController.cs" />
     <Compile Include="Controllers\FactionController.cs" />
+    <Compile Include="Controllers\FavoriteController.cs" />
     <Compile Include="Controllers\HeaderController.cs" />
+    <Compile Include="Controllers\HelpController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\MessageController.cs" />
     <Compile Include="Controllers\PlayerClassController.cs" />
     <Compile Include="Controllers\RaceController.cs" />
     <Compile Include="Controllers\SearchController.cs" />
@@ -95,6 +98,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helpers\EmailNotificationHelper.cs" />
+    <Compile Include="Helpers\HandleErrorHm.cs" />
     <Compile Include="Models\Account.cs" />
     <Compile Include="Models\Achievement.cs" />
     <Compile Include="Models\Avatar.cs" />
@@ -102,15 +106,23 @@
     <Compile Include="Models\Character.cs" />
     <Compile Include="Models\CharacterAchievement.cs" />
     <Compile Include="Models\Faction.cs" />
+    <Compile Include="Models\Favorite.cs" />
     <Compile Include="Models\KillShotImage.cs" />
+    <Compile Include="Models\Message.cs" />
     <Compile Include="Models\PlayerBountyContext.cs" />
     <Compile Include="Models\PlayerBountyInitializer.cs" />
     <Compile Include="Models\PlayerClass.cs" />
+    <Compile Include="Models\PlayerClassRace.cs" />
     <Compile Include="Models\Race.cs" />
     <Compile Include="Models\Search.cs" />
     <Compile Include="Models\Shard.cs" />
     <Compile Include="Models\WatchedBounty.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ViewModels\BountiesViewModel.cs" />
+    <Compile Include="ViewModels\BountyCreateViewModel.cs" />
+    <Compile Include="ViewModels\BountyDetailModel.cs" />
+    <Compile Include="ViewModels\CharacterAddEditViewModel.cs" />
+    <Compile Include="ViewModels\PlaceBountyViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_Data\PlayerBounty.sdf" />
@@ -124,9 +136,11 @@
     <Content Include="Content\Images\Avatars\sithInquisitor.png" />
     <Content Include="Content\Images\Avatars\sithWarrior.png" />
     <Content Include="Content\Images\Avatars\smuggler.png" />
-    <Content Include="Content\Images\bountyhunter01.jpg" />
     <Content Include="Content\Images\editIcon.gif" />
+    <Content Include="Content\Images\envelopeIcon.gif" />
     <Content Include="Content\Images\Error.png" />
+    <Content Include="Content\Images\favorites-gold.png" />
+    <Content Include="Content\Images\favorites.png" />
     <Content Include="Content\Images\first.png" />
     <Content Include="Content\Images\last.png" />
     <Content Include="Content\Images\mandalorianLogo.png" />
@@ -167,6 +181,7 @@
     <Content Include="Content\themes\base\jquery.ui.slider.css" />
     <Content Include="Content\themes\base\jquery.ui.tabs.css" />
     <Content Include="Content\themes\base\jquery.ui.theme.css" />
+    <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Scripts\jcarousellite_1.0.1.js" />
     <Content Include="Scripts\jcarousellite_1.0.1.min.js" />
@@ -179,7 +194,9 @@
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\modernizr-1.7.min.js" />
     <Content Include="Scripts\playerBounty.js" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
@@ -234,6 +251,22 @@
     <Content Include="Views\Achievement\Create.cshtml" />
     <Content Include="Views\Achievement\Edit.cshtml" />
     <Content Include="Views\Achievement\Delete.cshtml" />
+    <Content Include="Views\Bounty\_BountyCreateEdit.cshtml" />
+    <Content Include="Views\Message\Index.cshtml" />
+    <Content Include="Views\Message\Details.cshtml" />
+    <Content Include="Views\Message\Create.cshtml" />
+    <Content Include="Views\Message\Edit.cshtml" />
+    <Content Include="Views\Account\_Preferences.cshtml" />
+    <Content Include="Views\Emails\BountyPlacedApproved-FavoritedAlert.cshtml" />
+    <Content Include="Views\Emails\BountyCompletionApproved-FavoritedAlert.cshtml" />
+    <Content Include="Views\Favorite\Favorites.cshtml" />
+    <Content Include="Views\Help\Index.cshtml" />
+    <Content Include="Views\Account\_ChangePassword.cshtml" />
+    <Content Include="Views\Account\ChangePasswordSuccess.cshtml" />
+    <Content Include="Views\Account\ForgotPassword.cshtml" />
+    <Content Include="Views\Account\ResetPasswordSuccess.cshtml" />
+    <Content Include="Views\Emails\ResetPassword.cshtml" />
+    <None Include="Content\Fonts\Aurebesh.ttf" />
     <None Include="_bin_deployableAssemblies\Microsoft.Web.Infrastructure.dll" />
     <None Include="_bin_deployableAssemblies\System.Web.WebPages.Razor.dll" />
     <None Include="_bin_deployableAssemblies\System.Web.WebPages.dll" />
@@ -355,7 +388,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\images\" />
-    <Folder Include="Content\Images\thumbnails\" />
+    <Folder Include="Content\Images\Thumbnails\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />

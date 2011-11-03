@@ -166,7 +166,7 @@ img
 
 #tabStripContainer
 {
-	left: 204px;
+	left: 150px;
 	position: absolute;
 	bottom: 0;
 	font-size: 16px;
@@ -285,10 +285,10 @@ input[type="submit"] input[value], input[type="button"] input[value]
 	line-height: 30px;
 }
 
- .inputDataCell input
- {
- 	width: 200px;
- }
+.inputDataCell input
+{
+	width: 200px;
+}
 
 select
 {
@@ -300,7 +300,7 @@ select
 	float: right;
 	margin-left: 20px;
 	margin-right: 20px;
-	background: #444444;
+	background: #EEEEEE;
 	background: -moz-linear-gradient(center top, #EEEEEE, #FFFFFF) repeat scroll 0 0 transparent;
 	color: #222222;
 	height: 27px;
@@ -386,7 +386,7 @@ select
 	width: 400px;
 }
 
-#loginForm, #signUpForm
+#loginForm, #signUpForm, #preferenceForm, #changePasswordForm
 {
 	background-color: #FFFFFF;
 	border-style: solid;
@@ -453,6 +453,12 @@ select
 	float: left;
     background-color: #FFFFFF;
     height: inherit;
+}
+
+@font-face
+{
+	font-family: Aurebesh;
+	src: url("../../Content/Fonts/Aurebesh.ttf");
 }
 
 .rowBlank
@@ -689,13 +695,19 @@ table
 	font-size: 12px;
 }
 
-#bountiesTable
+#bountiesTable, #searchResultTable, #messagesTable, #favoritesTable
 {
 	font-family: Verdana,arial,sans-serif;
     font-size: 11px;
     text-align: left;   
     border-radius: 4px 4px 4px 4px;
     box-shadow: 0 2px 4px #BBBBBB;
+}
+
+#pager
+{
+	margin-top: 10px;
+	bottom: 0px;
 }
 
 #recentBountyImages
@@ -832,4 +844,16 @@ table
 .imperialAgentIcon
 {
 	background-position: right -252px;
+}
+
+/* FACTION COLORS
+----------------------------------------------------------*/
+.empireTxt 
+{
+	color: #A1222B;
+}
+
+.republicTxt
+{ 
+	color: #354D89; 
 }

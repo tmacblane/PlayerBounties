@@ -26,7 +26,7 @@ namespace PlayerBounties.Models
 			set;
 		}
 
-		[Required(ErrorMessage="Amount is required.")]
+		[Required(ErrorMessage = "Amount is required.")]
 		[Range(1, int.MaxValue, ErrorMessage = "The Amount must be greater than 0")]
 		[Display(Name = "Amount")]
 		public int Amount
@@ -34,17 +34,20 @@ namespace PlayerBounties.Models
 			get;
 			set;
 		}
-		
-        [Display(Name = "Reason")]
-        [DataType(DataType.MultilineText)]
+
+		[Display(Name = "Reason")]
+		[StringLength(4000, ErrorMessage = "The {0} must be less than {1} characters.")]
+		[DataType(DataType.MultilineText)]
 		public string Reason
 		{
 			get;
 			set;
 		}
 
-        [Display(Name = "Message")]
-        [DataType(DataType.MultilineText)]
+		[Required(ErrorMessage = "Message is required.")]
+		[Display(Name = "Message")]
+		[StringLength(500, ErrorMessage = "The {0} must be less than {1} characters.")]
+		[DataType(DataType.MultilineText)]
 		public string Message
 		{
 			get;
@@ -198,7 +201,12 @@ namespace PlayerBounties.Models
 
 		public IEnumerable<Bounty> GetActiveBounties()
 		{
-			return this.db.Bounties.Where(b => b.KilledById == Guid.Empty);
+			return this.db.Bounties.Where(b => b.KilledById == null);
+		}
+
+		public IEnumerable<Bounty> GetAllPlacedApprovedBounties()
+		{
+			return this.db.Bounties.Where(b => b.IsPlacementPending == false);
 		}
 
 		public IEnumerable<Bounty> GetLargestBountyPlaced()
@@ -246,9 +254,9 @@ namespace PlayerBounties.Models
 			List<Guid> characterIds = new List<Guid>();
 			List<Guid> topMarks = new List<Guid>();
 
-			IEnumerable<Bounty> completedBounties = this.GetCompletedBounties();
+			IEnumerable<Bounty> activeBounties = this.GetAllPlacedApprovedBounties();
 
-			foreach(Bounty bounty in completedBounties)
+			foreach(Bounty bounty in activeBounties)
 			{
 				characterIds.Add(bounty.PlacedOnId);
 			}
@@ -275,9 +283,9 @@ namespace PlayerBounties.Models
 			List<Guid> characterIds = new List<Guid>();
 			List<Guid> topClients = new List<Guid>();
 
-			IEnumerable<Bounty> completedBounties = this.GetCompletedBounties();
+			IEnumerable<Bounty> activeBounties = this.GetAllPlacedApprovedBounties();
 
-			foreach(Bounty bounty in completedBounties)
+			foreach(Bounty bounty in activeBounties)
 			{
 				characterIds.Add(bounty.PlacedById);
 			}
@@ -367,8 +375,7 @@ namespace PlayerBounties.Models
 
 			return totalSpent;
 		}
-
-
+		
 		public double GetAccountAmountEarned(Guid accountId)
 		{
 			Character character = new Character();
@@ -656,6 +663,13 @@ namespace PlayerBounties.Models
 			Character character = new Character();
 
 			return character.GetFactionStyle(factionName);
+		}
+
+		public string GetFactionFontStyle(string factionName)
+		{
+			Character character = new Character();
+
+			return character.GetFactionFontStyle(factionName);
 		}
 
 		public List<Guid> GetMostRecentlyCompletedBounties(int count)

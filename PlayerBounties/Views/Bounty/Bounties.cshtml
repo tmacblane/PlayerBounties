@@ -1,69 +1,120 @@
-﻿@{
-    ViewBag.Title = "Bounties";
-}
-
-@model IEnumerable<PlayerBounties.Models.Bounty>
+﻿@model PlayerBounties.ViewModels.BountiesViewModel
 		   
 <link href="@Url.Content("~/Content/bootstrap-1.1.0.min.css")" rel="stylesheet" type="text/css" />
 
 <script type="text/javascript">
     $(function () {
         $("table")
-			.tablesorter({ sortList: [[3, 1]] })
+			.tablesorter({ sortList: [[1, 0]] })
 			.tablesorterPager({ container: $("#pager") });
     });
 </script>
-           
-<div style="margin: 20px 20px 0 20px;">
-	<table id="bountiesTable" class="zebra-striped" cellspacing="0" cellpadding="5" border="0">
-		<thead>
-			<tr>
-				<th>Target</th>
-				<th>Shard</th>
-				<th>Class</th>
-				<th>Placed On</th>
-				<th>Client</th>
-                @if (Request.IsAuthenticated)
-                {
-				    <th>Watch</th>
-                }
-				<th>Details</th>
-			</tr>
-		</thead>
-		<tbody>
-			@foreach (var item in Model)
-            {
-				<tr>
-					<td class="classTxt @item.GetClassStyle(item.CharacterClass(item.PlacedOnId))">@Html.ActionLink(@item.CharacterName(item.PlacedOnId).ToString(), "Details", "Character", new { id = item.PlacedOnId }, null)</td>
-					<td>@item.CharacterShard(item.PlacedOnId)</td>
-					<td>@item.CharacterClass(item.PlacedOnId)</td>
-					<td>@item.DatePlaced.Value.ToShortDateString()</td>
-					<td class="classTxt @item.GetClassStyle(item.CharacterClass(item.PlacedById))">@Html.ActionLink(@item.CharacterName(item.PlacedById).ToString(), "Details", "Character", new { id = item.PlacedById }, null)</td>
-                    @if(Request.IsAuthenticated)
-					{
-                        var loggedInUserId = item.GetLoggedInUserId();
 
-                        if(item.IsBountyWatched(item.Id, loggedInUserId) == false)
-					    {
-						    <td>
-							    @Html.ActionLink("Watch", "Watch", "WatchedBounty", new { BountyId = item.Id, AccountId = loggedInUserId, view = "bounties" }, null)								
-						    </td>
-					    }
-					    else
-					    {
-						    <td>
-							    @Html.ActionLink("UnWatch", "UnWatch", "WatchedBounty", new { BountyId = item.Id, AccountId = loggedInUserId, view = "bounties" }, null)							
-						    </td> 
-					    }
-                    }
+<script type="text/javascript">
+    $(document).ready(function () {
+		
+		/***** Fields *****/
+		var selectedShard = $("#SelectedShard");
 
-					<td style="text-align: center;">@Html.ActionLink("Details", "Details", "Bounty", new { id = item.Id }, null)</td>
-				</tr>
+		selectedShard.change(function() {
+			var idShard = $(this).val();
+
+			if(idShard != "") {
+				$.getJSON("/Character/LoadCharactersByShard", { shardId: idShard },
+
+				function(shardData) {
+					$.each(shardData, function(index, itemData) {
+						selectedCharacter.append($('<option/>', {
+							value: itemData.Value,
+							text: itemData.Text
+						}));
+					});
+				});
 			}
-		</tbody>
-	</table>
-	@if(Model.Count() > 15)
-	{
+		});
+	});
+
+</script>
+
+@{
+    ViewBag.Title = "Bounties";
+}           
+
+@{var bounties = Model.Bounty.GetActiveBounties();	 
+}
+	
+@if(bounties.Count() > 0)
+{
+	<div style="margin: 20px 20px 0 20px;">
+		@*@Html.DropDownListFor(model => model.SelectedShard, new SelectList(Model.Shards, "Value", "Text"), "All Shards") <p />*@
+		
+		<table id="bountiesTable" class="tablesorter zebra-striped" cellspacing="0" cellpadding="5" border="0">
+			<thead>
+				<tr>
+					@if(Request.IsAuthenticated)
+					{
+						<th></th>
+					}
+					<th>Target</th>
+					<th>Shard</th>
+					<th>Faction</th>
+					<th>Class</th>
+					<th>Placed On</th>
+					<th>Client</th>
+					@if (Request.IsAuthenticated)
+					{
+						<th style="text-align: center;">Watch</th>
+					}
+					<th style="text-align: center;">Details</th>
+				</tr>
+			</thead>
+			<tbody>
+				@foreach (var item in bounties)
+				{
+					<tr>
+						@if(Request.IsAuthenticated)
+						{
+							if(item.GetCharacterUserId(item.PlacedOnId) != Guid.Empty)
+							{
+								<td><img src="../../Content/Images/mandalorianLogo.png" alt="R" style="height: 16px; width: 16px;"/></td>
+							}
+							else
+							{
+								<td></td>
+							}
+						}
+						<td class="classTxt @item.GetClassStyle(item.CharacterClass(item.PlacedOnId))">@Html.ActionLink(@item.CharacterName(item.PlacedOnId).ToString(), "Details", "Character", new { id = item.PlacedOnId }, null)</td>
+						<td>@item.CharacterShard(item.PlacedOnId)</td>
+						<td class="@item.GetFactionFontStyle(item.CharacterAllegience(item.PlacedOnId))">@item.CharacterAllegience(item.PlacedOnId)</td>
+						<td>@item.CharacterClass(item.PlacedOnId)</td>
+						<td>@item.DatePlaced.Value.ToShortDateString()</td>
+						<td class="classTxt @item.GetClassStyle(item.CharacterClass(item.PlacedById))">@Html.ActionLink(@item.CharacterName(item.PlacedById).ToString(), "Details", "Character", new { id = item.PlacedById }, null)</td>
+						@if(Request.IsAuthenticated)
+						{
+							var loggedInUserId = item.GetLoggedInUserId();
+
+							if(item.IsBountyWatched(item.Id, loggedInUserId) == false)
+							{
+								<td style="text-align: center;">
+									@Html.ActionLink("Watch", "Watch", "WatchedBounty", new { BountyId = item.Id, AccountId = loggedInUserId, view = "bounties" }, null)								
+								</td>
+							}
+							else
+							{
+								<td style="text-align: center;">
+									@Html.ActionLink("UnWatch", "UnWatch", "WatchedBounty", new { BountyId = item.Id, AccountId = loggedInUserId, view = "bounties" }, null)							
+								</td> 
+							}
+						}
+
+						<td style="text-align: center;">@Html.ActionLink("Details", "Details", "Bounty", new { id = item.Id }, null)</td>
+					</tr>
+				}
+			</tbody>
+		</table>
+
+		<div style="clear: both; height: 40px;"></div>
+
 		<div id="pager">
 			<form>
 				<img src="../../Content/Images/first.png" class="first" alt="first" />
@@ -71,15 +122,19 @@
 				<input class="pagedisplay" type="text" />
 				<img src="../../Content/Images/next.png" class="next" alt="next" />
 				<img src="../../Content/Images/last.png" class="last" alt="last" />
-				<!--
+				
 				<select class="pagesize">
 					<option selected="selected" value="10">10</option>
+					<option value="15">15</option>
 					<option value="20">20</option>
-					<option value="30">30</option>
-					<option value="40">40</option>
-				</select>
-				-->
+				</select>				
 			</form>
+		</div>
 	</div>
-	}
-</div>
+}
+else
+{
+	<div style="margin: 20px 20px 0 20px;">
+		<h3>There are currently no active bounties.</h3>
+	</div>
+}

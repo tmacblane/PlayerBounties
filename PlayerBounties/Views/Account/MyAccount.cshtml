@@ -1,9 +1,22 @@
-﻿@{
+﻿@model PlayerBounties.Models.Account
+		   
+@{
     ViewBag.Title = "My Account";
 }
 
-<h2>My Account</h2>
+<div id="changePassword">
+	@Html.Partial("_ChangePassword", new PlayerBounties.Models.ChangePasswordModel(), null)
+</div>
 
-<p>Account settings go here</p>
-
-<h3>Password Changing</h3>
+<div id="preferenceForm" style="width: 400px; margin: 20px;">
+	<text style="font-size: 18px; font-weight: bolder;">Preferences</text>
+	@using(Html.BeginForm("_Preferences", "Account"))
+	{
+		<div id="preferences">
+			@Html.Partial("_Preferences", Model, null)
+		</div>
+		<div class="rowBlank">
+			<input type="submit" value="Update" />
+		</div>
+	}
+</div>

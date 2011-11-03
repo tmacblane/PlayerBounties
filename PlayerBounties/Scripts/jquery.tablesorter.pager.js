@@ -21,7 +21,7 @@
 					var c = table.config, o = $(table);
 					if(o.offset) {
 						c.container.css({
-							/*top: o.offset().top + o.height() + 'px',*/
+//							top: o.offset().top + o.height() + 'px',
 							position: 'absolute'
 						});
 					}
@@ -120,9 +120,9 @@
 				
 				renderTable(table,rows);
 			};
-/* DEFAULTS */			
+			
 			this.defaults = {
-				size: 15,
+				size: 10,
 				offset: 0,
 				page: 0,
 				totalRows: 0,

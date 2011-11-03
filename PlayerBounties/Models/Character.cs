@@ -13,6 +13,7 @@ namespace PlayerBounties.Models
 	{
 		#region Fields
 
+		private List<SelectListItem> _characters = new List<SelectListItem>();
 		private PlayerBountyContext db = new PlayerBountyContext();
 
 		#endregion
@@ -33,6 +34,7 @@ namespace PlayerBounties.Models
 		}
 
 		[Required(ErrorMessage = "Character name is required.")]
+		[StringLength(100, ErrorMessage = "The {0} must be less than {1} characters.")]
 		public string Name
 		{
 			get;
@@ -72,14 +74,16 @@ namespace PlayerBounties.Models
 			set;
 		}
 
-        [DataType(DataType.MultilineText)]
+		[DataType(DataType.MultilineText)]
+		[StringLength(4000, ErrorMessage = "The {0} must be less than {1} characters.")]
 		public string Motto
 		{
 			get;
 			set;
 		}
 
-        [DataType(DataType.MultilineText)]
+		[DataType(DataType.MultilineText)]
+		[StringLength(4000, ErrorMessage = "The {0} must be less than {1} characters.")]
 		public string Bio
 		{
 			get;
@@ -145,6 +149,20 @@ namespace PlayerBounties.Models
 			return this.db.Characters.Where(c => c.UserId == accountId).Include(c => c.Shard).Include(c => c.Faction).Include(c => c.Race).Include(c => c.PlayerClass);
 		}
 
+		public List<SelectListItem> GetCharacterListForAnAccount(Guid accountId)
+		{
+			foreach(Character item in this.GetAllCharactersForAnAccount(accountId))
+			{
+				_characters.Add(new SelectListItem()
+				{
+					Text = item.Name,
+					Value = item.Id.ToString()
+				});
+			}
+
+			return _characters;
+		}
+
 		public IQueryable<Character> GetCharacterById(Guid characterId)
 		{
 			return this.db.Characters.Where(c => c.Id == characterId).Include(c => c.Shard).Include(c => c.Faction).Include(c => c.Race).Include(c => c.PlayerClass);
@@ -203,6 +221,20 @@ namespace PlayerBounties.Models
 			}
 
 			return isCharacterOwner;
+		}
+
+		public bool IsCharacterFavorited(Guid characterId, Guid accountId)
+		{
+			bool characterFavorited = false;
+
+			Favorite favorite = new Favorite();
+
+			if(favorite.IsCharacterFavorited(characterId, accountId) == true)
+			{
+				characterFavorited = true;
+			}
+
+			return characterFavorited;
 		}
 
 		public string CharacterName(Guid characterId)
@@ -298,6 +330,20 @@ namespace PlayerBounties.Models
 			Bounty bounty = new Bounty();
 
 			return bounty.GetAccountBountiesSignedUpFor(accountId);
+		}
+
+		public int GetFavoriteCharactersCount(Guid accountId)
+		{
+			Favorite favorite = new Favorite();
+
+			return this.GetFavoriteCharacters(accountId).Count();
+		}
+
+		public IQueryable<Favorite> GetFavoriteCharacters(Guid accountId)
+		{
+			Favorite favorite = new Favorite();
+
+			return favorite.GetFavoriteCharacters(accountId);
 		}
 
 		public double GetAmountEarned(Guid characterId)
@@ -396,6 +442,20 @@ namespace PlayerBounties.Models
 			return string.Empty;
 		}
 
+		public string GetFactionFontStyle(string factionName)
+		{
+			switch(factionName)
+			{
+				case "Galactic Republic":
+					return "republicTxt";
+
+				case "Sith Empire":
+					return "empireTxt";
+			}
+
+			return string.Empty;
+		}
+
 		public string GetFactionStyle(string factionName)
 		{
 			switch(factionName)
@@ -448,6 +508,25 @@ namespace PlayerBounties.Models
 			}
 
 			return killShotImages;
+		}
+
+		public string GetBountyStatus(Guid bountyId)
+		{
+			Bounty bounty = new Bounty();
+
+			return bounty.GetStatus(bountyId);
+		}
+
+		public bool IsBountyWatched(Guid bountyId, Guid accountId)
+		{
+			Bounty bounty = new Bounty();
+
+			return bounty.IsBountyWatched(bountyId, accountId);
+		}
+
+		public Guid GetCharacterUserId(Guid characterId)
+		{
+			return this.db.Characters.Find(characterId).UserId;
 		}
 
 		#endregion

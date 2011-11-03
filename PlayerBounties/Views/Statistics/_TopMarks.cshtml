@@ -20,7 +20,7 @@
 				{
 					<tr>
 						<td class="inputLabelCell classTxt @item.GetClassStyle(item.CharacterClass(item.Id))">
-							@Html.ActionLink(item.Name, "Details", "Character", new { id = item.Id }, null)
+							@Html.ActionLink(item.Name, "Details", "Character", new { id = item.Id }, null) <text> - @item.CharacterShard(item.Id)</text>
 						</td>
 						<td align="center">
 							@item.GetBountiesPlacedOnCount(item.Id)

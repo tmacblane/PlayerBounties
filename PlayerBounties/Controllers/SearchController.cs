@@ -28,14 +28,6 @@ namespace PlayerBounties.Controllers
 			string characterName = formCollection["txtSearch"];
 
 			List<Character> characters = this.search.FindAllCharactersByName(characterName);
-
-			// SELECT * FROM [characters] WHERE name = '{0}' and server = '{1}', characterName, server
-			// 
-			// Return the list of results to the user with a "select" link that navigates the user to the 
-			// create screen and populates the name/server/shard/allegiance/class
-			//
-			// If no results found, provide a button to create character now that navigates the user to the
-			// create screen and populates the name/server
 			return View(characters);
 		}
 

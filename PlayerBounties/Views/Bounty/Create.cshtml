@@ -1,91 +1,19 @@
-﻿@model PlayerBounties.Models.Bounty
+﻿@model PlayerBounties.ViewModels.BountyCreateViewModel
 		   
 @{
-    ViewBag.Title = "Place Bounty - " + Model.CharacterName(Model.PlacedOnId);
+    ViewBag.Title = "Place Bounty - " + Model.Character.Name;
 }
 
-<script type="text/javascript">
-    $(document).ready(function () {
-        document.getElementById('Amount').value = "";
-    });
-</script>
-
-@using (Html.BeginForm()) 
-{
+@using(Html.BeginForm("Create", "Bounty"))
+{	
     @Html.ValidationSummary(false)
 
-	<table id="createBountyTable" cellspacing="0" cellpadding="5" border="0">
-		<tr>
-			<td class="inputLabelCell">
-				Character:
-			</td>
-			<td align="left">
-				@Model.CharacterName(Model.PlacedOnId)
-			</td>
-		</tr>
-		<tr>
-			<td class="inputLabelCell">
-				Shard:
-			</td>
-			<td align="left">
-				@Model.CharacterShard(Model.PlacedOnId)
-			</td>
-		</tr>
-		<tr>
-			<td class="inputLabelCell">
-				Allegiance:
-			</td>
-			<td align="left">
-				@Model.CharacterAllegience(Model.PlacedOnId)
-			</td>
-		</tr>
-		<tr>
-			<td class="inputLabelCell">
-				Class:
-			</td>
-			<td align="left">
-				@Model.CharacterClass(Model.PlacedOnId)
-			</td>
-		</tr>
-		<tr>
-			<td class="inputLabelCell">
-				@Html.LabelFor(model => model.Amount):
-			</td>
-			<td class="inputDataCell" align="left">
-				@Html.EditorFor(model => model.Amount)
-				@Html.ValidationMessageFor(model => model.Amount, "*")
-			</td>
-		</tr>
-		<tr>
-			<td class="inputLabelCell">
-				@Html.LabelFor(model => model.Reason):
-			</td>
-			<td align="left">
-				@Html.EditorFor(model => model.Reason)
-			</td>
-		</tr>
-		<tr>
-			<td class="inputLabelCell">
-				@Html.LabelFor(model => model.Message):
-			</td>
-			<td align="left">
-				@Html.EditorFor(model => model.Message)
-			</td>
-		</tr>
-		<tr>
-			<td class="inputLabelCell">
-				Placed By:
-			</td>
-			<td align="left">
-				@Html.DropDownList("CharacterList", string.Empty)
-				@Html.ValidationMessage("CharacterList", "*") 
-                Don't see your character listed...@Html.ActionLink("click here", "Create", "Character", null, null) to create them
-			</td>
-		</tr>
-	</table>
-	
-	<div class="rowBlank">
-		<input type="submit" value="Create" />
-		<input type="button" value="Cancel" onclick="window.history.back()"/>
+	<div style="margin: 20px;">
+	    @Html.Partial("_BountyCreateEdit", Model)
 	</div>
+	
+	<div style="margin-right: 20px;">
+		<input type="submit" value="Create" />			
+		<input type="button" value="Cancel" onclick="window.history.back()"/>
+	</div>	
 }
