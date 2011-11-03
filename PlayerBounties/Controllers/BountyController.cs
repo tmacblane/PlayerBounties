@@ -564,6 +564,15 @@ namespace PlayerBounties.Controllers
 			return RedirectToAction("PendingPlacement");
 		}
 
+        public ActionResult DenyBountyPlacement(Guid id)
+        {
+            Bounty bounty = this.db.Bounties.Find(id);
+            this.db.Bounties.Remove(bounty);
+            this.db.SaveChanges();
+
+            return RedirectToAction("PendingPlacement");
+        }
+
 		public ActionResult PendingCompletion()
 		{
 			return View(this.bounty.GetPendingCompletionBounties());
