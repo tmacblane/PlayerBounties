@@ -1,10 +1,8 @@
 ﻿@model IEnumerable<PlayerBounties.Models.Race>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Race Management";
 }
-
-<h2>Index</h2>
 
 <p>
     @Html.ActionLink("Create New", "Create")
@@ -20,7 +18,7 @@
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
+@foreach(var item in Model) {
     <tr>
         <td>
             @Html.DisplayFor(modelItem => item.Name)

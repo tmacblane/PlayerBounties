@@ -1,0 +1,33 @@
+﻿@model PlayerBounties.Models.PlayerClassRace
+
+@{
+    ViewBag.Title = "Player Class - Race Combinations";
+}
+
+<div>
+    <table>
+        <thead>
+            <tr>
+                <th width="100px">Class</th>
+                @foreach (var race in Model.Races)
+                {   
+                    <th width="100px">@race.Name</th>
+                }
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var playerClass in Model.PlayerClasses)
+            {
+                <tr>
+                    <td>@playerClass.Name</td>
+                    @foreach (var race in Model.Races)
+                    {
+                        <td align="center">
+                            <input type="checkbox" id="@Model.GetPlayerClassRaceId(playerClass.Id, race.Id)" name="selectedRace" value="@Model.Id" @(Model.IsRaceSelected(playerClass.Id, race.Id) ? "checked" : "") />   
+                        </td>
+                    }
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
