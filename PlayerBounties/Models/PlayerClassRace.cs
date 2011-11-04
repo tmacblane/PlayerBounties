@@ -11,31 +11,48 @@ namespace PlayerBounties.Models
 	{
 		#region Fields
 
-		private List<SelectListItem> _playerClasses = new List<SelectListItem>();
-		private PlayerBountyContext db = new PlayerBountyContext();
+        private PlayerBountyContext db = new PlayerBountyContext();
+        private PlayerClass playerClass = new PlayerClass();
+        private Race race = new Race();
 
 		#endregion
 
 		#region Type specific properties
 
-		[Key]
-		public Guid Id
-		{
-			get;
-			set;
-		}
+        [Key]
+        public Guid Id
+        {
+            get;
+            set;
+        }
 
-		public Guid PlayerClassId
-		{
-			get;
-			set;
-		}
+        public Guid PlayerClassId
+        {
+            get;
+            set;
+        }
 
-		public Guid RaceId
-		{
-			get;
-			set;
-		}
+        public Guid RaceId
+        {
+            get;
+            set;
+        }
+
+        public IEnumerable<Race> Races
+        {
+            get
+            {
+                return race.GetRacesList();
+            }
+        }
+
+        public IEnumerable<PlayerClass> PlayerClasses
+        {
+            get
+            {
+                return playerClass.GetPlayerClassesList();
+            }
+        }
 
 		#endregion
 

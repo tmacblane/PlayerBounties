@@ -267,14 +267,29 @@
 	<!-- If user is logged in, show div  -->
 	 if(Request.IsAuthenticated)
 	 {
+		if(Model.Bounty.IsBountyOwner(Model.Bounty.GetLoggedInUserId(), Model.Bounty.Id))
+		{
+            <div style="clear: both; margin: 20px;">
+                @{var bountyStatus = Model.Bounty.GetStatus(Model.Bounty.Id);
+                }
+
+			    @if(bountyStatus == "Placement Pending")
+			    {
+			        @Html.ActionLink("Edit", "Edit", new { id = Model.Bounty.Id })
+			    }
+
+                @if(bountyStatus != "Completed")
+                {
+                    @Html.ActionLink("Cancel Bounty", "CancelBounty", new { id = Model.Bounty.Id })
+                }
+            </div>
+		}
+    
 		 if(Model.Bounty.GetStatus(Model.Bounty.Id) == "Active")
 		 {	
 			<div style="width: 980px; float: left; margin-left: 20px; margin-bottom: 10px;">
 				@Html.LabelFor(model => model.KillShotImageId)
-				@Html.TextBoxFor(m => m.KillShotImageId, new
-{
-	type = "file"
-})
+				@Html.TextBoxFor(m => m.KillShotImageId, new { type = "file" })
 				@Html.ValidationMessageFor(model => model.KillShotImageId, "*")
 				
                 @Html.DropDownListFor(model => model.SelectedCharacter, new SelectList(Model.Characters, "Value", "Text"), string.Empty)
@@ -284,27 +299,16 @@
 				<text>Don't see your character listed...@Html.ActionLink("click here", "Create", "Character", null, null) to create them</text>
 			</div>
 		 }
-
-		 if(Model.Bounty.IsBountyOwner(Model.Bounty.GetLoggedInUserId(), Model.Bounty.Id))
-		 {
-			 if(Model.Bounty.GetStatus(Model.Bounty.Id) == "Placement Pending")
-			 {
-				@Html.ActionLink("Edit", "Edit", new
-{
-	id = Model.Bounty.Id
-})
-			 }
-		 }
 	 }
 	
-	<div id="buttons" style="width:100%">
+	<div id="buttons" style="width:100%; clear: both;">
 		@if(Request.IsAuthenticated)
-  {
-	  if(Model.Bounty.GetStatus(Model.Bounty.Id) == "Active")
-	  {
-					<input type="submit" value="Complete Bounty"/>
-	  }
-  }
+        {
+	        if(Model.Bounty.GetStatus(Model.Bounty.Id) == "Active")
+	        {
+	            <input type="submit" value="Complete Bounty"/>
+	        }
+        }
 		
 		<input type="button" value="Back" onclick="window.history.back()" />		
 	</div>

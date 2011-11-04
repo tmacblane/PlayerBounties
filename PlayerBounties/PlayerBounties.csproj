@@ -123,10 +123,7 @@
     <Compile Include="ViewModels\BountyCreateViewModel.cs" />
     <Compile Include="ViewModels\BountyDetailModel.cs" />
     <Compile Include="ViewModels\CharacterAddEditViewModel.cs" />
-<<<<<<< HEAD
-=======
     <Compile Include="ViewModels\HelpViewModel.cs" />
->>>>>>> dedicatedViewModel
     <Compile Include="ViewModels\PlaceBountyViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -272,11 +269,8 @@
     <Content Include="Views\Account\ResetPasswordSuccess.cshtml" />
     <Content Include="Views\Emails\ResetPassword.cshtml" />
     <None Include="Content\Fonts\Aurebesh.ttf" />
-<<<<<<< HEAD
-=======
     <Content Include="Views\Emails\HelpAndSupport.cshtml" />
     <Content Include="Views\PlayerClassRace\Index.cshtml" />
->>>>>>> dedicatedViewModel
     <None Include="_bin_deployableAssemblies\Microsoft.Web.Infrastructure.dll" />
     <None Include="_bin_deployableAssemblies\System.Web.WebPages.Razor.dll" />
     <None Include="_bin_deployableAssemblies\System.Web.WebPages.dll" />

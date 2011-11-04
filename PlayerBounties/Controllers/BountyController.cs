@@ -453,11 +453,33 @@ namespace PlayerBounties.Controllers
 			return RedirectToAction("PendingPlacement");
 		}
 
+        public ActionResult CancelBounty(Guid id)
+        {
+            Bounty bounty = this.db.Bounties.Find(id);
+            this.db.Bounties.Remove(bounty);
+            this.db.SaveChanges();
+
+            // alert client bounty has been cancelled
+            // alert admin(s) bounty has been cancelled and to refund x amount
+            // alert watching hunters that the bounty has been cancelled
+            // alert favorited person that the bounty has been cancelled
+
+            return RedirectToAction("Dashboard", "Home");
+        }
+
         public ActionResult DenyBountyPlacement(Guid id)
         {
             Bounty bounty = this.db.Bounties.Find(id);
             this.db.Bounties.Remove(bounty);
             this.db.SaveChanges();
+
+            // Send email notification
+            this.emailNotificationHelper.SendBountyNotificationEmail(bounty, "Placement Denied");
+
+            // Add notification message
+            this.message.AddBountyNotificationMessage(bounty, "Placement Denied");
+
+            // Include reason in form?
 
             return RedirectToAction("PendingPlacement");
         }
@@ -491,6 +513,21 @@ namespace PlayerBounties.Controllers
 
 			return RedirectToAction("PendingCompletion");
 		}
+
+        public ActionResult DenyBountyCompletion(Guid id)
+        {
+            Bounty bounty = this.db.Bounties.Find(id);
+            KillShotImage killShotImage = this.db.KillShotImages.Find(bounty.KillShotImageId);
+            this.db.KillShotImages.Remove(killShotImage);
+            this.db.Bounties.Remove(bounty);
+            this.db.SaveChanges();
+
+            // Send notification message
+            // Email hunter/watching hunters to inform them the completion has been denied
+            // Include reason in form?
+
+            return RedirectToAction("PendingCompletion");
+        }
 
 		public ActionResult BountyStatistics(string statistic, Guid? id = null)
 		{

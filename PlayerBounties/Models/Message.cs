@@ -321,6 +321,7 @@ namespace PlayerBounties.Models
 					
 						db.Messages.Add(watcherMessage);
 					}
+
 					// Favorited Notifications
 					favoritedCharacters = favorite.GetFavoritedCharacters(bounty.PlacedOnId);
 
@@ -344,9 +345,74 @@ namespace PlayerBounties.Models
 
 					break;
 
-					// To Do - Completion Denied
-					// To Do - Placement Denied
+                case "Placement Denied":
+
+                    // Client Notification
+                    clientMessage = new Message
+                    {
+                        Id = Guid.NewGuid(),
+                        UserId = character.GetCharacterUserId(bounty.PlacedById),
+                        DateCreated = dateCreated,
+                        Subject = string.Format("Bounty placed on {0} hase been denied", placedOn),
+                        Description = string.Format("The bounty placed on {0} in the amount of {1} has been denied. \r\n A refund in the amount of {2} will be mailed to you", placedOn, bounty.Amount, Math.Round(bounty.Amount/1.03, 0)),
+                        IsRead = false,
+                        IsAdminMessage = false
+                    };
+
+                    db.Messages.Add(clientMessage);
+
+                    db.SaveChanges();
+                    break;
+
+                case "Completion Denied":
+                    // Hunter Notification
+                    hunterMessage = new Message
+                    {
+                        Id = Guid.NewGuid(),
+                        UserId = character.GetCharacterUserId(bounty.KilledById.Value),
+                        DateCreated = dateCreated,
+                        Subject = string.Format("The bounty on {0} that was submitted for completion has been denied.", placedOn),
+                        Description = string.Format("The bounty on {0} that was submitted for completion has been denied.", placedOn, bounty.Amount),
+                        IsRead = false,
+                        IsAdminMessage = false
+                    };
+
+                    db.Messages.Add(hunterMessage);
+
+                    // Watcher Notifications
+                    watchedBounties = watchedBounty.GetWatchedBounties(bounty.Id);
+
+                    foreach (WatchedBounty watchedBountyItem in watchedBounties)
+                    {
+                        watcherMessage = new Message
+                        {
+                            Id = Guid.NewGuid(),
+                            UserId = watchedBountyItem.AccountId,
+                            DateCreated = dateCreated,
+                            Subject = string.Format("The bounty on {0} that was submitted for completion has been denied.", placedOn),
+                            Description = string.Format("The bounty on {0} that was submitted for completion has been denied. The target is still available to be hunted!", placedOn, bounty.Amount),
+                            IsRead = false,
+                            IsAdminMessage = false
+                        };
+
+                        db.Messages.Add(watcherMessage);
+                    }
+
+                    db.SaveChanges();
+
+                    break;
+                    
+                case "Bounty Cancelled":
+
+
+                    break;
+
 					// To Do - Bounty Cancelled
+                    // alert admin
+                    // alert hunter
+                    // alert watchers
+                    // alert favorites
+                    // alert target
 			}
 		}
 
