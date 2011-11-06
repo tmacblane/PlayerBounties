@@ -403,16 +403,78 @@ namespace PlayerBounties.Models
                     break;
                     
                 case "Bounty Cancelled":
+                    // Admin Notification
+                    foreach (Guid adminId in adminIds)
+                    {
+                        adminMessage = new Message
+                        {
+                            Id = Guid.NewGuid(),
+                            UserId = adminId,
+                            DateCreated = dateCreated,
+                            Subject = string.Format("The bounty placed on {0} has been cancelled by {1}", placedOn, placedBy),
+                            Description = string.Format("The bounty placed on {0} has been cancelled by {1}", placedOn, placedBy),
+                            IsRead = false,
+                            IsAdminMessage = true
+                        };
 
+                        db.Messages.Add(adminMessage);
+                    }
+
+                    // Watcher Notifications
+                    watchedBounties = watchedBounty.GetWatchedBounties(bounty.Id);
+
+                    foreach (WatchedBounty watchedBountyItem in watchedBounties)
+                    {
+                        watcherMessage = new Message
+                        {
+                            Id = Guid.NewGuid(),
+                            UserId = watchedBountyItem.AccountId,
+                            DateCreated = dateCreated,
+                            Subject = string.Format("The bounty on {0} has been cancelled by the client", placedOn),
+                            Description = string.Format("The bounty on {0} has been cancelled by the client. This bounty has been removed from your watch list", placedOn, placedOn, killedBy),
+                            IsRead = false,
+                            IsAdminMessage = false
+                        };
+
+                        db.Messages.Add(watcherMessage);
+                    }
+
+                    // Favorited Notifications
+                    favoritedCharacters = favorite.GetFavoritedCharacters(bounty.PlacedOnId);
+
+                    foreach (Favorite favoritedCharacterItem in favoritedCharacters)
+                    {
+                        favoriteMessage = new Message
+                        {
+                            Id = Guid.NewGuid(),
+                            UserId = favoritedCharacterItem.AccountId,
+                            DateCreated = dateCreated,
+                            Subject = string.Format("New bounty on {0} has been cancelled by the client", placedOn),
+                            Description = string.Format("The bounty on {0} has been cancelled by the client", placedOn, placedOn, placedBy),
+                            IsRead = false,
+                            IsAdminMessage = false
+                        };
+
+                        db.Messages.Add(favoriteMessage);
+                    }
+
+                    // Target Notification
+                    targetMessage = new Message
+                    {
+                        Id = Guid.NewGuid(),
+                        UserId = character.GetCharacterUserId(bounty.PlacedOnId),
+                        DateCreated = dateCreated,
+                        Subject = string.Format("Bounty on your head has been cancelled by the client", placedOn),
+                        Description = string.Format("The bounty placed on your head has been cancelled by the client."),
+                        IsRead = false,
+                        IsAdminMessage = false
+                    };
+
+                    db.Messages.Add(targetMessage);
+
+                    db.SaveChanges();
 
                     break;
-
-					// To Do - Bounty Cancelled
-                    // alert admin
-                    // alert hunter
-                    // alert watchers
-                    // alert favorites
-                    // alert target
 			}
 		}
 

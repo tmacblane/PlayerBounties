@@ -459,10 +459,17 @@ namespace PlayerBounties.Controllers
             this.db.Bounties.Remove(bounty);
             this.db.SaveChanges();
 
-            // alert client bounty has been cancelled
-            // alert admin(s) bounty has been cancelled and to refund x amount
-            // alert watching hunters that the bounty has been cancelled
-            // alert favorited person that the bounty has been cancelled
+            // Add notification message
+            this.message.AddBountyNotificationMessage(bounty, "Bounty Cancelled");
+
+            IQueryable<WatchedBounty> watchedBounties = this.db.WatchedBounties.Where(b => b.BountyId == bounty.Id);
+            WatchedBountyController watchedBountyController = new WatchedBountyController();
+
+            // Remove watched bounty record
+            foreach (WatchedBounty watchedBounty in watchedBounties)
+            {
+                watchedBountyController.UnWatch(watchedBounty.BountyId, watchedBounty.AccountId, "dashboard");
+            }
 
             return RedirectToAction("Dashboard", "Home");
         }
@@ -517,14 +524,25 @@ namespace PlayerBounties.Controllers
         public ActionResult DenyBountyCompletion(Guid id)
         {
             Bounty bounty = this.db.Bounties.Find(id);
-            KillShotImage killShotImage = this.db.KillShotImages.Find(bounty.KillShotImageId);
-            this.db.KillShotImages.Remove(killShotImage);
-            this.db.Bounties.Remove(bounty);
-            this.db.SaveChanges();
+
+            // Add notification message
+            this.message.AddBountyNotificationMessage(bounty, "Completion Denied");
 
             // Send notification message
-            // Email hunter/watching hunters to inform them the completion has been denied
+
             // Include reason in form?
+
+            KillShotImage killShotImage = this.db.KillShotImages.Find(bounty.KillShotImageId);
+            this.db.KillShotImages.Remove(killShotImage);
+
+            bounty.KilledById = null;
+            bounty.KillShotImageId = null;
+            bounty.IsCompletionPending = null;
+            bounty.DateCompleted = null;
+
+            this.db.Entry(bounty).State = EntityState.Modified;
+
+            this.db.SaveChanges();
 
             return RedirectToAction("PendingCompletion");
         }
