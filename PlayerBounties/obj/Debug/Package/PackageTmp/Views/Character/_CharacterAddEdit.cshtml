@@ -98,80 +98,6 @@
     });
 </script>
 
-<<<<<<< HEAD
-<table id="characterAddEditTable" cellspacing="0" cellpadding="5" border="0">
-    <tbody>
-	    <tr>
-		    <td class="inputLabelCell">
-			    @Html.LabelFor(model => model.Character.Name):
-		    </td>
-		    <td class="inputDataCell" align="left">
-			    @Html.EditorFor(model => model.Character.Name)
-			    @Html.ValidationMessageFor(model => model.Character.Name, "*")
-		    </td>
-	    </tr>
-	    <tr>
-		    <td class="inputLabelCell">
-			    @Html.LabelFor(model => model.Character.Shard):
-		    </td>
-		    <td class="inputDataCell"  align="left">
-				@Html.DropDownListFor(model => model.SelectedShard, new SelectList(Model.Shards, "Value", "Text"), string.Empty)
-			    @Html.ValidationMessageFor(model => model.SelectedShard, "*")
-		    </td>
-	    </tr>
-	    <tr>
-		    <td class="inputLabelCell">
-			    @Html.LabelFor(model => model.Character.Faction):
-		    </td>
-		    <td class="inputDataCell"  align="left">
-				@Html.DropDownListFor(model => model.SelectedFaction, new SelectList(Model.Factions, "Value", "Text"), string.Empty)
-			    @Html.ValidationMessageFor(model => model.SelectedFaction, "*")
-		    </td>
-	    </tr>
-	    <tr>
-		    <td class="inputLabelCell">
-			    @Html.LabelFor(model => model.Character.PlayerClass):
-		    </td>
-		    <td class="inputDataCell"  align="left">
-                @Html.DropDownListFor(model => model.SelectedPlayerClass, new SelectList(Model.PlayerClasses, "Value", "Text"), string.Empty)
-			    @Html.ValidationMessageFor(model => model.SelectedPlayerClass, "*")
-		    </td>
-	    </tr>
-	    <tr>
-		    <td class="inputLabelCell">
-			    @Html.LabelFor(model => model.Character.Race):
-		    </td>
-		    <td class="inputDataCell"  align="left">
-				@Html.DropDownListFor(model => model.SelectedRace, new SelectList(Model.Races, "Value", "Text"), string.Empty)
-		    </td>
-	    </tr>
-	    <tr>
-		    <td class="inputLabelCell" style="vertical-align: top;">
-			    @Html.LabelFor(model => model.Character.Motto):
-		    </td>
-		    <td class="inputDataCell"  align="left">
-			    @Html.EditorFor(model => model.Character.Motto)
-		    </td>
-	    </tr>
-	    <tr>
-		    <td class="inputLabelCell" style="vertical-align: top;">
-			    @Html.LabelFor(model => model.Character.Bio):
-		    </td>
-		    <td class="inputDataCell"  align="left">
-			    @Html.EditorFor(model => model.Character.Bio)
-		    </td>
-	    </tr>
-	    <tr>
-		    <td class="inputLabelCell">
-			    @Html.LabelFor(model => model.Character.IsPrimary):
-		    </td>
-		    <td align="left">
-			    @Html.EditorFor(model => model.Character.IsPrimary)
-		    </td>
-	    </tr>
-    </tbody>
-</table>
-=======
 <div id="characterInformation" style="width: 500px; float: left;">
 	<table id="characterAddEditTable" cellspacing="0" cellpadding="5" border="0">
 		<tbody>
@@ -250,4 +176,3 @@
 <div id="characterAvatar" style="width: 400px; float:right">
 
 </div>
->>>>>>> dedicatedViewModel
