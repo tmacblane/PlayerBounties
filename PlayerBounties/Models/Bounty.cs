@@ -27,7 +27,7 @@ namespace PlayerBounties.Models
 		}
 
 		[Required(ErrorMessage = "Amount is required.")]
-		[Range(1, int.MaxValue, ErrorMessage = "The Amount must be greater than 0")]
+		[Range(1, int.MaxValue, ErrorMessage = "The amount must be between {1} and {2}.")]
 		[Display(Name = "Amount")]
 		public int Amount
 		{
