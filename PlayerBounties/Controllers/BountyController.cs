@@ -167,6 +167,23 @@ namespace PlayerBounties.Controllers
 				{
 					ModelState.AddModelError(string.Empty, "You must first upload a file to complete the bounty.");
 				}
+
+				if(hpf.ContentType != "image/jpeg")
+				{
+					if(hpf.ContentType != "image/png")
+					{
+						if(hpf.ContentType != "image/bmp")
+						{
+							if(hpf.ContentType != "image/gif")
+							{
+								if(hpf.ContentType != "image/tiff")
+								{
+									ModelState.AddModelError(string.Empty, "Only images can be uploaded.");
+								}
+							}
+						}
+					}
+				}
 			}
 
 			ModelState["KillShotImageId"].Errors.Clear();
@@ -780,7 +797,7 @@ namespace PlayerBounties.Controllers
 			foreach(string file in Request.Files)
 			{
 				HttpPostedFileBase hpf = Request.Files[file] as HttpPostedFileBase;
-				string convertedFileName = DateTime.Now.ToString("mmddyyyyhhmmss");
+				string convertedFileName = DateTime.Now.ToString("MMddyyyyhhmmss");
 
 				if(hpf.ContentLength == 0)
 				{

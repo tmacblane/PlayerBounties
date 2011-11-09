@@ -74,10 +74,12 @@
 							character = character.GetCharacterById(Model.Bounty.PlacedOnId).Single();
 							<img src="../../@character.GetClassAvatarPath(character.AvatarId.Value)" alt="wanted" id="characterAvatar" style="height: 90px; width: 90px;"/>
 						}
-						<br />
-						<text style="font-size: 20px;">@Model.Bounty.CharacterName(Model.Bounty.PlacedOnId)</text>
-
-						<p style="font-family: Aurebesh; font-size: 24px; ">
+						@*<br />*@
+						@*<text style="font-size: 20px;">@Model.Bounty.CharacterName(Model.Bounty.PlacedOnId)</text>*@
+						<p style="font-family: Aurebesh; font-size: 24px; margin: 0;">
+							<text>Reward</text>
+						</p>
+						<p style="font-family: Aurebesh; font-size: 22px; margin-top: 10px;">
 							<text>$</text>@Model.Bounty.Amount
 						</p>				
 					</td>
