@@ -1,15 +1,67 @@
 ﻿From: Player-Bounties@playerbounties.com
 To: @Model.UserEmailAddress
-Subject: Bounty on @Model.TargetName is Pending Approval
+Subject: Bounty placement against @Model.TargetName - @Model.Shard is Pending Approval
 
 <html>
 	<body>
 		<p>
-			Attention @Model.ClientName
+			Attention @Model.ClientName - @Model.Shard
 		</p>
 		<p>
-			The bounty placed on @Model.TargetName in the amount of @Model.Amount is pending approval.  Please deliver the funds to xxxx in game either via trade or ingame mail.
+			We have recieved the bounty request against @Model.TargetName - @Model.Shard. In order to finalize the bounty, you must deliver the 
+			bounty amount of @Model.Amount to one of our operatives. Once recieved, your bounty will be posted for every hunter in the galaxy 
+			to see in order to apprehend the target and bring them to whatever justice you so desired.
 		</p>
+		<p>
+			For your records, included are the details for the bounty you have requested.  Please ensure these are correct, once the bounty has
+			been improved you may no longer make any changes.  You can cancel the bounty at any time, but once payment has been recieved we will 
+			keep a small processing percentage.
+		</p>
+
+		<table>
+			<thead>
+				<tr>
+					<th colspan="2" style="text-align: left;">Bounty Details</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td style="width: 50px; font-weight: bold;">Client:</td>
+					<td style="width: 400px;">@Model.ClientName - @Model.Shard</td>
+				</tr>
+				<tr>
+					<td style="font-weight: bold;">Target:</td>
+					<td>@Model.TargetName - @Model.Shard</td>
+				</tr>
+				<tr>
+					<td style="font-weight: bold;">Amount:</td>
+					<td>@Model.Amount</td>
+				</tr>
+				@if(@Model.Reason != string.Empty)
+				{
+					<tr>
+						<td style="font-weight: bold; vertical-align: top;">Reason:</td>
+						<td>@Model.Reason</td>
+					</tr>
+				}
+				@if(@Model.Message != string.Empty)
+				{
+					<tr>
+						<td style="font-weight: bold; vertical-align: top;">Message:</td>
+						<td>@Model.Message</td>
+					</tr>
+				}
+				<tr>
+					<td style="font-weight: bold;">Status:</td>
+					<td>Pending Payment</td>
+				</tr>
+				<tr>
+					<td>Bounty:</td>
+					<td><a href="www.playerbounties.com/Bounty/Details/@Model.BountyId">Bounty Detail Link</a></td>
+				</tr>
+			</tbody>
+		</table>
+
 		<p>
 			Thanks and Enjoy!
 		</p>

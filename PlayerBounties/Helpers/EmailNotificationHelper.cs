@@ -41,7 +41,7 @@ namespace PlayerBounties.Helpers
 
             email.EmailAddress = helpViewModel.EmailAddress;
             email.Subject = helpViewModel.SubjectLine;
-            email.Message = helpViewModel.Message;
+			email.Message = helpViewModel.Message;
 
             try
             {
@@ -64,6 +64,7 @@ namespace PlayerBounties.Helpers
 					string placedOn = bounty.CharacterName(bounty.PlacedOnId);
 					string placedBy = bounty.CharacterName(bounty.PlacedById);
 					string killedBy = string.Empty;
+					string shard = bounty.CharacterShard(bounty.PlacedOnId);
 
 					email.UserEmailAddress = this.db.Accounts.Find(accountId).EmailAddress;
 					email.Amount = bounty.Amount;
@@ -71,6 +72,8 @@ namespace PlayerBounties.Helpers
 					email.Message = bounty.Message;
 					email.ClientName = placedBy;
 					email.TargetName = placedOn;
+					email.Shard = shard;
+					email.BountyId = bounty.Id;
 
 					if(bounty.KilledById != null)
 					{
@@ -131,7 +134,7 @@ namespace PlayerBounties.Helpers
 
 					foreach(Favorite favoritedCharacterItem in favoritedCharacters)
 					{
-						this.SendNotificationEmail(bounty, "BountyPlacedApproved-FavoritedAlert", this.character.GetCharacterUserId(bounty.PlacedOnId));
+						this.SendNotificationEmail(bounty, "BountyPlacedApproved-FavoritedAlert", favoritedCharacterItem.AccountId);
 					}
 
 					break;
@@ -179,7 +182,7 @@ namespace PlayerBounties.Helpers
 
 					foreach(Favorite favoritedCharacterItem in favoritedCharacters)
 					{
-						this.SendNotificationEmail(bounty, "BountyCompletionApproved-FavoritedAlert", this.character.GetCharacterUserId(bounty.PlacedOnId));
+						this.SendNotificationEmail(bounty, "BountyCompletionApproved-FavoritedAlert", favoritedCharacterItem.AccountId);
 					}
 
 					break;

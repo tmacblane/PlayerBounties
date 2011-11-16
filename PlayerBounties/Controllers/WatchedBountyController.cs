@@ -100,6 +100,9 @@ namespace PlayerBounties.Controllers
 				{
 					return RedirectToAction("Bounties", "Bounty");
 				}
+				else if(view == "cancelled")
+				{
+				}
 			}
 
 			if(view == "bounties")
@@ -110,11 +113,6 @@ namespace PlayerBounties.Controllers
 			{
 				return RedirectToAction("Details", "Bounty", new { id = bounty.Id });
 			}
-
-            if (view == "dashboard")
-            {
-            }
-
 		}
 
 		#endregion

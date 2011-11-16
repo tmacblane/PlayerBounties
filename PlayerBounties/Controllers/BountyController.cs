@@ -485,7 +485,7 @@ namespace PlayerBounties.Controllers
             // Remove watched bounty record
             foreach (WatchedBounty watchedBounty in watchedBounties)
             {
-                watchedBountyController.UnWatch(watchedBounty.BountyId, watchedBounty.AccountId, "dashboard");
+                watchedBountyController.UnWatch(watchedBounty.BountyId, watchedBounty.AccountId, "cancelled");
             }
 
             return RedirectToAction("Dashboard", "Home");

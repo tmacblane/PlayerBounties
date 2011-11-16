@@ -1,15 +1,49 @@
 ﻿From: Player-Bounties@playerbounties.com
 To: @Model.UserEmailAddress
-Subject: Bounty on @Model.TargetName Approved
+Subject: Bounty has been placed on @Model.TargetName - @Model.Shard
 
 <html>
 	<body>
 		<p>
-			Attention @Model.ClientName
+			Attention @Model.UserEmailAddress
 		</p>
 		<p>
-			The bounty placed on @Model.TargetName in the amount of @Model.Amount has been approved.
+			One of your favorited characters, @Model.TargetName - @Model.Shard, has commited a crime against @Model.ClientName - @Model.Shard 
+			and a bounty has been placed on their head.
 		</p>
+
+		<table>
+			<thead>
+				<tr>
+					<th colspan="2" style="text-align: left;">Bounty Details</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td style="width: 50px; font-weight: bold;">Client:</td>
+					<td style="width: 400px;">@Model.ClientName - @Model.Shard</td>
+				</tr>
+				<tr>
+					<td style="font-weight: bold;">Target:</td>
+					<td>@Model.TargetName - @Model.Shard</td>
+				</tr>
+				<tr>
+					<td style="font-weight: bold;">Amount:</td>
+					<td>@Model.Amount</td>
+				</tr>
+				@if(@Model.Reason != string.Empty)
+				{
+					<tr>
+						<td style="font-weight: bold; vertical-align: top;">Reason:</td>
+						<td>@Model.Reason</td>
+					</tr>
+				}
+				<tr>
+					<td>Bounty:</td>
+					<td><a href="www.playerbounties.com/Bounty/Details/@Model.BountyId">Bounty Detail Link</a></td>
+				</tr>
+			</tbody>
+		</table>
 		<p>
 			Thanks and Enjoy!
 		</p>
