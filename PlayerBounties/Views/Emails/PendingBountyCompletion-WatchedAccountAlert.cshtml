@@ -26,33 +26,33 @@ Subject: The bounty being collected on @Model.TargetName - @Model.Shard is pendi
 					<td style="width: 400px;">@Model.ClientName - @Model.Shard</td>
 				</tr>
 				<tr>
-					<td style="font-weight: bold;">Target:</td>
+					<td style="width: 50px; font-weight: bold;">Target:</td>
 					<td>@Model.TargetName - @Model.Shard</td>
 				</tr>
 				<tr>
-					<td style="font-weight: bold;">Amount:</td>
+					<td style="width: 50px; font-weight: bold;">Amount:</td>
 					<td>@Model.Amount</td>
 				</tr>
 				@if(@Model.Reason != string.Empty)
 				{
 					<tr>
-						<td style="font-weight: bold; vertical-align: top;">Reason:</td>
+						<td style="width: 50px; font-weight: bold; vertical-align: top;">Reason:</td>
 						<td>@Model.Reason</td>
 					</tr>
 				}
 				@if(@Model.Message != string.Empty)
 				{
 					<tr>
-						<td style="font-weight: bold; vertical-align: top;">Message:</td>
+						<td style="width: 50px; font-weight: bold; vertical-align: top;">Message:</td>
 						<td>@Model.Message</td>
 					</tr>
 				}
 				<tr>
-					<td style="font-weight: bold;">Status:</td>
+					<td style="width: 50px; font-weight: bold;">Status:</td>
 					<td>Pending Completion</td>
 				</tr>
 				<tr>
-					<td>Bounty:</td>
+					<td style="width: 50px; font-weight: bold;">Bounty:</td>
 					<td><a href="www.playerbounties.com/Bounty/Details/@Model.BountyId">Bounty Detail Link</a></td>
 				</tr>
 			</tbody>

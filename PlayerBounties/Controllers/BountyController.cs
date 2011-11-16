@@ -141,6 +141,8 @@ namespace PlayerBounties.Controllers
 
 				return View(viewModel);
 			}
+
+			// Handle for bounty not found page
 		}
 
 		[Authorize]
