@@ -271,6 +271,13 @@
     <None Include="Content\Fonts\Aurebesh.ttf" />
     <Content Include="Views\Emails\HelpAndSupport.cshtml" />
     <Content Include="Views\PlayerClassRace\Index.cshtml" />
+    <Content Include="Views\Emails\BountyPlacementDenied-ClientAlert.cshtml" />
+    <Content Include="Views\Emails\BountyCompletionDenied-HunterAlert.cshtml" />
+    <Content Include="Views\Emails\BountyCompletionDenied-WatchedAccountAlert.cshtml" />
+    <Content Include="Views\Emails\BountyCancelled-AdminAlert.cshtml" />
+    <Content Include="Views\Emails\BountyCancelled-TargetAlert.cshtml" />
+    <Content Include="Views\Emails\BountyCancelled-WatchedAccountAlert.cshtml" />
+    <Content Include="Views\Emails\BountyCancelled-FavoritedAlert.cshtml" />
     <None Include="_bin_deployableAssemblies\Microsoft.Web.Infrastructure.dll" />
     <None Include="_bin_deployableAssemblies\System.Web.WebPages.Razor.dll" />
     <None Include="_bin_deployableAssemblies\System.Web.WebPages.dll" />

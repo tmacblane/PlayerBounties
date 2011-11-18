@@ -187,9 +187,55 @@ namespace PlayerBounties.Helpers
 
 					break;
 
-				// To Do - Completion Denied
-				// To Do - Placement Denied
-				// To Do - Bounty Cancelled
+				case "Placement Denied":
+					// Client Notification
+					this.SendNotificationEmail(bounty, "BountyPlacementDenied-ClientAlert", this.character.GetCharacterUserId(bounty.PlacedById));
+
+					break;
+
+
+				case "Completion Denied":
+					// Hunter Notification
+					this.SendNotificationEmail(bounty, "BountyCompletionDenied-HunterAlert", this.character.GetCharacterUserId(bounty.KilledById.Value));
+
+					// Watcher Notifications
+					watchedBounties = watchedBounty.GetWatchedBounties(bounty.Id);
+
+					foreach(WatchedBounty watchedBountyItem in watchedBounties)
+					{
+						this.SendNotificationEmail(bounty, "BountyCompletionDenied-WatchedAccountAlert", watchedBountyItem.AccountId);
+					}
+
+					break;
+
+
+				case "Bounty Cancelled":
+					// Admin Notification
+					foreach(Guid adminId in adminIds)
+					{
+						this.SendNotificationEmail(bounty, "BountyCancelled-AdminAlert", adminId);
+					}
+
+					// Target Notification
+					this.SendNotificationEmail(bounty, "BountyCancelled-TargetAlert", this.character.GetCharacterUserId(bounty.PlacedOnId));
+
+					// Watcher Notifications
+					watchedBounties = watchedBounty.GetWatchedBounties(bounty.Id);
+
+					foreach(WatchedBounty watchedBountyItem in watchedBounties)
+					{
+						this.SendNotificationEmail(bounty, "BountyCancelled-WatchedAccountAlert", watchedBountyItem.AccountId);
+					}
+
+					// Favorited Notifications
+					favoritedCharacters = favorite.GetFavoritedCharacters(bounty.PlacedOnId);
+
+					foreach(Favorite favoritedCharacterItem in favoritedCharacters)
+					{
+						this.SendNotificationEmail(bounty, "BountyCancelled-FavoritedAlert", favoritedCharacterItem.AccountId);
+					}
+
+					break;
 			}
 		}
 	}
