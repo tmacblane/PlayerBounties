@@ -391,7 +391,7 @@ namespace PlayerBounties.Models
 				{
 					foreach(Bounty completedBounty in completedBounties)
 					{
-						totalEarned = totalEarned + completedBounty.Amount;
+						totalEarned = totalEarned + (completedBounty.Amount * 0.95);
 					}
 				}
 			}

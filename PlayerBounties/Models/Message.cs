@@ -269,7 +269,7 @@ namespace PlayerBounties.Models
 						UserId = character.GetCharacterUserId(bounty.PlacedById),
 						DateCreated = dateCreated,
 						Subject = string.Format("Bounty has been completed on {0} - {1}", placedOn, shard),
-						Description = string.Format("The bounty placed on {0} - {1} has been completed. {2} - {3} has been killed by {4} - {5} and has successfully delivered your message, visual proof of the targets demise can be seen on the bounty details page.", placedOn, shard, placedOn, shard, killedBy, shard),
+						Description = string.Format("{0} - {1} has been killed by {2} - {3} and has successfully delivered your message, visual proof of the targets demise can be seen on the bounty details page.", placedOn, shard, killedBy, shard),
 						IsRead = false,
 						IsAdminMessage = false
 					};
@@ -283,7 +283,7 @@ namespace PlayerBounties.Models
 						UserId = character.GetCharacterUserId(bounty.KilledById.Value),
 						DateCreated = dateCreated,
 						Subject = string.Format("Bounty has been completed on {0} - {1}", placedOn, shard),
-						Description = string.Format("The completion for the bounty on {0} - {1} in the amount of {2} has been approved. One of our representatives will be delivering the bounty amount minus any processing fees to you.  We congratulate you on your success andon an excellent hunt!", placedOn, shard, bounty.Amount),
+						Description = string.Format("The completion for the bounty on {0} - {1} in the amount of {2} has been approved. One of our representatives will be delivering the bounty amount minus any processing fees to you.  We congratulate you on your success and on an excellent hunt!", placedOn, shard, bounty.Amount),
 						IsRead = false,
 						IsAdminMessage = false
 					};
