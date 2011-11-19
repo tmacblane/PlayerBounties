@@ -1,6 +1,6 @@
 ﻿From: Player-Bounties@playerbounties.com
 To: tmacblane@gmail.com
-Subject: A bounty completion has been posted on @Model.TargetName by @Model.HunterName
+Subject: A bounty completion has been posted on @Model.TargetName - @Model.Shard by @Model.HunterName - @Model.Shard
 
 <html>
 	<body>
@@ -8,8 +8,56 @@ Subject: A bounty completion has been posted on @Model.TargetName by @Model.Hunt
 			Attention Admin
 		</p>
 		<p>
-			The bounty placed on @Model.TargetName in the amount of @Model.Amount has been completed by @Model.HunterName is pending your approval.
+			The bounty against @Model.TargetName - @Model.Shard has been submitted for completion by @Model.HunterName - @Model.Shard
 		</p>
+		<table>
+			<thead>
+				<tr>
+					<th colspan="2" style="text-align: left;">Bounty Details</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td style="width: 50px; font-weight: bold;">Client:</td>
+					<td style="width: 400px;">@Model.ClientName - @Model.Shard</td>
+				</tr>
+				<tr>
+					<td style="width: 50px; font-weight: bold;">Target:</td>
+					<td>@Model.TargetName - @Model.Shard</td>
+				</tr>
+				<tr>
+					<td style="width: 50px; font-weight: bold;">Target:</td>
+					<td>@Model.KilledBy - @Model.Shard</td>
+				</tr>
+
+				<tr>
+					<td style="width: 50px; font-weight: bold;">Amount:</td>
+					<td>@Model.Amount</td>
+				</tr>
+				@if(@Model.Reason != string.Empty)
+				{
+					<tr>
+						<td style="width: 50px; font-weight: bold; vertical-align: top;">Reason:</td>
+						<td>@Model.Reason</td>
+					</tr>
+				}
+				@if(@Model.Message != string.Empty)
+				{
+					<tr>
+						<td style="width: 50px; font-weight: bold; vertical-align: top;">Message:</td>
+						<td>@Model.Message</td>
+					</tr>
+				}
+				<tr>
+					<td style="width: 50px; font-weight: bold;">Status:</td>
+					<td>Pending Completion</td>
+				</tr>
+				<tr>
+					<td style="width: 50px; font-weight: bold;">Bounty:</td>
+					<td><a href="www.playerbounties.com/Bounty/Details/@Model.BountyId">Bounty Detail Link</a></td>
+				</tr>
+			</tbody>
+		</table>
 		<p>
 			Thanks and Enjoy!
 		</p>

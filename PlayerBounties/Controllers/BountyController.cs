@@ -141,6 +141,8 @@ namespace PlayerBounties.Controllers
 
 				return View(viewModel);
 			}
+
+			// Handle for bounty not found page
 		}
 
 		[Authorize]
@@ -476,6 +478,9 @@ namespace PlayerBounties.Controllers
             this.db.Bounties.Remove(bounty);
             this.db.SaveChanges();
 
+			// Send email notification
+			this.emailNotificationHelper.SendBountyNotificationEmail(bounty, "Bounty Cancelled");
+
             // Add notification message
             this.message.AddBountyNotificationMessage(bounty, "Bounty Cancelled");
 
@@ -485,7 +490,7 @@ namespace PlayerBounties.Controllers
             // Remove watched bounty record
             foreach (WatchedBounty watchedBounty in watchedBounties)
             {
-                watchedBountyController.UnWatch(watchedBounty.BountyId, watchedBounty.AccountId, "dashboard");
+                watchedBountyController.UnWatch(watchedBounty.BountyId, watchedBounty.AccountId, "cancelled");
             }
 
             return RedirectToAction("Dashboard", "Home");
@@ -541,6 +546,9 @@ namespace PlayerBounties.Controllers
         public ActionResult DenyBountyCompletion(Guid id)
         {
             Bounty bounty = this.db.Bounties.Find(id);
+
+			// Send email notification
+			this.emailNotificationHelper.SendBountyNotificationEmail(bounty, "Completion Denied");
 
             // Add notification message
             this.message.AddBountyNotificationMessage(bounty, "Completion Denied");

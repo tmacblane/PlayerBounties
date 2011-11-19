@@ -34,7 +34,7 @@ namespace PlayerBounties.Models
 		}
 
 		[Required(ErrorMessage = "Character name is required.")]
-		[StringLength(100, ErrorMessage = "The {0} must be less than {1} characters.")]
+		[StringLength(50, ErrorMessage = "Your character name must be less than {1} characters.")]
 		public string Name
 		{
 			get;
@@ -75,7 +75,7 @@ namespace PlayerBounties.Models
 		}
 
 		[DataType(DataType.MultilineText)]
-		[StringLength(4000, ErrorMessage = "The {0} must be less than {1} characters.")]
+		[StringLength(4000, ErrorMessage = "Your motto must be less than {1} characters.")]
 		public string Motto
 		{
 			get;
@@ -83,7 +83,7 @@ namespace PlayerBounties.Models
 		}
 
 		[DataType(DataType.MultilineText)]
-		[StringLength(4000, ErrorMessage = "The {0} must be less than {1} characters.")]
+		[StringLength(4000, ErrorMessage = "Your bio must be less than {1} characters.")]
 		public string Bio
 		{
 			get;

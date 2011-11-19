@@ -27,7 +27,7 @@ namespace PlayerBounties.Models
 		}
 
 		[Required(ErrorMessage = "Amount is required.")]
-		[Range(1, int.MaxValue, ErrorMessage = "The amount must be between {1} and {2}.")]
+		[Range(1, 1000000000, ErrorMessage = "The amount must be between {1} and {2}.")]
 		[Display(Name = "Amount")]
 		public int Amount
 		{
@@ -391,7 +391,7 @@ namespace PlayerBounties.Models
 				{
 					foreach(Bounty completedBounty in completedBounties)
 					{
-						totalEarned = totalEarned + completedBounty.Amount;
+						totalEarned = totalEarned + (completedBounty.Amount * 0.95);
 					}
 				}
 			}

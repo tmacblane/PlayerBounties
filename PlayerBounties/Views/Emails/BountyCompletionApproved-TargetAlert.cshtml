@@ -8,8 +8,58 @@ Subject: Bounty has been completed on @Model.TargetName
 			Attention @Model.TargetName
 		</p>
 		<p>
-			The bounty placed on your head has been completed
+			The bounty placed on your head has been completed by @Model.KilledBy - @Model.Shard.
 		</p>
+		<p>
+			For your records, included are the final details for the bounty placed on you.
+		</p>
+		<table>
+			<thead>
+				<tr>
+					<th colspan="2" style="text-align: left;">Bounty Details</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td style="width: 50px; font-weight: bold;">Client:</td>
+					<td style="width: 400px;">@Model.ClientName - @Model.Shard</td>
+				</tr>
+				<tr>
+					<td style="width: 50px; font-weight: bold;">Target:</td>
+					<td>@Model.TargetName - @Model.Shard</td>
+				</tr>
+				<tr>
+					<td style="width: 50px; font-weight: bold;">Killed By:</td>
+					<td>@Model.KilledBy - @Model.Shard</td>
+				</tr>
+				<tr>
+					<td style="width: 50px; font-weight: bold;">Amount:</td>
+					<td>@Model.Amount</td>
+				</tr>
+				@if(@Model.Reason != string.Empty)
+				{
+					<tr>
+						<td style="width: 50px; font-weight: bold; vertical-align: top;">Reason:</td>
+						<td>@Model.Reason</td>
+					</tr>
+				}
+				@if(@Model.Message != string.Empty)
+				{
+					<tr>
+						<td style="width: 50px; font-weight: bold; vertical-align: top;">Message:</td>
+						<td>@Model.Message</td>
+					</tr>
+				}
+				<tr>
+					<td style="width: 50px; font-weight: bold;">Status:</td>
+					<td>Completed</td>
+				</tr>
+				<tr>
+					<td style="width: 50px; font-weight: bold;">Bounty:</td>
+					<td><a href="www.playerbounties.com/Bounty/Details/@Model.BountyId">Bounty Detail Link</a></td>
+				</tr>
+			</tbody>
+		</table>
 		<p>
 			Thanks and Enjoy!
 		</p>

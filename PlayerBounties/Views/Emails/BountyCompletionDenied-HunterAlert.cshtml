@@ -1,6 +1,6 @@
 ﻿From: Player-Bounties@playerbounties.com
 To: @Model.UserEmailAddress
-Subject: The bounty being collected on @Model.TargetName - @Model.Shard is pending approval for completion
+Subject: Bounty on @Model.TargetName - @Model.Shard that was submitted for completion has been denied. 
 
 <html>
 	<body>
@@ -8,11 +8,11 @@ Subject: The bounty being collected on @Model.TargetName - @Model.Shard is pendi
 			Attention @Model.HunterName - @Model.Shard
 		</p>
 		<p>
-			The bounty on @Model.TargetName - @Model.Shard in the amount of @Model.Amount has been submitted for approval.  Once approved, the funds, minus any 
-			processing fees will be delivered to account.
+			We regret to inform you that the bounty on @Model.TargetName - @Model.Shard that was submitted for completion has been denied and 
+			that the bounty on the target will remain active.
 		</p>
 		<p>
-			For your records, included are the details for the bounty you attempting to collect on.
+			For your records, included are the details for the bounty on @Model.TargetName - @Model.Shard.
 		</p>
 		<table>
 			<thead>
@@ -28,10 +28,6 @@ Subject: The bounty being collected on @Model.TargetName - @Model.Shard is pendi
 				<tr>
 					<td style="width: 50px; font-weight: bold;">Target:</td>
 					<td>@Model.TargetName - @Model.Shard</td>
-				</tr>
-				<tr>
-					<td style="width: 50px; font-weight: bold;">Killed By:</td>
-					<td>@Model.KilledBy - @Model.Shard</td>
 				</tr>
 				<tr>
 					<td style="width: 50px; font-weight: bold;">Amount:</td>
@@ -53,7 +49,7 @@ Subject: The bounty being collected on @Model.TargetName - @Model.Shard is pendi
 				}
 				<tr>
 					<td style="width: 50px; font-weight: bold;">Status:</td>
-					<td>Pending Completion</td>
+					<td>Completed</td>
 				</tr>
 				<tr>
 					<td style="width: 50px; font-weight: bold;">Bounty:</td>

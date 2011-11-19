@@ -1,12 +1,62 @@
 ﻿From: Player-Bounties@playerbounties.com
 To: @Model.UserEmailAddress
-Subject: The bounty being collected on @Model.TargetName is pending approval for completion
+Subject: The bounty being collected on @Model.TargetName - @Model.Shard is pending approval for completion
 
 <html>
 	<body>
 		<p>
-			The bounty on @Model.TargetName has been submitted for approval.  Please refrain from hunting @Model.TargetName
+			Attention Hunter!
 		</p>
+		<p>
+			The bounty on @Model.TargetName - @Model.Shard has been submitted for approval by another brave hunter.  For the time being please 
+			refrain from hunting the target.  In the event that the collection request is denied, you will be alerted and the hunt can continue.
+		</p>
+		<p>
+			For your records, included are the details for the bounty you watching.
+		</p>
+		<table>
+			<thead>
+				<tr>
+					<th colspan="2" style="text-align: left;">Bounty Details</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td style="width: 50px; font-weight: bold;">Client:</td>
+					<td style="width: 400px;">@Model.ClientName - @Model.Shard</td>
+				</tr>
+				<tr>
+					<td style="width: 50px; font-weight: bold;">Target:</td>
+					<td>@Model.TargetName - @Model.Shard</td>
+				</tr>
+				<tr>
+					<td style="width: 50px; font-weight: bold;">Amount:</td>
+					<td>@Model.Amount</td>
+				</tr>
+				@if(@Model.Reason != string.Empty)
+				{
+					<tr>
+						<td style="width: 50px; font-weight: bold; vertical-align: top;">Reason:</td>
+						<td>@Model.Reason</td>
+					</tr>
+				}
+				@if(@Model.Message != string.Empty)
+				{
+					<tr>
+						<td style="width: 50px; font-weight: bold; vertical-align: top;">Message:</td>
+						<td>@Model.Message</td>
+					</tr>
+				}
+				<tr>
+					<td style="width: 50px; font-weight: bold;">Status:</td>
+					<td>Pending Completion</td>
+				</tr>
+				<tr>
+					<td style="width: 50px; font-weight: bold;">Bounty:</td>
+					<td><a href="www.playerbounties.com/Bounty/Details/@Model.BountyId">Bounty Detail Link</a></td>
+				</tr>
+			</tbody>
+		</table>
 		<p>
 			Thanks and Enjoy!
 		</p>
