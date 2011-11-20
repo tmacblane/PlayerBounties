@@ -66,7 +66,9 @@
 							}
 						}
 						<td class="inputLabelCell classTxt @character.GetClassStyle(character.PlayerClass.Name)">
-							@Html.ActionLink(character.Name, "Details", "Character", new { character.Id }, null)
+                            <div style="overflow: hidden; text-overflow: ellipsis; width: 128px; ">
+							    @Html.ActionLink(character.Name, "Details", "Character", new { character.Id }, null)
+                            </div>
 						</td>
 						<td>
 							@Html.DisplayFor(modelItem => character.Shard.Name)

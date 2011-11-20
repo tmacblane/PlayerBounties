@@ -633,7 +633,7 @@ table
 	height: 130px; 
 	float: left; 
 	margin: 10px; 
-	font-size: 12px; 
+	font-size: 11px; 
 	text-align: center;
 }
 
@@ -681,7 +681,6 @@ table
 	background-color: rgba(0, 0, 0, 1);
 	color: #FFFFFF;
 	font-weight: bolder;
-	font-size: 12px;
 }
 
 .empire
@@ -692,7 +691,6 @@ table
 	background-color: rgba(0, 0, 0, 1);
 	color: #FFFFFF;
 	font-weight: bolder;
-	font-size: 12px;
 }
 
 #bountiesTable, #searchResultTable, #messagesTable, #favoritesTable

@@ -1,91 +1,80 @@
 ﻿@model IEnumerable<PlayerBounties.Models.Character>
 
 <script type="text/javascript">
-	$(function()
-	{
-		//characterScrollPane parts
-		var characterScrollPane = $(".character-scroll-pane"),
+    $(function () {
+        //characterScrollPane parts
+        var characterScrollPane = $(".character-scroll-pane"),
 		characterScrollContent = $(".character-scroll-content");
 
-		//build slider
-		var scrollbar = $(".character-scroll-bar").slider({
-			slide: function(event, ui)
-			{
-				if(characterScrollContent.width() > characterScrollPane.width())
-				{
-					characterScrollContent.css("margin-left", Math.round(
+        //build slider
+        var scrollbar = $(".character-scroll-bar").slider({
+            slide: function (event, ui) {
+                if (characterScrollContent.width() > characterScrollPane.width()) {
+                    characterScrollContent.css("margin-left", Math.round(
 					ui.value / 100 * (characterScrollPane.width() - characterScrollContent.width())
 				) + "px");
-				} else
-				{
-					characterScrollContent.css("margin-left", 0);
-				}
-			}
-		});
+                } else {
+                    characterScrollContent.css("margin-left", 0);
+                }
+            }
+        });
 
-		//append icon to handle
-		var handleHelper = scrollbar.find(".ui-slider-handle")
+        //append icon to handle
+        var handleHelper = scrollbar.find(".ui-slider-handle")
 
-	.mousedown(function()
-	{
-		scrollbar.width(handleHelper.width());
+	.mousedown(function () {
+	    scrollbar.width(handleHelper.width());
 	})
 
-	.mouseup(function()
-	{
-		scrollbar.width("100%");
+	.mouseup(function () {
+	    scrollbar.width("100%");
 	})
 
 	.append("<span class='ui-icon ui-icon-grip-dotted-vertical'></span>")
 	.wrap("<div class='ui-handle-helper-parent'></div>").parent();
 
-		//change overflow to hidden now that slider handles the scrolling
-	characterScrollPane.css("overflow", "hidden");
+        //change overflow to hidden now that slider handles the scrolling
+        characterScrollPane.css("overflow", "hidden");
 
-		//size scrollbar and handle proportionally to scroll distance
-		function sizeScrollbar()
-		{
-			var remainder = characterScrollContent.width() - characterScrollPane.width();
-			var proportion = remainder / characterScrollContent.width();
-			var handleSize = characterScrollPane.width() - (proportion * characterScrollPane.width());
-			scrollbar.find(".ui-slider-handle").css({
-				width: handleSize,
-				"margin-left": -handleSize / 2
-			});
-			handleHelper.width("").width(scrollbar.width() - handleSize);
-		}
+        //size scrollbar and handle proportionally to scroll distance
+        function sizeScrollbar() {
+            var remainder = characterScrollContent.width() - characterScrollPane.width();
+            var proportion = remainder / characterScrollContent.width();
+            var handleSize = characterScrollPane.width() - (proportion * characterScrollPane.width());
+            scrollbar.find(".ui-slider-handle").css({
+                width: handleSize,
+                "margin-left": -handleSize / 2
+            });
+            handleHelper.width("").width(scrollbar.width() - handleSize);
+        }
 
-		//reset slider value based on scroll content position
-		function resetValue()
-		{
-			var remainder = characterScrollPane.width() - characterScrollContent.width();
-			var leftVal = characterScrollContent.css("margin-left") === "auto" ? 0 :
+        //reset slider value based on scroll content position
+        function resetValue() {
+            var remainder = characterScrollPane.width() - characterScrollContent.width();
+            var leftVal = characterScrollContent.css("margin-left") === "auto" ? 0 :
 			parseInt(characterScrollContent.css("margin-left"));
-			var percentage = Math.round(leftVal / remainder * 100);
-			scrollbar.slider("value", percentage);
-		}
+            var percentage = Math.round(leftVal / remainder * 100);
+            scrollbar.slider("value", percentage);
+        }
 
-		//if the slider is 100% and window gets larger, reveal content
-		function reflowContent()
-		{
-			var showing = characterScrollContent.width() + parseInt(characterScrollContent.css("margin-left"), 10);
-			var gap = characterScrollPane.width() - showing;
-			if(gap > 0)
-			{
-				characterScrollContent.css("margin-left", parseInt(characterScrollContent.css("margin-left"), 10) + gap);
-			}
-		}
+        //if the slider is 100% and window gets larger, reveal content
+        function reflowContent() {
+            var showing = characterScrollContent.width() + parseInt(characterScrollContent.css("margin-left"), 10);
+            var gap = characterScrollPane.width() - showing;
+            if (gap > 0) {
+                characterScrollContent.css("margin-left", parseInt(characterScrollContent.css("margin-left"), 10) + gap);
+            }
+        }
 
-		//change handle position on window resize
-		$(window).resize(function()
-		{
-			resetValue();
-			sizeScrollbar();
-			reflowContent();
-		});
-		//init scrollbar size
-		setTimeout(sizeScrollbar, 10); //safari wants a timeout
-	});
+        //change handle position on window resize
+        $(window).resize(function () {
+            resetValue();
+            sizeScrollbar();
+            reflowContent();
+        });
+        //init scrollbar size
+        setTimeout(sizeScrollbar, 10); //safari wants a timeout
+    });
 </script>
 
 <div class="slider">
@@ -126,12 +115,14 @@
 									@Html.ActionLink("  ", "Details", "Character", new { id = item.Id }, new { style = "background: url('../../" + @item.GetClassAvatarPath(item.AvatarId.Value) + "') no-repeat center right;display:block; height:90px; width:90px;margin-top:-2px;text-decoration:none;" })
 								</td>
 								<td style="width: 15px; padding-left: 10px; opacity: 0.75;" valign="top">
-									<a href="@Url.Action("Edit", "Character", new { id = item.Id })"><img src="../../Content/Images/editIcon.gif" alt="Edit" id="editImage"/></a>
+                                    <a href="@Url.Action("Edit", "Character", new { id = item.Id })"><img src="../../Content/Images/editIcon.gif" alt="Edit" id="editImage"/></a>
 								</td>
 							</tr>
 							<tr>							
-								<th colspan="2" class="classTxt @item.GetClassStyle(item.PlayerClass.Name)">
-									@Html.ActionLink(item.Name, "Details", "Character", new { id = item.Id }, null)
+								<th colspan="2" class="classTxt @item.GetClassStyle(item.PlayerClass.Name)" >
+                                    <div style="overflow: hidden; text-overflow: ellipsis; width: 118px;">
+                                        @Html.ActionLink(@item.Name, "Details", "Character", new { id = item.Id }, null)
+                                    </div>
 								</th>
 							</tr>
 							<tr>							
