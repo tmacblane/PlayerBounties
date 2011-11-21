@@ -130,11 +130,23 @@ img
 #header
 {
 	background: #FFFFFF;
+	/*background-image: url("../../Content/Images/HeaderBackground.jpg");*/
 	background: -moz-linear-gradient(center top , #FFFFFF, #FFFFFF) repeat scroll 0 0 transparent;
-	height: 100px;
+	height: 140px;
 	position: relative;
     margin-bottom: 0px;
     color: #000000;
+    padding: 0;
+    z-index: 100;	
+}
+
+#topheader
+{
+    background: #FFFFFF;
+	background-image: url("../../Content/Images/HeaderBackground.jpg");
+	height: 100px;
+	position: relative;
+    margin-bottom: 0px;
     padding: 0;
     z-index: 100;	
 }
@@ -145,6 +157,7 @@ img
 	background-color: #333333;
     box-shadow: 0 2px 0 #BBBBBB;
     height: 40px;
+    top: 100px;
     left: 0;
     line-height: 20px;
     position: relative;
@@ -158,7 +171,7 @@ img
 
 .sectionTitle
 {
-	color: #FFFFFF;
+	color: #EEEEEE;
     font-size: 18px;
     line-height: 40px;
     text-align: left;
@@ -168,7 +181,7 @@ img
 {
 	left: 150px;
 	position: absolute;
-	bottom: 0;
+	bottom: 40px;
 	font-size: 16px;
 }
 
