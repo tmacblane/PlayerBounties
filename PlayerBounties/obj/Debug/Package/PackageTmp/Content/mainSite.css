@@ -516,6 +516,16 @@ td
     vertical-align: top;
 }
 
+#characterDetailsTable td
+{
+    white-space: normal;
+}
+
+#bountyDetailsTable td
+{
+    white-space: normal;
+}
+
 #leftColumn
 {
 	width: 175px;
