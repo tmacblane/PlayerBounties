@@ -116,6 +116,16 @@ namespace PlayerBounties.Models
 				killedBy = bounty.CharacterName(bounty.KilledById.Value);
 			}
 
+            string targetDescription;
+            if(bounty.Reason == string.Empty || bounty.Reason == null)
+            {
+                targetDescription = string.Format("A bounty has been placed on your head by {0} - {1} in the amount of {2}.", placedBy, shard, bounty.Amount);
+            }
+            else
+            {
+                targetDescription = string.Format("A bounty has been placed on your head by {0} - {1} in the amount of {2} for '{3}'.", placedBy, shard, bounty.Amount, bounty.Reason);
+            }
+
 			switch(messageType)
 			{
 				case "Pending Placement":					
@@ -176,7 +186,7 @@ namespace PlayerBounties.Models
 						UserId = character.GetCharacterUserId(bounty.PlacedOnId),
 						DateCreated = dateCreated,
 						Subject = string.Format("Bounty has been placed on {0} - {1}", placedOn, shard),
-						Description = string.Format("A bounty has been placed on your head by {0} - {1} in the amount of {2} for '{3}'.", placedBy, shard, bounty.Amount, bounty.Reason),
+						Description = targetDescription,
 						IsRead = false,
 						IsAdminMessage = false
 					};
@@ -231,7 +241,7 @@ namespace PlayerBounties.Models
 						UserId = character.GetCharacterUserId(bounty.KilledById.Value),
 						DateCreated = dateCreated,
 						Subject = string.Format("The bounty being collected on {0} - {1} is pending approval for completion", placedOn, shard),
-						Description = string.Format("The bounty on {0} - {1} in the amount of @Model.Amount has been submitted for approval.  Once approved, the funds, minus any processing fees will be delivered to account.", placedOn, shard, bounty.Amount),
+						Description = string.Format("The bounty on {0} - {1} in the amount of {2} has been submitted for approval.  Once approved, the funds, minus any processing fees will be delivered to account.", placedOn, shard, bounty.Amount),
 						IsRead = false,
 						IsAdminMessage = false
 					};

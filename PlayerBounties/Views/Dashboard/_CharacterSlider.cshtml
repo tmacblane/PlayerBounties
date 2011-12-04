@@ -120,13 +120,13 @@
 							</tr>
 							<tr>							
 								<th colspan="2" class="classTxt @item.GetClassStyle(item.PlayerClass.Name)" >
-                                    <div style="overflow: hidden; text-overflow: ellipsis; width: 118px;">
+                                    <div style="overflow: hidden; text-overflow: ellipsis; width: 118px;" title = "@item.Name" >
                                         @Html.ActionLink(@item.Name, "Details", "Character", new { id = item.Id }, null)
                                     </div>
 								</th>
 							</tr>
 							<tr>							
-								<th colspan="2">
+								<th colspan="2" title="@item.Shard.Name" style="white-space: normal;">
 									@item.Shard.Name
 								</th>
 							</tr>

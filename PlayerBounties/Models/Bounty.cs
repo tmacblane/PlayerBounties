@@ -114,6 +114,12 @@ namespace PlayerBounties.Models
 
 		#region Type specific methods
 
+        public int GetNumberOfAccounts()
+        {
+            Account account = new Account();
+            return account.GetNumberOfAccounts();
+        }
+
 		public string CharacterName(Guid characterId)
 		{
 			Character character = new Character();

@@ -20,8 +20,8 @@
 				{
 					<tr>
 						<td class="inputLabelCell classTxt @item.GetClassStyle(item.CharacterClass(item.Id))">
-                            <div style="overflow: hidden; text-overflow: ellipsis; width: 128px; height: 16px;">
-							    @Html.ActionLink(item.Name, "Details", "Character", new { id = item.Id }, null) <text> - @item.CharacterShard(item.Id)</text> 
+                            <div style="overflow: hidden; width: 128px; height: 16px;" title = "@item.Name - @item.CharacterShard(item.Id)" >
+							    @Html.ActionLink(item.Name, "Details", "Character", new { id = item.Id }, null) <text> - @item.CharacterShard(item.Id)</text>
                             </div>
 						</td>
 						<td align="center">

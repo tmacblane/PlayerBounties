@@ -91,7 +91,7 @@
 			@if(@Model.Bounty.GetStatus(Model.Bounty.Id) == "Completed")
 			{
 				<div style="height: 300px; width:300px;" >
-					<img src="../../Content/Images/KillShots/@Model.Bounty.GetKillShotImage(@Model.Bounty.KillShotImageId.Value)" alt="Kill Image" id="killImage" style="width:100%;"/>
+                    <a href="../../Content/Images/KillShots/@Model.Bounty.GetKillShotImage(@Model.Bounty.KillShotImageId.Value)" target="_blank"><img src="../../Content/Images/KillShots/@Model.Bounty.GetKillShotImage(@Model.Bounty.KillShotImageId.Value)" alt="Kill Image" id="killImage" style="width:100%;"/></a>
 				</div>			
 			}
 		

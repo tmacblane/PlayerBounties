@@ -97,6 +97,11 @@ namespace PlayerBounties.Controllers
 
 				// Add notification message
 				this.message.AddBountyNotificationMessage(this.bounty, "Pending Placement");
+                
+                //***************************** 
+                //REMOVE APPROVAL BEFORE LAUNCH
+                this.ApproveBountyPlacement(this.bounty.Id);
+                //*****************************
 
 				return RedirectToAction("Dashboard", "Home");
 			}
@@ -225,6 +230,12 @@ namespace PlayerBounties.Controllers
 
 				// Add notification message
 				this.message.AddBountyNotificationMessage(bounty, "Pending Completion");
+
+
+                //***************************** 
+                //REMOVE APPROVAL BEFORE LAUNCH
+                this.ApproveBountyCompletion(bounty.Id);
+                //*****************************
 
 				return RedirectToAction("Dashboard", "Home", null);
 			}
@@ -445,6 +456,11 @@ namespace PlayerBounties.Controllers
 				// Add notification message
 				this.message.AddBountyNotificationMessage(this.bounty, "Pending Placement");
 
+                //***************************** 
+                //REMOVE APPROVAL BEFORE LAUNCH
+                this.ApproveBountyPlacement(this.bounty.Id);
+                //*****************************
+
 				return RedirectToAction("Dashboard", "Home");
 			}
 
@@ -469,7 +485,11 @@ namespace PlayerBounties.Controllers
 			// Add notification message
 			this.message.AddBountyNotificationMessage(bounty, "Placement Approved");
 
-			return RedirectToAction("PendingPlacement");
+
+            //***************************** 
+            //UNCOMMENT BEFORE LAUNCH
+			// return RedirectToAction("PendingPlacement");
+            return null;
 		}
 
         public ActionResult CancelBounty(Guid id)
@@ -539,8 +559,11 @@ namespace PlayerBounties.Controllers
 			{
 				watchedBountyController.UnWatch(watchedBounty.BountyId, watchedBounty.AccountId);
 			}
-
-			return RedirectToAction("PendingCompletion");
+            
+            //************************
+            //UNCOMMENT BEORE LAUNCH
+			//return RedirectToAction("PendingCompletion");
+            return null;
 		}
 
         public ActionResult DenyBountyCompletion(Guid id)

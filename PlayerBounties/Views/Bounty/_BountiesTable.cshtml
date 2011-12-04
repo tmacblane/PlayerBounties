@@ -31,15 +31,19 @@
 			{
 				<tr>
 					<td class="classTxt @item.GetClassStyle(item.CharacterClass(item.PlacedOnId))">
-                        <div style="overflow: hidden; text-overflow: ellipsis; width: 128px; ">
+                        <div style="overflow: hidden; text-overflow: ellipsis; width: 110px;" title = "@item.CharacterName(item.PlacedOnId)">
                             @Html.ActionLink(@item.CharacterName(item.PlacedOnId).ToString(), "Details", "Character", new { id = item.PlacedOnId }, null)
                         </div>
                     </td>
-					<td>@item.CharacterShard(item.PlacedOnId)</td>
+					<td>
+                        <div style="overflow: hidden; text-overflow: ellipsis;" title = "@item.CharacterShard(item.PlacedOnId)">
+                            @item.CharacterShard(item.PlacedOnId)
+                        </div>
+                    </td>
 					<td>@item.CharacterClass(item.PlacedOnId)</td>
 					<td>@item.DatePlaced.Value.ToShortDateString()</td>
 					<td class="classTxt @item.GetClassStyle(item.CharacterClass(item.PlacedById))">
-                        <div style="overflow: hidden; text-overflow: ellipsis; width: 128px; ">
+                        <div style="overflow: hidden; text-overflow: ellipsis; width: 110px;" title = "@item.CharacterName(item.PlacedById)" >
                             @Html.ActionLink(@item.CharacterName(item.PlacedById).ToString(), "Details", "Character", new { id = item.PlacedById }, null)
                         </div>
                     </td>
@@ -47,7 +51,7 @@
 					{
 						<td>@item.DateCompleted.Value.ToShortDateString()</td>
 						<td class="classTxt @item.GetClassStyle(item.CharacterClass(item.KilledById.Value))">
-                            <div style="overflow: hidden; text-overflow: ellipsis; width: 128px; ">
+                            <div style="overflow: hidden; text-overflow: ellipsis; width: 110px;" title = "@item.CharacterName(item.KilledById.Value)" >
                                 @Html.ActionLink(@item.CharacterName(item.KilledById.Value).ToString(), "Details", "Character", new { id = item.KilledById.Value }, null)
                             </div>
                         </td>

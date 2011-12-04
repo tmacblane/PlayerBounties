@@ -234,6 +234,11 @@ namespace PlayerBounties.Models
 			return s.ToString();
 		}
 
+        public int GetNumberOfAccounts()
+        {
+            return this.db.Accounts.Count();
+        }
+
 		#endregion
 	}	
 

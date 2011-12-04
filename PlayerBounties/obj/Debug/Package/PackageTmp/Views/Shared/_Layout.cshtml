@@ -23,18 +23,18 @@
 <body>
     <div class="page">
         <div id="header">
-			@Html.Partial("../Header/_Header", new PlayerBounties.Models.Account())
+            <div id="topHeader">
+                @Html.Partial("../Header/_Header", new PlayerBounties.Models.Account())
+            </div>
+            <div id="subHeader">
+			    <div class="sectionTitle" style="width: 500px; float: left;">
+				    @ViewBag.Title
+			    </div>
+			    <div id="searchBar" style="float: right; margin: 5px;">
+				    @Html.Partial("_Search")
+			    </div>
+		    </div>	
         </div>
-
-		<div id="subHeader">
-			<div class="sectionTitle" style="width: 500px; float: left;">
-				@ViewBag.Title
-			</div>
-			<div id="searchBar" style="float: right; margin: 5px;">
-				@Html.Partial("_Search")
-			</div>
-		</div>		
-
         <div id="main">
             @RenderBody()
         </div>
