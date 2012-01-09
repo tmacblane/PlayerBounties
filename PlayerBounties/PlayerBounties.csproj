@@ -100,6 +100,7 @@
     </Compile>
     <Compile Include="Helpers\EmailNotificationHelper.cs" />
     <Compile Include="Helpers\HandleErrorHm.cs" />
+    <Compile Include="Helpers\TopPlayers.cs" />
     <Compile Include="Models\Account.cs" />
     <Compile Include="Models\Achievement.cs" />
     <Compile Include="Models\Avatar.cs" />
@@ -277,6 +278,7 @@
     <Content Include="Views\Emails\BountyCancelled-TargetAlert.cshtml" />
     <Content Include="Views\Emails\BountyCancelled-WatchedAccountAlert.cshtml" />
     <Content Include="Views\Emails\BountyCancelled-FavoritedAlert.cshtml" />
+    <Content Include="Views\Character\_TopCharacters.cshtml" />
     <None Include="_bin_deployableAssemblies\Microsoft.Web.Infrastructure.dll" />
     <None Include="_bin_deployableAssemblies\System.Web.WebPages.Razor.dll" />
     <None Include="_bin_deployableAssemblies\System.Web.WebPages.dll" />

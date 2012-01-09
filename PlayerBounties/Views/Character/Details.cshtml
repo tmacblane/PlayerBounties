@@ -43,15 +43,20 @@
 		</table>	
 	</div>
 
-	<div id="rightColumn">
-		<table cellspacing="0" cellpadding="2" border="0">
+	<div id="rightColumn" style="width: 225px;">
+		<table cellspacing="0" cellpadding="2" border="0" style="width: 225px;">
 			<tr style="height: 20px;">				
 			</tr>
 			<tr style="height: 150px;">
-				@*<th colspan="2">Great hunt champ image</th>*@
+				@*<th colspan="4">Great hunt champ image</th>*@
 			</tr>
+            <tr>
+                <td></td>
+                <td style="width: 20px;"></td>
+                @*<td style="width: 20px;">Rank</td>*@
+            </tr>
 			<tr>
-				<td class="inputLabelCell">
+				<td class="inputLabelCell" style="width: 205px;">
 					Targets Killed:
 				</td>
 				<td align="left">
@@ -68,6 +73,9 @@
 						<text>0</text>
 					}
 				</td>
+                @*<td align="center">
+                    @Html.ActionLink(@Model.GetHunterRankingsByShard(Model.ShardId, Model.Id).ToString(), "BountyStatistics", "Bounty", new { id = Model.Id, statistic = "targetsKilled" }, null)
+                </td>*@
 			</tr>
 			<tr>
 				<td class="inputLabelCell">
@@ -87,6 +95,9 @@
 						<text>0</text>
 					}
 				</td>
+                @*<td align="center">
+                    @Html.ActionLink(@Model.GetClientRankingsByShard(Model.ShardId, Model.Id).ToString(), "BountyStatistics", "Bounty", new { id = Model.Id, statistic = "bountiesPlaced" }, null)
+                </td>*@
 			</tr>
 			<tr>
 				<td class="inputLabelCell">
@@ -106,15 +117,18 @@
 						<text>0</text>
 					}
 				</td>
+                @*<td align="center">
+                    @Html.ActionLink(@Model.GetTargetRankingsByShard(Model.ShardId, Model.Id).ToString(), "TopStatistics", new { id = Model.Id, statistic = "bountiesPlacedAgainst" })
+                </td>*@
 			</tr>
 			<tr>
-				<td colspan="2">
+				<td colspan="3">
 					<hr />
 				</td>
 			</tr>
 			<tr>
 				<td class="inputLabelCell">Total Spent:</td>
-				<td colspan="3" align="left">
+				<td colspan="3" align="right">
 					@if(placedCount != 0)
 					{
 						@string.Format("{0:0,0}", Model.GetAmountSpent(Model.Id))
@@ -127,7 +141,7 @@
 			</tr>
 			<tr>
 				<td class="inputLabelCell">Total Earned:</td>
-				<td colspan="3" align="left">
+				<td colspan="3" align="right">
 					@if(killedCount != 0)
 					{
 						@string.Format("{0:0,0}", Model.GetAmountEarned(Model.Id))
@@ -141,7 +155,7 @@
 		</table>
 	</div>	
 	
-	<div id="middleColumn">
+	<div id="middleColumn" style="width: 540px; padding-right: 225px;">
 		<table id="characterDetailsTable" cellspacing="0" cellpadding="5" border="0" >
 			<tr style="height: 20px;">
 				@if(Request.IsAuthenticated)

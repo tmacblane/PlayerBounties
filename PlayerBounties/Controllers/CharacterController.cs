@@ -301,6 +301,21 @@ namespace PlayerBounties.Controllers
 			return PartialView("_KillShotImageSlider", killShotImages);
 		}
 
+        //public ViewResult TopStatistics(Guid characterId, Guid shardId, string statistic)
+        //{
+        //    switch (statistic)
+        //    {
+        //        case "targetsKilled":
+        //            // list characters by shard
+        //            // return character model view
+        //            return View("_TopStatistics", this.character); 
+        //        case "bountiesPlaced":
+        //            break;
+        //        case "bountiesPlacedAgainst":
+        //            break;
+        //    }
+        //}
+
 		#endregion
 
 		#region Base class overrides

@@ -286,7 +286,7 @@ namespace PlayerBounties.Models
 
 		public List<Guid> GetTopClientsList()
 		{
-			List<Guid> characterIds = new List<Guid>();
+            List<Guid> characterIds = new List<Guid>();
 			List<Guid> topClients = new List<Guid>();
 
 			IEnumerable<Bounty> activeBounties = this.GetAllPlacedApprovedBounties();

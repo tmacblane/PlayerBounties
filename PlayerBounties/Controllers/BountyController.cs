@@ -97,11 +97,6 @@ namespace PlayerBounties.Controllers
 
 				// Add notification message
 				this.message.AddBountyNotificationMessage(this.bounty, "Pending Placement");
-                
-                //***************************** 
-                //REMOVE APPROVAL BEFORE LAUNCH
-                this.ApproveBountyPlacement(this.bounty.Id);
-                //*****************************
 
 				return RedirectToAction("Dashboard", "Home");
 			}
@@ -230,12 +225,6 @@ namespace PlayerBounties.Controllers
 
 				// Add notification message
 				this.message.AddBountyNotificationMessage(bounty, "Pending Completion");
-
-
-                //***************************** 
-                //REMOVE APPROVAL BEFORE LAUNCH
-                this.ApproveBountyCompletion(bounty.Id);
-                //*****************************
 
 				return RedirectToAction("Dashboard", "Home", null);
 			}
@@ -456,11 +445,6 @@ namespace PlayerBounties.Controllers
 				// Add notification message
 				this.message.AddBountyNotificationMessage(this.bounty, "Pending Placement");
 
-                //***************************** 
-                //REMOVE APPROVAL BEFORE LAUNCH
-                this.ApproveBountyPlacement(this.bounty.Id);
-                //*****************************
-
 				return RedirectToAction("Dashboard", "Home");
 			}
 
@@ -485,11 +469,7 @@ namespace PlayerBounties.Controllers
 			// Add notification message
 			this.message.AddBountyNotificationMessage(bounty, "Placement Approved");
 
-
-            //***************************** 
-            //UNCOMMENT BEFORE LAUNCH
-			// return RedirectToAction("PendingPlacement");
-            return null;
+			return RedirectToAction("PendingPlacement");
 		}
 
         public ActionResult CancelBounty(Guid id)
@@ -560,10 +540,7 @@ namespace PlayerBounties.Controllers
 				watchedBountyController.UnWatch(watchedBounty.BountyId, watchedBounty.AccountId);
 			}
             
-            //************************
-            //UNCOMMENT BEORE LAUNCH
-			//return RedirectToAction("PendingCompletion");
-            return null;
+            return RedirectToAction("PendingCompletion");
 		}
 
         public ActionResult DenyBountyCompletion(Guid id)
@@ -770,24 +747,24 @@ namespace PlayerBounties.Controllers
 					}
 
 				case "bountiesSignedUpFor":
-					if(id == Guid.Empty && Request.IsAuthenticated)
-					{
-						List<Bounty> accountBountiesSignedUpFor = this.bounty.GetAccountBountiesSignedUpFor(loggedInUserId);
+                    if (id == Guid.Empty && Request.IsAuthenticated)
+                    {
+                        List<Bounty> accountBountiesSignedUpFor = this.bounty.GetAccountBountiesSignedUpFor(loggedInUserId);
 
-						if(accountBountiesSignedUpFor.Count() != 0)
-						{
-							@ViewBag.Title = "Bounties Signed Up For";
-							return View("_BountiesTable", accountBountiesSignedUpFor);
-						}
-						else
-						{
-							return null;
-						}
-					}
-					else
-					{
-						return null;
-					}
+                        if (accountBountiesSignedUpFor.Count() != 0)
+                        {
+                            @ViewBag.Title = "Bounties Signed Up For";
+                            return View("_BountiesTable", accountBountiesSignedUpFor);
+                        }
+                        else
+                        {
+                            return null;
+                        }
+                    }
+                    else
+                    {
+                        return null;
+                    }
 			}
 
 			return View("_BountiesTable", this.bounty);
